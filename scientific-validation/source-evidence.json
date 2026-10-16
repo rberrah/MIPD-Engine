@@ -1,0 +1,81 @@
+{
+  "schemaVersion": 1,
+  "policy": "Evidence is model-specific and scope-limited. A deterministic software snapshot is never independent source reproduction. Source-equation checks do not prove external clinical predictive performance.",
+  "entries": [
+    {
+      "modelId": "vanco_roberts",
+      "level": "PARTIAL_SOURCE_EQUATIONS",
+      "primaryDoi": "10.1128/AAC.01708-10",
+      "primaryUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC3101407/",
+      "sourceLocation": "Roberts et al. (2011), final population model equations (3)-(4), Table 2",
+      "population": "206 critically ill adults receiving vancomycin by continuous infusion",
+      "sourceValues": {
+        "CL_at_CRCL100_L_per_h": 4.58,
+        "V_per_kg_L_per_kg": 1.53,
+        "reference_measured_CRCL_mL_per_min_per_1_73m2": 100
+      },
+      "mathematicalOracle": "Independent closed-form 1-compartment zero-order input: CL=4.58*(CRCL/100), V=1.53*WT, C(t)=rate/CL*(1-exp(-CL*t/V)), 0<t<=infusion duration.",
+      "testPath": "tests/source_equation_reproduction.R",
+      "scenarios": [
+        "reference patient (CRCL=90.7, WT=74.8)",
+        "reduced renal clearance (CRCL=50, WT=110)",
+        "augmented renal clearance (CRCL=140, WT=55)"
+      ],
+      "verifiedScope": [
+        "published structural equation",
+        "published typical fixed effects",
+        "renal and weight covariates",
+        "unit conversion",
+        "population concentrations for a single continuous infusion"
+      ],
+      "exclusions": [
+        "OMEGA distribution / sampling",
+        "SIGMA sampling",
+        "MAP posterior fitting",
+        "external-patient predictive performance",
+        "clinical decision validation"
+      ],
+      "reviewedOn": "2026-10-16"
+    },
+    {
+      "modelId": "vanco_pkjust",
+      "level": "PARTIAL_SOURCE_EQUATIONS",
+      "primaryDoi": "10.1111/j.1365-2125.2010.03679.x",
+      "primaryUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC2911550/",
+      "sourceLocation": "Revilla et al. (2010), final covariate model; Table 4",
+      "population": "Adult ICU patients treated with intravenous vancomycin",
+      "sourceValues": {
+        "CL_CRCL_slope": 0.67,
+        "CL_age_exponent": -0.24,
+        "V_L_per_kg": 0.82,
+        "V_creatinine_multiplier": 2.49,
+        "creatinine_threshold_mg_per_dL": 1,
+        "mL_per_min_to_L_per_h": 0.06
+      },
+      "mathematicalOracle": "Independent closed-form 1-compartment IV bolus: CL=(0.67*(CRCL/WT)+AGE^(-0.24))*WT*0.06, V=0.82*2.49^(CREAT_umolL/88.4>1)*WT, C(t)=dose/V*exp(-CL*t/V).",
+      "testPath": "tests/source_equation_reproduction.R",
+      "scenarios": [
+        "creatinine exactly 1 mg/dL threshold",
+        "creatinine above threshold",
+        "higher renal clearance and older age"
+      ],
+      "verifiedScope": [
+        "published structural equation",
+        "published typical fixed effects",
+        "age and renal effects",
+        "serum-creatinine threshold",
+        "conversion of kg-normalized mL/min clearance to L/h",
+        "population concentrations following an IV bolus"
+      ],
+      "exclusions": [
+        "OMEGA distribution / sampling",
+        "SIGMA sampling",
+        "infusion protocol predictions",
+        "MAP posterior fitting",
+        "external-patient predictive performance",
+        "clinical decision validation"
+      ],
+      "reviewedOn": "2026-10-16"
+    }
+  ]
+}
