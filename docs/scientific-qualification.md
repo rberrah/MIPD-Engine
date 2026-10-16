@@ -15,13 +15,16 @@ Baseline (2026-10-16): 46 shipped models pass compilation/contract tests;
 | EXTERNAL_VALIDATION | Out-of-development patient-level predictive assessment with preregistered metrics and confidence intervals | Prospective clinical utility |
 | CLINICAL_UTILITY | Prospective/clinical impact and safety as appropriate | Regulatory clearance by itself |
 
-**First scientific tranche:** Roberts (2011) and Revilla (2010)
+**Independent-equation tranche:** Roberts (2011) and Revilla (2010)
 vancomycin models, 6 synthetic scenarios in
 tests/source_equation_reproduction.R. Independent analytical R closed-form
 solutions are compared with mrgsolve predictions. Published CL/V, covariates,
 units and C(t) are tested. OMEGA/SIGMA, Bayesian fitting, external patients
-and clinical dosing are NOT validated. Thus 2/46 PARTIAL_SOURCE_EQUATIONS;
-0/46 FULL_SOURCE_REPRODUCTION; 44 pending. These counts must not be
+and clinical dosing are NOT validated. A third model, Goti (2018), has a separate independent analytical
+IV two-compartment test with 3 in-domain synthetic scenarios in
+tests/goti_source_equations.R. This test explicitly reports two renal-boundary
+science gaps. Thus 3/46 PARTIAL_SOURCE_EQUATIONS; 0/46
+FULL_SOURCE_REPRODUCTION; 43 pending. These counts must not be
 misrepresented as 2 completely validated models.
 
 The source-to-model evidence records are in
@@ -68,7 +71,8 @@ from the software under examination.
 
 ### P1 — Review 35 models without confirmed source alignment
 
-These comprise 25 models with documented adaptations and 10 that remain\nnot verified at the source-fidelity level. The original publication may lack executable code or describe components
+These comprise 25 models with documented adaptations and 11 that remain
+not verified at the source-fidelity level (including Goti's renal boundary branches). The original publication may lack executable code or describe components
 not supported by the current engine (IOV, correlations, transit, NPAG
 nonparametric priors, DDI simplifications). Correct mismatches where source
 permits. Otherwise provide named, dated discrepancy and retain a
@@ -96,6 +100,19 @@ should consume model metadata and scientific verdicts from MIPD Engine,
 never maintain its own duplicate clinical-science claims. Public deployment
 remains for research and education; no autonomous clinical dosing.
 
+## Goti model renal-boundary discrepancy
+
+Goti's typical two-compartment coefficients and dialysis-status factors
+can be reconstructed independently from the literature. However Table 2 in
+[Antibiotics (2023) 12:301](https://doi.org/10.3390/antibiotics12020301)
+reports bounding Cockcroft–Gault CrCl at 150 mL/min and setting serum
+creatinine to at least 1 mg/dL in patients >65 years. These two rules are
+**not** present in `models/vanco_goti.cpp`; the exact primary-article clauses
+and behavior at equality need a second reviewer check. The existing model
+and its frozen ML artifacts are retained unchanged pending a separate
+science/retraining PR. The UI status is conservatively `not verified` for
+source fidelity; numerical checks within the unaffected domain are *partial*.
+
 ## Existing independent analytical references
 
 - Roberts, Antimicrob Agents Chemother (2011) 55:2704-2709,
@@ -104,9 +121,13 @@ remains for research and education; no autonomous clinical dosing.
 - Revilla, Br J Clin Pharmacol (2010) 70:201-212,
   DOI 10.1111/j.1365-2125.2010.03679.x, final equations and Table 4:
   https://pmc.ncbi.nlm.nih.gov/articles/PMC2911550/
+- Goti, Ther Drug Monit (2018) 40:212-221,
+  DOI 10.1097/FTD.0000000000000490; independent parameter cross-check:
+  Antibiotics (2023) 12:301, Table 2, DOI 10.3390/antibiotics12020301.
 
 ### Exit gate for initial PR
 
-46 audit rows, precisely 2 partial source-equation records, exactly 0 full
-source reproductions, and 6 independent numerical scenarios passing CI.
+46 audit rows, precisely 3 partial source-equation records, exactly 0 full
+source reproductions, and 9 in-domain independent numerical scenarios passing CI.
+Two Goti boundary discrepancies are documented but not counted as passes.
 The pre-existing 8 regressions and model origin/hashes must not change.
