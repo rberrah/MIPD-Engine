@@ -47,6 +47,17 @@ jobs:
         run: Rscript tests/validate_library.R
       - name: Run deterministic model references
         run: Rscript tests/model_reference_cases.R
+      - name: Audit complete model-level scientific evidence register
+        run: python3 scripts/audit_scientific_evidence.py
+      - name: Reproduce independent source equations (published PK)
+        run: Rscript tests/source_equation_reproduction.R
+      - name: Publish scientific qualification report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: mipd-scientific-coverage
+          path: scientific-validation/coverage.generated.json
+          if-no-files-found: ignore
       - name: Test safe Lego contract
         run: Rscript tests/safe_lego_test.R
       - name: Test private workspace cleanup
@@ -57,7 +68,7 @@ jobs:
           set -euo pipefail
           for test in tests/*.R; do
             case "$(basename "$test")" in
-              validate_library.R|model_reference_cases.R|safe_lego_test.R|privacy_nonretention_test.R|pmetrics_backend_test.R|advanced_lego_test.R|lego_external_exports.R|lego_mlxtran_exports.R|lego_native_exports.R|covariates_native_test.R|input_labs_test.R|teaching_lab_test.R|workshop_pk_test.R)
+              validate_library.R|model_reference_cases.R|source_equation_reproduction.R|safe_lego_test.R|privacy_nonretention_test.R|pmetrics_backend_test.R|advanced_lego_test.R|lego_external_exports.R|lego_mlxtran_exports.R|lego_native_exports.R|covariates_native_test.R|input_labs_test.R|teaching_lab_test.R|workshop_pk_test.R)
                 continue
                 ;;
             esac
