@@ -1217,3 +1217,89 @@ h6 {
   .onco-shell .workspace .nav-tabs { flex-wrap: nowrap; overflow-x: auto; }
   .onco-shell .workspace .nav-link { white-space: nowrap; }
 }
+
+
+/* Evidence-first MIPD model catalogue: compact fields and native details. */
+.pk-model-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr));
+  gap: 16px;
+  margin-top: 20px;
+  align-items: start;
+}
+.pk-model-card {
+  min-width: 0;
+  border: 1px solid var(--line, #dce1e5);
+  border-radius: 10px;
+  background: var(--bs-body-bg, var(--paper, #fff));
+  color: var(--bs-body-color, #17202a);
+  padding: 18px;
+  overflow-wrap: anywhere;
+}
+.pk-model-card-heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+.pk-model-card-identity { display: grid; gap: 3px; min-width: 0; }
+.pk-model-card-drug { font-size: 1.05rem; line-height: 1.3; }
+.pk-model-card-author { font-size: .9rem; color: var(--muted, #68717a); }
+.pk-model-status {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  border: 1px solid var(--line, #dce1e5);
+  color: var(--bs-body-color, #17202a);
+  background: var(--bs-secondary-bg, #f4f5f6);
+  border-radius: 999px;
+  padding: 3px 9px;
+  font-size: .71rem;
+  font-weight: 650;
+  letter-spacing: .015em;
+  white-space: nowrap;
+}
+.pk-model-card-population {
+  margin: 14px 0 12px;
+  line-height: 1.5;
+  font-size: .9rem;
+}
+.pk-model-card-citation {
+  margin: 0;
+  color: var(--muted, #68717a);
+  font-size: .82rem;
+  line-height: 1.55;
+}
+.pk-model-card-citation a {
+  color: var(--bs-link-color, #176d73);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.pk-model-source-label { font-weight: 650; color: var(--bs-body-color, #17202a); }
+.pk-model-card-details {
+  margin-top: 15px;
+  padding-top: 11px;
+  border-top: 1px solid var(--line, #dce1e5);
+}
+.pk-model-card-details summary {
+  cursor: pointer;
+  font-weight: 650;
+  font-size: .83rem;
+  padding: 4px 0;
+}
+.pk-model-card-details summary:focus-visible {
+  outline: 2px solid var(--bs-focus-ring-color, #176d73);
+  outline-offset: 3px;
+}
+.pk-model-card-details p {
+  margin: 11px 0 1px;
+  font-size: .87rem;
+  line-height: 1.55;
+}
+.model-context .pk-model-card { margin: 0; }
+.pk-model-empty { padding: 20px 0; color: var(--muted); }
+@media (max-width: 650px) {
+  .pk-model-grid { grid-template-columns: minmax(0, 1fr); gap: 12px; }
+  .pk-model-card { padding: 14px; }
+  .pk-model-card-heading { flex-wrap: wrap; }
+}

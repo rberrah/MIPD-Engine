@@ -1,0 +1,29 @@
+name: Bibliographic DOI qualification
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  crossref-doi-audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.13'
+      - name: Resolve and check all 46 model DOIs
+        run: python scripts/verify_model_dois.py --strict
+      - name: Publish full bibliography audit
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: crossref-doi-audit
+          path: doi-audit-report.json
+          if-no-files-found: ignore

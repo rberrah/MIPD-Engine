@@ -21,6 +21,8 @@ jobs:
           python-version: "3.13"
       - name: Verify frozen PMx origin hashes
         run: python scripts/verify_origin_manifest.py
+      - name: Check model and ML DOI provenance consistency
+        run: python scripts/check_doi_consistency.py
       - name: Regenerate standalone model catalogue
         run: node scripts/generate_model_catalog.mjs
       - name: Regenerate model traceability

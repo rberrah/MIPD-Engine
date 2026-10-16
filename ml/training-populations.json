@@ -83,7 +83,7 @@
       }
     },
     "cefepime_seo": {
-      "source": "doi:10.3390/antibiotics12040659, Table 1",
+      "source": "doi:10.3947/ic.2022.0087, Table 1",
       "covariates": {
         "AGE": { "type": "uniform", "min": 62, "max": 76, "evidence": "reported IQR" },
         "WT": { "type": "uniform", "min": 54.4, "max": 65, "evidence": "reported IQR" },

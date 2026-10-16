@@ -68,6 +68,7 @@ target_value_label <- function(metric, row, lang = "fr") {
 
 APP_ROOT <- normalizePath(getwd(), winslash = "/", mustWork = TRUE)
 source(file.path(APP_ROOT, "R", "model_library.R"), local = TRUE)
+source(file.path(APP_ROOT, "R", "model_cards.R"), local = TRUE)
 source(file.path(APP_ROOT, "R", "private_workspace.R"), local = TRUE)
 source(file.path(APP_ROOT, "R", "i18n.R"), local = TRUE)
 source(file.path(APP_ROOT, "R", "clinical_presets.R"), local = TRUE)
@@ -579,6 +580,7 @@ ddi_panel <- function(lang = "fr") {
 
 app_ui <- function(request) {
   lang <- app_language_from_request(request)
+  t <- function(fr, en) app_t(lang, fr, en)
   query <- parseQueryString(tryCatch(request$QUERY_STRING, error = function(error) "") %||% "")
   initial_view <- if ((query$view %||% "") %in% c("ddi", "pd")) query$view else "analysis"
   model_choices <- catalog_choices_i18n(lang = lang, analysis_only = TRUE)
@@ -997,9 +999,12 @@ app_ui <- function(request) {
     value = "library",
     div(
       class = "plain-page",
-      h1("Bibliothèque de modèles"),
-      p("Chaque modèle est associé à l'article qui décrit ses paramètres et sa population. Toute nouvelle entrée est relue avant publication."),
-      DTOutput("catalog_table")
+      h1(t("Bibliothèque de modèles", "Model library")),
+      p(t("Modèles publiés et adaptations scientifiques. Les raisons des adaptations sont accessibles dans Détails.",
+          "Published models and scientific adaptations. Open Details to see why a model was adapted.")),
+      textInput("catalog_search", t("Rechercher une molécule, un auteur ou une population",
+                                     "Search by drug, author or population"), value = "", width = "100%"),
+      uiOutput("catalog_cards")
     )
   ),
   nav_panel(
@@ -1539,26 +1544,7 @@ server <- function(input, output, session) {
   shiny::outputOptions(output, "average_models_ui", suspendWhenHidden = FALSE)
 
   output$model_context_ui <- renderUI({
-    record <- model_record(current_model_id())
-    english <- identical(current_language(), "en")
-    tags_value <- if (english) record$populationTagsEn[[1]] %||% character() else record$populationTags[[1]] %||% character()
-    categories <- if (english) record$administrationCategoriesEn[[1]] else record$administrationCategories[[1]]
-    doi <- as.character(record$doi[[1]] %||% "")
-    drug <- if (english) record$drugEn[[1]] else record$drug[[1]]
-    population <- if (english) record$populationEn[[1]] else record$population[[1]]
-    div(
-      class = "model-context",
-      div(class = "model-context-head", tags$strong(record$model[[1]]), span(paste0(drug, " · ", paste(categories, collapse = " + ")))),
-      p(population),
-      div(class = "population-tags", lapply(tags_value, function(value) span(value))),
-      if (nzchar(doi) && !is.na(doi)) {
-        tags$a(paste0("DOI ", doi), href = paste0("https://doi.org/", doi), target = "_blank", rel = "noopener noreferrer")
-      },
-      div(class = "domain-reminder", tx(
-        "Vérifiez que le patient, la matrice et les covariables restent dans le domaine de l'article source.",
-        "Check that the patient, biological matrix, and covariates remain within the source article's domain."
-      ))
-    )
+    model_catalog_card(model_record(current_model_id()), english = identical(current_language(), "en"))
   })
   shiny::outputOptions(output, "model_context_ui", suspendWhenHidden = FALSE)
 
@@ -4116,26 +4102,12 @@ server <- function(input, output, session) {
     }
   )
 
-  output$catalog_table <- renderDT({
+  output$catalog_cards <- renderUI({
     english <- identical(current_language(), "en")
-    table <- MODEL_CATALOG[, c(if (english) "drugEn" else "drug", "model", if (english) "administrationCategoriesEn" else "administrationCategories", "citation", if (english) "populationEn" else "population", "doi", if (english) "modelTypeEn" else "modelType", if (english) "implementationStatusLabelEn" else "implementationStatusLabel", if (english) "analysisEligibilityLabelEn" else "analysisEligibilityLabel")]
-    administration_column <- if (english) "administrationCategoriesEn" else "administrationCategories"
-    table[[administration_column]] <- vapply(table[[administration_column]], function(values) paste(values, collapse = " + "), character(1))
-    has_doi <- !is.na(table$doi) & nzchar(table$doi)
-    table$doi <- ifelse(
-      has_doi,
-      paste0('<a href="https://doi.org/', table$doi, '" target="_blank" rel="noopener noreferrer">', table$doi, "</a>"),
-      tx("Source à confirmer", "Source to be confirmed")
-    )
-    datatable(
-      table,
-      rownames = FALSE,
-      filter = "top",
-      escape = FALSE,
-      options = list(pageLength = 20, scrollX = TRUE),
-      colnames = app_t(current_language(), c("Molécule", "Modèle", "Administration", "Article source", "Population de l'article", "DOI", "Type", "Implémentation", "Usage TDM"))
-    )
+    query <- input$catalog_search %||% ""
+    model_catalog_cards(MODEL_CATALOG, query = query, english = english)
   })
+
 }
 
 shinyApp(ui = app_ui, server = server)
