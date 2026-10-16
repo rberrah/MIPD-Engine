@@ -2,7 +2,7 @@ name: Bibliographic DOI qualification
 
 on:
   push:
-    branches: [fix/doi-audit-and-model-cards]
+    branches: [main]
   pull_request:
   workflow_dispatch:
 
