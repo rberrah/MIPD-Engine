@@ -51,7 +51,7 @@ jobs:
           set -euo pipefail
           for test in tests/*.R; do
             case "$(basename "$test")" in
-              validate_library.R|model_reference_cases.R|safe_lego_test.R|privacy_nonretention_test.R|pmetrics_backend_test.R|paired_benchmark_test.R)
+              validate_library.R|model_reference_cases.R|safe_lego_test.R|privacy_nonretention_test.R|pmetrics_backend_test.R|paired_benchmark_test.R|advanced_lego_test.R|lego_external_exports.R|lego_mlxtran_exports.R|lego_native_exports.R)
                 continue
                 ;;
             esac
