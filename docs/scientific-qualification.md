@@ -66,9 +66,9 @@ conservation, AUC = F*dose/CL for valid linear systems, expected changes
 in exposure with clearance. Never generate source reproduction oracles
 from the software under examination.
 
-### P1 — Address 34 adapted models
+### P1 — Review 35 models without confirmed source alignment
 
-The original publication may lack executable code or describe components
+These comprise 25 models with documented adaptations and 10 that remain\nnot verified at the source-fidelity level. The original publication may lack executable code or describe components
 not supported by the current engine (IOV, correlations, transit, NPAG
 nonparametric priors, DDI simplifications). Correct mismatches where source
 permits. Otherwise provide named, dated discrepancy and retain a
