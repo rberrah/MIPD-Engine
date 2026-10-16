@@ -126,6 +126,7 @@ def main():
         checked = check_entry(model, record, error)
         result.append(checked)
         print(f"[{i:02d}/46] {checked['status']:10s} {model['id']}  {doi}", flush=True)
+        print(f"    Crossref title: {checked['registeredTitle'] or '<unavailable>'}", flush=True)
         if checked["issues"]:
             print("   " + "; ".join(checked["issues"]), flush=True)
     counts = {s: sum(r["status"] == s for r in result)
