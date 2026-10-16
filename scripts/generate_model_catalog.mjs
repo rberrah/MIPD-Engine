@@ -111,7 +111,9 @@ const modelTypeEn = {
   'PopPK mécanistique adapté': 'Adapted mechanistic PopPK',
   'PopPK publié': 'Published PopPK',
   'PopPK publié adapté': 'Adapted published PopPK',
-  'Prior PK à vérifier': 'PK prior pending verification'
+  'Prior PK à vérifier': 'PK prior pending verification',
+  'Reconstruction déterministe NCA': 'Deterministic NCA reconstruction',
+  'Reconstruction déterministe de revue': 'Deterministic review-based reconstruction'
 };
 
 const administrationModeLabels = {
@@ -127,7 +129,8 @@ const additionallyAdaptedModels = new Set([
   'genta_rosario_clcr',
   'genta_rosario_clinical',
   'levo_gergs',
-  'linez_sasaki'
+  'linez_sasaki',
+  'rifampicine_marsot'
 ]);
 
 const drugKeys = Object.keys(drugLabels);
@@ -182,7 +185,7 @@ function administrationModes(routes, details, stem) {
 }
 
 function implementationStatus(details, stem) {
-  const adapted = additionallyAdaptedModels.has(stem) || /adapté|module/i.test(details.modelType);
+  const adapted = additionallyAdaptedModels.has(stem) || /adapté|module|reconstruction/i.test(details.modelType);
   return adapted
     ? { implementationStatus: 'ADAPTED', implementationStatusLabel: 'Adaptation documentée', implementationStatusLabelEn: 'Documented adaptation' }
     : { implementationStatus: 'ARTICLE', implementationStatusLabel: "Implémentation de l'article", implementationStatusLabelEn: 'Article implementation' };

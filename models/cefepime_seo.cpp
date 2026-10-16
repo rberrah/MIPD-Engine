@@ -24,11 +24,11 @@ CREAT : 70.0 : Créatinine Sérique (µmol/L)
 SEX   : 0.0  : Sexe (0 = Homme, 1 = Femme)
 
 $OMEGA @annotated @diagonal
-// Variances approximées par ln(CV^2 + 1)
-ETA_CL : 0.10757 : Variabilité Inter-Individuelle CL (CV 33.7%)
-ETA_V1 : 0.11000 : Variabilité Inter-Individuelle V1 (CV 34.1%)
-ETA_Q  : 0.22957 : Variabilité Inter-Individuelle Q (CV 50.8%)
-ETA_V2 : 0.14911 : Variabilité Inter-Individuelle V2 (CV 40.1%)
+// NONMEM variance = (reported omega percent / 100)^2
+ETA_CL : 0.113569 : Variabilité Inter-Individuelle CL (33.7%)
+ETA_V1 : 0.116281 : Variabilité Inter-Individuelle V1 (34.1%)
+ETA_Q  : 0.258064 : Variabilité Inter-Individuelle Q (50.8%)
+ETA_V2 : 0.160801 : Variabilité Inter-Individuelle V2 (40.1%)
 
 $SIGMA @annotated @diagonal
 PROP : 0.005806 : Erreur résiduelle proportionnelle (CV 7.62%)

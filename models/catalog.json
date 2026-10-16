@@ -96,9 +96,9 @@
         "Cardiologie",
         "Hors ICU non précisé"
       ],
-      "modelType": "Module PK déterministe",
+      "modelType": "PopPK publié adapté",
       "sourceStatus": "verified",
-      "note": "Module DDI simplifié; prior OMEGA/SIGMA d'ingénierie.",
+      "note": "Les CL/F, Q/F, V1/F, V2/F et IIV publiés sont conservés. Le modèle d'absorption et l'erreur résiduelle n'étant pas identifiés dans la source accessible, ka et SIGMA restent des hypothèses explicites de simulation ; pas d'usage MAP.",
       "verificationStatus": "SOFTWARE_TESTED",
       "validationStatus": "NONE",
       "contextOfUse": "TEACHING_RESEARCH",
@@ -109,8 +109,8 @@
         "Cardiology",
         "ICU status not specified"
       ],
-      "modelTypeEn": "Deterministic PK module",
-      "noteEn": "Simplified DDI module with an engineering OMEGA/SIGMA prior.",
+      "modelTypeEn": "Adapted published PopPK",
+      "noteEn": "Published CL/F, Q/F, V1/F, V2/F and IIV are retained. The accessible source does not identify the absorption or residual models, so ka and SIGMA remain explicit simulation assumptions; not for MAP use.",
       "routes": [
         "Oral"
       ],
@@ -133,7 +133,7 @@
       "tags": [
         "Amiodarone",
         "Pollak",
-        "Module PK déterministe",
+        "PopPK publié adapté",
         "Pollak PT et al. Clin Pharmacol Ther. 2000;67:642-652.",
         "10.1067/mcp.2000.107047",
         "Adults receiving long-term oral amiodarone for cardiac arrhythmia.",
@@ -942,7 +942,7 @@
       "validationStatus": "NONE",
       "contextOfUse": "TEACHING_RESEARCH",
       "analysisEligible": false,
-      "note": "Adaptation DDI : une fraction de clairance CYP3A de 0,50, calibrée sur une interaction clinique avec le voriconazole et non estimée dans le modèle Press, est ajoutée pour limiter les effets des inhibiteurs aux scénarios interactionnels.",
+      "note": "Les paramètres, l'allométrie, l'effet de la prednisolone sur ka et F et l'absence d'effet CYP3A5 suivent Press. L'IOV de F est omise. Une fraction de clairance CYP3A de 0,50, calibrée sur une interaction clinique avec le voriconazole et non estimée par Press, est ajoutée uniquement aux scénarios DDI.",
       "populationEn": "Adults in the early period after kidney transplantation.",
       "populationTagsEn": [
         "Adult",
@@ -950,7 +950,7 @@
         "Non-ICU"
       ],
       "modelTypeEn": "Adapted published PopPK",
-      "noteEn": "DDI adaptation: a CYP3A-dependent clearance fraction of 0.50, calibrated from a clinical voriconazole interaction rather than estimated in the Press model, is added to limit inhibitor effects to interaction scenarios.",
+      "noteEn": "Published weight scaling, prednisolone effects, IIV and residual error are retained. IOV on F is omitted; the CYP3A-dependent clearance fraction is an interaction-only adaptation.",
       "routes": [
         "Oral"
       ],
@@ -1012,9 +1012,9 @@
         "Volontaire sain",
         "Hors ICU"
       ],
-      "modelType": "Module de sensibilité déterministe",
+      "modelType": "Reconstruction déterministe NCA",
       "sourceStatus": "verified",
-      "note": "Validé uniquement comme module de sensibilité 50 mg; extrapolation à 150 mg non supportée.",
+      "note": "L'article décrit une PK non linéaire dose- et temps-dépendante sans modèle PopPK. Le module reprend uniquement CLss/F et Vz/F publiés à 50 mg ; ka est supposé. Il est limité à cette analyse de sensibilité et ne doit pas être extrapolé à 150 mg.",
       "verificationStatus": "SOFTWARE_TESTED",
       "validationStatus": "NONE",
       "contextOfUse": "TEACHING_RESEARCH",
@@ -1025,8 +1025,8 @@
         "Healthy volunteer",
         "Non-ICU"
       ],
-      "modelTypeEn": "Deterministic sensitivity module",
-      "noteEn": "Validated only as a 50 mg sensitivity module; extrapolation to 150 mg is unsupported.",
+      "modelTypeEn": "Deterministic NCA reconstruction",
+      "noteEn": "The source reports nonlinear dose- and time-dependent NCA results rather than a PopPK model. This sensitivity profile retains only the published 50 mg CLss/F and Vz/F; ka is assumed and extrapolation to 150 mg is unsupported.",
       "routes": [
         "Oral"
       ],
@@ -1049,7 +1049,7 @@
       "tags": [
         "Cobicistat",
         "Mathias",
-        "Module de sensibilité déterministe",
+        "Reconstruction déterministe NCA",
         "Mathias AA et al. Clin Pharmacol Ther. 2010;87:322-329.",
         "10.1038/clpt.2009.228",
         "Healthy adults enrolled in a dose-finding pharmacokinetic study.",
@@ -1241,9 +1241,9 @@
         "Volontaire sain",
         "Hors ICU"
       ],
-      "modelType": "Module PK déterministe",
+      "modelType": "Reconstruction déterministe NCA",
       "sourceStatus": "verified",
-      "note": "Module DDI simplifié; prior OMEGA/SIGMA d'ingénierie.",
+      "note": "Les moyennes publiées de CL, V et F pour 70 kg sont conservées dans une approximation terminale à un compartiment. La disposition IV publiée est biphasique et ka n'est pas fourni : ce module n'est donc pas un modèle PopPK de l'article.",
       "verificationStatus": "SOFTWARE_TESTED",
       "validationStatus": "NONE",
       "contextOfUse": "TEACHING_RESEARCH",
@@ -1254,8 +1254,8 @@
         "Healthy volunteer",
         "Non-ICU"
       ],
-      "modelTypeEn": "Deterministic PK module",
-      "noteEn": "Simplified DDI module with an engineering OMEGA/SIGMA prior.",
+      "modelTypeEn": "Deterministic NCA reconstruction",
+      "noteEn": "Published mean CL, V and F at 70 kg are retained in a one-compartment terminal-profile approximation. The reported IV disposition is biphasic and ka is unavailable, so this is not the article's PopPK model.",
       "routes": [
         "Oral"
       ],
@@ -1278,7 +1278,7 @@
       "tags": [
         "Diltiazem",
         "Hermann",
-        "Module PK déterministe",
+        "Reconstruction déterministe NCA",
         "Hermann P et al. Eur J Clin Pharmacol. 1983;24:349-352.",
         "10.1007/BF00610053",
         "Healthy adults after oral and intravenous diltiazem.",
@@ -1316,9 +1316,9 @@
         "Volontaire sain",
         "Hors ICU"
       ],
-      "modelType": "Module PK déterministe",
+      "modelType": "Reconstruction déterministe NCA",
       "sourceStatus": "verified",
-      "note": "Module DDI simplifié; prior OMEGA/SIGMA d'ingénierie.",
+      "note": "La source compare des biodisponibilités dépendantes de la formulation, du repas et de l'occasion après caractérisation IV individuelle ; elle ne fournit pas de modèle PopPK réutilisable. F=0,40 représente la base après repas ; CL, V et ka restent des hypothèses de simulation.",
       "verificationStatus": "SOFTWARE_TESTED",
       "validationStatus": "NONE",
       "contextOfUse": "TEACHING_RESEARCH",
@@ -1329,8 +1329,8 @@
         "Healthy volunteer",
         "Non-ICU"
       ],
-      "modelTypeEn": "Deterministic PK module",
-      "noteEn": "Simplified DDI module with an engineering OMEGA/SIGMA prior.",
+      "modelTypeEn": "Deterministic NCA reconstruction",
+      "noteEn": "The source reports formulation-, meal- and occasion-dependent bioavailability after individual IV characterization, not a reusable PopPK model. F=0.40 represents erythromycin base after meals; CL, V and ka are simulation assumptions.",
       "routes": [
         "Oral"
       ],
@@ -1353,7 +1353,7 @@
       "tags": [
         "Érythromycine",
         "Mather",
-        "Module PK déterministe",
+        "Reconstruction déterministe NCA",
         "Mather LE et al. Br J Clin Pharmacol. 1981;12:131-140.",
         "10.1111/j.1365-2125.1981.tb01191.x",
         "Healthy adults in oral absorption and bioavailability studies.",
@@ -1547,9 +1547,9 @@
         "Population mixte",
         "Hors ICU non précisé"
       ],
-      "modelType": "Module PK déterministe",
+      "modelType": "Reconstruction déterministe de revue",
       "sourceStatus": "verified",
-      "note": "Module fondé sur une revue; prior OMEGA/SIGMA d'ingénierie.",
+      "note": "La source est une revue et non un modèle PopPK. La clairance moyenne, la biodisponibilité et le volume déduit de la demi-vie publiée sont conservés ; ka et les effets aléatoires sont des hypothèses de simulation.",
       "verificationStatus": "SOFTWARE_TESTED",
       "validationStatus": "NONE",
       "contextOfUse": "TEACHING_RESEARCH",
@@ -1560,8 +1560,8 @@
         "Mixed population",
         "ICU status not specified"
       ],
-      "modelTypeEn": "Deterministic PK module",
-      "noteEn": "Review-based module with an engineering OMEGA/SIGMA prior.",
+      "modelTypeEn": "Deterministic review-based reconstruction",
+      "noteEn": "The source is a clinical PK review, not a PopPK model. Mean CL, F and the volume derived from the reported half-life are retained; ka and random effects are simulation assumptions.",
       "routes": [
         "Oral"
       ],
@@ -1584,7 +1584,7 @@
       "tags": [
         "Fluconazole",
         "Debruyne",
-        "Module PK déterministe",
+        "Reconstruction déterministe de revue",
         "Debruyne D, Ryckelynck JP. Clin Pharmacokinet. 1993;24:10-27.",
         "10.2165/00003088-199324010-00002",
         "Adults from the clinical pharmacokinetic studies summarized in the review.",
@@ -2005,7 +2005,7 @@
       ],
       "modelType": "PopPK publié adapté",
       "sourceStatus": "verified",
-      "note": "Absorption Weibull conservée; prior résiduel adapté pour mapbayr.",
+      "note": "Absorption Weibull, effet de la race sur CL, statut patient sur Vp, effet du BMI et IIV publiées conservés. La variance de CL du groupe patient est utilisée par défaut et les branches résiduelles patient/volontaire sain ne sont pas séparées. Simulation uniquement.",
       "verificationStatus": "SOFTWARE_TESTED",
       "validationStatus": "NONE",
       "contextOfUse": "TEACHING_RESEARCH",
@@ -2017,7 +2017,7 @@
         "Mixed population"
       ],
       "modelTypeEn": "Adapted published PopPK",
-      "noteEn": "Published Weibull absorption is retained; the residual prior is adapted for mapbayr.",
+      "noteEn": "Published Weibull absorption, race and patient-status effects, BMI effect and IIV are retained. Patient CL variance and one residual branch are used by default instead of separate study-specific branches; simulation only.",
       "routes": [
         "Oral"
       ],
@@ -2078,9 +2078,9 @@
         "Volontaire sain",
         "Hors ICU"
       ],
-      "modelType": "Module PK déterministe",
+      "modelType": "Reconstruction déterministe NCA",
       "sourceStatus": "verified",
-      "note": "Module DDI simplifié; prior OMEGA/SIGMA d'ingénierie.",
+      "note": "L'article rapporte des profils NCA d'interaction et aucun modèle PopPK réutilisable. Le module est une reconstruction moyenne arrondie pour simulation ; il ne reproduit pas un modèle publié et n'est pas un prior MAP.",
       "verificationStatus": "SOFTWARE_TESTED",
       "validationStatus": "NONE",
       "contextOfUse": "TEACHING_RESEARCH",
@@ -2091,8 +2091,8 @@
         "Healthy volunteer",
         "Non-ICU"
       ],
-      "modelTypeEn": "Deterministic PK module",
-      "noteEn": "Simplified DDI module with an engineering OMEGA/SIGMA prior.",
+      "modelTypeEn": "Deterministic NCA reconstruction",
+      "noteEn": "The cited study reports NCA interaction profiles and no reusable PopPK model. This entry is an explicitly rounded mean-profile reconstruction for simulation, not an article model or MAP prior.",
       "routes": [
         "Oral"
       ],
@@ -2115,7 +2115,7 @@
       "tags": [
         "Isavuconazole",
         "Groll",
-        "Module PK déterministe",
+        "Reconstruction déterministe NCA",
         "Groll AH et al. Clin Pharmacol Drug Dev. 2017;6:76-85.",
         "10.1002/cpdd.284",
         "Healthy adults enrolled in controlled drug-interaction studies.",
@@ -2462,27 +2462,27 @@
       "href": "/tdm/models/posaconazole_dolton_ddi.cpp",
       "citation": "Dolton MJ et al. Antimicrob Agents Chemother. 2014;58:6879-6885.",
       "doi": "10.1128/AAC.03777-14",
-      "population": "Adultes sains et patients adultes sous posaconazole en prophylaxie ou traitement.",
+      "population": "Adultes sains et patients adultes sous suspension orale de posaconazole en prophylaxie ou traitement.",
       "populationTags": [
         "Adulte",
         "Infection fongique",
         "Population mixte"
       ],
-      "modelType": "Module PK déterministe",
+      "modelType": "PopPK publié adapté",
       "sourceStatus": "verified",
-      "note": "Module DDI simplifié; prior OMEGA/SIGMA d'ingénierie.",
+      "note": "Structure, CL/F, V/F, ka, lag et covariables médicamenteuses et cliniques publiés conservés. La variabilité et l'erreur résiduelle du groupe patient sont utilisées par défaut au lieu des branches propres aux deux études. Simulation uniquement.",
       "verificationStatus": "SOFTWARE_TESTED",
       "validationStatus": "NONE",
       "contextOfUse": "TEACHING_RESEARCH",
       "analysisEligible": false,
-      "populationEn": "Healthy adults and adult patients receiving posaconazole for prophylaxis or treatment.",
+      "populationEn": "Healthy adults and adult patients receiving posaconazole suspension for prophylaxis or treatment.",
       "populationTagsEn": [
         "Adult",
         "Fungal infection",
         "Mixed population"
       ],
-      "modelTypeEn": "Deterministic PK module",
-      "noteEn": "Simplified DDI module with an engineering OMEGA/SIGMA prior.",
+      "modelTypeEn": "Adapted published PopPK",
+      "noteEn": "Published structure, CL/F, V/F, ka, lag and medication and clinical covariates are retained. Patient-study variability and residual error are used by default instead of separate study branches; simulation only.",
       "routes": [
         "Oral"
       ],
@@ -2505,10 +2505,10 @@
       "tags": [
         "Posaconazole",
         "Dolton",
-        "Module PK déterministe",
+        "PopPK publié adapté",
         "Dolton MJ et al. Antimicrob Agents Chemother. 2014;58:6879-6885.",
         "10.1128/AAC.03777-14",
-        "Healthy adults and adult patients receiving posaconazole for prophylaxis or treatment.",
+        "Healthy adults and adult patients receiving posaconazole suspension for prophylaxis or treatment.",
         "Oral",
         "ORAL",
         "Orale",
@@ -2772,27 +2772,27 @@
       "href": "/tdm/models/rifampicine_loos_ddi.cpp",
       "citation": "Loos U et al. Klin Wochenschr. 1985;63:1205-1211.",
       "doi": "10.1007/BF01733779",
-      "population": "Adultes sains après rifampicine orale et intraveineuse en administration chronique.",
+      "population": "Adultes atteints de tuberculose pulmonaire après rifampicine orale et intraveineuse en administration chronique.",
       "populationTags": [
         "Adulte",
-        "Volontaire sain",
+        "Tuberculose",
         "Hors ICU"
       ],
-      "modelType": "Module PK déterministe",
+      "modelType": "Reconstruction déterministe NCA",
       "sourceStatus": "verified",
-      "note": "Module DDI simplifié; prior OMEGA/SIGMA d'ingénierie.",
+      "note": "La clairance et la biodisponibilité chroniques publiées sont conservées. Le volume et ka ne sont pas fournis dans le résumé source accessible et restent des hypothèses explicites de forme de profil. Ce module n'est pas un prior PopPK.",
       "verificationStatus": "SOFTWARE_TESTED",
       "validationStatus": "NONE",
       "contextOfUse": "TEACHING_RESEARCH",
       "analysisEligible": false,
-      "populationEn": "Healthy adults after chronic oral and intravenous rifampicin.",
+      "populationEn": "Adults with pulmonary tuberculosis after chronic oral and intravenous rifampicin.",
       "populationTagsEn": [
         "Adult",
-        "Healthy volunteer",
+        "Tuberculosis",
         "Non-ICU"
       ],
-      "modelTypeEn": "Deterministic PK module",
-      "noteEn": "Simplified DDI module with an engineering OMEGA/SIGMA prior.",
+      "modelTypeEn": "Deterministic NCA reconstruction",
+      "noteEn": "Published chronic-dose clearance and bioavailability are retained. Volume and ka are unavailable in the accessible source summary and remain explicit profile-shape assumptions; this is not a PopPK prior.",
       "routes": [
         "Oral"
       ],
@@ -2815,10 +2815,10 @@
       "tags": [
         "Rifampicine",
         "Loos",
-        "Module PK déterministe",
+        "Reconstruction déterministe NCA",
         "Loos U et al. Klin Wochenschr. 1985;63:1205-1211.",
         "10.1007/BF01733779",
-        "Healthy adults after chronic oral and intravenous rifampicin.",
+        "Adults with pulmonary tuberculosis after chronic oral and intravenous rifampicin.",
         "Rifampicin",
         "Oral",
         "ORAL",
@@ -2828,10 +2828,10 @@
         "Simulation uniquement",
         "Simulation only",
         "Adulte",
-        "Volontaire sain",
+        "Tuberculose",
         "Hors ICU",
         "Adult",
-        "Healthy volunteer",
+        "Tuberculosis",
         "Non-ICU"
       ]
     },
@@ -2883,9 +2883,9 @@
       "administrationCategoriesEn": [
         "Oral"
       ],
-      "implementationStatus": "ARTICLE",
-      "implementationStatusLabel": "Implémentation de l'article",
-      "implementationStatusLabelEn": "Article implementation",
+      "implementationStatus": "ADAPTED",
+      "implementationStatusLabel": "Adaptation documentée",
+      "implementationStatusLabelEn": "Documented adaptation",
       "analysisEligibilityLabel": "Prior MAP fondé sur l'article",
       "analysisEligibilityLabelEn": "Article-based MAP prior",
       "tags": [
@@ -2899,8 +2899,8 @@
         "Oral",
         "ORAL",
         "Orale",
-        "Implémentation de l'article",
-        "Article implementation",
+        "Adaptation documentée",
+        "Documented adaptation",
         "Prior MAP fondé sur l'article",
         "Article-based MAP prior",
         "Adulte",
@@ -2930,9 +2930,9 @@
         "VIH",
         "Hors ICU"
       ],
-      "modelType": "Module PK déterministe",
+      "modelType": "PopPK publié adapté",
       "sourceStatus": "verified",
-      "note": "Module DDI simplifié; prior OMEGA/SIGMA d'ingénierie.",
+      "note": "Structure, paramètres, lag, effet du lopinavir et IIV publiés conservés. L'IOV de F, la covariance V-ka et le mélange de deux erreurs additives sont omis ; la composante résiduelle majoritaire est utilisée. Simulation uniquement.",
       "verificationStatus": "SOFTWARE_TESTED",
       "validationStatus": "NONE",
       "contextOfUse": "TEACHING_RESEARCH",
@@ -2943,8 +2943,8 @@
         "HIV",
         "Non-ICU"
       ],
-      "modelTypeEn": "Deterministic PK module",
-      "noteEn": "Simplified DDI module with an engineering OMEGA/SIGMA prior.",
+      "modelTypeEn": "Adapted published PopPK",
+      "noteEn": "Published structure, fixed effects, lag, lopinavir effect and IIV are retained. IOV on F, the V-ka covariance and the two-population residual mixture are omitted; the dominant residual component is used. Simulation only.",
       "routes": [
         "Oral"
       ],
@@ -2967,7 +2967,7 @@
       "tags": [
         "Ritonavir",
         "Kappelhoff",
-        "Module PK déterministe",
+        "PopPK publié adapté",
         "Kappelhoff BS et al. Br J Clin Pharmacol. 2005;59:174-182.",
         "10.1111/j.1365-2125.2004.02241.x",
         "Adults living with HIV-1 receiving ritonavir as a booster or antiviral.",
@@ -3074,9 +3074,10 @@
       "href": "/tdm/models/tacrolimus_kamp_envarsus_ddi.cpp",
       "citation": "Kamp J et al. Pharmaceutics. 2024;16:17.",
       "doi": "10.3390/pharmaceutics16010017",
-      "population": "Adultes transplantés rénaux recevant tacrolimus Envarsus.",
+      "population": "Adultes transplantés rénaux âgés de 65 ans ou plus recevant tacrolimus Envarsus.",
       "populationTags": [
         "Adulte",
+        "Sujet âgé",
         "Transplantation rénale",
         "Hors ICU"
       ],
@@ -3086,15 +3087,16 @@
       "validationStatus": "NONE",
       "contextOfUse": "TEACHING_RESEARCH",
       "analysisEligible": false,
-      "note": "Adaptation DDI : la PK de base conserve les paramètres Kamp, tandis que le découpage de clairance en fractions CYP3A4, CYP3A5 et non-CYP de 5 % est ajouté pour les scénarios interactionnels.",
-      "populationEn": "Adult kidney transplant recipients receiving Envarsus tacrolimus.",
+      "note": "Les paramètres, l'allométrie, le bloc CL-V1 et la classe d'absorption retardée proviennent de Kamp. La classe de lag est sélectionnable au lieu d'être tirée selon le mélange publié ; l'IOV de CL et le choix DBS/sang veineux ne sont pas représentés. Une fraction non-CYP de 5 % est ajoutée uniquement aux scénarios DDI et ne modifie pas la PK de base.",
+      "populationEn": "Kidney transplant recipients aged 65 years or older receiving Envarsus tacrolimus.",
       "populationTagsEn": [
         "Adult",
+        "Sujet âgé",
         "Kidney transplantation",
         "Non-ICU"
       ],
       "modelTypeEn": "Adapted published PopPK",
-      "noteEn": "DDI adaptation: baseline PK retains the Kamp parameters, while a clearance split into CYP3A4, CYP3A5 and a 5% non-CYP fraction is added for interaction scenarios.",
+      "noteEn": "Published fixed effects, weight allometry, correlated CL-V1 variability, KTR variability and lag class are retained. CL IOV and sample-specific residual switching are omitted; the clearance split is an interaction-only adaptation.",
       "routes": [
         "Oral"
       ],
@@ -3120,7 +3122,7 @@
         "PopPK publié adapté",
         "Kamp J et al. Pharmaceutics. 2024;16:17.",
         "10.3390/pharmaceutics16010017",
-        "Adult kidney transplant recipients receiving Envarsus tacrolimus.",
+        "Kidney transplant recipients aged 65 years or older receiving Envarsus tacrolimus.",
         "Oral",
         "ORAL",
         "Orale",
@@ -3129,6 +3131,7 @@
         "Simulation uniquement",
         "Simulation only",
         "Adulte",
+        "Sujet âgé",
         "Transplantation rénale",
         "Hors ICU",
         "Adult",

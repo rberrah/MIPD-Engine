@@ -95,7 +95,7 @@
       "source": "doi:10.1007/s00228-010-0810-9, source cohort",
       "covariates": {
         "WT": { "type": "uniform", "min": 49, "max": 140, "evidence": "reported range" },
-        "CYP": { "type": "fixed", "value": 0, "evidence": "CYP3A5 genotype was not retained in the published final model" }
+        "PREDNI": { "type": "bernoulli", "probability": 0.10, "evidence": "approximate proportion of early high-dose prednisolone occasions under the reported tapering schedule" }
       }
     },
     "dapto_dvorchik_IV_adults": {
@@ -191,9 +191,7 @@
     },
     "isavuconazole_groll_ddi": {
       "source": "doi:10.1002/cpdd.284, DDI study cohorts",
-      "covariates": {
-        "WT": { "type": "normal", "mean": 75.3, "sd": 14.5, "min": 45, "evidence": "reported cohort means and SDs, truncated at the study inclusion minimum" }
-      }
+      "covariates": {}
     },
     "levo_canoui": {
       "source": "Canoui et al., 2022, source cohort",
@@ -262,7 +260,8 @@
     "tacrolimus_kamp_envarsus_ddi": {
       "source": "doi:10.3390/pharmaceutics16010017, source cohort",
       "covariates": {
-        "CYP": { "type": "bernoulli", "probability": 0.235, "evidence": "8/34 CYP3A5 expressors" }
+        "WT": { "type": "uniform", "min": 68.1, "max": 84.5, "evidence": "reported IQR" },
+        "MIX_LAGGED_ABS": { "type": "bernoulli", "probability": 0.74, "evidence": "published mixture estimate: 26% without lag, therefore 74% with lag" }
       }
     },
     "tacrolimus_woillard_ddi": {

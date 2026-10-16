@@ -25,13 +25,13 @@ $CMT @annotated
 CENT   : Central Compartment (mg) [ADM, OBS]
 PERIPH : Peripheral Compartment (mg)
 $OMEGA @block @annotated
-IIV_CL  : 0.097719          : Variance on CL
-IIV_VC  : 0.137660 0.281483 : Covariance CL-VC / Variance on VC
+IIV_CL  : 0.102400          : Published omega CL, 0.32 squared
+IIV_VC  : 0.151392 0.324900 : Published CL-VC covariance / omega VC, 0.57 squared
 $OMEGA @annotated
-IIV_Q   : 0.361541 : Variance on Q
-IIV_VP  : 0.009950 : Variance on VP
+IIV_Q   : 0.435600 : Published omega Q, 0.66 squared
+IIV_VP  : 0.010000 : Published omega VP, 0.10 squared
 $SIGMA @annotated
-PROP : 0.014298 : Proportional error variance
+PROP : 0.014400 : Published proportional SD 0.12 squared
 ADD  : 0.000000 : Additive error variance
 $MAIN
 double wt_safe  = (WT  < 1.0)  ? 1.0  : WT;

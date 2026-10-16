@@ -17,7 +17,9 @@ TVTLAG   : 1.0   : Transit lag time (h)
 // --- EFFET DES COVARIABLES ---
 WTCL  : 0.75  : Allometric WT on CL
 WTV   : 1.0   : Allometric WT on V
-CYPCL : 1.3   : Ratio Genotype CYP3A5
+WTREF : 76.0  : Published reference body weight (kg)
+PREDNI_KA : 0.45 : Ka multiplier with prednisolone >= 20 mg/day
+PREDNI_F  : 0.78 : F multiplier with prednisolone >= 20 mg/day
 
 // Fraction of ciclosporine apparent oral clearance that CYP3A actually drives.
 // Ciclosporine is extensively CYP3A-metabolised in vitro, but the OBSERVED
@@ -39,12 +41,12 @@ ETA3:0:Ka
 // columns match a plain $PARAM entry. The perpetrator and mechanism parameters
 // are declared here too, because a perpetrator may bring a covariate of its own.
 $PARAM @annotated @covariates
-WT    : 70    : Poids (kg)
-CYP   : 0     : CYP3A5 Status (0=non-expr, 1=expr)
+WT    : 76    : Body weight (kg)
+PREDNI : 0    : Prednisolone >= 20 mg/day (0 = no, 1 = yes)
 
 
 $OMEGA 0.03 0.12 0.09
-$SIGMA 0.07 25.0
+$SIGMA 0.07 0.0
 
 $CMT @annotated
 DEPOT_CSA : CsA depot [ADM]
@@ -56,21 +58,20 @@ $MAIN
 // Initialisation des pools d'enzymes si necessaire
 
 // Calculs de base de la Ciclosporine
-double CL0 = TVCL_CSA * pow(WT/70.0, WTCL) * pow(CYPCL, CYP) * exp(ETA1 + ETA(1));
-double V1  = TVV1_CSA * pow(WT/70.0, WTV) * exp(ETA2 + ETA(2));
+double CL0 = TVCL_CSA * pow(WT/WTREF, WTCL) * exp(ETA1 + ETA(1));
+double V1  = TVV1_CSA * pow(WT/WTREF, WTV) * exp(ETA2 + ETA(2));
 double Q   = TVQ_CSA;
 double V2  = TVV2_CSA;
-double KA  = TVKA_CSA * exp(ETA3 + ETA(3));
+double KA  = TVKA_CSA * (PREDNI > 0.5 ? PREDNI_KA : 1.0) * exp(ETA3 + ETA(3));
 double KTR = 1.0 / TVTLAG;
 
-// Fractions metaboliques de la Ciclosporine. The CYP3A-dependent part is split
-// between CYP3A4 and CYP3A5 according to genotype; everything else is left
-// untouched by a CYP3A inhibitor, so the three fractions always sum to 1.
-double f3A5   = FM_CYP3A * ((CYPCL - 1.0) / CYPCL) * CYP;
-double f3A4   = FM_CYP3A - f3A5;
+// Interaction-only clearance split. Press et al. did not retain a CYP3A5
+// genotype effect, so baseline PK and this split do not depend on genotype.
+double f3A5   = 0.0;
+double f3A4   = FM_CYP3A;
 double fm_sys = 1.0 - FM_CYP3A;
 
-F_DEPOT_CSA = TVF_CSA;
+F_DEPOT_CSA = TVF_CSA * (PREDNI > 0.5 ? PREDNI_F : 1.0);
 
 
 $ODE

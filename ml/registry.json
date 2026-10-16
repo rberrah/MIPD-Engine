@@ -2405,13 +2405,13 @@
         "residualError": "Model SIGMA retained for sparse concentrations; OMEGA supplied through idata."
       },
       "baseModelId": "cefazoline_lanoiselee",
-      "baseModelSha256": "557304dd57f081e208bee6a74d26136c58631a18e9af99c893dd1c727cc784b8",
+      "baseModelSha256": "32bac1de8fbdacba44cbfbfda41505d7bef2e4ac1a4dd228396d2fdbd91a9fad",
       "artifactPath": "artifacts/cefazoline_lanoiselee-intermittent-c0-post-auc24-xgb-v4.rds",
-      "artifactSha256": "7b468e73dea9b7daab5c7e61889d394aee6101971bf5a724acbe182df896618e",
+      "artifactSha256": "8cd73ea31503b696dbf68e4bcde3a7ec84f75436873185e760ca7135ade055c6",
       "explanation": {
         "type": "dalex_break_down",
         "backgroundPath": "artifacts/cefazoline_lanoiselee-intermittent-c0-post-auc24-xgb-v4-dalex-background.rds",
-        "backgroundSha256": "f28aa0c3c30ec194e39af043a7e3efb43b718e88e83c7fc9bdac6efc4bae23ce",
+        "backgroundSha256": "5e46d5e9517124f285a4169784ef66f02420a61234271d0465df240a34470b24",
         "sampleSize": 200,
         "synthetic": true
       },
@@ -2505,7 +2505,7 @@
         "doi": "10.1016/j.phrs.2021.105578",
         "developmentGenerators": "cefazoline_lanoiselee",
         "developmentModelSha256": {
-          "cefazoline_lanoiselee": "557304dd57f081e208bee6a74d26136c58631a18e9af99c893dd1c727cc784b8"
+          "cefazoline_lanoiselee": "32bac1de8fbdacba44cbfbfda41505d7bef2e4ac1a4dd228396d2fdbd91a9fad"
         },
         "unseenValidationGenerators": [
           "cefazoline_cheng",
@@ -2534,6 +2534,11 @@
         "nTraining": 750,
         "nUntouchedHoldout": 250,
         "nUnseenPopPk": 500,
+        "split": {
+          "unit": "simulated_patient",
+          "method": "seeded_random_75_25_before_model_fitting",
+          "holdoutUntouched": true
+        },
         "hyperparameters": {
           "max_depth": 4,
           "eta": 0.03,
@@ -2546,27 +2551,22 @@
           "R": "R version 4.4.1 (2024-06-14 ucrt)",
           "mrgsolve": "1.7.2",
           "xgboost": "3.2.1.1"
-        },
-        "split": {
-          "unit": "simulated_patient",
-          "method": "seeded_random_75_25_before_model_fitting",
-          "holdoutUntouched": true
         }
       },
       "trainingDomain": {
         "auc24": {
-          "min": 17.8645,
-          "max": 4344.5025
+          "min": 24.5779,
+          "max": 4583.5527
         },
-        "concentrationMax": 227.2784,
+        "concentrationMax": 314.0984,
         "features": {
           "AGE": {
-            "min": 24.0542,
-            "max": 90.9724
+            "min": 24.2144,
+            "max": 90.9674
           },
           "POP_AUC24": {
-            "min": 32.3797,
-            "max": 2941.3099
+            "min": 32.6588,
+            "max": 2961.9832
           },
           "DOSE": {
             "min": 125,
@@ -2582,15 +2582,15 @@
           },
           "PREV_CONC": {
             "min": 0.001,
-            "max": 123.5105
+            "max": 125.726
           },
           "PREV_TIME": {
             "min": 6,
             "max": 24
           },
           "LAST_CONC": {
-            "min": 3.5438,
-            "max": 227.2784
+            "min": 3.1752,
+            "max": 314.0984
           },
           "LAST_TIME": {
             "min": 1.5,
@@ -2598,23 +2598,23 @@
           },
           "PREV_POP_CONC": {
             "min": 0.002,
-            "max": 56.0422
+            "max": 56.4066
           },
           "LAST_POP_CONC": {
-            "min": 5.3447,
-            "max": 166.1118
+            "min": 5.5132,
+            "max": 164.4765
           },
           "PREV_CONC_RATIO": {
-            "min": 0.0322,
-            "max": 16.8398
+            "min": 0.0261,
+            "max": 28.1905
           },
           "LAST_CONC_RATIO": {
-            "min": 0.4459,
-            "max": 2.2231
+            "min": 0.4817,
+            "max": 2.2386
           },
           "CONC_DIFF": {
-            "min": 1.9827,
-            "max": 202.9219
+            "min": 2.1519,
+            "max": 245.4793
           },
           "TIME_DIFF": {
             "min": 1.5,
@@ -2630,47 +2630,47 @@
           "requiresImprovementOverPopulationBaseline": true
         },
         "repeatedCv": {
-          "passed": true,
-          "relativeRmsePct": 14.8004,
-          "relativeBiasPct": -0.558,
-          "within20Pct": 92
+          "passed": false,
+          "relativeRmsePct": 15.613,
+          "relativeBiasPct": -0.4893,
+          "within20Pct": 91.4
         },
         "untouchedHoldout": {
           "passed": false,
-          "relativeRmsePct": 16.346,
-          "relativeBiasPct": -0.2087,
-          "within20Pct": 91.2
+          "relativeRmsePct": 16.6601,
+          "relativeBiasPct": -2.3692,
+          "within20Pct": 92.8
         },
         "alternatePopPk": {
           "passed": false,
-          "relativeRmsePct": 56.1166,
-          "relativeBiasPct": -25.5059,
-          "within20Pct": 43.4
+          "relativeRmsePct": 48.4612,
+          "relativeBiasPct": -21.1873,
+          "within20Pct": 48
         },
         "populationBaseline": {
           "repeatedCv": {
             "passed": false,
-            "relativeRmsePct": 40.5321,
-            "relativeBiasPct": -4.796,
-            "within20Pct": 49.4667
+            "relativeRmsePct": 44.3272,
+            "relativeBiasPct": -6.2121,
+            "within20Pct": 48
           },
           "untouchedHoldout": {
             "passed": false,
-            "relativeRmsePct": 44.5187,
-            "relativeBiasPct": -5.8668,
-            "within20Pct": 49.2
+            "relativeRmsePct": 47.6933,
+            "relativeBiasPct": -8.3922,
+            "within20Pct": 45.2
           },
           "alternatePopPk": {
             "passed": false,
-            "relativeRmsePct": 90.7391,
-            "relativeBiasPct": -52.908,
+            "relativeRmsePct": 85.846,
+            "relativeBiasPct": -50.7576,
             "within20Pct": 9
           }
         },
         "comparison": {
-          "repeatedCvRelativeRmseGainPct": 63.4847,
-          "untouchedHoldoutRelativeRmseGainPct": 63.2828,
-          "alternatePopPkRelativeRmseGainPct": 38.1562
+          "repeatedCvRelativeRmseGainPct": 64.7779,
+          "untouchedHoldoutRelativeRmseGainPct": 65.0684,
+          "alternatePopPkRelativeRmseGainPct": 43.5486
         },
         "samplingStrategies": {
           "c0Only": {
@@ -2684,21 +2684,21 @@
             },
             "repeatedCv": {
               "passed": false,
-              "relativeRmsePct": 22.0438,
-              "relativeBiasPct": -1.2733,
-              "within20Pct": 70.2
+              "relativeRmsePct": 21.9135,
+              "relativeBiasPct": -1.2529,
+              "within20Pct": 68.4667
             },
             "untouchedHoldout": {
               "passed": false,
-              "relativeRmsePct": 21.14,
-              "relativeBiasPct": -2.1686,
-              "within20Pct": 74.8
+              "relativeRmsePct": 25.2023,
+              "relativeBiasPct": -0.7917,
+              "within20Pct": 65.6
             },
             "alternatePopPk": {
               "passed": false,
-              "relativeRmsePct": 61.6305,
-              "relativeBiasPct": -27.0377,
-              "within20Pct": 37.2
+              "relativeRmsePct": 50.6531,
+              "relativeBiasPct": -20.6933,
+              "within20Pct": 40.8
             }
           },
           "c0PlusOneHourPostInfusion": {
@@ -2711,22 +2711,22 @@
               "residualError": "Model SIGMA retained for sparse concentrations; OMEGA supplied through idata."
             },
             "repeatedCv": {
-              "passed": true,
-              "relativeRmsePct": 14.8004,
-              "relativeBiasPct": -0.558,
-              "within20Pct": 92
+              "passed": false,
+              "relativeRmsePct": 15.613,
+              "relativeBiasPct": -0.4893,
+              "within20Pct": 91.4
             },
             "untouchedHoldout": {
               "passed": false,
-              "relativeRmsePct": 16.346,
-              "relativeBiasPct": -0.2087,
-              "within20Pct": 91.2
+              "relativeRmsePct": 16.6601,
+              "relativeBiasPct": -2.3692,
+              "within20Pct": 92.8
             },
             "alternatePopPk": {
               "passed": false,
-              "relativeRmsePct": 56.1166,
-              "relativeBiasPct": -25.5059,
-              "within20Pct": 43.4
+              "relativeRmsePct": 48.4612,
+              "relativeBiasPct": -21.1873,
+              "within20Pct": 48
             }
           }
         },
@@ -3104,13 +3104,13 @@
         "residualError": "Model SIGMA retained for sparse concentrations; OMEGA supplied through idata."
       },
       "baseModelId": "cefepime_an",
-      "baseModelSha256": "d473db4aa6730c2ad321de82b36b5ac889acf74cb344b9f01026829c315b8cd9",
+      "baseModelSha256": "79aad9ede8bbafc9ab7e8a9e6a3e55964e3b651b19b96aefa518321f696fed0f",
       "artifactPath": "artifacts/cefepime_an-intermittent-c0-post-auc24-xgb-v4.rds",
-      "artifactSha256": "c5813f842ffde061724f8fe02960dbb20b6cf0cc93611a036340629d6b7b2706",
+      "artifactSha256": "694f500c5246e74f36fe169954b8d92c4e2f8f3b4e8360eaea757c9e3ef658bf",
       "explanation": {
         "type": "dalex_break_down",
         "backgroundPath": "artifacts/cefepime_an-intermittent-c0-post-auc24-xgb-v4-dalex-background.rds",
-        "backgroundSha256": "d03efc39f7108935160cf22f2aaac8b7a085a712c2a8c40c861dc4331c4a603b",
+        "backgroundSha256": "06621c849821790b5338e37255d5a558435916bc592ad8623a70ac03b3659623",
         "sampleSize": 200,
         "synthetic": true
       },
@@ -3224,7 +3224,7 @@
         "doi": "10.1016/j.phrs.2021.105578",
         "developmentGenerators": "cefepime_an",
         "developmentModelSha256": {
-          "cefepime_an": "d473db4aa6730c2ad321de82b36b5ac889acf74cb344b9f01026829c315b8cd9"
+          "cefepime_an": "79aad9ede8bbafc9ab7e8a9e6a3e55964e3b651b19b96aefa518321f696fed0f"
         },
         "unseenValidationGenerators": [
           "cefepime_jonckheere",
@@ -3254,6 +3254,11 @@
         "nTraining": 750,
         "nUntouchedHoldout": 250,
         "nUnseenPopPk": 500,
+        "split": {
+          "unit": "simulated_patient",
+          "method": "seeded_random_75_25_before_model_fitting",
+          "holdoutUntouched": true
+        },
         "hyperparameters": {
           "max_depth": 4,
           "eta": 0.03,
@@ -3266,31 +3271,26 @@
           "R": "R version 4.4.1 (2024-06-14 ucrt)",
           "mrgsolve": "1.7.2",
           "xgboost": "3.2.1.1"
-        },
-        "split": {
-          "unit": "simulated_patient",
-          "method": "seeded_random_75_25_before_model_fitting",
-          "holdoutUntouched": true
         }
       },
       "trainingDomain": {
         "auc24": {
-          "min": 90.4103,
-          "max": 4385.1485
+          "min": 90.0187,
+          "max": 4352.6701
         },
-        "concentrationMax": 284.8992,
+        "concentrationMax": 238.1078,
         "features": {
           "AGE": {
-            "min": 52.0084,
-            "max": 71.9561
+            "min": 52.0482,
+            "max": 71.9889
           },
           "WT": {
-            "min": 70.0879,
-            "max": 109.9864
+            "min": 70.0844,
+            "max": 109.9849
           },
           "CREAT": {
-            "min": 44.5897,
-            "max": 206.6166
+            "min": 44.4481,
+            "max": 213.4307
           },
           "SEX": {
             "min": 0,
@@ -3301,8 +3301,8 @@
             "max": 1
           },
           "POP_AUC24": {
-            "min": 136.2981,
-            "max": 3310.9239
+            "min": 136.6506,
+            "max": 3400.5068
           },
           "DOSE": {
             "min": 500,
@@ -3318,7 +3318,7 @@
           },
           "PREV_CONC": {
             "min": 0.001,
-            "max": 170.0774
+            "max": 208.4625
           },
           "PREV_TIME": {
             "min": 8,
@@ -3326,31 +3326,31 @@
           },
           "LAST_CONC": {
             "min": 0.001,
-            "max": 284.8992
+            "max": 238.1078
           },
           "LAST_TIME": {
             "min": 1.5,
             "max": 5
           },
           "PREV_POP_CONC": {
-            "min": 0.2858,
-            "max": 99.3587
+            "min": 0.3179,
+            "max": 99.8908
           },
           "LAST_POP_CONC": {
-            "min": 15.6216,
-            "max": 171.6179
+            "min": 13.6326,
+            "max": 175.2294
           },
           "PREV_CONC_RATIO": {
             "min": 0.0001,
-            "max": 22.8448
+            "max": 26.3819
           },
           "LAST_CONC_RATIO": {
             "min": 0.0001,
-            "max": 2.5232
+            "max": 2.2278
           },
           "CONC_DIFF": {
-            "min": -58.6092,
-            "max": 226.3509
+            "min": -74.2235,
+            "max": 168.3097
           },
           "TIME_DIFF": {
             "min": 1.5,
@@ -3367,46 +3367,46 @@
         },
         "repeatedCv": {
           "passed": false,
-          "relativeRmsePct": 21.4208,
-          "relativeBiasPct": -1.2669,
-          "within20Pct": 68.2667
+          "relativeRmsePct": 21.458,
+          "relativeBiasPct": -1.6118,
+          "within20Pct": 68.1333
         },
         "untouchedHoldout": {
           "passed": false,
-          "relativeRmsePct": 20.6683,
-          "relativeBiasPct": -0.923,
-          "within20Pct": 67.6
+          "relativeRmsePct": 18.7349,
+          "relativeBiasPct": -0.4656,
+          "within20Pct": 70.8
         },
         "alternatePopPk": {
           "passed": false,
-          "relativeRmsePct": 67.3699,
-          "relativeBiasPct": 49.3376,
-          "within20Pct": 18.2
+          "relativeRmsePct": 61.0126,
+          "relativeBiasPct": 41.1918,
+          "within20Pct": 20.8
         },
         "populationBaseline": {
           "repeatedCv": {
             "passed": false,
-            "relativeRmsePct": 34.8962,
-            "relativeBiasPct": -4.0012,
-            "within20Pct": 47.4667
+            "relativeRmsePct": 35.2404,
+            "relativeBiasPct": -2.6655,
+            "within20Pct": 49.3333
           },
           "untouchedHoldout": {
             "passed": false,
-            "relativeRmsePct": 33.8286,
-            "relativeBiasPct": -4.2531,
-            "within20Pct": 49.2
+            "relativeRmsePct": 34.5593,
+            "relativeBiasPct": -5.4747,
+            "within20Pct": 53.6
           },
           "alternatePopPk": {
             "passed": false,
-            "relativeRmsePct": 139.0608,
-            "relativeBiasPct": 103.5749,
-            "within20Pct": 6.4
+            "relativeRmsePct": 129.8435,
+            "relativeBiasPct": 90.2797,
+            "within20Pct": 9
           }
         },
         "comparison": {
-          "repeatedCvRelativeRmseGainPct": 38.6156,
-          "untouchedHoldoutRelativeRmseGainPct": 38.9029,
-          "alternatePopPkRelativeRmseGainPct": 51.5537
+          "repeatedCvRelativeRmseGainPct": 39.1095,
+          "untouchedHoldoutRelativeRmseGainPct": 45.7891,
+          "alternatePopPkRelativeRmseGainPct": 53.0107
         },
         "samplingStrategies": {
           "c0Only": {
@@ -3420,21 +3420,21 @@
             },
             "repeatedCv": {
               "passed": false,
-              "relativeRmsePct": 25.0544,
-              "relativeBiasPct": -1.6686,
-              "within20Pct": 58.9333
+              "relativeRmsePct": 25.5946,
+              "relativeBiasPct": -1.9598,
+              "within20Pct": 58.7333
             },
             "untouchedHoldout": {
               "passed": false,
-              "relativeRmsePct": 22.8466,
-              "relativeBiasPct": -2.7769,
-              "within20Pct": 62
+              "relativeRmsePct": 24.0185,
+              "relativeBiasPct": -2.9529,
+              "within20Pct": 62.4
             },
             "alternatePopPk": {
               "passed": false,
-              "relativeRmsePct": 81.1735,
-              "relativeBiasPct": 63.2799,
-              "within20Pct": 12.8
+              "relativeRmsePct": 90.8762,
+              "relativeBiasPct": 64.7314,
+              "within20Pct": 14
             }
           },
           "c0PlusOneHourPostInfusion": {
@@ -3448,21 +3448,21 @@
             },
             "repeatedCv": {
               "passed": false,
-              "relativeRmsePct": 21.4208,
-              "relativeBiasPct": -1.2669,
-              "within20Pct": 68.2667
+              "relativeRmsePct": 21.458,
+              "relativeBiasPct": -1.6118,
+              "within20Pct": 68.1333
             },
             "untouchedHoldout": {
               "passed": false,
-              "relativeRmsePct": 20.6683,
-              "relativeBiasPct": -0.923,
-              "within20Pct": 67.6
+              "relativeRmsePct": 18.7349,
+              "relativeBiasPct": -0.4656,
+              "within20Pct": 70.8
             },
             "alternatePopPk": {
               "passed": false,
-              "relativeRmsePct": 67.3699,
-              "relativeBiasPct": 49.3376,
-              "within20Pct": 18.2
+              "relativeRmsePct": 61.0126,
+              "relativeBiasPct": 41.1918,
+              "within20Pct": 20.8
             }
           }
         },
@@ -3840,13 +3840,13 @@
         "residualError": "Model SIGMA retained for sparse concentrations; OMEGA supplied through idata."
       },
       "baseModelId": "cefepime_seo",
-      "baseModelSha256": "d265803dbe351ff7bfdd43ef9ede72d756ac45268aa5d8f98c328a6826043ccc",
+      "baseModelSha256": "e371dd0ebee48aa34fb434680cb8e74e2fdeee503375005f88499b8fdbe4f7e4",
       "artifactPath": "artifacts/cefepime_seo-intermittent-c0-post-auc24-xgb-v4.rds",
-      "artifactSha256": "4e20cc5b4e280b796a16a2071f05c28307b11e55a0358e9dce69e6c6c570f8f0",
+      "artifactSha256": "4fa9892cf397403e98f67d08586ab09cc95328a73d9b1e5b4a68d850948e2df5",
       "explanation": {
         "type": "dalex_break_down",
         "backgroundPath": "artifacts/cefepime_seo-intermittent-c0-post-auc24-xgb-v4-dalex-background.rds",
-        "backgroundSha256": "c5002f015c49c3484d32e166370f4855920199dcfd85ccf8f52ed82b6c4aa238",
+        "backgroundSha256": "ace7af5fa902a9627b8d4a1afc062decfd10fabd3b290e7280cdc9a7cad6c84b",
         "sampleSize": 200,
         "synthetic": true
       },
@@ -3955,21 +3955,13 @@
         "doi": "10.1016/j.phrs.2021.105578",
         "developmentGenerators": "cefepime_seo",
         "developmentModelSha256": {
-          "cefepime_seo": "d265803dbe351ff7bfdd43ef9ede72d756ac45268aa5d8f98c328a6826043ccc"
+          "cefepime_seo": "e371dd0ebee48aa34fb434680cb8e74e2fdeee503375005f88499b8fdbe4f7e4"
         },
-        "unseenValidationGenerators": [
-          "cefepime_an",
-          "cefepime_jonckheere"
-        ],
+        "unseenValidationGenerators": ["cefepime_an", "cefepime_jonckheere"],
         "regimenConfiguration": "ml/training-regimens.json",
         "populationConfiguration": "ml/training-populations.json",
         "sourcePopulation": "doi:10.3390/antibiotics12040659, Table 1",
-        "variedCovariates": [
-          "AGE",
-          "WT",
-          "CREAT",
-          "SEX"
-        ],
+        "variedCovariates": ["AGE", "WT", "CREAT", "SEX"],
         "referenceCovariates": [],
         "target": "log(individual AUC24 / population AUC24)",
         "acceptedAucRatio": {
@@ -3984,6 +3976,11 @@
         "nTraining": 750,
         "nUntouchedHoldout": 250,
         "nUnseenPopPk": 500,
+        "split": {
+          "unit": "simulated_patient",
+          "method": "seeded_random_75_25_before_model_fitting",
+          "holdoutUntouched": true
+        },
         "hyperparameters": {
           "max_depth": 4,
           "eta": 0.03,
@@ -3996,39 +3993,34 @@
           "R": "R version 4.4.1 (2024-06-14 ucrt)",
           "mrgsolve": "1.7.2",
           "xgboost": "3.2.1.1"
-        },
-        "split": {
-          "unit": "simulated_patient",
-          "method": "seeded_random_75_25_before_model_fitting",
-          "holdoutUntouched": true
         }
       },
       "trainingDomain": {
         "auc24": {
-          "min": 32.6094,
-          "max": 2312.0381
+          "min": 37.4302,
+          "max": 2161.0369
         },
-        "concentrationMax": 127.2765,
+        "concentrationMax": 112.6946,
         "features": {
           "AGE": {
-            "min": 62.0075,
-            "max": 75.9984
+            "min": 62.0059,
+            "max": 75.9876
           },
           "WT": {
-            "min": 54.433,
-            "max": 64.9963
+            "min": 54.4133,
+            "max": 64.9781
           },
           "CREAT": {
-            "min": 46.8629,
-            "max": 98.9906
+            "min": 46.8542,
+            "max": 98.9142
           },
           "SEX": {
             "min": 0,
             "max": 1
           },
           "POP_AUC24": {
-            "min": 59.771,
-            "max": 1352.4895
+            "min": 60.8514,
+            "max": 1369.7097
           },
           "DOSE": {
             "min": 500,
@@ -4044,39 +4036,39 @@
           },
           "PREV_CONC": {
             "min": 0.001,
-            "max": 68.8815
+            "max": 72.8973
           },
           "PREV_TIME": {
             "min": 8,
             "max": 24
           },
           "LAST_CONC": {
-            "min": 3.4038,
-            "max": 127.2765
+            "min": 3.1606,
+            "max": 112.6946
           },
           "LAST_TIME": {
             "min": 1.5,
             "max": 5
           },
           "PREV_POP_CONC": {
-            "min": 0.0263,
-            "max": 30.7339
+            "min": 0.0264,
+            "max": 35.5789
           },
           "LAST_POP_CONC": {
-            "min": 6.6962,
-            "max": 76.7944
+            "min": 6.74,
+            "max": 79.7128
           },
           "PREV_CONC_RATIO": {
-            "min": 0.0024,
-            "max": 44.4252
+            "min": 0.0011,
+            "max": 36.4488
           },
           "LAST_CONC_RATIO": {
-            "min": 0.4184,
-            "max": 2.0988
+            "min": 0.328,
+            "max": 2.303
           },
           "CONC_DIFF": {
-            "min": 2.3054,
-            "max": 92.8895
+            "min": 2.3025,
+            "max": 88.0741
           },
           "TIME_DIFF": {
             "min": 1.5,
@@ -4093,46 +4085,46 @@
         },
         "repeatedCv": {
           "passed": true,
-          "relativeRmsePct": 10.1072,
-          "relativeBiasPct": -0.1807,
-          "within20Pct": 97.9333
+          "relativeRmsePct": 9.5816,
+          "relativeBiasPct": -0.4181,
+          "within20Pct": 97.7333
         },
         "untouchedHoldout": {
           "passed": true,
-          "relativeRmsePct": 9.3537,
-          "relativeBiasPct": 0.2682,
-          "within20Pct": 98.4
+          "relativeRmsePct": 9.9469,
+          "relativeBiasPct": -1.551,
+          "within20Pct": 96.8
         },
         "alternatePopPk": {
           "passed": false,
-          "relativeRmsePct": 50.3084,
-          "relativeBiasPct": -24.7925,
-          "within20Pct": 38.4
+          "relativeRmsePct": 55.6564,
+          "relativeBiasPct": -26.5455,
+          "within20Pct": 42.8
         },
         "populationBaseline": {
           "repeatedCv": {
             "passed": false,
-            "relativeRmsePct": 40.7928,
-            "relativeBiasPct": -5.9001,
-            "within20Pct": 44.4
+            "relativeRmsePct": 39.4214,
+            "relativeBiasPct": -4.6633,
+            "within20Pct": 44.8
           },
           "untouchedHoldout": {
             "passed": false,
-            "relativeRmsePct": 41.1464,
-            "relativeBiasPct": -4.6055,
-            "within20Pct": 48
+            "relativeRmsePct": 37.1281,
+            "relativeBiasPct": -3.4841,
+            "within20Pct": 46.8
           },
           "alternatePopPk": {
             "passed": false,
-            "relativeRmsePct": 85.8558,
-            "relativeBiasPct": -50.0746,
-            "within20Pct": 17.8
+            "relativeRmsePct": 89.4146,
+            "relativeBiasPct": -51.2596,
+            "within20Pct": 17.2
           }
         },
         "comparison": {
-          "repeatedCvRelativeRmseGainPct": 75.223,
-          "untouchedHoldoutRelativeRmseGainPct": 77.2672,
-          "alternatePopPkRelativeRmseGainPct": 41.4036
+          "repeatedCvRelativeRmseGainPct": 75.6944,
+          "untouchedHoldoutRelativeRmseGainPct": 73.2094,
+          "alternatePopPkRelativeRmseGainPct": 37.7546
         },
         "samplingStrategies": {
           "c0Only": {
@@ -4146,21 +4138,21 @@
             },
             "repeatedCv": {
               "passed": false,
-              "relativeRmsePct": 16.3502,
-              "relativeBiasPct": -1.0209,
-              "within20Pct": 80.4667
+              "relativeRmsePct": 17.8377,
+              "relativeBiasPct": -0.9232,
+              "within20Pct": 75.3333
             },
             "untouchedHoldout": {
               "passed": false,
-              "relativeRmsePct": 17.0599,
-              "relativeBiasPct": 0.3519,
-              "within20Pct": 78
+              "relativeRmsePct": 14.388,
+              "relativeBiasPct": 0.3383,
+              "within20Pct": 79.2
             },
             "alternatePopPk": {
               "passed": false,
-              "relativeRmsePct": 55.124,
-              "relativeBiasPct": -28.3981,
-              "within20Pct": 37.4
+              "relativeRmsePct": 55.4179,
+              "relativeBiasPct": -26.3932,
+              "within20Pct": 43.8
             }
           },
           "c0PlusOneHourPostInfusion": {
@@ -4174,21 +4166,21 @@
             },
             "repeatedCv": {
               "passed": true,
-              "relativeRmsePct": 10.1072,
-              "relativeBiasPct": -0.1807,
-              "within20Pct": 97.9333
+              "relativeRmsePct": 9.5816,
+              "relativeBiasPct": -0.4181,
+              "within20Pct": 97.7333
             },
             "untouchedHoldout": {
               "passed": true,
-              "relativeRmsePct": 9.3537,
-              "relativeBiasPct": 0.2682,
-              "within20Pct": 98.4
+              "relativeRmsePct": 9.9469,
+              "relativeBiasPct": -1.551,
+              "within20Pct": 96.8
             },
             "alternatePopPk": {
               "passed": false,
-              "relativeRmsePct": 50.3084,
-              "relativeBiasPct": -24.7925,
-              "within20Pct": 38.4
+              "relativeRmsePct": 55.6564,
+              "relativeBiasPct": -26.5455,
+              "within20Pct": 42.8
             }
           }
         },
@@ -7662,7 +7654,7 @@
             "max": 2
           },
           "PREV_POP_CONC": {
-            "min": 0.0000028317,
+            "min": 2.8317e-06,
             "max": 23.7665
           },
           "LAST_POP_CONC": {

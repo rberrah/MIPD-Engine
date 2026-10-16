@@ -6,6 +6,7 @@ import { fileURLToPath } from 'node:url';
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const catalogFile = path.join(root, 'models', 'catalog.json');
 const sourceReviewFile = path.join(root, 'models', 'source-review.json');
+const pdfInventoryFile = path.join(root, 'models', 'pdf-inventory.json');
 const modelsDirectory = path.join(root, 'models');
 const outputFile = path.join(root, 'docs', 'tdm-model-traceability.md');
 const manifestFile = path.join(root, 'docs', 'tdm-model-traceability.json');
@@ -66,14 +67,40 @@ function articleStatus(model) {
 
 const catalog = JSON.parse(await fs.readFile(catalogFile, 'utf8'));
 const sourceReview = JSON.parse(await fs.readFile(sourceReviewFile, 'utf8'));
+const pdfInventory = JSON.parse(await fs.readFile(pdfInventoryFile, 'utf8'));
 const reviewedSources = new Map(sourceReview.reviewed.map((review) => [review.id, review]));
-const awaitingSources = new Set(sourceReview.awaitingFullText);
-const reviewIds = [...reviewedSources.keys(), ...awaitingSources];
+const reviewIds = [...reviewedSources.keys()];
 const catalogIds = catalog.models.map((model) => model.id);
 if (new Set(reviewIds).size !== reviewIds.length ||
     reviewIds.some((id) => !catalogIds.includes(id)) ||
     catalogIds.some((id) => !reviewIds.includes(id))) {
   throw new Error('Source-review coverage must contain every catalog model exactly once.');
+}
+for (const model of catalog.models) {
+  const review = reviewedSources.get(model.id);
+  const expectedStatus = review.result === 'ARTICLE_ALIGNED' ? 'ARTICLE' : 'ADAPTED';
+  if (model.implementationStatus !== expectedStatus) {
+    throw new Error(`Catalog/source-review status mismatch for ${model.id}: expected ${expectedStatus}.`);
+  }
+}
+const pdfClassifications = {
+  ACTIVE_MODEL_PRIMARY_SOURCE: 'activeModelPrimarySources',
+  DUPLICATE_PRIMARY_SOURCE: 'duplicatePrimarySources',
+  SECONDARY_REVIEW: 'secondaryReviews',
+  APPLICATION_CONTEXT: 'applicationContext',
+  BACKGROUND_OR_NONCATALOG_SOURCE: 'backgroundOrNoncatalogSources'
+};
+const countedPdfs = Object.fromEntries(Object.values(pdfClassifications).map((key) => [key, 0]));
+for (const document of pdfInventory.documents) {
+  const countKey = pdfClassifications[document.classification];
+  if (!countKey) throw new Error(`Unknown PDF classification: ${document.classification}`);
+  countedPdfs[countKey] += 1;
+  const unknownModels = document.models.filter((id) => !catalogIds.includes(id));
+  if (unknownModels.length) throw new Error(`PDF inventory references unknown models: ${unknownModels.join(', ')}`);
+}
+if (pdfInventory.documents.length !== pdfInventory.counts.documents ||
+    Object.entries(countedPdfs).some(([key, value]) => pdfInventory.counts[key] !== value)) {
+  throw new Error('PDF inventory counts do not match its documents.');
 }
 const records = await Promise.all(catalog.models.map(async (model) => {
   const code = await fs.readFile(path.join(modelsDirectory, model.file), 'utf8');
@@ -101,6 +128,8 @@ const records = await Promise.all(catalog.models.map(async (model) => {
 const articleCount = records.filter(({ model }) => model.implementationStatus === 'ARTICLE').length;
 const adaptedCount = records.length - articleCount;
 const mapCount = records.filter(({ model }) => model.analysisEligible).length;
+const fullTextCount = [...reviewedSources.values()].filter((review) => review.fullTextReviewed).length;
+const limitedEvidenceCount = reviewedSources.size - fullTextCount;
 
 const lines = [
   '# TDM model source-to-implementation traceability',
@@ -114,7 +143,7 @@ const lines = [
   '3. **Scientific reproduction:** comparison with source equations, source software or published reference outputs; this remains pending unless explicitly documented.',
   '',
   `Current catalog: **${records.length} models** (${articleCount} labelled article implementations, ${adaptedCount} documented adaptations; ${mapCount} exposed as MAP priors). **${referenceCases.size} models** currently have deterministic numeric reference profiles.`,
-  `Primary full text has been checked for **${reviewedSources.size}/${records.length} models**; **${awaitingSources.size}** still require the primary full text. This author-led source audit is not independent reproduction.`,
+  `Every model has a recorded source comparison. Primary full text has been checked for **${fullTextCount}/${records.length} models**; **${limitedEvidenceCount}** older or paywalled sources currently have an abstract-level comparison, explicitly identified below. This author-led source audit is not independent reproduction.`,
   '',
   'Population text and administration route define the currently encoded validity context. Numerical age, weight, renal-function and dose ranges are not yet structured for every article; absence of a range below must not be interpreted as permission to extrapolate.',
   '',
@@ -127,7 +156,8 @@ const lines = [
 for (const { model } of records) {
   const source = `[${escapeCell(model.citation)}](https://doi.org/${model.doi})`;
   const route = `${model.routes.join(' + ')} / ${model.administrationModes.join(', ')}`;
-  const sourceStatus = reviewedSources.get(model.id)?.result ?? 'FULL_TEXT_REQUIRED';
+  const sourceFinding = reviewedSources.get(model.id);
+  const sourceStatus = `${sourceFinding.result} / ${sourceFinding.evidence}`;
   lines.push(`| \`${model.id}\` | ${source} | ${sourceStatus} | ${escapeCell(route)} | ${model.timeUnit}; ${model.concentrationUnit} | ${model.implementationStatus} | ${model.analysisEligible ? 'Yes' : 'No'} | ${referenceCases.has(model.id) ? 'Deterministic regression' : 'Compile + contract'} |`);
 }
 
@@ -148,7 +178,7 @@ for (const { model, parameters, covariates, etaUses, epsUses } of records) {
     `- **Random and residual effects used by the equations:** ${etaUses.length ? `ETA indices ${etaUses.join(', ')}` : 'no indexed ETA use'}; ${epsUses.length ? `EPS indices ${epsUses.join(', ')}` : 'no indexed EPS use'}. OMEGA/SIGMA details remain authoritative in [the model source](../models/${model.file}).`,
     `- **MAP prior:** ${model.analysisEligible ? 'exposed in the TDM analysis workflow' : 'not exposed; simulation only'}.`,
     `- **Fidelity status:** ${articleStatus(model)}`,
-    `- **Primary full-text review:** ${sourceFinding ? `${sourceFinding.result} (${sourceReview.reviewDate}). ${sourceFinding.note}` : 'FULL_TEXT_REQUIRED; equation-level comparison has not been completed.'}`,
+    `- **Primary-source review:** ${sourceFinding.result} (${sourceFinding.evidence}, ${sourceReview.reviewDate}). ${sourceFinding.note}`,
     `- **Documented modification or limitation:** ${note}`,
     `- **Reference testing:** ${reference ? `${reference}; zero ETA and residual errors; deterministic software-regression tolerance \`1e-7\`.` : 'compilation and interface-contract test only; no frozen numeric profile yet.'}`,
     ''
@@ -159,7 +189,7 @@ const output = `${lines.join('\n')}\n`;
 const previous = await fs.readFile(outputFile, 'utf8').catch(() => '');
 const manifest = {
   version: 1,
-  generatedFrom: ['models/catalog.json', 'models/source-review.json', 'models/*.cpp'],
+  generatedFrom: ['models/catalog.json', 'models/source-review.json', 'models/pdf-inventory.json', 'models/*.cpp'],
   models: records.map(({ model, parameters, covariates, etaUses, epsUses, compartments, differentialEquations, outputs, omega, sigma, sourceSha256 }) => ({
     id: model.id,
     sourceFile: model.file,
@@ -168,9 +198,13 @@ const manifest = {
       citation: model.citation,
       doi: model.doi,
       status: model.sourceStatus ?? 'primary',
-      fullTextReview: reviewedSources.has(model.id)
-        ? { status: 'reviewed', date: sourceReview.reviewDate, result: reviewedSources.get(model.id).result, note: reviewedSources.get(model.id).note }
-        : { status: 'required' }
+      fullTextReview: {
+        status: reviewedSources.get(model.id).fullTextReviewed ? 'full-text-reviewed' : 'limited-evidence-reviewed',
+        evidence: reviewedSources.get(model.id).evidence,
+        date: sourceReview.reviewDate,
+        result: reviewedSources.get(model.id).result,
+        note: reviewedSources.get(model.id).note
+      }
     },
     population: { description: model.population, tags: model.populationTags ?? [] },
     administration: { routes: model.routes, modes: model.administrationModes, timeUnit: model.timeUnit, concentrationUnit: model.concentrationUnit },

@@ -3,6 +3,7 @@
   "generatedFrom": [
     "models/catalog.json",
     "models/source-review.json",
+    "models/pdf-inventory.json",
     "models/*.cpp"
   ],
   "models": [
@@ -15,7 +16,8 @@
         "doi": "10.1007/s00228-014-1766-y",
         "status": "verified",
         "fullTextReview": {
-          "status": "reviewed",
+          "status": "full-text-reviewed",
+          "evidence": "LOCAL_PRIMARY_FULL_TEXT",
           "date": "2026-10-16",
           "result": "DOCUMENTED_ADAPTATION_CONFIRMED",
           "note": "The executable file represents the base model from Table 2, not the final covariate model. It remains simulation-only."
@@ -100,13 +102,17 @@
     {
       "id": "amiodarone_pollak_ddi",
       "sourceFile": "amiodarone_pollak_ddi.cpp",
-      "sourceSha256": "c5a286748d4f2a758d8f75c4e1a3ed577233538141003ccd312f4970a558c132",
+      "sourceSha256": "84e994c198b2f8c6060e8a5cd48e5cad32984b3bf7f2fe5e0c05e9849bfb8ece",
       "primarySource": {
         "citation": "Pollak PT et al. Clin Pharmacol Ther. 2000;67:642-652.",
         "doi": "10.1067/mcp.2000.107047",
         "status": "verified",
         "fullTextReview": {
-          "status": "required"
+          "status": "limited-evidence-reviewed",
+          "evidence": "PRIMARY_ABSTRACT_ONLY",
+          "date": "2026-10-16",
+          "result": "DOCUMENTED_ADAPTATION_CONFIRMED",
+          "note": "Published CL/F, Q/F, V1/F, V2/F and reported IIV replace the previous mismatched values. Absorption and residual terms remain explicit simulation assumptions pending the full model specification."
         }
       },
       "population": {
@@ -135,12 +141,14 @@
         ],
         "differentialEquations": [
           "dxdt_GUT = -TVKA * GUT;",
-          "dxdt_CENT = TVKA * GUT * TVF - ((CL + Q) / V1) * CENT + (Q / V2) * PERI;",
-          "dxdt_PERI = (Q / V1) * CENT - (Q / V2) * PERI;"
+          "dxdt_CENT = TVKA * GUT - ((CL + Q) / TVV1) * CENT + (Q / V2) * PERI;",
+          "dxdt_PERI = (Q / TVV1) * CENT - (Q / V2) * PERI;"
         ],
         "outputs": [
           "DV",
-          "CL"
+          "CL",
+          "Q",
+          "V2"
         ]
       },
       "parameters": [
@@ -148,27 +156,29 @@
         "TVV1",
         "TVQ",
         "TVV2",
-        "TVKA",
-        "TVF"
+        "TVKA"
       ],
       "covariates": [],
       "interindividualVariability": {
         "etaIndices": [
-          1
+          1,
+          2,
+          3
         ],
         "omega": [
-          "@annotated\nIIV_CL : 0.09 : Engineering prior variance on clearance"
+          "@annotated\nIIV_CL : 0.091755 : log(1 + 0.31^2)\nIIV_Q  : 0.272423 : log(1 + 0.56^2)\nIIV_V2 : 0.289783 : log(1 + 0.58^2)"
         ]
       },
       "residualError": {
         "epsIndices": [
-          1
+          1,
+          2
         ],
         "sigma": [
-          "@annotated\nPROP : 0.04 : Engineering prior proportional residual variance\nADD  : 0.0  : Additive residual variance fixed to zero"
+          "@annotated\nPROP : 0.04 : Engineering residual variance; not reported in the accessible source\nADD  : 0.0 : Additive residual variance fixed to zero"
         ]
       },
-      "pmxAdaptations": "Module DDI simplifié; prior OMEGA/SIGMA d'ingénierie.",
+      "pmxAdaptations": "Les CL/F, Q/F, V1/F, V2/F et IIV publiés sont conservés. Le modèle d'absorption et l'erreur résiduelle n'étant pas identifiés dans la source accessible, ka et SIGMA restent des hypothèses explicites de simulation ; pas d'usage MAP.",
       "implementationStatus": "ADAPTED",
       "softwareContractStatus": "SOFTWARE_TESTED",
       "numericalCheckStatus": "not-checked",
@@ -177,7 +187,7 @@
         "eligible": false,
         "status": "Simulation uniquement"
       },
-      "limitations": "Module DDI simplifié; prior OMEGA/SIGMA d'ingénierie."
+      "limitations": "Les CL/F, Q/F, V1/F, V2/F et IIV publiés sont conservés. Le modèle d'absorption et l'erreur résiduelle n'étant pas identifiés dans la source accessible, ka et SIGMA restent des hypothèses explicites de simulation ; pas d'usage MAP."
     },
     {
       "id": "amox_carlier",
@@ -188,7 +198,8 @@
         "doi": "10.1093/jac/dkt240",
         "status": "verified",
         "fullTextReview": {
-          "status": "reviewed",
+          "status": "full-text-reviewed",
+          "evidence": "LOCAL_PRIMARY_FULL_TEXT",
           "date": "2026-10-16",
           "result": "ARTICLE_ALIGNED",
           "note": "Two-compartment structure, creatinine-clearance effect, variability and proportional residual error align with the article. The zero additive variance only satisfies the two-term engine contract."
@@ -337,7 +348,11 @@
         "doi": "10.1128/AAC.00505-18",
         "status": "verified",
         "fullTextReview": {
-          "status": "required"
+          "status": "full-text-reviewed",
+          "evidence": "OPEN_PRIMARY_FULL_TEXT",
+          "date": "2026-10-16",
+          "result": "DOCUMENTED_ADAPTATION_CONFIRMED",
+          "note": "Published fixed effects and the renal and weight relationships are retained. The printed clearance relationship requires an explicit centered implementation choice, and only CL IIV is represented; simulation only."
         }
       },
       "population": {
@@ -497,7 +512,8 @@
         "doi": "10.1093/jac/dkaa368",
         "status": "verified",
         "fullTextReview": {
-          "status": "reviewed",
+          "status": "full-text-reviewed",
+          "evidence": "LOCAL_PRIMARY_FULL_TEXT",
           "date": "2026-10-16",
           "result": "DOCUMENTED_ADAPTATION_CONFIRMED",
           "note": "Fixed and random-effect values align with Table 2; the oral transit chain remains a reconstruction because executable transit equations are absent from the main article."
@@ -695,7 +711,8 @@
         "doi": "10.1093/jac/dkaa232",
         "status": "verified",
         "fullTextReview": {
-          "status": "reviewed",
+          "status": "full-text-reviewed",
+          "evidence": "LOCAL_PRIMARY_FULL_TEXT",
           "date": "2026-10-16",
           "result": "DOCUMENTED_ADAPTATION_CONFIRMED",
           "note": "The source NPAG model is nonparametric; the log-normal OMEGA prior is an explicit mapbayr approximation."
@@ -866,7 +883,8 @@
         "doi": "10.1016/j.accpm.2025.101653",
         "status": "verified",
         "fullTextReview": {
-          "status": "reviewed",
+          "status": "full-text-reviewed",
+          "evidence": "LOCAL_PRIMARY_FULL_TEXT",
           "date": "2026-10-16",
           "result": "DOCUMENTED_ADAPTATION_CONFIRMED",
           "note": "The final unbound-concentration equations, including the published Q exponent 0.78, are retained. Published occasion variability is omitted."
@@ -995,13 +1013,17 @@
     {
       "id": "cefazoline_lanoiselee",
       "sourceFile": "cefazoline_lanoiselee.cpp",
-      "sourceSha256": "557304dd57f081e208bee6a74d26136c58631a18e9af99c893dd1c727cc784b8",
+      "sourceSha256": "32bac1de8fbdacba44cbfbfda41505d7bef2e4ac1a4dd228396d2fdbd91a9fad",
       "primarySource": {
         "citation": "Lanoiselée J et al. Sci Rep. 2021;11:19763.",
         "doi": "10.1038/s41598-021-99162-7",
         "status": "verified",
         "fullTextReview": {
-          "status": "required"
+          "status": "full-text-reviewed",
+          "evidence": "OPEN_PRIMARY_FULL_TEXT",
+          "date": "2026-10-16",
+          "result": "ARTICLE_ALIGNED",
+          "note": "Two-compartment structure, CKD-EPI effect, correlated CL-Vc block, Q/Vp variability and proportional residual error now use the published Monolix omega scale."
         }
       },
       "population": {
@@ -1105,8 +1127,8 @@
           4
         ],
         "omega": [
-          "@block @annotated\nIIV_CL  : 0.097719          : Variance on CL\nIIV_VC  : 0.137660 0.281483 : Covariance CL-VC / Variance on VC",
-          "@annotated\nIIV_Q   : 0.361541 : Variance on Q\nIIV_VP  : 0.009950 : Variance on VP"
+          "@block @annotated\nIIV_CL  : 0.102400          : Published omega CL, 0.32 squared\nIIV_VC  : 0.151392 0.324900 : Published CL-VC covariance / omega VC, 0.57 squared",
+          "@annotated\nIIV_Q   : 0.435600 : Published omega Q, 0.66 squared\nIIV_VP  : 0.010000 : Published omega VP, 0.10 squared"
         ]
       },
       "residualError": {
@@ -1115,7 +1137,7 @@
           2
         ],
         "sigma": [
-          "@annotated\nPROP : 0.014298 : Proportional error variance\nADD  : 0.000000 : Additive error variance"
+          "@annotated\nPROP : 0.014400 : Published proportional SD 0.12 squared\nADD  : 0.000000 : Additive error variance"
         ]
       },
       "pmxAdaptations": "No PMx adaptation documented.",
@@ -1138,7 +1160,11 @@
         "doi": "10.1128/AAC.00082-15",
         "status": "verified",
         "fullTextReview": {
-          "status": "required"
+          "status": "full-text-reviewed",
+          "evidence": "OPEN_PRIMARY_FULL_TEXT",
+          "date": "2026-10-16",
+          "result": "DOCUMENTED_ADAPTATION_CONFIRMED",
+          "note": "Published CL and V1 inter-occasion effects are omitted and the combined1 residual SD is represented by the engine's combined2 error. The model remains simulation-only."
         }
       },
       "population": {
@@ -1263,13 +1289,17 @@
     {
       "id": "cefepime_an",
       "sourceFile": "cefepime_an.cpp",
-      "sourceSha256": "d473db4aa6730c2ad321de82b36b5ac889acf74cb344b9f01026829c315b8cd9",
+      "sourceSha256": "79aad9ede8bbafc9ab7e8a9e6a3e55964e3b651b19b96aefa518321f696fed0f",
       "primarySource": {
         "citation": "An G et al. J Antimicrob Chemother. 2023;78:1460-1470.",
         "doi": "10.1093/jac/dkad106",
         "status": "verified",
         "fullTextReview": {
-          "status": "required"
+          "status": "full-text-reviewed",
+          "evidence": "OPEN_PRIMARY_FULL_TEXT",
+          "date": "2026-10-16",
+          "result": "ARTICLE_ALIGNED",
+          "note": "Renal, CRRT and nonrenal clearance components, volumes, IIV and combined residual error align with the final model; NONMEM omega percentages are encoded as squared SDs."
         }
       },
       "population": {
@@ -1371,7 +1401,7 @@
           3
         ],
         "omega": [
-          "@annotated @diagonal\n// Variances approximées par ln(CV^2 + 1)\nETA_CLT : 0.08563 : IIV Clairance Totale (CV 29.9%)\nETA_VC  : 0.35608 : IIV Volume Central (CV 65.4%)\nETA_VP  : 0.02949 : IIV Volume Périphérique (CV 17.3%)"
+          "@annotated @diagonal\n// NONMEM variance = (reported omega percent / 100)^2\nETA_CLT : 0.089401 : IIV Clairance Totale (29.9%)\nETA_VC  : 0.427716 : IIV Volume Central (65.4%)\nETA_VP  : 0.029929 : IIV Volume Périphérique (17.3%)"
         ]
       },
       "residualError": {
@@ -1403,10 +1433,11 @@
         "doi": "10.1093/jac/dkw171",
         "status": "verified",
         "fullTextReview": {
-          "status": "reviewed",
+          "status": "full-text-reviewed",
+          "evidence": "LOCAL_PRIMARY_FULL_TEXT",
           "date": "2026-10-16",
           "result": "ARTICLE_ALIGNED",
-          "note": "Structure, dialysis branch, fixed effects and log-normal variance conversion align with the publication."
+          "note": "Structure, dialysis branch, fixed effects and random-effect scale align with the publication."
         }
       },
       "population": {
@@ -1544,13 +1575,17 @@
     {
       "id": "cefepime_seo",
       "sourceFile": "cefepime_seo.cpp",
-      "sourceSha256": "d265803dbe351ff7bfdd43ef9ede72d756ac45268aa5d8f98c328a6826043ccc",
+      "sourceSha256": "e371dd0ebee48aa34fb434680cb8e74e2fdeee503375005f88499b8fdbe4f7e4",
       "primarySource": {
         "citation": "Seo H et al. Infect Chemother. 2023;55:29-41.",
         "doi": "10.3947/ic.2022.0087",
         "status": "verified",
         "fullTextReview": {
-          "status": "required"
+          "status": "full-text-reviewed",
+          "evidence": "OPEN_PRIMARY_FULL_TEXT",
+          "date": "2026-10-16",
+          "result": "ARTICLE_ALIGNED",
+          "note": "Structure, Cockcroft-Gault effect, fixed effects, IIV and proportional residual error align with Table 2; NONMEM omega percentages are encoded as squared SDs."
         }
       },
       "population": {
@@ -1636,7 +1671,7 @@
           4
         ],
         "omega": [
-          "@annotated @diagonal\n// Variances approximées par ln(CV^2 + 1)\nETA_CL : 0.10757 : Variabilité Inter-Individuelle CL (CV 33.7%)\nETA_V1 : 0.11000 : Variabilité Inter-Individuelle V1 (CV 34.1%)\nETA_Q  : 0.22957 : Variabilité Inter-Individuelle Q (CV 50.8%)\nETA_V2 : 0.14911 : Variabilité Inter-Individuelle V2 (CV 40.1%)"
+          "@annotated @diagonal\n// NONMEM variance = (reported omega percent / 100)^2\nETA_CL : 0.113569 : Variabilité Inter-Individuelle CL (33.7%)\nETA_V1 : 0.116281 : Variabilité Inter-Individuelle V1 (34.1%)\nETA_Q  : 0.258064 : Variabilité Inter-Individuelle Q (50.8%)\nETA_V2 : 0.160801 : Variabilité Inter-Individuelle V2 (40.1%)"
         ]
       },
       "residualError": {
@@ -1662,13 +1697,17 @@
     {
       "id": "ciclosporine_press_ddi",
       "sourceFile": "ciclosporine_press_ddi.cpp",
-      "sourceSha256": "a01bad72087e909d7d48d112ee7f6b8b115adad482d899480f3f84cfc78ea919",
+      "sourceSha256": "47123e3662ae75d34e5b341755e10dfd369a26f51cead1404d64b42d19ac2534",
       "primarySource": {
         "citation": "Press RR et al. Eur J Clin Pharmacol. 2010;66:579-590.",
         "doi": "10.1007/s00228-010-0810-9",
         "status": "verified",
         "fullTextReview": {
-          "status": "required"
+          "status": "full-text-reviewed",
+          "evidence": "OPEN_PRIMARY_FULL_TEXT",
+          "date": "2026-10-16",
+          "result": "DOCUMENTED_ADAPTATION_CONFIRMED",
+          "note": "Published weight scaling, prednisolone effects, IIV and residual model are retained and the unsupported CYP3A5 baseline effect was removed. IOV on F is omitted; the CYP3A fraction is an interaction-only adaptation."
         }
       },
       "population": {
@@ -1721,12 +1760,14 @@
         "TVTLAG",
         "WTCL",
         "WTV",
-        "CYPCL",
+        "WTREF",
+        "PREDNI_KA",
+        "PREDNI_F",
         "FM_CYP3A"
       ],
       "covariates": [
         "WT",
-        "CYP"
+        "PREDNI"
       ],
       "interindividualVariability": {
         "etaIndices": [
@@ -1744,10 +1785,10 @@
           2
         ],
         "sigma": [
-          "0.07 25.0"
+          "0.07 0.0"
         ]
       },
-      "pmxAdaptations": "Adaptation DDI : une fraction de clairance CYP3A de 0,50, calibrée sur une interaction clinique avec le voriconazole et non estimée dans le modèle Press, est ajoutée pour limiter les effets des inhibiteurs aux scénarios interactionnels.",
+      "pmxAdaptations": "Les paramètres, l'allométrie, l'effet de la prednisolone sur ka et F et l'absence d'effet CYP3A5 suivent Press. L'IOV de F est omise. Une fraction de clairance CYP3A de 0,50, calibrée sur une interaction clinique avec le voriconazole et non estimée par Press, est ajoutée uniquement aux scénarios DDI.",
       "implementationStatus": "ADAPTED",
       "softwareContractStatus": "SOFTWARE_TESTED",
       "numericalCheckStatus": "not-checked",
@@ -1756,18 +1797,22 @@
         "eligible": false,
         "status": "Simulation uniquement"
       },
-      "limitations": "Adaptation DDI : une fraction de clairance CYP3A de 0,50, calibrée sur une interaction clinique avec le voriconazole et non estimée dans le modèle Press, est ajoutée pour limiter les effets des inhibiteurs aux scénarios interactionnels."
+      "limitations": "Les paramètres, l'allométrie, l'effet de la prednisolone sur ka et F et l'absence d'effet CYP3A5 suivent Press. L'IOV de F est omise. Une fraction de clairance CYP3A de 0,50, calibrée sur une interaction clinique avec le voriconazole et non estimée par Press, est ajoutée uniquement aux scénarios DDI."
     },
     {
       "id": "cobicistat_mathias_ddi",
       "sourceFile": "cobicistat_mathias_ddi.cpp",
-      "sourceSha256": "e8d8ff1a81dcf01a1185ed3e75224556fdb460068fc1983848fc9c240f3570a1",
+      "sourceSha256": "3e1b93430fbb4426ecb39f7ad9c81862070bfaeebec2d32cf2a364615ebeba21",
       "primarySource": {
         "citation": "Mathias AA et al. Clin Pharmacol Ther. 2010;87:322-329.",
         "doi": "10.1038/clpt.2009.228",
         "status": "verified",
         "fullTextReview": {
-          "status": "required"
+          "status": "limited-evidence-reviewed",
+          "evidence": "PRIMARY_ABSTRACT_PLUS_SECONDARY_FULL_TEXT",
+          "date": "2026-10-16",
+          "result": "DOCUMENTED_ADAPTATION_CONFIRMED",
+          "note": "The source is a nonlinear dose-ranging NCA study, not a PopPK model. The module is now explicitly limited to the published 50 mg steady-state CL/F and Vz/F; ka and random effects are assumptions."
         }
       },
       "population": {
@@ -1794,8 +1839,8 @@
           "CENT"
         ],
         "differentialEquations": [
-          "dxdt_GUT = -TVKA * GUT;",
-          "dxdt_CENT = TVKA * GUT * TVF - (CL / V) * CENT;"
+          "dxdt_GUT = -KA * GUT;",
+          "dxdt_CENT = KA * GUT * F - (CL / V) * CENT;"
         ],
         "outputs": [
           "DV",
@@ -1819,13 +1864,14 @@
       },
       "residualError": {
         "epsIndices": [
-          1
+          1,
+          2
         ],
         "sigma": [
-          "@annotated\nPROP : 0.04 : Engineering prior proportional residual variance\nADD  : 0.0  : Additive residual variance fixed to zero"
+          "@annotated\nPROP : 0.04 : Engineering prior proportional residual variance\nADD  : 0 : Additive residual variance fixed to zero"
         ]
       },
-      "pmxAdaptations": "Validé uniquement comme module de sensibilité 50 mg; extrapolation à 150 mg non supportée.",
+      "pmxAdaptations": "L'article décrit une PK non linéaire dose- et temps-dépendante sans modèle PopPK. Le module reprend uniquement CLss/F et Vz/F publiés à 50 mg ; ka est supposé. Il est limité à cette analyse de sensibilité et ne doit pas être extrapolé à 150 mg.",
       "implementationStatus": "ADAPTED",
       "softwareContractStatus": "SOFTWARE_TESTED",
       "numericalCheckStatus": "not-checked",
@@ -1834,7 +1880,7 @@
         "eligible": false,
         "status": "Simulation uniquement"
       },
-      "limitations": "Validé uniquement comme module de sensibilité 50 mg; extrapolation à 150 mg non supportée."
+      "limitations": "L'article décrit une PK non linéaire dose- et temps-dépendante sans modèle PopPK. Le module reprend uniquement CLss/F et Vz/F publiés à 50 mg ; ka est supposé. Il est limité à cette analyse de sensibilité et ne doit pas être extrapolé à 150 mg."
     },
     {
       "id": "dapto_dvorchik_IV_adults",
@@ -1845,7 +1891,8 @@
         "doi": "10.1128/AAC.48.8.2799-2807.2004",
         "status": "verified",
         "fullTextReview": {
-          "status": "reviewed",
+          "status": "full-text-reviewed",
+          "evidence": "LOCAL_PRIMARY_FULL_TEXT",
           "date": "2026-10-16",
           "result": "ARTICLE_ALIGNED",
           "note": "The two-compartment equations, dialysis, sex and infection effects and LC-MS/MS residual error align with the publication."
@@ -1951,7 +1998,8 @@
         "doi": "10.1093/jac/dkab006",
         "status": "verified",
         "fullTextReview": {
-          "status": "reviewed",
+          "status": "full-text-reviewed",
+          "evidence": "LOCAL_PRIMARY_FULL_TEXT",
           "date": "2026-10-16",
           "result": "DOCUMENTED_ADAPTATION_CONFIRMED",
           "note": "Published fixed effects and between-subject variability are retained; inter-occasion variability on CL and V1 is omitted."
@@ -2079,13 +2127,17 @@
     {
       "id": "diltiazem_hermann_ddi",
       "sourceFile": "diltiazem_hermann_ddi.cpp",
-      "sourceSha256": "b665d76436410db04dc0fe92571382e73442341a5529c0cbf51c6cf4f6cd0214",
+      "sourceSha256": "e00b325c9de41c1c709964a6f0c5fb40cf11f7d3b39850d2be0879ccb23ede91",
       "primarySource": {
         "citation": "Hermann P et al. Eur J Clin Pharmacol. 1983;24:349-352.",
         "doi": "10.1007/BF00610053",
         "status": "verified",
         "fullTextReview": {
-          "status": "required"
+          "status": "limited-evidence-reviewed",
+          "evidence": "PRIMARY_ABSTRACT_ONLY",
+          "date": "2026-10-16",
+          "result": "DOCUMENTED_ADAPTATION_CONFIRMED",
+          "note": "The source reports biphasic IV disposition and summary NCA values rather than a reusable PopPK model. The executable profile now uses the published 70 kg mean CL, V and F in a documented one-compartment approximation; ka is assumed."
         }
       },
       "population": {
@@ -2112,8 +2164,8 @@
           "CENT"
         ],
         "differentialEquations": [
-          "dxdt_GUT = -TVKA * GUT;",
-          "dxdt_CENT = TVKA * GUT * TVF - (CL / V) * CENT;"
+          "dxdt_GUT = -KA * GUT;",
+          "dxdt_CENT = KA * GUT * F - (CL / V) * CENT;"
         ],
         "outputs": [
           "DV",
@@ -2137,13 +2189,14 @@
       },
       "residualError": {
         "epsIndices": [
-          1
+          1,
+          2
         ],
         "sigma": [
-          "@annotated\nPROP : 0.04 : Engineering prior proportional residual variance\nADD  : 0.0  : Additive residual variance fixed to zero"
+          "@annotated\nPROP : 0.04 : Engineering prior proportional residual variance\nADD  : 0 : Additive residual variance fixed to zero"
         ]
       },
-      "pmxAdaptations": "Module DDI simplifié; prior OMEGA/SIGMA d'ingénierie.",
+      "pmxAdaptations": "Les moyennes publiées de CL, V et F pour 70 kg sont conservées dans une approximation terminale à un compartiment. La disposition IV publiée est biphasique et ka n'est pas fourni : ce module n'est donc pas un modèle PopPK de l'article.",
       "implementationStatus": "ADAPTED",
       "softwareContractStatus": "SOFTWARE_TESTED",
       "numericalCheckStatus": "not-checked",
@@ -2152,18 +2205,22 @@
         "eligible": false,
         "status": "Simulation uniquement"
       },
-      "limitations": "Module DDI simplifié; prior OMEGA/SIGMA d'ingénierie."
+      "limitations": "Les moyennes publiées de CL, V et F pour 70 kg sont conservées dans une approximation terminale à un compartiment. La disposition IV publiée est biphasique et ka n'est pas fourni : ce module n'est donc pas un modèle PopPK de l'article."
     },
     {
       "id": "erythromycine_mather_ddi",
       "sourceFile": "erythromycine_mather_ddi.cpp",
-      "sourceSha256": "e8c125318b992e2d9cddf57d66105e94b43b981430d1cc2dd548d6efce84fa16",
+      "sourceSha256": "682779359a7e8bca437e4c757102f54dcfd1c35beff0830597a76750fbca727a",
       "primarySource": {
         "citation": "Mather LE et al. Br J Clin Pharmacol. 1981;12:131-140.",
         "doi": "10.1111/j.1365-2125.1981.tb01191.x",
         "status": "verified",
         "fullTextReview": {
-          "status": "required"
+          "status": "full-text-reviewed",
+          "evidence": "OPEN_PRIMARY_FULL_TEXT",
+          "date": "2026-10-16",
+          "result": "DOCUMENTED_ADAPTATION_CONFIRMED",
+          "note": "The source reports formulation-, meal- and occasion-dependent bioavailability after individual IV characterization, not a reusable PopPK model. F=0.40 represents base after meals; CL, V and ka are declared assumptions."
         }
       },
       "population": {
@@ -2190,8 +2247,8 @@
           "CENT"
         ],
         "differentialEquations": [
-          "dxdt_GUT = -TVKA * GUT;",
-          "dxdt_CENT = TVKA * GUT * TVF - (CL / V) * CENT;"
+          "dxdt_GUT = -KA * GUT;",
+          "dxdt_CENT = KA * GUT * F - (CL / V) * CENT;"
         ],
         "outputs": [
           "DV",
@@ -2215,13 +2272,14 @@
       },
       "residualError": {
         "epsIndices": [
-          1
+          1,
+          2
         ],
         "sigma": [
-          "@annotated\nPROP : 0.04 : Engineering prior proportional residual variance\nADD  : 0.0  : Additive residual variance fixed to zero"
+          "@annotated\nPROP : 0.04 : Engineering prior proportional residual variance\nADD  : 0 : Additive residual variance fixed to zero"
         ]
       },
-      "pmxAdaptations": "Module DDI simplifié; prior OMEGA/SIGMA d'ingénierie.",
+      "pmxAdaptations": "La source compare des biodisponibilités dépendantes de la formulation, du repas et de l'occasion après caractérisation IV individuelle ; elle ne fournit pas de modèle PopPK réutilisable. F=0,40 représente la base après repas ; CL, V et ka restent des hypothèses de simulation.",
       "implementationStatus": "ADAPTED",
       "softwareContractStatus": "SOFTWARE_TESTED",
       "numericalCheckStatus": "not-checked",
@@ -2230,7 +2288,7 @@
         "eligible": false,
         "status": "Simulation uniquement"
       },
-      "limitations": "Module DDI simplifié; prior OMEGA/SIGMA d'ingénierie."
+      "limitations": "La source compare des biodisponibilités dépendantes de la formulation, du repas et de l'occasion après caractérisation IV individuelle ; elle ne fournit pas de modèle PopPK réutilisable. F=0,40 représente la base après repas ; CL, V et ka restent des hypothèses de simulation."
     },
     {
       "id": "everolimus_moes_ddi",
@@ -2241,7 +2299,11 @@
         "doi": "10.2165/11599710-000000000-00000",
         "status": "verified",
         "fullTextReview": {
-          "status": "required"
+          "status": "limited-evidence-reviewed",
+          "evidence": "PRIMARY_ABSTRACT_PLUS_SECONDARY_FULL_TEXT",
+          "date": "2026-10-16",
+          "result": "DOCUMENTED_ADAPTATION_CONFIRMED",
+          "note": "Published fixed effects and reported IIV are retained. The TDM-induced dose-clearance association is deliberately omitted, pragmatic Q/V2 variances are added and the CYP3A split is interaction-only."
         }
       },
       "population": {
@@ -2337,7 +2399,11 @@
         "doi": "10.1111/bcp.13591",
         "status": "verified",
         "fullTextReview": {
-          "status": "required"
+          "status": "full-text-reviewed",
+          "evidence": "OPEN_PRIMARY_FULL_TEXT",
+          "date": "2026-10-16",
+          "result": "DOCUMENTED_ADAPTATION_CONFIRMED",
+          "note": "The mechanistic structure and published parameters are retained. Liver volume is approximated, MAT IOV is represented as IIV and the non-CYP fraction is interaction-only."
         }
       },
       "population": {
@@ -2447,13 +2513,17 @@
     {
       "id": "fluconazole_debruyne_ddi",
       "sourceFile": "fluconazole_debruyne_ddi.cpp",
-      "sourceSha256": "f3f7702ec0ccc1822dfbd12ed89f6eeefe19d84415d629f9825f105b3383cb7d",
+      "sourceSha256": "90234bc42aee6dac4409f1b0146a568a0758c4a31f2120d6f77ab7ea5f333916",
       "primarySource": {
         "citation": "Debruyne D, Ryckelynck JP. Clin Pharmacokinet. 1993;24:10-27.",
         "doi": "10.2165/00003088-199324010-00002",
         "status": "verified",
         "fullTextReview": {
-          "status": "required"
+          "status": "limited-evidence-reviewed",
+          "evidence": "PRIMARY_ABSTRACT_ONLY",
+          "date": "2026-10-16",
+          "result": "DOCUMENTED_ADAPTATION_CONFIRMED",
+          "note": "The cited source is a clinical PK review, not a PopPK model. Published mean CL, F and half-life-derived V are used; ka and random effects are documented simulation assumptions."
         }
       },
       "population": {
@@ -2480,8 +2550,8 @@
           "CENT"
         ],
         "differentialEquations": [
-          "dxdt_GUT = -TVKA * GUT;",
-          "dxdt_CENT = TVKA * GUT * TVF - (CL / V) * CENT;"
+          "dxdt_GUT = -KA * GUT;",
+          "dxdt_CENT = KA * GUT * F - (CL / V) * CENT;"
         ],
         "outputs": [
           "DV",
@@ -2505,13 +2575,14 @@
       },
       "residualError": {
         "epsIndices": [
-          1
+          1,
+          2
         ],
         "sigma": [
-          "@annotated\nPROP : 0.04 : Engineering prior proportional residual variance\nADD  : 0.0  : Additive residual variance fixed to zero"
+          "@annotated\nPROP : 0.04 : Engineering prior proportional residual variance\nADD  : 0 : Additive residual variance fixed to zero"
         ]
       },
-      "pmxAdaptations": "Module fondé sur une revue; prior OMEGA/SIGMA d'ingénierie.",
+      "pmxAdaptations": "La source est une revue et non un modèle PopPK. La clairance moyenne, la biodisponibilité et le volume déduit de la demi-vie publiée sont conservés ; ka et les effets aléatoires sont des hypothèses de simulation.",
       "implementationStatus": "ADAPTED",
       "softwareContractStatus": "SOFTWARE_TESTED",
       "numericalCheckStatus": "not-checked",
@@ -2520,7 +2591,7 @@
         "eligible": false,
         "status": "Simulation uniquement"
       },
-      "limitations": "Module fondé sur une revue; prior OMEGA/SIGMA d'ingénierie."
+      "limitations": "La source est une revue et non un modèle PopPK. La clairance moyenne, la biodisponibilité et le volume déduit de la demi-vie publiée sont conservés ; ka et les effets aléatoires sont des hypothèses de simulation."
     },
     {
       "id": "genta_franck",
@@ -2531,7 +2602,8 @@
         "doi": "10.1007/s00228-020-02867-3",
         "status": "verified",
         "fullTextReview": {
-          "status": "reviewed",
+          "status": "full-text-reviewed",
+          "evidence": "LOCAL_PRIMARY_FULL_TEXT",
           "date": "2026-10-16",
           "result": "DOCUMENTED_ADAPTATION_CONFIRMED",
           "note": "The publication is ambiguous about lean versus total body weight for V; the engine's total-weight choice is documented."
@@ -2627,7 +2699,8 @@
         "doi": "10.1371/journal.pone.0177324",
         "status": "verified",
         "fullTextReview": {
-          "status": "reviewed",
+          "status": "full-text-reviewed",
+          "evidence": "LOCAL_PRIMARY_FULL_TEXT",
           "date": "2026-10-16",
           "result": "DOCUMENTED_ADAPTATION_CONFIRMED",
           "note": "The article does not provide the exact corrected lean-body-mass and Cockcroft-Gault variants; the implemented choices are documented."
@@ -2718,7 +2791,8 @@
         "doi": "10.1016/j.ijantimicag.2016.10.022",
         "status": "verified",
         "fullTextReview": {
-          "status": "reviewed",
+          "status": "full-text-reviewed",
+          "evidence": "LOCAL_PRIMARY_FULL_TEXT",
           "date": "2026-10-16",
           "result": "DOCUMENTED_ADAPTATION_CONFIRMED",
           "note": "Cockcroft-Gault substitution, albumin bounds and unreported Q/V2 allometric assumptions are documented engine adaptations."
@@ -2827,7 +2901,8 @@
         "doi": "10.1046/j.1365-2125.1998.00779.x",
         "status": "verified",
         "fullTextReview": {
-          "status": "reviewed",
+          "status": "full-text-reviewed",
+          "evidence": "LOCAL_PRIMARY_FULL_TEXT",
           "date": "2026-10-16",
           "result": "DOCUMENTED_ADAPTATION_CONFIRMED",
           "note": "Clinical formulas are reconstructed from available covariates; unreported covariance and V1 variability are not invented."
@@ -2929,7 +3004,8 @@
         "doi": "10.1046/j.1365-2125.1998.00779.x",
         "status": "verified",
         "fullTextReview": {
-          "status": "reviewed",
+          "status": "full-text-reviewed",
+          "evidence": "LOCAL_PRIMARY_FULL_TEXT",
           "date": "2026-10-16",
           "result": "DOCUMENTED_ADAPTATION_CONFIRMED",
           "note": "Clinical formulas are reconstructed from available covariates; unreported covariance and V1 variability are not invented."
@@ -3028,13 +3104,17 @@
     {
       "id": "isavuconazole_desai_ddi",
       "sourceFile": "isavuconazole_desai_ddi.cpp",
-      "sourceSha256": "82db6b14ae484edd6ed1bb2d6c5d852c02778e3fc150daed197c556b9464a59a",
+      "sourceSha256": "174094d9788331490de57acc2109aabf7bc205c161beb83ae7d3173166f722fc",
       "primarySource": {
         "citation": "Desai A et al. Antimicrob Agents Chemother. 2016;60:5483-5491.",
         "doi": "10.1128/AAC.02819-15",
         "status": "verified",
         "fullTextReview": {
-          "status": "required"
+          "status": "full-text-reviewed",
+          "evidence": "OPEN_PRIMARY_FULL_TEXT",
+          "date": "2026-10-16",
+          "result": "DOCUMENTED_ADAPTATION_CONFIRMED",
+          "note": "Weibull absorption, race and patient-status effects, BMI effect and reported IIV are retained. Patient CL variability and one residual branch are used by default instead of study-specific branches."
         }
       },
       "population": {
@@ -3063,8 +3143,8 @@
         ],
         "differentialEquations": [
           "dxdt_GUT = -KA * GUT;",
-          "dxdt_CENT = KA * GUT - ((CL + TVQ) / TVV1) * CENT + (TVQ / V2) * PERI;",
-          "dxdt_PERI = (TVQ / TVV1) * CENT - (TVQ / V2) * PERI;"
+          "dxdt_CENT = KA * GUT - ((CL + Q) / TVV1) * CENT + (Q / V2) * PERI;",
+          "dxdt_PERI = (Q / TVV1) * CENT - (Q / V2) * PERI;"
         ],
         "outputs": [
           "DV",
@@ -3083,14 +3163,20 @@
         "BMI_REF"
       ],
       "covariates": [
-        "BMI"
+        "BMI",
+        "ASIAN",
+        "PATIENT"
       ],
       "interindividualVariability": {
         "etaIndices": [
-          1
+          1,
+          2,
+          3,
+          4,
+          5
         ],
         "omega": [
-          "@annotated\nIIV_CL : 0.09 : Engineering prior variance on clearance"
+          "@annotated\nIIV_CL : 0.3290 : Patient CL IIV, log(1 + 0.6244^2)\nIIV_Q : 0.2158 : Q IIV, log(1 + 0.4909^2)\nIIV_V2 : 0.0962 : Vp IIV, log(1 + 0.3178^2)\nIIV_RA : 0.1502 : RA IIV, log(1 + 0.4024^2)\nIIV_GAM1 : 0.1900 : GAM1 IIV, log(1 + 0.4571^2)"
         ]
       },
       "residualError": {
@@ -3098,10 +3184,10 @@
           1
         ],
         "sigma": [
-          "@annotated\nPROP : 0.04 : Engineering prior proportional residual variance\nADD  : 0.0  : Additive residual variance fixed to zero"
+          "@annotated\nPROP : 0.201960 : Published exponential residual SD 0.4494 squared\nADD  : 0.0  : Additive residual variance fixed to zero"
         ]
       },
-      "pmxAdaptations": "Absorption Weibull conservée; prior résiduel adapté pour mapbayr.",
+      "pmxAdaptations": "Absorption Weibull, effet de la race sur CL, statut patient sur Vp, effet du BMI et IIV publiées conservés. La variance de CL du groupe patient est utilisée par défaut et les branches résiduelles patient/volontaire sain ne sont pas séparées. Simulation uniquement.",
       "implementationStatus": "ADAPTED",
       "softwareContractStatus": "SOFTWARE_TESTED",
       "numericalCheckStatus": "not-checked",
@@ -3110,18 +3196,22 @@
         "eligible": false,
         "status": "Simulation uniquement"
       },
-      "limitations": "Absorption Weibull conservée; prior résiduel adapté pour mapbayr."
+      "limitations": "Absorption Weibull, effet de la race sur CL, statut patient sur Vp, effet du BMI et IIV publiées conservés. La variance de CL du groupe patient est utilisée par défaut et les branches résiduelles patient/volontaire sain ne sont pas séparées. Simulation uniquement."
     },
     {
       "id": "isavuconazole_groll_ddi",
       "sourceFile": "isavuconazole_groll_ddi.cpp",
-      "sourceSha256": "034b8bde7f96cf6b297102ab6008248751cc028b8e26d15ec11fa7113552aa44",
+      "sourceSha256": "e4462b32662bf6160c4c1b3c78964b7ae3f8340bbe9029af55e77e1a9d31c7df",
       "primarySource": {
         "citation": "Groll AH et al. Clin Pharmacol Drug Dev. 2017;6:76-85.",
         "doi": "10.1002/cpdd.284",
         "status": "verified",
         "fullTextReview": {
-          "status": "required"
+          "status": "limited-evidence-reviewed",
+          "evidence": "PRIMARY_ABSTRACT_ONLY",
+          "date": "2026-10-16",
+          "result": "DOCUMENTED_ADAPTATION_CONFIRMED",
+          "note": "The cited work is an NCA DDI study and provides no reusable PopPK model. The entry is explicitly a rounded mean-profile reconstruction for interaction simulation, not an article model or MAP prior."
         }
       },
       "population": {
@@ -3145,13 +3235,11 @@
       "structuralModel": {
         "compartments": [
           "GUT",
-          "CENT",
-          "PERI"
+          "CENT"
         ],
         "differentialEquations": [
-          "dxdt_GUT = -TVKA * GUT;",
-          "dxdt_CENT = TVKA * GUT * TVF - ((CL + Q) / V1) * CENT + (Q / V2) * PERI;",
-          "dxdt_PERI = (Q / V1) * CENT - (Q / V2) * PERI;"
+          "dxdt_GUT = -KA * GUT;",
+          "dxdt_CENT = KA * GUT * F - (CL / V) * CENT;"
         ],
         "outputs": [
           "DV",
@@ -3160,15 +3248,11 @@
       },
       "parameters": [
         "TVCL",
-        "TVV1",
-        "TVQ",
-        "TVV2",
+        "TVV",
         "TVKA",
         "TVF"
       ],
-      "covariates": [
-        "WT"
-      ],
+      "covariates": [],
       "interindividualVariability": {
         "etaIndices": [
           1
@@ -3179,13 +3263,14 @@
       },
       "residualError": {
         "epsIndices": [
-          1
+          1,
+          2
         ],
         "sigma": [
-          "@annotated\nPROP : 0.04 : Engineering prior proportional residual variance\nADD  : 0.0  : Additive residual variance fixed to zero"
+          "@annotated\nPROP : 0.04 : Engineering prior proportional residual variance\nADD  : 0 : Additive residual variance fixed to zero"
         ]
       },
-      "pmxAdaptations": "Module DDI simplifié; prior OMEGA/SIGMA d'ingénierie.",
+      "pmxAdaptations": "L'article rapporte des profils NCA d'interaction et aucun modèle PopPK réutilisable. Le module est une reconstruction moyenne arrondie pour simulation ; il ne reproduit pas un modèle publié et n'est pas un prior MAP.",
       "implementationStatus": "ADAPTED",
       "softwareContractStatus": "SOFTWARE_TESTED",
       "numericalCheckStatus": "not-checked",
@@ -3194,7 +3279,7 @@
         "eligible": false,
         "status": "Simulation uniquement"
       },
-      "limitations": "Module DDI simplifié; prior OMEGA/SIGMA d'ingénierie."
+      "limitations": "L'article rapporte des profils NCA d'interaction et aucun modèle PopPK réutilisable. Le module est une reconstruction moyenne arrondie pour simulation ; il ne reproduit pas un modèle publié et n'est pas un prior MAP."
     },
     {
       "id": "levo_canoui",
@@ -3205,7 +3290,8 @@
         "doi": "10.1093/jac/dkac031",
         "status": "verified",
         "fullTextReview": {
-          "status": "reviewed",
+          "status": "full-text-reviewed",
+          "evidence": "LOCAL_PRIMARY_FULL_TEXT",
           "date": "2026-10-16",
           "result": "ARTICLE_ALIGNED",
           "note": "One-compartment oral structure, renal and age covariates, variability and residual error align with the article."
@@ -3323,7 +3409,8 @@
         "doi": "10.1002/cpdd.418",
         "status": "verified",
         "fullTextReview": {
-          "status": "reviewed",
+          "status": "full-text-reviewed",
+          "evidence": "LOCAL_PRIMARY_FULL_TEXT",
           "date": "2026-10-16",
           "result": "DOCUMENTED_ADAPTATION_CONFIRMED",
           "note": "The irreversible bone compartment is omitted for repeated-dose plasma simulation, and unpublished residual terms are marked pragmatic."
@@ -3405,7 +3492,8 @@
         "doi": "10.1128/AAC.01468-05",
         "status": "verified",
         "fullTextReview": {
-          "status": "reviewed",
+          "status": "full-text-reviewed",
+          "evidence": "LOCAL_PRIMARY_FULL_TEXT",
           "date": "2026-10-16",
           "result": "DOCUMENTED_ADAPTATION_CONFIRMED",
           "note": "The publication reports an individual PK analysis; its use as a population prior is an explicit simulation-only adaptation."
@@ -3505,7 +3593,8 @@
         "doi": "10.1128/AAC.01185-10",
         "status": "verified",
         "fullTextReview": {
-          "status": "reviewed",
+          "status": "full-text-reviewed",
+          "evidence": "LOCAL_PRIMARY_FULL_TEXT",
           "date": "2026-10-16",
           "result": "DOCUMENTED_ADAPTATION_CONFIRMED",
           "note": "Oral bioavailability and the female Cockcroft-Gault factor are engine assumptions; the published platelet PD component is out of scope."
@@ -3597,17 +3686,21 @@
     {
       "id": "posaconazole_dolton_ddi",
       "sourceFile": "posaconazole_dolton_ddi.cpp",
-      "sourceSha256": "2a55f44ddf430fe78e0d89ad9b2cec11e5ae6413a8f4e62e5835cde51fde5a2c",
+      "sourceSha256": "7afa36bc5e632193f464b6337d23409c83f2c86cbb6350fcbbd9bdca5f9821e4",
       "primarySource": {
         "citation": "Dolton MJ et al. Antimicrob Agents Chemother. 2014;58:6879-6885.",
         "doi": "10.1128/AAC.03777-14",
         "status": "verified",
         "fullTextReview": {
-          "status": "required"
+          "status": "full-text-reviewed",
+          "evidence": "OPEN_PRIMARY_FULL_TEXT",
+          "date": "2026-10-16",
+          "result": "DOCUMENTED_ADAPTATION_CONFIRMED",
+          "note": "The previous mismatched CL, V, ka and F were replaced by the published one-compartment lag model and its medication and clinical covariates. Patient-study IIV/error are defaults instead of separate study branches."
         }
       },
       "population": {
-        "description": "Adultes sains et patients adultes sous posaconazole en prophylaxie ou traitement.",
+        "description": "Adultes sains et patients adultes sous suspension orale de posaconazole en prophylaxie ou traitement.",
         "tags": [
           "Adulte",
           "Infection fongique",
@@ -3630,8 +3723,8 @@
           "CENT"
         ],
         "differentialEquations": [
-          "dxdt_GUT = -TVKA * GUT;",
-          "dxdt_CENT = TVKA * GUT * TVF - (CL / V) * CENT;"
+          "dxdt_GUT = -KA * GUT;",
+          "dxdt_CENT = KA * GUT * F - (CL / V) * CENT;"
         ],
         "outputs": [
           "DV",
@@ -3642,26 +3735,40 @@
         "TVCL",
         "TVV",
         "TVKA",
-        "TVF"
+        "TVF",
+        "TVLAG",
+        "PHE_CL",
+        "RIF_CL",
+        "FOS_CL"
       ],
-      "covariates": [],
+      "covariates": [
+        "PHE",
+        "RIF",
+        "FOS",
+        "PPI",
+        "MET",
+        "NUT",
+        "MUC",
+        "DIARRHEA"
+      ],
       "interindividualVariability": {
         "etaIndices": [
           1
         ],
         "omega": [
-          "@annotated\nIIV_CL : 0.09 : Engineering prior variance on clearance"
+          "@annotated\nIIV_CL : 0.285156 : Patient-study IIV on CL/F, 53.4 percent squared"
         ]
       },
       "residualError": {
         "epsIndices": [
-          1
+          1,
+          2
         ],
         "sigma": [
-          "@annotated\nPROP : 0.04 : Engineering prior proportional residual variance\nADD  : 0.0  : Additive residual variance fixed to zero"
+          "@annotated\nPROP : 0.289444 : Patient-study proportional residual SD 53.8 percent squared\nADD  : 0 : Additive residual variance fixed to zero"
         ]
       },
-      "pmxAdaptations": "Module DDI simplifié; prior OMEGA/SIGMA d'ingénierie.",
+      "pmxAdaptations": "Structure, CL/F, V/F, ka, lag et covariables médicamenteuses et cliniques publiés conservés. La variabilité et l'erreur résiduelle du groupe patient sont utilisées par défaut au lieu des branches propres aux deux études. Simulation uniquement.",
       "implementationStatus": "ADAPTED",
       "softwareContractStatus": "SOFTWARE_TESTED",
       "numericalCheckStatus": "not-checked",
@@ -3670,7 +3777,7 @@
         "eligible": false,
         "status": "Simulation uniquement"
       },
-      "limitations": "Module DDI simplifié; prior OMEGA/SIGMA d'ingénierie."
+      "limitations": "Structure, CL/F, V/F, ka, lag et covariables médicamenteuses et cliniques publiés conservés. La variabilité et l'erreur résiduelle du groupe patient sont utilisées par défaut au lieu des branches propres aux deux études. Simulation uniquement."
     },
     {
       "id": "rifampicine_chang",
@@ -3681,7 +3788,8 @@
         "doi": "10.1016/j.tube.2014.10.013",
         "status": "verified",
         "fullTextReview": {
-          "status": "reviewed",
+          "status": "full-text-reviewed",
+          "evidence": "LOCAL_PRIMARY_FULL_TEXT",
           "date": "2026-10-16",
           "result": "SOURCE_AMBIGUITY_DOCUMENTED",
           "note": "The printed BMI effect on CL lacks an operator before 6.22; the retained historical interpretation is explicitly flagged."
@@ -3811,7 +3919,11 @@
         "doi": "10.1128/AAC.02307-13",
         "status": "verified",
         "fullTextReview": {
-          "status": "required"
+          "status": "full-text-reviewed",
+          "evidence": "OPEN_PRIMARY_FULL_TEXT",
+          "date": "2026-10-16",
+          "result": "DOCUMENTED_ADAPTATION_CONFIRMED",
+          "note": "Published transit absorption and time-dependent autoinduction are retained. HIV, nutritional supplementation, continuation-phase, between-occasion effects and most random effects are omitted."
         }
       },
       "population": {
@@ -3942,7 +4054,8 @@
         "doi": "10.1002/jcph.643",
         "status": "verified",
         "fullTextReview": {
-          "status": "reviewed",
+          "status": "full-text-reviewed",
+          "evidence": "LOCAL_PRIMARY_FULL_TEXT",
           "date": "2026-10-16",
           "result": "ARTICLE_ALIGNED",
           "note": "One-compartment oral structure and reported fixed, random and residual parameters align with the article."
@@ -4044,20 +4157,24 @@
     {
       "id": "rifampicine_loos_ddi",
       "sourceFile": "rifampicine_loos_ddi.cpp",
-      "sourceSha256": "e110e04b87776590132017d5da519be8ccf164c7dd559b651ee167cf822b65ff",
+      "sourceSha256": "70551002fe4e9bcc6d180aaf52df933851f3bf0817fc175532a950c3834eaa78",
       "primarySource": {
         "citation": "Loos U et al. Klin Wochenschr. 1985;63:1205-1211.",
         "doi": "10.1007/BF01733779",
         "status": "verified",
         "fullTextReview": {
-          "status": "required"
+          "status": "limited-evidence-reviewed",
+          "evidence": "PRIMARY_ABSTRACT_ONLY",
+          "date": "2026-10-16",
+          "result": "DOCUMENTED_ADAPTATION_CONFIRMED",
+          "note": "Published chronic-dose CL and F replace the previous mismatched clearance. V and ka are not reported in the accessible source summary and remain explicit mean-profile assumptions."
         }
       },
       "population": {
-        "description": "Adultes sains après rifampicine orale et intraveineuse en administration chronique.",
+        "description": "Adultes atteints de tuberculose pulmonaire après rifampicine orale et intraveineuse en administration chronique.",
         "tags": [
           "Adulte",
-          "Volontaire sain",
+          "Tuberculose",
           "Hors ICU"
         ]
       },
@@ -4077,8 +4194,8 @@
           "CENT"
         ],
         "differentialEquations": [
-          "dxdt_GUT = -TVKA * GUT;",
-          "dxdt_CENT = TVKA * GUT * TVF - (CL / V) * CENT;"
+          "dxdt_GUT = -KA * GUT;",
+          "dxdt_CENT = KA * GUT * F - (CL / V) * CENT;"
         ],
         "outputs": [
           "DV",
@@ -4102,13 +4219,14 @@
       },
       "residualError": {
         "epsIndices": [
-          1
+          1,
+          2
         ],
         "sigma": [
-          "@annotated\nPROP : 0.04 : Engineering prior proportional residual variance\nADD  : 0.0  : Additive residual variance fixed to zero"
+          "@annotated\nPROP : 0.04 : Engineering prior proportional residual variance\nADD  : 0 : Additive residual variance fixed to zero"
         ]
       },
-      "pmxAdaptations": "Module DDI simplifié; prior OMEGA/SIGMA d'ingénierie.",
+      "pmxAdaptations": "La clairance et la biodisponibilité chroniques publiées sont conservées. Le volume et ka ne sont pas fournis dans le résumé source accessible et restent des hypothèses explicites de forme de profil. Ce module n'est pas un prior PopPK.",
       "implementationStatus": "ADAPTED",
       "softwareContractStatus": "SOFTWARE_TESTED",
       "numericalCheckStatus": "not-checked",
@@ -4117,7 +4235,7 @@
         "eligible": false,
         "status": "Simulation uniquement"
       },
-      "limitations": "Module DDI simplifié; prior OMEGA/SIGMA d'ingénierie."
+      "limitations": "La clairance et la biodisponibilité chroniques publiées sont conservées. Le volume et ka ne sont pas fournis dans le résumé source accessible et restent des hypothèses explicites de forme de profil. Ce module n'est pas un prior PopPK."
     },
     {
       "id": "rifampicine_marsot",
@@ -4128,7 +4246,8 @@
         "doi": "10.1111/bcp.13178",
         "status": "verified",
         "fullTextReview": {
-          "status": "reviewed",
+          "status": "full-text-reviewed",
+          "evidence": "LOCAL_PRIMARY_FULL_TEXT",
           "date": "2026-10-16",
           "result": "SOURCE_AMBIGUITY_DOCUMENTED",
           "note": "The final additive estimate 2.256 mg/L is implemented as an SD and squared for mrgsolve. The article also mentions log-transformed data despite its concentration-scale equation."
@@ -4199,7 +4318,7 @@
         ]
       },
       "pmxAdaptations": "L'erreur finale est additive. La valeur publiée de 2,256 mg/L est traitée comme un écart-type et convertie en variance SIGMA pour mrgsolve. L'article mentionne aussi des données transformées en logarithme malgré une équation additive sur les concentrations et une estimation en mg/L; cette ambiguïté ne peut être levée sans le modèle source.",
-      "implementationStatus": "ARTICLE",
+      "implementationStatus": "ADAPTED",
       "softwareContractStatus": "SOFTWARE_TESTED",
       "numericalCheckStatus": "not-checked",
       "sourceReproductionStatus": "pending-independent-reproduction",
@@ -4212,13 +4331,17 @@
     {
       "id": "ritonavir_kappelhoff_ddi",
       "sourceFile": "ritonavir_kappelhoff_ddi.cpp",
-      "sourceSha256": "59cc87ebeda0f2e877917561f8dc1f9730c48b2ee202e132ad50d454850b293c",
+      "sourceSha256": "b758f76f00fbae661f30a0e68364c273ba20f732174a91edf496906c4bf0c7be",
       "primarySource": {
         "citation": "Kappelhoff BS et al. Br J Clin Pharmacol. 2005;59:174-182.",
         "doi": "10.1111/j.1365-2125.2004.02241.x",
         "status": "verified",
         "fullTextReview": {
-          "status": "required"
+          "status": "full-text-reviewed",
+          "evidence": "OPEN_PRIMARY_FULL_TEXT",
+          "date": "2026-10-16",
+          "result": "DOCUMENTED_ADAPTATION_CONFIRMED",
+          "note": "Published typical values, lag, lopinavir effect and IIV replace the previous generic module. IOV on F, V-ka covariance and the two-population residual mixture are omitted; the dominant residual component is used."
         }
       },
       "population": {
@@ -4245,38 +4368,46 @@
           "CENT"
         ],
         "differentialEquations": [
-          "dxdt_GUT = -TVKA * GUT;",
-          "dxdt_CENT = TVKA * GUT * TVF - (CL / V) * CENT;"
+          "dxdt_GUT = -KA * GUT;",
+          "dxdt_CENT = KA * GUT - (CL / V) * CENT;"
         ],
         "outputs": [
           "DV",
-          "CL"
+          "CL",
+          "V",
+          "KA"
         ]
       },
       "parameters": [
         "TVCL",
         "TVV",
         "TVKA",
-        "TVF"
+        "TVLAG",
+        "LPV_CL"
       ],
-      "covariates": [],
+      "covariates": [
+        "LPV"
+      ],
       "interindividualVariability": {
         "etaIndices": [
-          1
+          1,
+          2,
+          3
         ],
         "omega": [
-          "@annotated\nIIV_CL : 0.09 : Engineering prior variance on clearance"
+          "@annotated\nIIV_CL : 0.136671 : log(1 + 0.383^2)\nIIV_V  : 0.494696 : log(1 + 0.800^2)\nIIV_KA : 1.350319 : log(1 + 1.69^2)"
         ]
       },
       "residualError": {
         "epsIndices": [
-          1
+          1,
+          2
         ],
         "sigma": [
-          "@annotated\nPROP : 0.04 : Engineering prior proportional residual variance\nADD  : 0.0  : Additive residual variance fixed to zero"
+          "@annotated\nPROP : 0.023716 : Published proportional SD 0.154 squared\nADD  : 0.0036 : Dominant published additive SD 0.060 mg/L squared"
         ]
       },
-      "pmxAdaptations": "Module DDI simplifié; prior OMEGA/SIGMA d'ingénierie.",
+      "pmxAdaptations": "Structure, paramètres, lag, effet du lopinavir et IIV publiés conservés. L'IOV de F, la covariance V-ka et le mélange de deux erreurs additives sont omis ; la composante résiduelle majoritaire est utilisée. Simulation uniquement.",
       "implementationStatus": "ADAPTED",
       "softwareContractStatus": "SOFTWARE_TESTED",
       "numericalCheckStatus": "not-checked",
@@ -4285,7 +4416,7 @@
         "eligible": false,
         "status": "Simulation uniquement"
       },
-      "limitations": "Module DDI simplifié; prior OMEGA/SIGMA d'ingénierie."
+      "limitations": "Structure, paramètres, lag, effet du lopinavir et IIV publiés conservés. L'IOV de F, la covariance V-ka et le mélange de deux erreurs additives sont omis ; la composante résiduelle majoritaire est utilisée. Simulation uniquement."
     },
     {
       "id": "sirolimus_djebli_ddi",
@@ -4296,7 +4427,11 @@
         "doi": "10.2165/00003088-200645110-00007",
         "status": "verified",
         "fullTextReview": {
-          "status": "required"
+          "status": "limited-evidence-reviewed",
+          "evidence": "PRIMARY_ABSTRACT_ONLY",
+          "date": "2026-10-16",
+          "result": "DOCUMENTED_ADAPTATION_CONFIRMED",
+          "note": "Published two-compartment Erlang structure, fixed effects and additive CYP3A5 clearance effect are retained. Several variances and the interaction-only non-CYP fraction are pragmatic."
         }
       },
       "population": {
@@ -4390,19 +4525,24 @@
     {
       "id": "tacrolimus_kamp_envarsus_ddi",
       "sourceFile": "tacrolimus_kamp_envarsus_ddi.cpp",
-      "sourceSha256": "50fbe5968f53ad0b381a372db0e36732b278c4d403500a803f5606a00bdcd6aa",
+      "sourceSha256": "91687902734d34bf863dd1bd23d41b7fb9ee4972a41d6740bba7bc5b88302322",
       "primarySource": {
         "citation": "Kamp J et al. Pharmaceutics. 2024;16:17.",
         "doi": "10.3390/pharmaceutics16010017",
         "status": "verified",
         "fullTextReview": {
-          "status": "required"
+          "status": "full-text-reviewed",
+          "evidence": "OPEN_PRIMARY_FULL_TEXT",
+          "date": "2026-10-16",
+          "result": "DOCUMENTED_ADAPTATION_CONFIRMED",
+          "note": "Published fixed effects, weight allometry, correlated CL-V1 block, KTR variability and lag class replace the prior Woillard-derived variability and unsupported CYP effect. CL IOV and per-sample residual switching are omitted; DDI splitting is interaction-only."
         }
       },
       "population": {
-        "description": "Adultes transplantés rénaux recevant tacrolimus Envarsus.",
+        "description": "Adultes transplantés rénaux âgés de 65 ans ou plus recevant tacrolimus Envarsus.",
         "tags": [
           "Adulte",
+          "Sujet âgé",
           "Transplantation rénale",
           "Hors ICU"
         ]
@@ -4449,21 +4589,23 @@
         "TVV2",
         "TVKTR",
         "LAG",
-        "CYPCL"
+        "WTREF",
+        "ALLOCL",
+        "ALLOV"
       ],
       "covariates": [
-        "CYP"
+        "WT",
+        "MIX_LAGGED_ABS"
       ],
       "interindividualVariability": {
         "etaIndices": [
           1,
           2,
-          3,
-          4,
-          5
+          3
         ],
         "omega": [
-          "0.08 0.10 0.29 0.36 0.06"
+          "@block @annotated\nIIV_CL : 0.0979      : Published CL variance\nIIV_V1 : 0.23 0.609 : Published CL-V1 covariance / V1 variance",
+          "@annotated\nIIV_KTR : 0.312 : Published KTR variance"
         ]
       },
       "residualError": {
@@ -4472,10 +4614,10 @@
           2
         ],
         "sigma": [
-          "0.208 0.307"
+          "0.043264 0.0"
         ]
       },
-      "pmxAdaptations": "Adaptation DDI : la PK de base conserve les paramètres Kamp, tandis que le découpage de clairance en fractions CYP3A4, CYP3A5 et non-CYP de 5 % est ajouté pour les scénarios interactionnels.",
+      "pmxAdaptations": "Les paramètres, l'allométrie, le bloc CL-V1 et la classe d'absorption retardée proviennent de Kamp. La classe de lag est sélectionnable au lieu d'être tirée selon le mélange publié ; l'IOV de CL et le choix DBS/sang veineux ne sont pas représentés. Une fraction non-CYP de 5 % est ajoutée uniquement aux scénarios DDI et ne modifie pas la PK de base.",
       "implementationStatus": "ADAPTED",
       "softwareContractStatus": "SOFTWARE_TESTED",
       "numericalCheckStatus": "not-checked",
@@ -4484,7 +4626,7 @@
         "eligible": false,
         "status": "Simulation uniquement"
       },
-      "limitations": "Adaptation DDI : la PK de base conserve les paramètres Kamp, tandis que le découpage de clairance en fractions CYP3A4, CYP3A5 et non-CYP de 5 % est ajouté pour les scénarios interactionnels."
+      "limitations": "Les paramètres, l'allométrie, le bloc CL-V1 et la classe d'absorption retardée proviennent de Kamp. La classe de lag est sélectionnable au lieu d'être tirée selon le mélange publié ; l'IOV de CL et le choix DBS/sang veineux ne sont pas représentés. Une fraction non-CYP de 5 % est ajoutée uniquement aux scénarios DDI et ne modifie pas la PK de base."
     },
     {
       "id": "tacrolimus_woillard_ddi",
@@ -4495,7 +4637,11 @@
         "doi": "10.1111/j.1365-2125.2010.03837.x",
         "status": "verified",
         "fullTextReview": {
-          "status": "required"
+          "status": "full-text-reviewed",
+          "evidence": "OPEN_PRIMARY_FULL_TEXT",
+          "date": "2026-10-16",
+          "result": "DOCUMENTED_ADAPTATION_CONFIRMED",
+          "note": "Published Prograf/Advagraf PK, covariates, IIV and residual model are retained. The interaction clearance split preserves baseline clearance exactly and is the only non-source mechanism."
         }
       },
       "population": {
@@ -4602,7 +4748,8 @@
         "doi": "10.1097/FTD.0000000000000490",
         "status": "verified",
         "fullTextReview": {
-          "status": "reviewed",
+          "status": "full-text-reviewed",
+          "evidence": "LOCAL_PRIMARY_FULL_TEXT",
           "date": "2026-10-16",
           "result": "ARTICLE_ALIGNED",
           "note": "Structure and covariates align with the article. CL OMEGA is converted consistently from the published 39.8% CV using log(1 + CV^2)."
@@ -4736,7 +4883,8 @@
         "doi": "10.1111/j.1365-2125.2010.03679.x",
         "status": "verified",
         "fullTextReview": {
-          "status": "reviewed",
+          "status": "full-text-reviewed",
+          "evidence": "LOCAL_PRIMARY_FULL_TEXT",
           "date": "2026-10-16",
           "result": "ARTICLE_ALIGNED",
           "note": "The Revilla equations, measured 24-hour creatinine clearance and additive residual SD align with the article."
@@ -4824,7 +4972,8 @@
         "doi": "10.1128/AAC.01708-10",
         "status": "verified",
         "fullTextReview": {
-          "status": "reviewed",
+          "status": "full-text-reviewed",
+          "evidence": "LOCAL_PRIMARY_FULL_TEXT",
           "date": "2026-10-16",
           "result": "ARTICLE_ALIGNED",
           "note": "The continuous-infusion structure, measured 24-hour creatinine clearance and published parameter values align with the article."
@@ -4925,7 +5074,11 @@
         "doi": "10.1016/j.ijantimicag.2023.106750",
         "status": "verified",
         "fullTextReview": {
-          "status": "required"
+          "status": "full-text-reviewed",
+          "evidence": "OPEN_PRIMARY_FULL_TEXT",
+          "date": "2026-10-16",
+          "result": "DOCUMENTED_ADAPTATION_CONFIRMED",
+          "note": "Published nonlinear one-compartment structure, CRP effect and fixed parameters are retained. Only Vmax IIV is represented and the residual prior is an engine adaptation; simulation only."
         }
       },
       "population": {

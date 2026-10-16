@@ -3,7 +3,7 @@
   "sourceRepository": "rberrah/rberrah.github.io",
   "sourceCommit": "2f97f109c3f4af257776a595f6546c9cd5f2321d",
   "extractionDate": "2026-10-16",
-  "copiedCount": 199,
+  "copiedCount": 177,
   "pendingCount": 0,
   "copied": [
     {
@@ -115,18 +115,6 @@
       "size": 111575
     },
     {
-      "source": "tdm-engine/ml/artifacts/cefazoline_lanoiselee-intermittent-c0-post-auc24-xgb-v4-dalex-background.rds",
-      "target": "ml/artifacts/cefazoline_lanoiselee-intermittent-c0-post-auc24-xgb-v4-dalex-background.rds",
-      "gitBlob": "98af6f3a637bc1864098a9196a72fe0dbf8b08b9",
-      "size": 15303
-    },
-    {
-      "source": "tdm-engine/ml/artifacts/cefazoline_lanoiselee-intermittent-c0-post-auc24-xgb-v4.rds",
-      "target": "ml/artifacts/cefazoline_lanoiselee-intermittent-c0-post-auc24-xgb-v4.rds",
-      "gitBlob": "4abf28f06231ffcca86845a82f15d75a4268df44",
-      "size": 111155
-    },
-    {
       "source": "tdm-engine/ml/artifacts/cefazoline_schmitz-intermittent-c0-post-auc24-xgb-v4-dalex-background.rds",
       "target": "ml/artifacts/cefazoline_schmitz-intermittent-c0-post-auc24-xgb-v4-dalex-background.rds",
       "gitBlob": "67728701d73d4e8f14a97a2ce88cefab3123e56f",
@@ -139,18 +127,6 @@
       "size": 112811
     },
     {
-      "source": "tdm-engine/ml/artifacts/cefepime_an-intermittent-c0-post-auc24-xgb-v4-dalex-background.rds",
-      "target": "ml/artifacts/cefepime_an-intermittent-c0-post-auc24-xgb-v4-dalex-background.rds",
-      "gitBlob": "196bfdc7625c3c35bc5dc8c6bb0af979a1ef98f8",
-      "size": 18015
-    },
-    {
-      "source": "tdm-engine/ml/artifacts/cefepime_an-intermittent-c0-post-auc24-xgb-v4.rds",
-      "target": "ml/artifacts/cefepime_an-intermittent-c0-post-auc24-xgb-v4.rds",
-      "gitBlob": "26946fae917f265754d09ea5ac8fc06e9e06843d",
-      "size": 115896
-    },
-    {
       "source": "tdm-engine/ml/artifacts/cefepime_jonckheere-intermittent-c0-post-auc24-xgb-v4-dalex-background.rds",
       "target": "ml/artifacts/cefepime_jonckheere-intermittent-c0-post-auc24-xgb-v4-dalex-background.rds",
       "gitBlob": "97e69feb4affaf414cf1a91cfe1dde0e4d166720",
@@ -161,18 +137,6 @@
       "target": "ml/artifacts/cefepime_jonckheere-intermittent-c0-post-auc24-xgb-v4.rds",
       "gitBlob": "ca81ca4d286edc48132ed3b66602a2403cf5cebd",
       "size": 107032
-    },
-    {
-      "source": "tdm-engine/ml/artifacts/cefepime_seo-intermittent-c0-post-auc24-xgb-v4-dalex-background.rds",
-      "target": "ml/artifacts/cefepime_seo-intermittent-c0-post-auc24-xgb-v4-dalex-background.rds",
-      "gitBlob": "07932b5486d54d33a2319ffd2586219dd0043daa",
-      "size": 18132
-    },
-    {
-      "source": "tdm-engine/ml/artifacts/cefepime_seo-intermittent-c0-post-auc24-xgb-v4.rds",
-      "target": "ml/artifacts/cefepime_seo-intermittent-c0-post-auc24-xgb-v4.rds",
-      "gitBlob": "685deb8e80cec30d559c02879afb0f79f802fe44",
-      "size": 110513
     },
     {
       "source": "tdm-engine/ml/artifacts/ciclosporine_press_ddi-oral-c0-post-auc24-xgb-v4-dalex-background.rds",
@@ -565,12 +529,6 @@
       "size": 16650
     },
     {
-      "source": "tdm-engine/ml/training-populations.json",
-      "target": "ml/training-populations.json",
-      "gitBlob": "d7ffb35b85145f60629013498ca5e801eb1e34ff",
-      "size": 16525
-    },
-    {
       "source": "tdm-engine/ml/training-regimens.json",
       "target": "ml/training-regimens.json",
       "gitBlob": "57bb91f62e4da3e311dd77598795152bb24ffb5b",
@@ -601,12 +559,6 @@
       "size": 16995
     },
     {
-      "source": "tdm-engine/models/amiodarone_pollak_ddi.cpp",
-      "target": "models/amiodarone_pollak_ddi.cpp",
-      "gitBlob": "4b3e933161a0f98ddd9bfda07047ae5b98a7ac37",
-      "size": 1392
-    },
-    {
       "source": "tdm-engine/models/amox_carlier.cpp",
       "target": "models/amox_carlier.cpp",
       "gitBlob": "a532e40db9f9f2cba8179bf059ffdb9845cb9961",
@@ -631,46 +583,16 @@
       "size": 3984
     },
     {
-      "source": "tdm-engine/models/cefazoline_lanoiselee.cpp",
-      "target": "models/cefazoline_lanoiselee.cpp",
-      "gitBlob": "42769d6e9837917e60e1c7c33352a7498793fb62",
-      "size": 2759
-    },
-    {
       "source": "tdm-engine/models/cefazoline_schmitz.cpp",
       "target": "models/cefazoline_schmitz.cpp",
       "gitBlob": "8c9d116c385f2420afedf0e9819bc1fd713edc85",
       "size": 2683
     },
     {
-      "source": "tdm-engine/models/cefepime_an.cpp",
-      "target": "models/cefepime_an.cpp",
-      "gitBlob": "47a70ff11be0dc7fa8b4c26d3c78b22e41e19be7",
-      "size": 2687
-    },
-    {
       "source": "tdm-engine/models/cefepime_jonckheere.cpp",
       "target": "models/cefepime_jonckheere.cpp",
       "gitBlob": "c73c5992a833e1b21ab363989bad33f74975148d",
       "size": 2568
-    },
-    {
-      "source": "tdm-engine/models/cefepime_seo.cpp",
-      "target": "models/cefepime_seo.cpp",
-      "gitBlob": "6991f129f70d60b8aa8f47f59bf2a7993604456e",
-      "size": 2848
-    },
-    {
-      "source": "tdm-engine/models/ciclosporine_press_ddi.cpp",
-      "target": "models/ciclosporine_press_ddi.cpp",
-      "gitBlob": "6b2a7d096d1c8246e318443785c0729b41ba3dae",
-      "size": 3612
-    },
-    {
-      "source": "tdm-engine/models/cobicistat_mathias_ddi.cpp",
-      "target": "models/cobicistat_mathias_ddi.cpp",
-      "gitBlob": "589edd01835557bb6187c21b0c4e48d11e13ee82",
-      "size": 1156
     },
     {
       "source": "tdm-engine/models/dapto_dvorchik_IV_adults.cpp",
@@ -685,18 +607,6 @@
       "size": 3029
     },
     {
-      "source": "tdm-engine/models/diltiazem_hermann_ddi.cpp",
-      "target": "models/diltiazem_hermann_ddi.cpp",
-      "gitBlob": "bed5478244352b7ed4e40e6def4641a7d27c4027",
-      "size": 1109
-    },
-    {
-      "source": "tdm-engine/models/erythromycine_mather_ddi.cpp",
-      "target": "models/erythromycine_mather_ddi.cpp",
-      "gitBlob": "d94246defd90448f8c68dca60dd96649ff7f2ab6",
-      "size": 1137
-    },
-    {
       "source": "tdm-engine/models/everolimus_moes_ddi.cpp",
       "target": "models/everolimus_moes_ddi.cpp",
       "gitBlob": "9d5e3f6830596732806092e15ae521db72b242fb",
@@ -707,12 +617,6 @@
       "target": "models/everolimus_terheine_ddi.cpp",
       "gitBlob": "aee7c383ee4871a239d9743d3d441cc4833f4184",
       "size": 10105
-    },
-    {
-      "source": "tdm-engine/models/fluconazole_debruyne_ddi.cpp",
-      "target": "models/fluconazole_debruyne_ddi.cpp",
-      "gitBlob": "870a47a7b442d048780acf031e3e5484f2546c59",
-      "size": 1160
     },
     {
       "source": "tdm-engine/models/genta_franck.cpp",
@@ -745,18 +649,6 @@
       "size": 26065
     },
     {
-      "source": "tdm-engine/models/isavuconazole_desai_ddi.cpp",
-      "target": "models/isavuconazole_desai_ddi.cpp",
-      "gitBlob": "2061f4a14254e171eee6fd5e0e3a7d88578fa972",
-      "size": 1811
-    },
-    {
-      "source": "tdm-engine/models/isavuconazole_groll_ddi.cpp",
-      "target": "models/isavuconazole_groll_ddi.cpp",
-      "gitBlob": "a7b2ec149588996a7e99b380b83695bfa6be1b06",
-      "size": 1442
-    },
-    {
       "source": "tdm-engine/models/levo_canoui.cpp",
       "target": "models/levo_canoui.cpp",
       "gitBlob": "4e6dcffdf57a6873587dccfdd39c8d15f008a565",
@@ -781,12 +673,6 @@
       "size": 19623
     },
     {
-      "source": "tdm-engine/models/posaconazole_dolton_ddi.cpp",
-      "target": "models/posaconazole_dolton_ddi.cpp",
-      "gitBlob": "2c0c15926da8fe52eba9917427f61bee6b05d0f6",
-      "size": 1165
-    },
-    {
       "source": "tdm-engine/models/rifampicine_chang.cpp",
       "target": "models/rifampicine_chang.cpp",
       "gitBlob": "3fcd7a2f825505b85a25800bfde7ffbaa9708936",
@@ -805,28 +691,10 @@
       "size": 3869
     },
     {
-      "source": "tdm-engine/models/rifampicine_loos_ddi.cpp",
-      "target": "models/rifampicine_loos_ddi.cpp",
-      "gitBlob": "b29e1e3aa7106c00ae0c7f90c528f8e9fc0a7fb5",
-      "size": 1148
-    },
-    {
-      "source": "tdm-engine/models/ritonavir_kappelhoff_ddi.cpp",
-      "target": "models/ritonavir_kappelhoff_ddi.cpp",
-      "gitBlob": "e926b381f5ca6c4d11d7e4f6b6a9eacde6325e0f",
-      "size": 1133
-    },
-    {
       "source": "tdm-engine/models/sirolimus_djebli_ddi.cpp",
       "target": "models/sirolimus_djebli_ddi.cpp",
       "gitBlob": "52628f04bb114c6a552ad06fd9794c70b5fc3e5d",
       "size": 3694
-    },
-    {
-      "source": "tdm-engine/models/tacrolimus_kamp_envarsus_ddi.cpp",
-      "target": "models/tacrolimus_kamp_envarsus_ddi.cpp",
-      "gitBlob": "6134c6cf4053b31250878f3be231d77c7018b19b",
-      "size": 3172
     },
     {
       "source": "tdm-engine/models/tacrolimus_woillard_ddi.cpp",
@@ -1356,7 +1224,161 @@
       "gitBlob": "2b50ad6ed0ec0e72e1f475d5788d159be185b1a8",
       "size": 45041,
       "reason": "deterministic-artifact-ordering"
+    },
+    {
+      "source": "tdm-engine/models/amiodarone_pollak_ddi.cpp",
+      "target": "models/amiodarone_pollak_ddi.cpp",
+      "gitBlob": "4b3e933161a0f98ddd9bfda07047ae5b98a7ac37",
+      "size": 1392,
+      "reason": "corrected-after-primary-source-audit"
+    },
+    {
+      "source": "tdm-engine/models/cefazoline_lanoiselee.cpp",
+      "target": "models/cefazoline_lanoiselee.cpp",
+      "gitBlob": "42769d6e9837917e60e1c7c33352a7498793fb62",
+      "size": 2759,
+      "reason": "corrected-after-primary-source-audit"
+    },
+    {
+      "source": "tdm-engine/models/cefepime_an.cpp",
+      "target": "models/cefepime_an.cpp",
+      "gitBlob": "47a70ff11be0dc7fa8b4c26d3c78b22e41e19be7",
+      "size": 2687,
+      "reason": "corrected-after-primary-source-audit"
+    },
+    {
+      "source": "tdm-engine/models/cefepime_seo.cpp",
+      "target": "models/cefepime_seo.cpp",
+      "gitBlob": "6991f129f70d60b8aa8f47f59bf2a7993604456e",
+      "size": 2848,
+      "reason": "corrected-after-primary-source-audit"
+    },
+    {
+      "source": "tdm-engine/models/ciclosporine_press_ddi.cpp",
+      "target": "models/ciclosporine_press_ddi.cpp",
+      "gitBlob": "6b2a7d096d1c8246e318443785c0729b41ba3dae",
+      "size": 3612,
+      "reason": "corrected-after-primary-source-audit"
+    },
+    {
+      "source": "tdm-engine/models/cobicistat_mathias_ddi.cpp",
+      "target": "models/cobicistat_mathias_ddi.cpp",
+      "gitBlob": "589edd01835557bb6187c21b0c4e48d11e13ee82",
+      "size": 1156,
+      "reason": "corrected-after-primary-source-audit"
+    },
+    {
+      "source": "tdm-engine/models/diltiazem_hermann_ddi.cpp",
+      "target": "models/diltiazem_hermann_ddi.cpp",
+      "gitBlob": "bed5478244352b7ed4e40e6def4641a7d27c4027",
+      "size": 1109,
+      "reason": "corrected-after-primary-source-audit"
+    },
+    {
+      "source": "tdm-engine/models/erythromycine_mather_ddi.cpp",
+      "target": "models/erythromycine_mather_ddi.cpp",
+      "gitBlob": "d94246defd90448f8c68dca60dd96649ff7f2ab6",
+      "size": 1137,
+      "reason": "corrected-after-primary-source-audit"
+    },
+    {
+      "source": "tdm-engine/models/fluconazole_debruyne_ddi.cpp",
+      "target": "models/fluconazole_debruyne_ddi.cpp",
+      "gitBlob": "870a47a7b442d048780acf031e3e5484f2546c59",
+      "size": 1160,
+      "reason": "corrected-after-primary-source-audit"
+    },
+    {
+      "source": "tdm-engine/models/isavuconazole_desai_ddi.cpp",
+      "target": "models/isavuconazole_desai_ddi.cpp",
+      "gitBlob": "2061f4a14254e171eee6fd5e0e3a7d88578fa972",
+      "size": 1811,
+      "reason": "corrected-after-primary-source-audit"
+    },
+    {
+      "source": "tdm-engine/models/isavuconazole_groll_ddi.cpp",
+      "target": "models/isavuconazole_groll_ddi.cpp",
+      "gitBlob": "a7b2ec149588996a7e99b380b83695bfa6be1b06",
+      "size": 1442,
+      "reason": "corrected-after-primary-source-audit"
+    },
+    {
+      "source": "tdm-engine/models/posaconazole_dolton_ddi.cpp",
+      "target": "models/posaconazole_dolton_ddi.cpp",
+      "gitBlob": "2c0c15926da8fe52eba9917427f61bee6b05d0f6",
+      "size": 1165,
+      "reason": "corrected-after-primary-source-audit"
+    },
+    {
+      "source": "tdm-engine/models/rifampicine_loos_ddi.cpp",
+      "target": "models/rifampicine_loos_ddi.cpp",
+      "gitBlob": "b29e1e3aa7106c00ae0c7f90c528f8e9fc0a7fb5",
+      "size": 1148,
+      "reason": "corrected-after-primary-source-audit"
+    },
+    {
+      "source": "tdm-engine/models/ritonavir_kappelhoff_ddi.cpp",
+      "target": "models/ritonavir_kappelhoff_ddi.cpp",
+      "gitBlob": "e926b381f5ca6c4d11d7e4f6b6a9eacde6325e0f",
+      "size": 1133,
+      "reason": "corrected-after-primary-source-audit"
+    },
+    {
+      "source": "tdm-engine/models/tacrolimus_kamp_envarsus_ddi.cpp",
+      "target": "models/tacrolimus_kamp_envarsus_ddi.cpp",
+      "gitBlob": "6134c6cf4053b31250878f3be231d77c7018b19b",
+      "size": 3172,
+      "reason": "corrected-after-primary-source-audit"
+    },
+    {
+      "source": "tdm-engine/ml/artifacts/cefazoline_lanoiselee-intermittent-c0-post-auc24-xgb-v4-dalex-background.rds",
+      "target": "ml/artifacts/cefazoline_lanoiselee-intermittent-c0-post-auc24-xgb-v4-dalex-background.rds",
+      "gitBlob": "98af6f3a637bc1864098a9196a72fe0dbf8b08b9",
+      "size": 15303,
+      "reason": "retrained-after-source-model-correction"
+    },
+    {
+      "source": "tdm-engine/ml/artifacts/cefazoline_lanoiselee-intermittent-c0-post-auc24-xgb-v4.rds",
+      "target": "ml/artifacts/cefazoline_lanoiselee-intermittent-c0-post-auc24-xgb-v4.rds",
+      "gitBlob": "4abf28f06231ffcca86845a82f15d75a4268df44",
+      "size": 111155,
+      "reason": "retrained-after-source-model-correction"
+    },
+    {
+      "source": "tdm-engine/ml/artifacts/cefepime_an-intermittent-c0-post-auc24-xgb-v4-dalex-background.rds",
+      "target": "ml/artifacts/cefepime_an-intermittent-c0-post-auc24-xgb-v4-dalex-background.rds",
+      "gitBlob": "196bfdc7625c3c35bc5dc8c6bb0af979a1ef98f8",
+      "size": 18015,
+      "reason": "retrained-after-source-model-correction"
+    },
+    {
+      "source": "tdm-engine/ml/artifacts/cefepime_an-intermittent-c0-post-auc24-xgb-v4.rds",
+      "target": "ml/artifacts/cefepime_an-intermittent-c0-post-auc24-xgb-v4.rds",
+      "gitBlob": "26946fae917f265754d09ea5ac8fc06e9e06843d",
+      "size": 115896,
+      "reason": "retrained-after-source-model-correction"
+    },
+    {
+      "source": "tdm-engine/ml/artifacts/cefepime_seo-intermittent-c0-post-auc24-xgb-v4-dalex-background.rds",
+      "target": "ml/artifacts/cefepime_seo-intermittent-c0-post-auc24-xgb-v4-dalex-background.rds",
+      "gitBlob": "07932b5486d54d33a2319ffd2586219dd0043daa",
+      "size": 18132,
+      "reason": "retrained-after-source-model-correction"
+    },
+    {
+      "source": "tdm-engine/ml/artifacts/cefepime_seo-intermittent-c0-post-auc24-xgb-v4.rds",
+      "target": "ml/artifacts/cefepime_seo-intermittent-c0-post-auc24-xgb-v4.rds",
+      "gitBlob": "685deb8e80cec30d559c02879afb0f79f802fe44",
+      "size": 110513,
+      "reason": "retrained-after-source-model-correction"
+    },
+    {
+      "source": "tdm-engine/ml/training-populations.json",
+      "target": "ml/training-populations.json",
+      "gitBlob": "d7ffb35b85145f60629013498ca5e801eb1e34ff",
+      "size": 16525,
+      "reason": "covariates-aligned-with-source-audited-models"
     }
   ],
-  "adaptedCount": 22
+  "adaptedCount": 44
 }

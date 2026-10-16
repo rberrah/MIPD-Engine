@@ -1,152 +1,64 @@
 {
-  "version": 1,
+  "version": 2,
   "reviewDate": "2026-10-16",
-  "scope": "Author-led comparison of the executable library model with the locally available primary full text. This is not an independent reproduction of the source analysis.",
+  "scope": "Author-led comparison of every executable library model with its primary publication at the stated evidence level. The historical _ddi suffix is ignored for scientific scope. This is not an independent reproduction of the source analysis.",
   "resultDefinitions": {
     "ARTICLE_ALIGNED": "Published structure, fixed effects, covariates, variability and residual model are represented without an identified structural adaptation.",
-    "DOCUMENTED_ADAPTATION_CONFIRMED": "The executable model differs from the publication, and the difference is explicitly documented in catalog metadata.",
-    "SOURCE_AMBIGUITY_DOCUMENTED": "The publication contains an ambiguity that cannot be resolved without the source control stream or supplementary model files."
+    "DOCUMENTED_ADAPTATION_CONFIRMED": "The executable model differs from the publication, and every identified difference is explicitly documented in model code and catalog metadata.",
+    "SOURCE_AMBIGUITY_DOCUMENTED": "The publication contains an ambiguity that cannot be resolved without the source control stream or supplementary model files. The retained interpretation is explicit."
+  },
+  "evidenceDefinitions": {
+    "LOCAL_PRIMARY_FULL_TEXT": "Primary article PDF reviewed locally; the private PDF is excluded from Git.",
+    "OPEN_PRIMARY_FULL_TEXT": "Primary full text reviewed from an open publisher or repository copy.",
+    "PRIMARY_ABSTRACT_ONLY": "Primary abstract and bibliographic record reviewed; equation-level verification remains limited.",
+    "PRIMARY_ABSTRACT_PLUS_SECONDARY_FULL_TEXT": "Primary abstract reviewed and parameter context cross-checked against a full secondary scientific source."
   },
   "reviewed": [
-    {
-      "id": "amik_burdet",
-      "result": "DOCUMENTED_ADAPTATION_CONFIRMED",
-      "note": "The executable file represents the base model from Table 2, not the final covariate model. It remains simulation-only."
-    },
-    {
-      "id": "amox_carlier",
-      "result": "ARTICLE_ALIGNED",
-      "note": "Two-compartment structure, creatinine-clearance effect, variability and proportional residual error align with the article. The zero additive variance only satisfies the two-term engine contract."
-    },
-    {
-      "id": "amox_mellon",
-      "result": "DOCUMENTED_ADAPTATION_CONFIRMED",
-      "note": "Fixed and random-effect values align with Table 2; the oral transit chain remains a reconstruction because executable transit equations are absent from the main article."
-    },
-    {
-      "id": "amox_rambaud",
-      "result": "DOCUMENTED_ADAPTATION_CONFIRMED",
-      "note": "The source NPAG model is nonparametric; the log-normal OMEGA prior is an explicit mapbayr approximation."
-    },
-    {
-      "id": "cefazoline_cheng",
-      "result": "DOCUMENTED_ADAPTATION_CONFIRMED",
-      "note": "The final unbound-concentration equations, including the published Q exponent 0.78, are retained. Published occasion variability is omitted."
-    },
-    {
-      "id": "cefepime_jonckheere",
-      "result": "ARTICLE_ALIGNED",
-      "note": "Structure, dialysis branch, fixed effects and log-normal variance conversion align with the publication."
-    },
-    {
-      "id": "dapto_dvorchik_IV_adults",
-      "result": "ARTICLE_ALIGNED",
-      "note": "The two-compartment equations, dialysis, sex and infection effects and LC-MS/MS residual error align with the publication."
-    },
-    {
-      "id": "dapto_garreau",
-      "result": "DOCUMENTED_ADAPTATION_CONFIRMED",
-      "note": "Published fixed effects and between-subject variability are retained; inter-occasion variability on CL and V1 is omitted."
-    },
-    {
-      "id": "genta_franck",
-      "result": "DOCUMENTED_ADAPTATION_CONFIRMED",
-      "note": "The publication is ambiguous about lean versus total body weight for V; the engine's total-weight choice is documented."
-    },
-    {
-      "id": "genta_gomes",
-      "result": "DOCUMENTED_ADAPTATION_CONFIRMED",
-      "note": "The article does not provide the exact corrected lean-body-mass and Cockcroft-Gault variants; the implemented choices are documented."
-    },
-    {
-      "id": "genta_hodiamont",
-      "result": "DOCUMENTED_ADAPTATION_CONFIRMED",
-      "note": "Cockcroft-Gault substitution, albumin bounds and unreported Q/V2 allometric assumptions are documented engine adaptations."
-    },
-    {
-      "id": "genta_rosario_clcr",
-      "result": "DOCUMENTED_ADAPTATION_CONFIRMED",
-      "note": "Clinical formulas are reconstructed from available covariates; unreported covariance and V1 variability are not invented."
-    },
-    {
-      "id": "genta_rosario_clinical",
-      "result": "DOCUMENTED_ADAPTATION_CONFIRMED",
-      "note": "Clinical formulas are reconstructed from available covariates; unreported covariance and V1 variability are not invented."
-    },
-    {
-      "id": "levo_canoui",
-      "result": "ARTICLE_ALIGNED",
-      "note": "One-compartment oral structure, renal and age covariates, variability and residual error align with the article."
-    },
-    {
-      "id": "levo_gergs",
-      "result": "DOCUMENTED_ADAPTATION_CONFIRMED",
-      "note": "The irreversible bone compartment is omitted for repeated-dose plasma simulation, and unpublished residual terms are marked pragmatic."
-    },
-    {
-      "id": "linez_buerger",
-      "result": "DOCUMENTED_ADAPTATION_CONFIRMED",
-      "note": "The publication reports an individual PK analysis; its use as a population prior is an explicit simulation-only adaptation."
-    },
-    {
-      "id": "linez_sasaki",
-      "result": "DOCUMENTED_ADAPTATION_CONFIRMED",
-      "note": "Oral bioavailability and the female Cockcroft-Gault factor are engine assumptions; the published platelet PD component is out of scope."
-    },
-    {
-      "id": "rifampicine_chang",
-      "result": "SOURCE_AMBIGUITY_DOCUMENTED",
-      "note": "The printed BMI effect on CL lacks an operator before 6.22; the retained historical interpretation is explicitly flagged."
-    },
-    {
-      "id": "rifampicine_jing",
-      "result": "ARTICLE_ALIGNED",
-      "note": "One-compartment oral structure and reported fixed, random and residual parameters align with the article."
-    },
-    {
-      "id": "rifampicine_marsot",
-      "result": "SOURCE_AMBIGUITY_DOCUMENTED",
-      "note": "The final additive estimate 2.256 mg/L is implemented as an SD and squared for mrgsolve. The article also mentions log-transformed data despite its concentration-scale equation."
-    },
-    {
-      "id": "vanco_goti",
-      "result": "ARTICLE_ALIGNED",
-      "note": "Structure and covariates align with the article. CL OMEGA is converted consistently from the published 39.8% CV using log(1 + CV^2)."
-    },
-    {
-      "id": "vanco_pkjust",
-      "result": "ARTICLE_ALIGNED",
-      "note": "The Revilla equations, measured 24-hour creatinine clearance and additive residual SD align with the article."
-    },
-    {
-      "id": "vanco_roberts",
-      "result": "ARTICLE_ALIGNED",
-      "note": "The continuous-infusion structure, measured 24-hour creatinine clearance and published parameter values align with the article."
-    }
-  ],
-  "awaitingFullText": [
-    "amiodarone_pollak_ddi",
-    "amox_fournier",
-    "cefazoline_lanoiselee",
-    "cefazoline_schmitz",
-    "cefepime_an",
-    "cefepime_seo",
-    "ciclosporine_press_ddi",
-    "cobicistat_mathias_ddi",
-    "diltiazem_hermann_ddi",
-    "erythromycine_mather_ddi",
-    "everolimus_moes_ddi",
-    "everolimus_terheine_ddi",
-    "fluconazole_debruyne_ddi",
-    "isavuconazole_desai_ddi",
-    "isavuconazole_groll_ddi",
-    "posaconazole_dolton_ddi",
-    "rifampicine_jeremiah",
-    "rifampicine_loos_ddi",
-    "ritonavir_kappelhoff_ddi",
-    "sirolimus_djebli_ddi",
-    "tacrolimus_kamp_envarsus_ddi",
-    "tacrolimus_woillard_ddi",
-    "voriconazole_vandenborn_ddi"
+    {"id":"amik_burdet","result":"DOCUMENTED_ADAPTATION_CONFIRMED","evidence":"LOCAL_PRIMARY_FULL_TEXT","fullTextReviewed":true,"note":"The executable file represents the base model from Table 2, not the final covariate model. It remains simulation-only."},
+    {"id":"amiodarone_pollak_ddi","result":"DOCUMENTED_ADAPTATION_CONFIRMED","evidence":"PRIMARY_ABSTRACT_ONLY","fullTextReviewed":false,"note":"Published CL/F, Q/F, V1/F, V2/F and reported IIV replace the previous mismatched values. Absorption and residual terms remain explicit simulation assumptions pending the full model specification."},
+    {"id":"amox_carlier","result":"ARTICLE_ALIGNED","evidence":"LOCAL_PRIMARY_FULL_TEXT","fullTextReviewed":true,"note":"Two-compartment structure, creatinine-clearance effect, variability and proportional residual error align with the article. The zero additive variance only satisfies the two-term engine contract."},
+    {"id":"amox_fournier","result":"DOCUMENTED_ADAPTATION_CONFIRMED","evidence":"OPEN_PRIMARY_FULL_TEXT","fullTextReviewed":true,"note":"Published fixed effects and the renal and weight relationships are retained. The printed clearance relationship requires an explicit centered implementation choice, and only CL IIV is represented; simulation only."},
+    {"id":"amox_mellon","result":"DOCUMENTED_ADAPTATION_CONFIRMED","evidence":"LOCAL_PRIMARY_FULL_TEXT","fullTextReviewed":true,"note":"Fixed and random-effect values align with Table 2; the oral transit chain remains a reconstruction because executable transit equations are absent from the main article."},
+    {"id":"amox_rambaud","result":"DOCUMENTED_ADAPTATION_CONFIRMED","evidence":"LOCAL_PRIMARY_FULL_TEXT","fullTextReviewed":true,"note":"The source NPAG model is nonparametric; the log-normal OMEGA prior is an explicit mapbayr approximation."},
+    {"id":"cefazoline_cheng","result":"DOCUMENTED_ADAPTATION_CONFIRMED","evidence":"LOCAL_PRIMARY_FULL_TEXT","fullTextReviewed":true,"note":"The final unbound-concentration equations, including the published Q exponent 0.78, are retained. Published occasion variability is omitted."},
+    {"id":"cefazoline_lanoiselee","result":"ARTICLE_ALIGNED","evidence":"OPEN_PRIMARY_FULL_TEXT","fullTextReviewed":true,"note":"Two-compartment structure, CKD-EPI effect, correlated CL-Vc block, Q/Vp variability and proportional residual error now use the published Monolix omega scale."},
+    {"id":"cefazoline_schmitz","result":"DOCUMENTED_ADAPTATION_CONFIRMED","evidence":"OPEN_PRIMARY_FULL_TEXT","fullTextReviewed":true,"note":"Published CL and V1 inter-occasion effects are omitted and the combined1 residual SD is represented by the engine's combined2 error. The model remains simulation-only."},
+    {"id":"cefepime_an","result":"ARTICLE_ALIGNED","evidence":"OPEN_PRIMARY_FULL_TEXT","fullTextReviewed":true,"note":"Renal, CRRT and nonrenal clearance components, volumes, IIV and combined residual error align with the final model; NONMEM omega percentages are encoded as squared SDs."},
+    {"id":"cefepime_jonckheere","result":"ARTICLE_ALIGNED","evidence":"LOCAL_PRIMARY_FULL_TEXT","fullTextReviewed":true,"note":"Structure, dialysis branch, fixed effects and random-effect scale align with the publication."},
+    {"id":"cefepime_seo","result":"ARTICLE_ALIGNED","evidence":"OPEN_PRIMARY_FULL_TEXT","fullTextReviewed":true,"note":"Structure, Cockcroft-Gault effect, fixed effects, IIV and proportional residual error align with Table 2; NONMEM omega percentages are encoded as squared SDs."},
+    {"id":"ciclosporine_press_ddi","result":"DOCUMENTED_ADAPTATION_CONFIRMED","evidence":"OPEN_PRIMARY_FULL_TEXT","fullTextReviewed":true,"note":"Published weight scaling, prednisolone effects, IIV and residual model are retained and the unsupported CYP3A5 baseline effect was removed. IOV on F is omitted; the CYP3A fraction is an interaction-only adaptation."},
+    {"id":"cobicistat_mathias_ddi","result":"DOCUMENTED_ADAPTATION_CONFIRMED","evidence":"PRIMARY_ABSTRACT_PLUS_SECONDARY_FULL_TEXT","fullTextReviewed":false,"note":"The source is a nonlinear dose-ranging NCA study, not a PopPK model. The module is now explicitly limited to the published 50 mg steady-state CL/F and Vz/F; ka and random effects are assumptions."},
+    {"id":"dapto_dvorchik_IV_adults","result":"ARTICLE_ALIGNED","evidence":"LOCAL_PRIMARY_FULL_TEXT","fullTextReviewed":true,"note":"The two-compartment equations, dialysis, sex and infection effects and LC-MS/MS residual error align with the publication."},
+    {"id":"dapto_garreau","result":"DOCUMENTED_ADAPTATION_CONFIRMED","evidence":"LOCAL_PRIMARY_FULL_TEXT","fullTextReviewed":true,"note":"Published fixed effects and between-subject variability are retained; inter-occasion variability on CL and V1 is omitted."},
+    {"id":"diltiazem_hermann_ddi","result":"DOCUMENTED_ADAPTATION_CONFIRMED","evidence":"PRIMARY_ABSTRACT_ONLY","fullTextReviewed":false,"note":"The source reports biphasic IV disposition and summary NCA values rather than a reusable PopPK model. The executable profile now uses the published 70 kg mean CL, V and F in a documented one-compartment approximation; ka is assumed."},
+    {"id":"erythromycine_mather_ddi","result":"DOCUMENTED_ADAPTATION_CONFIRMED","evidence":"OPEN_PRIMARY_FULL_TEXT","fullTextReviewed":true,"note":"The source reports formulation-, meal- and occasion-dependent bioavailability after individual IV characterization, not a reusable PopPK model. F=0.40 represents base after meals; CL, V and ka are declared assumptions."},
+    {"id":"everolimus_moes_ddi","result":"DOCUMENTED_ADAPTATION_CONFIRMED","evidence":"PRIMARY_ABSTRACT_PLUS_SECONDARY_FULL_TEXT","fullTextReviewed":false,"note":"Published fixed effects and reported IIV are retained. The TDM-induced dose-clearance association is deliberately omitted, pragmatic Q/V2 variances are added and the CYP3A split is interaction-only."},
+    {"id":"everolimus_terheine_ddi","result":"DOCUMENTED_ADAPTATION_CONFIRMED","evidence":"OPEN_PRIMARY_FULL_TEXT","fullTextReviewed":true,"note":"The mechanistic structure and published parameters are retained. Liver volume is approximated, MAT IOV is represented as IIV and the non-CYP fraction is interaction-only."},
+    {"id":"fluconazole_debruyne_ddi","result":"DOCUMENTED_ADAPTATION_CONFIRMED","evidence":"PRIMARY_ABSTRACT_ONLY","fullTextReviewed":false,"note":"The cited source is a clinical PK review, not a PopPK model. Published mean CL, F and half-life-derived V are used; ka and random effects are documented simulation assumptions."},
+    {"id":"genta_franck","result":"DOCUMENTED_ADAPTATION_CONFIRMED","evidence":"LOCAL_PRIMARY_FULL_TEXT","fullTextReviewed":true,"note":"The publication is ambiguous about lean versus total body weight for V; the engine's total-weight choice is documented."},
+    {"id":"genta_gomes","result":"DOCUMENTED_ADAPTATION_CONFIRMED","evidence":"LOCAL_PRIMARY_FULL_TEXT","fullTextReviewed":true,"note":"The article does not provide the exact corrected lean-body-mass and Cockcroft-Gault variants; the implemented choices are documented."},
+    {"id":"genta_hodiamont","result":"DOCUMENTED_ADAPTATION_CONFIRMED","evidence":"LOCAL_PRIMARY_FULL_TEXT","fullTextReviewed":true,"note":"Cockcroft-Gault substitution, albumin bounds and unreported Q/V2 allometric assumptions are documented engine adaptations."},
+    {"id":"genta_rosario_clcr","result":"DOCUMENTED_ADAPTATION_CONFIRMED","evidence":"LOCAL_PRIMARY_FULL_TEXT","fullTextReviewed":true,"note":"Clinical formulas are reconstructed from available covariates; unreported covariance and V1 variability are not invented."},
+    {"id":"genta_rosario_clinical","result":"DOCUMENTED_ADAPTATION_CONFIRMED","evidence":"LOCAL_PRIMARY_FULL_TEXT","fullTextReviewed":true,"note":"Clinical formulas are reconstructed from available covariates; unreported covariance and V1 variability are not invented."},
+    {"id":"isavuconazole_desai_ddi","result":"DOCUMENTED_ADAPTATION_CONFIRMED","evidence":"OPEN_PRIMARY_FULL_TEXT","fullTextReviewed":true,"note":"Weibull absorption, race and patient-status effects, BMI effect and reported IIV are retained. Patient CL variability and one residual branch are used by default instead of study-specific branches."},
+    {"id":"isavuconazole_groll_ddi","result":"DOCUMENTED_ADAPTATION_CONFIRMED","evidence":"PRIMARY_ABSTRACT_ONLY","fullTextReviewed":false,"note":"The cited work is an NCA DDI study and provides no reusable PopPK model. The entry is explicitly a rounded mean-profile reconstruction for interaction simulation, not an article model or MAP prior."},
+    {"id":"levo_canoui","result":"ARTICLE_ALIGNED","evidence":"LOCAL_PRIMARY_FULL_TEXT","fullTextReviewed":true,"note":"One-compartment oral structure, renal and age covariates, variability and residual error align with the article."},
+    {"id":"levo_gergs","result":"DOCUMENTED_ADAPTATION_CONFIRMED","evidence":"LOCAL_PRIMARY_FULL_TEXT","fullTextReviewed":true,"note":"The irreversible bone compartment is omitted for repeated-dose plasma simulation, and unpublished residual terms are marked pragmatic."},
+    {"id":"linez_buerger","result":"DOCUMENTED_ADAPTATION_CONFIRMED","evidence":"LOCAL_PRIMARY_FULL_TEXT","fullTextReviewed":true,"note":"The publication reports an individual PK analysis; its use as a population prior is an explicit simulation-only adaptation."},
+    {"id":"linez_sasaki","result":"DOCUMENTED_ADAPTATION_CONFIRMED","evidence":"LOCAL_PRIMARY_FULL_TEXT","fullTextReviewed":true,"note":"Oral bioavailability and the female Cockcroft-Gault factor are engine assumptions; the published platelet PD component is out of scope."},
+    {"id":"posaconazole_dolton_ddi","result":"DOCUMENTED_ADAPTATION_CONFIRMED","evidence":"OPEN_PRIMARY_FULL_TEXT","fullTextReviewed":true,"note":"The previous mismatched CL, V, ka and F were replaced by the published one-compartment lag model and its medication and clinical covariates. Patient-study IIV/error are defaults instead of separate study branches."},
+    {"id":"rifampicine_chang","result":"SOURCE_AMBIGUITY_DOCUMENTED","evidence":"LOCAL_PRIMARY_FULL_TEXT","fullTextReviewed":true,"note":"The printed BMI effect on CL lacks an operator before 6.22; the retained historical interpretation is explicitly flagged."},
+    {"id":"rifampicine_jeremiah","result":"DOCUMENTED_ADAPTATION_CONFIRMED","evidence":"OPEN_PRIMARY_FULL_TEXT","fullTextReviewed":true,"note":"Published transit absorption and time-dependent autoinduction are retained. HIV, nutritional supplementation, continuation-phase, between-occasion effects and most random effects are omitted."},
+    {"id":"rifampicine_jing","result":"ARTICLE_ALIGNED","evidence":"LOCAL_PRIMARY_FULL_TEXT","fullTextReviewed":true,"note":"One-compartment oral structure and reported fixed, random and residual parameters align with the article."},
+    {"id":"rifampicine_loos_ddi","result":"DOCUMENTED_ADAPTATION_CONFIRMED","evidence":"PRIMARY_ABSTRACT_ONLY","fullTextReviewed":false,"note":"Published chronic-dose CL and F replace the previous mismatched clearance. V and ka are not reported in the accessible source summary and remain explicit mean-profile assumptions."},
+    {"id":"rifampicine_marsot","result":"SOURCE_AMBIGUITY_DOCUMENTED","evidence":"LOCAL_PRIMARY_FULL_TEXT","fullTextReviewed":true,"note":"The final additive estimate 2.256 mg/L is implemented as an SD and squared for mrgsolve. The article also mentions log-transformed data despite its concentration-scale equation."},
+    {"id":"ritonavir_kappelhoff_ddi","result":"DOCUMENTED_ADAPTATION_CONFIRMED","evidence":"OPEN_PRIMARY_FULL_TEXT","fullTextReviewed":true,"note":"Published typical values, lag, lopinavir effect and IIV replace the previous generic module. IOV on F, V-ka covariance and the two-population residual mixture are omitted; the dominant residual component is used."},
+    {"id":"sirolimus_djebli_ddi","result":"DOCUMENTED_ADAPTATION_CONFIRMED","evidence":"PRIMARY_ABSTRACT_ONLY","fullTextReviewed":false,"note":"Published two-compartment Erlang structure, fixed effects and additive CYP3A5 clearance effect are retained. Several variances and the interaction-only non-CYP fraction are pragmatic."},
+    {"id":"tacrolimus_kamp_envarsus_ddi","result":"DOCUMENTED_ADAPTATION_CONFIRMED","evidence":"OPEN_PRIMARY_FULL_TEXT","fullTextReviewed":true,"note":"Published fixed effects, weight allometry, correlated CL-V1 block, KTR variability and lag class replace the prior Woillard-derived variability and unsupported CYP effect. CL IOV and per-sample residual switching are omitted; DDI splitting is interaction-only."},
+    {"id":"tacrolimus_woillard_ddi","result":"DOCUMENTED_ADAPTATION_CONFIRMED","evidence":"OPEN_PRIMARY_FULL_TEXT","fullTextReviewed":true,"note":"Published Prograf/Advagraf PK, covariates, IIV and residual model are retained. The interaction clearance split preserves baseline clearance exactly and is the only non-source mechanism."},
+    {"id":"vanco_goti","result":"ARTICLE_ALIGNED","evidence":"LOCAL_PRIMARY_FULL_TEXT","fullTextReviewed":true,"note":"Structure and covariates align with the article. CL OMEGA is converted consistently from the published 39.8% CV using log(1 + CV^2)."},
+    {"id":"vanco_pkjust","result":"ARTICLE_ALIGNED","evidence":"LOCAL_PRIMARY_FULL_TEXT","fullTextReviewed":true,"note":"The Revilla equations, measured 24-hour creatinine clearance and additive residual SD align with the article."},
+    {"id":"vanco_roberts","result":"ARTICLE_ALIGNED","evidence":"LOCAL_PRIMARY_FULL_TEXT","fullTextReviewed":true,"note":"The continuous-infusion structure, measured 24-hour creatinine clearance and published parameter values align with the article."},
+    {"id":"voriconazole_vandenborn_ddi","result":"DOCUMENTED_ADAPTATION_CONFIRMED","evidence":"OPEN_PRIMARY_FULL_TEXT","fullTextReviewed":true,"note":"Published nonlinear one-compartment structure, CRP effect and fixed parameters are retained. Only Vmax IIV is represented and the residual prior is an engine adaptation; simulation only."}
   ]
 }

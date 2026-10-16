@@ -26,10 +26,10 @@ SEX   : 0    : Sexe (0 = Homme, 1 = Femme)
 CRRT  : 0    : Epuration continue (0 = Non, 1 = Oui)
 
 $OMEGA @annotated @diagonal
-// Variances approximées par ln(CV^2 + 1)
-ETA_CLT : 0.08563 : IIV Clairance Totale (CV 29.9%)
-ETA_VC  : 0.35608 : IIV Volume Central (CV 65.4%)
-ETA_VP  : 0.02949 : IIV Volume Périphérique (CV 17.3%)
+// NONMEM variance = (reported omega percent / 100)^2
+ETA_CLT : 0.089401 : IIV Clairance Totale (29.9%)
+ETA_VC  : 0.427716 : IIV Volume Central (65.4%)
+ETA_VP  : 0.029929 : IIV Volume Périphérique (17.3%)
 
 $SIGMA @annotated
 PROP : 0.050176 : Erreur résiduelle proportionnelle (CV 22.4%)

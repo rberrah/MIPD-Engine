@@ -13,28 +13,30 @@ TVQ   : 74.9 : Typical intercompartmental clearance (L/h)
 TVV2  : 500  : Typical peripheral volume of distribution (Fixed) (L per 70 kg)
 TVKTR : 0.752 : Typical transit rate constant (1/h)
 LAG   : 2.29  : Lag time (h)
-
-// --- EFFET DES COVARIABLES ---
-CYPCL : 1.625 : effect of CYP on cl
+WTREF : 70 : Published allometric reference weight (kg)
+ALLOCL : 0.75 : Fixed allometric exponent on CL and Q
+ALLOV : 1.0 : Fixed allometric exponent on V1 and V2
 
 // --- ETAs---
 ETA1  : 0 : ETA on clearance
 ETA2  : 0 : ETA on V1
-ETA3  : 0 : ETA on Q
-ETA4  : 0 : ETA on V2
-ETA5  : 0 : ETA on KTR
+ETA3  : 0 : ETA on KTR
 
 // Covariates MUST live in an @covariates block: mapbayr refuses a data set whose
 // columns match a plain $PARAM entry. The perpetrator and mechanism parameters
 // belong here too, since a perpetrator may bring a covariate of its own (CRP).
-// This model has no haematocrit term - that is intentional, and the application
-// warns the user that Envarsus ignores the haematocrit.
+// The final article model retained no clinical covariate beyond a priori weight
+// scaling. The lagged class represents 74% of the source population.
 $PARAM @annotated @covariates
-CYP  :    0 : expressor (1) non exp(0)
+WT : 70 : Body weight (kg)
+MIX_LAGGED_ABS : 1 : Lagged absorption class (1 = lagged, 0 = no lag)
 
-
-$OMEGA 0.08 0.10 0.29 0.36 0.06
-$SIGMA 0.208 0.307
+$OMEGA @block @annotated
+IIV_CL : 0.0979      : Published CL variance
+IIV_V1 : 0.23 0.609 : Published CL-V1 covariance / V1 variance
+$OMEGA @annotated
+IIV_KTR : 0.312 : Published KTR variance
+$SIGMA 0.043264 0.0
 
 $CMT @annotated
 DEPOT_TAC   : Tac depot [ADM]
@@ -49,12 +51,14 @@ $MAIN
 // Initialisation des pools d'enzymes si nécessaire
 
 // Calculs Tacrolimus
-double CL0 = TVCL * pow(CYPCL,CYP) * exp(ETA1 + ETA(1));
-double V1  = TVV1 * exp(ETA2 + ETA(2));
-double Q   = TVQ * exp(ETA3 + ETA(3));
-double V2  = TVV2 * exp(ETA4 + ETA(4));
-double KTR = TVKTR * exp(ETA5 + ETA(5));
-double ALAG = LAG;
+double SCALE_CL = pow(WT / WTREF, ALLOCL);
+double SCALE_V = pow(WT / WTREF, ALLOV);
+double CL0 = TVCL * SCALE_CL * exp(ETA1 + ETA(1));
+double V1  = TVV1 * SCALE_V * exp(ETA2 + ETA(2));
+double Q   = TVQ * SCALE_CL;
+double V2  = TVV2 * SCALE_V;
+double KTR = TVKTR * exp(ETA3 + ETA(3));
+double ALAG = LAG * MIX_LAGGED_ABS;
 
 ALAG_DEPOT_TAC = ALAG;
 
@@ -62,10 +66,6 @@ ALAG_DEPOT_TAC = ALAG;
 double fm_sys = 0.05;
 double f3A4 = 0.95;
 double f3A5 = 0.0;
-if(CYP == 1) {
-    f3A4 = (1.0 - fm_sys) / CYPCL;
-    f3A5 = (CYPCL - 1.0 - fm_sys) / CYPCL;
-}
 
 
 $ODE
