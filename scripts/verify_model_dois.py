@@ -24,7 +24,7 @@ HEADERS = {
 }
 
 DRUG_ALIASES = {
-    "amik": ["amikacin"], "amox": ["amoxicillin"],
+    "amik": ["amikacin"], "amiodarone": ["amiodarone"], "amox": ["amoxicillin"],
     "cefazoline": ["cefazolin"], "cefepime": ["cefepime"],
     "ciclosporine": ["ciclosporin", "cyclosporin", "cyclosporine"],
     "cobicistat": ["cobicistat", "gs9350"],
