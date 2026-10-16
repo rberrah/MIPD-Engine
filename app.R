@@ -67,6 +67,10 @@ target_value_label <- function(metric, row, lang = "fr") {
 }
 
 APP_ROOT <- normalizePath(getwd(), winslash = "/", mustWork = TRUE)
+# A release fingerprint belongs to the deployed Shiny bundle. Enforce its
+# restrictive public profile at runtime rather than trusting CI host env vars.
+source(file.path(APP_ROOT, "R", "deployment_profile.R"), local = TRUE)
+enforce_mipd_deployment_profile(APP_ROOT)
 source(file.path(APP_ROOT, "R", "model_library.R"), local = TRUE)
 source(file.path(APP_ROOT, "R", "model_cards.R"), local = TRUE)
 source(file.path(APP_ROOT, "R", "private_workspace.R"), local = TRUE)

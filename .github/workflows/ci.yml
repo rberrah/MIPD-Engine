@@ -21,6 +21,10 @@ jobs:
           python-version: "3.13"
       - name: Verify frozen PMx origin hashes
         run: python scripts/verify_origin_manifest.py
+      - name: Check public-release probe rejects stale and unsafe versions
+        run: python3 tests/check_live_deployment_test.py
+      - name: Syntax-check public session browser probe
+        run: python3 -m py_compile scripts/check_live_deployment.py scripts/check_live_sessions.py
       - name: Check model and ML DOI provenance consistency
         run: python scripts/check_doi_consistency.py
       - name: Regenerate standalone model catalogue
@@ -44,6 +48,13 @@ jobs:
           cache-version: 1
       - name: Verify exact core runtime contract
         run: Rscript scripts/check_runtime.R core
+      - name: Verify immutable runtime public safety policy
+        run: Rscript tests/deployment_profile_test.R
+      - name: Validate release fingerprint and full production app bundle offline
+        shell: bash
+        run: |
+          Rscript scripts/deploy_shiny.R --verify-bundle
+          test ! -e www/deployment-release.json
       - name: Validate standalone public deployment manifest
         env:
           ALLOW_CUSTOM_MODELS: "false"
@@ -80,7 +91,7 @@ jobs:
           set -euo pipefail
           for test in tests/*.R; do
             case "$(basename "$test")" in
-              validate_library.R|model_reference_cases.R|source_equation_reproduction.R|goti_source_equations.R|independent_map_prior_oracles.R|amox_carlier_analytical_invariants.R|safe_lego_test.R|privacy_nonretention_test.R|pmetrics_backend_test.R|advanced_lego_test.R|lego_external_exports.R|lego_mlxtran_exports.R|lego_native_exports.R|covariates_native_test.R|input_labs_test.R|teaching_lab_test.R|workshop_pk_test.R)
+              validate_library.R|model_reference_cases.R|source_equation_reproduction.R|goti_source_equations.R|independent_map_prior_oracles.R|amox_carlier_analytical_invariants.R|deployment_profile_test.R|safe_lego_test.R|privacy_nonretention_test.R|pmetrics_backend_test.R|advanced_lego_test.R|lego_external_exports.R|lego_mlxtran_exports.R|lego_native_exports.R|covariates_native_test.R|input_labs_test.R|teaching_lab_test.R|workshop_pk_test.R)
                 continue
                 ;;
             esac
