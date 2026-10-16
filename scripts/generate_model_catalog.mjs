@@ -331,7 +331,7 @@ async function main() {
   const models = files.map((file) => parseModelFile(file, metadata, englishMetadata, modelCode.get(file)));
   const ids = new Set(models.map((model) => model.id));
   if (ids.size !== models.length) throw new Error('Duplicate TDM model identifiers detected.');
-  const extraMetadata = Object.keys(metadata).filter((id) => !allIds.has(id));
+  const extraMetadata = Object.keys(metadata).filter((id) => !allIds.has(id) && metadata[id]?.listed !== false);
   if (extraMetadata.length) throw new Error(`Metadata without a matching model: ${extraMetadata.join(', ')}`);
 
   const output = `${JSON.stringify({ version: 5, models }, null, 2)}\n`;
