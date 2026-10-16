@@ -1,0 +1,61 @@
+{
+  "status": "passed",
+  "generated_on": "2026-10-11",
+  "mode": "official-full",
+  "provenance": {
+    "package": "Pmetrics",
+    "package_version": "3.2.6",
+    "package_remote_sha": "56132879ede7194972d19f8d20acc586e65a9352",
+    "source_file": "Examples/src/bimodal_ke.csv",
+    "source_md5": "671784822e268644a00d353635353183",
+    "source_url": "https://github.com/LAPKB/Pmetrics/tree/v3.2.6/inst/Examples",
+    "data_are_loaded_from_installed_package": true
+  },
+  "design": {
+    "subjects": 51,
+    "algorithm": "NPAG",
+    "seed": 22,
+    "cycles": 1000,
+    "initial_points": 2028,
+    "parameter_bounds": {
+      "ke_per_h": [0.001, 3],
+      "v_L": [25, 250]
+    },
+    "error_model": "additive(1, c(0.0, 0.5, 0.0, 0.0))"
+  },
+  "analytical": {
+    "label": "official-analytical-shortcut",
+    "status": "Stopped (converged)",
+    "elapsed_seconds": 19.63,
+    "support_points": 44,
+    "weights_sum": 1,
+    "mean_ke_per_h": 0.187,
+    "mean_v_L": 107.7399,
+    "minimum_ke_per_h": 0.014,
+    "maximum_ke_per_h": 1.0004,
+    "minimum_v_L": 67.3718,
+    "maximum_v_L": 201.9756
+  },
+  "ode_reference": {
+    "label": "official-ode-reference",
+    "status": "Stopped (converged)",
+    "elapsed_seconds": 20.06,
+    "support_points": 45,
+    "weights_sum": 1,
+    "mean_ke_per_h": 0.187,
+    "mean_v_L": 107.7255,
+    "minimum_ke_per_h": 0.014,
+    "maximum_ke_per_h": 1.0028,
+    "minimum_v_L": 67.3718,
+    "maximum_v_L": 201.2285
+  },
+  "comparison": {
+    "relative_difference_percent": {
+      "ke": 0.0247,
+      "v": 0.0134
+    },
+    "tolerance_percent": 2,
+    "passed": true,
+    "interpretation": "Numerical equivalence check between the two official Pmetrics formulations; not clinical validation."
+  }
+}

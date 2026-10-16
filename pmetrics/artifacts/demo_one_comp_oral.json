@@ -1,0 +1,34 @@
+{
+  "$schema": "../schema/pmetrics-artifact-v1.schema.json",
+  "schemaVersion": 1,
+  "id": "demo_one_comp_oral",
+  "engine": "Pmetrics",
+  "label": "Demonstration Pmetrics - oral 1 compartiment",
+  "labelEn": "Pmetrics demonstration - one-compartment oral",
+  "status": "demonstration",
+  "description": "Artefact synthetique pour tester une absorption orale d'ordre 1. Il ne correspond pas a un modele publie et ne doit pas guider une decision clinique.",
+  "descriptionEn": "Synthetic artifact for testing first-order oral absorption. It is not a published model and must not guide a clinical decision.",
+  "administration": {
+    "route": "Oral",
+    "mode": "ORAL"
+  },
+  "structure": {
+    "template": "one_compartment_oral",
+    "parameters": [
+      { "name": "ka", "lower": 0.2, "upper": 3 },
+      { "name": "ke", "lower": 0.03, "upper": 0.5 },
+      { "name": "v", "lower": 10, "upper": 100 }
+    ]
+  },
+  "error": {
+    "type": "proportional",
+    "initial": 1,
+    "coefficients": [0.01, 0.1, 0, 0],
+    "fixed": true
+  },
+  "supportPoints": [
+    { "ka": 0.7, "ke": 0.08, "v": 48, "prob": 0.25 },
+    { "ka": 1.2, "ke": 0.15, "v": 32, "prob": 0.5 },
+    { "ka": 2.1, "ke": 0.24, "v": 22, "prob": 0.25 }
+  ]
+}

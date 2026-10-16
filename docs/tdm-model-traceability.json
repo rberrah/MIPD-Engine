@@ -1,0 +1,4731 @@
+{
+  "version": 1,
+  "generatedFrom": [
+    "tdm-engine/models/catalog.json",
+    "static/tdm/model-metadata.json",
+    "static/tdm/models/*.cpp"
+  ],
+  "models": [
+    {
+      "id": "amik_burdet",
+      "sourceFile": "amik_burdet.cpp",
+      "sourceSha256": "035a79324d145e61fc9a3fe5c50bb6e30415da0d473d552c2128c1eecc6b363d",
+      "primarySource": {
+        "citation": "Burdet C et al. Eur J Clin Pharmacol. 2015;71:75-83.",
+        "doi": "10.1007/s00228-014-1766-y",
+        "status": "verified"
+      },
+      "population": {
+        "description": "Adultes en réanimation, ventilation mécanique, pneumonie associée à la ventilation.",
+        "tags": [
+          "Adulte",
+          "ICU",
+          "Ventilé"
+        ]
+      },
+      "administration": {
+        "routes": [
+          "IV"
+        ],
+        "modes": [
+          "IV_INTERMITTENT"
+        ],
+        "timeUnit": "h",
+        "concentrationUnit": "mg/L"
+      },
+      "structuralModel": {
+        "compartments": [
+          "CENT",
+          "PERIPH"
+        ],
+        "differentialEquations": [
+          "dxdt_CENT   =  Q*(PERIPH/V2) - Q*(CENT/V1) - CL*(CENT/V1);",
+          "dxdt_PERIPH =  Q*(CENT/V1)   - Q*(PERIPH/V2);"
+        ],
+        "outputs": [
+          "DV",
+          "CP",
+          "CL",
+          "V1",
+          "Q",
+          "V2"
+        ]
+      },
+      "parameters": [
+        "TVCL",
+        "TVV1",
+        "TVQ",
+        "TVV2"
+      ],
+      "covariates": [
+        "WT"
+      ],
+      "interindividualVariability": {
+        "etaIndices": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "omega": [
+          "@block\n0.36\n0.054  0.09\n-0.072 0.036 0.09\n0.090  0.030 0.030 0.25\n\n\n// Published combined error, as variances: b = 0.1 -> 0.01 proportional,\n// a = 0.2 mg/L -> 0.04 additive. These are the paper's values, not the\n// house defaults. Combined form is combined2 -- see LIMITS 9."
+        ]
+      },
+      "residualError": {
+        "epsIndices": [
+          1,
+          2
+        ],
+        "sigma": [
+          "0.01\n0.04"
+        ]
+      },
+      "pmxAdaptations": "Le fichier reproduit le modèle de base sans covariables du tableau 2, et non le modèle final de l'article. Il est conservé pour la simulation mais n'est pas proposé comme prior MAP fidèle au modèle final.",
+      "implementationStatus": "ADAPTED",
+      "softwareContractStatus": "SOFTWARE_TESTED",
+      "numericalCheckStatus": "not-checked",
+      "sourceReproductionStatus": "pending-independent-reproduction",
+      "mapTdm": {
+        "eligible": false,
+        "status": "Simulation uniquement"
+      },
+      "limitations": "Le fichier reproduit le modèle de base sans covariables du tableau 2, et non le modèle final de l'article. Il est conservé pour la simulation mais n'est pas proposé comme prior MAP fidèle au modèle final."
+    },
+    {
+      "id": "amiodarone_pollak_ddi",
+      "sourceFile": "amiodarone_pollak_ddi.cpp",
+      "sourceSha256": "c5a286748d4f2a758d8f75c4e1a3ed577233538141003ccd312f4970a558c132",
+      "primarySource": {
+        "citation": "Pollak PT et al. Clin Pharmacol Ther. 2000;67:642-652.",
+        "doi": "10.1067/mcp.2000.107047",
+        "status": "verified"
+      },
+      "population": {
+        "description": "Adultes recevant une amiodarone orale au long cours pour arythmie cardiaque.",
+        "tags": [
+          "Adulte",
+          "Cardiologie",
+          "Hors ICU non précisé"
+        ]
+      },
+      "administration": {
+        "routes": [
+          "Oral"
+        ],
+        "modes": [
+          "ORAL"
+        ],
+        "timeUnit": "h",
+        "concentrationUnit": "mg/L"
+      },
+      "structuralModel": {
+        "compartments": [
+          "GUT",
+          "CENT",
+          "PERI"
+        ],
+        "differentialEquations": [
+          "dxdt_GUT = -TVKA * GUT;",
+          "dxdt_CENT = TVKA * GUT * TVF - ((CL + Q) / V1) * CENT + (Q / V2) * PERI;",
+          "dxdt_PERI = (Q / V1) * CENT - (Q / V2) * PERI;"
+        ],
+        "outputs": [
+          "DV",
+          "CL"
+        ]
+      },
+      "parameters": [
+        "TVCL",
+        "TVV1",
+        "TVQ",
+        "TVV2",
+        "TVKA",
+        "TVF"
+      ],
+      "covariates": [],
+      "interindividualVariability": {
+        "etaIndices": [
+          1
+        ],
+        "omega": [
+          "@annotated\nIIV_CL : 0.09 : Engineering prior variance on clearance"
+        ]
+      },
+      "residualError": {
+        "epsIndices": [
+          1
+        ],
+        "sigma": [
+          "@annotated\nPROP : 0.04 : Engineering prior proportional residual variance\nADD  : 0.0  : Additive residual variance fixed to zero"
+        ]
+      },
+      "pmxAdaptations": "Module DDI simplifié; prior OMEGA/SIGMA d'ingénierie.",
+      "implementationStatus": "ADAPTED",
+      "softwareContractStatus": "SOFTWARE_TESTED",
+      "numericalCheckStatus": "not-checked",
+      "sourceReproductionStatus": "pending-independent-reproduction",
+      "mapTdm": {
+        "eligible": false,
+        "status": "Simulation uniquement"
+      },
+      "limitations": "Module DDI simplifié; prior OMEGA/SIGMA d'ingénierie."
+    },
+    {
+      "id": "amox_carlier",
+      "sourceFile": "amox_carlier.cpp",
+      "sourceSha256": "9fd5c552d5bb9ba026c93d88d2f09c92e3ce645b86ce50dcfd15407502f0ce93",
+      "primarySource": {
+        "citation": "Carlier M et al. J Antimicrob Chemother. 2013;68:2600-2608.",
+        "doi": "10.1093/jac/dkt240",
+        "status": "verified"
+      },
+      "population": {
+        "description": "Adultes en état critique hospitalisés en réanimation.",
+        "tags": [
+          "Adulte",
+          "ICU"
+        ]
+      },
+      "administration": {
+        "routes": [
+          "IV"
+        ],
+        "modes": [
+          "IV_INTERMITTENT"
+        ],
+        "timeUnit": "h",
+        "concentrationUnit": "mg/L"
+      },
+      "structuralModel": {
+        "compartments": [
+          "CENT",
+          "PERIPH"
+        ],
+        "differentialEquations": [
+          "dxdt_CENT   = K21 * PERIPH - (K10 + K12) * CENT;",
+          "dxdt_PERIPH = K12 * CENT - K21 * PERIPH;"
+        ],
+        "outputs": [
+          "@annotated",
+          "DV",
+          ":",
+          "Simulated",
+          "total",
+          "plasma",
+          "concentration",
+          "(mg/L)",
+          "CP",
+          ":",
+          "Prediction",
+          "without",
+          "residual",
+          "error",
+          "(mg/L)",
+          "CL",
+          ":",
+          "Individual",
+          "clearance",
+          "(L/h)",
+          "VC",
+          ":",
+          "Individual",
+          "central",
+          "volume",
+          "(L)",
+          "Q",
+          ":",
+          "Intercompartmental",
+          "clearance",
+          "(L/h)",
+          "VP",
+          ":",
+          "Peripheral",
+          "volume",
+          "(L)",
+          "K10",
+          ":",
+          "Elimination",
+          "rate",
+          "constant",
+          "(1/h)",
+          "K12",
+          ":",
+          "Central-to-peripheral",
+          "rate",
+          "constant",
+          "(1/h)",
+          "K21",
+          ":",
+          "Peripheral-to-central",
+          "rate",
+          "constant",
+          "(1/h)",
+          "CRCL_USED",
+          ":",
+          "Measured",
+          "24-hour",
+          "urinary",
+          "creatinine",
+          "clearance",
+          "used",
+          "by",
+          "the",
+          "model",
+          "(mL/min)"
+        ]
+      },
+      "parameters": [
+        "TVCL",
+        "TVVC",
+        "TVVP",
+        "TVQ",
+        "REF_CRCL"
+      ],
+      "covariates": [
+        "CRCL"
+      ],
+      "interindividualVariability": {
+        "etaIndices": [
+          1,
+          2
+        ],
+        "omega": [
+          "@annotated @diagonal\nETA_CL : 0.148 : Between-subject variance on CL\nETA_VC : 0.140 : Between-subject variance on VC"
+        ]
+      },
+      "residualError": {
+        "epsIndices": [
+          1,
+          2
+        ],
+        "sigma": [
+          "@annotated @diagonal\nPROP : 0.0473 : Exponential proportional residual variance\nADD  : 0.0    : Additive residual variance fixed to zero"
+        ]
+      },
+      "pmxAdaptations": "No PMx adaptation documented.",
+      "implementationStatus": "ARTICLE",
+      "softwareContractStatus": "SOFTWARE_TESTED",
+      "numericalCheckStatus": "deterministic-software-regression",
+      "sourceReproductionStatus": "pending-independent-reproduction",
+      "mapTdm": {
+        "eligible": true,
+        "status": "Prior MAP fondé sur l'article"
+      },
+      "limitations": "Numerical validity ranges and independent reproduction remain to be documented."
+    },
+    {
+      "id": "amox_fournier",
+      "sourceFile": "amox_fournier.cpp",
+      "sourceSha256": "42d44f00970c3625d060bfff7e799a1066b231618238de23db701b61387c5e96",
+      "primarySource": {
+        "citation": "Fournier A et al. Antimicrob Agents Chemother. 2018;62:e00505-18.",
+        "doi": "10.1128/AAC.00505-18",
+        "status": "verified"
+      },
+      "population": {
+        "description": "Adultes gravement brûlés hospitalisés en réanimation.",
+        "tags": [
+          "Adulte",
+          "ICU",
+          "Brûlé"
+        ]
+      },
+      "administration": {
+        "routes": [
+          "IV"
+        ],
+        "modes": [
+          "IV_INTERMITTENT"
+        ],
+        "timeUnit": "h",
+        "concentrationUnit": "mg/L"
+      },
+      "structuralModel": {
+        "compartments": [
+          "CENT",
+          "PERIPH"
+        ],
+        "differentialEquations": [
+          "dxdt_CENT   = K21 * PERIPH - (K10 + K12) * CENT;",
+          "dxdt_PERIPH = K12 * CENT - K21 * PERIPH;"
+        ],
+        "outputs": [
+          "@annotated",
+          "DV",
+          ":",
+          "Variable",
+          "dépendante",
+          "simulée,",
+          "concentration",
+          "totale",
+          "(mg/L)",
+          "CP",
+          ":",
+          "Concentration",
+          "totale",
+          "prédite",
+          "sans",
+          "erreur",
+          "résiduelle",
+          "(mg/L)",
+          "CL",
+          ":",
+          "Clairance",
+          "individuelle",
+          "(L/h)",
+          "V1",
+          ":",
+          "Volume",
+          "central",
+          "individuel",
+          "(L)",
+          "Q",
+          ":",
+          "Clairance",
+          "intercompartimentale",
+          "individuelle",
+          "(L/h)",
+          "V2",
+          ":",
+          "Volume",
+          "périphérique",
+          "individuel",
+          "(L)",
+          "K10",
+          ":",
+          "Constante",
+          "d'élimination",
+          "individuelle",
+          "(1/h)",
+          "K12",
+          ":",
+          "Constante",
+          "de",
+          "transfert",
+          "central",
+          "vers",
+          "périphérique",
+          "(1/h)",
+          "K21",
+          ":",
+          "Constante",
+          "de",
+          "transfert",
+          "périphérique",
+          "vers",
+          "central",
+          "(1/h)",
+          "clcr_calc",
+          ":",
+          "Clairance",
+          "de",
+          "la",
+          "créatinine",
+          "estimée",
+          "par",
+          "Cockcroft-Gault",
+          "(mL/min)"
+        ]
+      },
+      "parameters": [
+        "TVCL",
+        "TVV1",
+        "TVQ",
+        "TVV2",
+        "CLCR_CL",
+        "REF_CLCR",
+        "REF_WT"
+      ],
+      "covariates": [
+        "AGE",
+        "WT",
+        "CREAT",
+        "SEX"
+      ],
+      "interindividualVariability": {
+        "etaIndices": [
+          1
+        ],
+        "omega": [
+          "@annotated @diagonal\nETA_CL : 0.1303 : Variabilité interindividuelle sur CL, variance approximée depuis CV 37.3%"
+        ]
+      },
+      "residualError": {
+        "epsIndices": [
+          1,
+          2
+        ],
+        "sigma": [
+          "@annotated @diagonal\nPROP : 0.1369 : Erreur résiduelle proportionnelle, variance correspondant à 37%\nADD  : 0.0064 : Erreur résiduelle additive, variance correspondant à 0.08 mg/L"
+        ]
+      },
+      "pmxAdaptations": "L'article rapporte θCLCR = 0,53 comme une augmentation proportionnelle mais imprime une équation sans facteur d'échelle. L'implémentation applique l'effet centré normalisé par la CLCR de référence de 110 mL/min, cohérent avec les valeurs de clairance publiées.",
+      "implementationStatus": "ADAPTED",
+      "softwareContractStatus": "SOFTWARE_TESTED",
+      "numericalCheckStatus": "not-checked",
+      "sourceReproductionStatus": "pending-independent-reproduction",
+      "mapTdm": {
+        "eligible": false,
+        "status": "Simulation uniquement"
+      },
+      "limitations": "L'article rapporte θCLCR = 0,53 comme une augmentation proportionnelle mais imprime une équation sans facteur d'échelle. L'implémentation applique l'effet centré normalisé par la CLCR de référence de 110 mL/min, cohérent avec les valeurs de clairance publiées."
+    },
+    {
+      "id": "amox_mellon",
+      "sourceFile": "amox_mellon.cpp",
+      "sourceSha256": "307b5ff96b5825c6f56c882feddb6d28e68b528d0d1c250c56497fc036dd6556",
+      "primarySource": {
+        "citation": "Mellon G et al. J Antimicrob Chemother. 2020;75:3611-3618.",
+        "doi": "10.1093/jac/dkaa368",
+        "status": "verified"
+      },
+      "population": {
+        "description": "Adultes obèses recevant de l'amoxicilline/acide clavulanique IV ou oral.",
+        "tags": [
+          "Adulte",
+          "Obèse",
+          "Hors ICU"
+        ]
+      },
+      "administration": {
+        "routes": [
+          "IV",
+          "Oral"
+        ],
+        "modes": [
+          "IV_INTERMITTENT",
+          "ORAL"
+        ],
+        "timeUnit": "h",
+        "concentrationUnit": "mg/L"
+      },
+      "structuralModel": {
+        "compartments": [
+          "CENT",
+          "PERIPH",
+          "DEPOT",
+          "TRANSIT",
+          "GUT"
+        ],
+        "differentialEquations": [
+          "dxdt_DEPOT   = -KTR * DEPOT;",
+          "dxdt_TRANSIT =  KTR * DEPOT - KTR * TRANSIT;",
+          "dxdt_GUT     =  KTR * TRANSIT - KA * GUT;",
+          "dxdt_CENT   = KA * GUT + K21 * PERIPH - (K10 + K12) * CENT;",
+          "dxdt_PERIPH = K12 * CENT - K21 * PERIPH;"
+        ],
+        "outputs": [
+          "@annotated",
+          "DV",
+          ":",
+          "Variable",
+          "dépendante",
+          "simulée,",
+          "concentration",
+          "totale",
+          "(mg/L)",
+          "CP",
+          ":",
+          "Concentration",
+          "totale",
+          "prédite",
+          "sans",
+          "erreur",
+          "résiduelle",
+          "(mg/L)",
+          "CL",
+          ":",
+          "Clairance",
+          "individuelle",
+          "(L/h)",
+          "V1",
+          ":",
+          "Volume",
+          "central",
+          "individuel",
+          "(L)",
+          "Q",
+          ":",
+          "Clairance",
+          "intercompartimentale",
+          "individuelle",
+          "(L/h)",
+          "V2",
+          ":",
+          "Volume",
+          "périphérique",
+          "individuel",
+          "(L)",
+          "K10",
+          ":",
+          "Constante",
+          "d'élimination",
+          "individuelle",
+          "(1/h)",
+          "K12",
+          ":",
+          "Constante",
+          "de",
+          "transfert",
+          "central",
+          "vers",
+          "périphérique",
+          "(1/h)",
+          "K21",
+          ":",
+          "Constante",
+          "de",
+          "transfert",
+          "périphérique",
+          "vers",
+          "central",
+          "(1/h)",
+          "F_ORAL",
+          ":",
+          "Bioavailability",
+          "orale",
+          "individuelle",
+          "MTT",
+          ":",
+          "Mean",
+          "transit",
+          "time",
+          "individuel",
+          "(h)",
+          "KTR",
+          ":",
+          "Constante",
+          "de",
+          "transit",
+          "individuelle",
+          "(1/h)",
+          "KA",
+          ":",
+          "Constante",
+          "d'absorption",
+          "orale",
+          "individuelle",
+          "(1/h)"
+        ]
+      },
+      "parameters": [
+        "TVF",
+        "TVMTT",
+        "TVKTR",
+        "TVKA",
+        "TVV1",
+        "TVCL",
+        "TVV2",
+        "TVQ",
+        "BETA_WT_KA",
+        "REF_WT"
+      ],
+      "covariates": [
+        "WT",
+        "AGE",
+        "CREAT",
+        "SEX",
+        "BSA"
+      ],
+      "interindividualVariability": {
+        "etaIndices": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8
+        ],
+        "omega": [
+          "@block\n1.0000\n0.0000 0.0625\n0.0000 0.0000 0.2401\n0.0000 0.0000 0.0000 0.0625\n0.0000 0.0000 0.0000 0.0000 0.2500\n0.0000 0.0000 0.0000 0.0000 0.0000 0.0729\n0.0000 0.0000 0.0000 0.0000 0.0000 0.0000 0.0900\n0.0000 0.0000 0.0000 0.0000 0.0000 0.14337 0.0000 0.3481"
+        ]
+      },
+      "residualError": {
+        "epsIndices": [
+          1,
+          2
+        ],
+        "sigma": [
+          "@annotated @diagonal\nPROP : 0.01716 : Erreur résiduelle proportionnelle, variance correspondant à 13.1%\nADD  : 0.14669 : Erreur résiduelle additive, variance correspondant à 0.383 mg/L"
+        ]
+      },
+      "pmxAdaptations": "La corrélation publiée entre CL et Q est conservée. La chaîne de transit orale reste une approximation : l'article principal ne fournit pas les équations exécutables permettant de reproduire simultanément Mtt et Ktr.",
+      "implementationStatus": "ADAPTED",
+      "softwareContractStatus": "SOFTWARE_TESTED",
+      "numericalCheckStatus": "not-checked",
+      "sourceReproductionStatus": "pending-independent-reproduction",
+      "mapTdm": {
+        "eligible": false,
+        "status": "Simulation uniquement"
+      },
+      "limitations": "La corrélation publiée entre CL et Q est conservée. La chaîne de transit orale reste une approximation : l'article principal ne fournit pas les équations exécutables permettant de reproduire simultanément Mtt et Ktr."
+    },
+    {
+      "id": "amox_rambaud",
+      "sourceFile": "amox_rambaud.cpp",
+      "sourceSha256": "a1b81b4173b1f740341f48d23288fb6d62e7b6ea578e46442f5b6bbe5401b0f2",
+      "primarySource": {
+        "citation": "Rambaud J et al. J Antimicrob Chemother. 2020;75:2941-2950.",
+        "doi": "10.1093/jac/dkaa232",
+        "status": "verified"
+      },
+      "population": {
+        "description": "Adultes traités pour une endocardite infectieuse.",
+        "tags": [
+          "Adulte",
+          "Endocardite",
+          "Hors ICU"
+        ]
+      },
+      "administration": {
+        "routes": [
+          "IV"
+        ],
+        "modes": [
+          "IV_CONTINUOUS"
+        ],
+        "timeUnit": "h",
+        "concentrationUnit": "mg/L"
+      },
+      "structuralModel": {
+        "compartments": [
+          "CENT",
+          "PERIPH"
+        ],
+        "differentialEquations": [
+          "dxdt_CENT = KPC * PERIPH - (K10 + KCP) * CENT;",
+          "dxdt_PERIPH = KCP * CENT - KPC * PERIPH;"
+        ],
+        "outputs": [
+          "@annotated",
+          "DV",
+          ":",
+          "Simulated",
+          "total",
+          "plasma",
+          "concentration",
+          "(mg/L)",
+          "CP",
+          ":",
+          "Predicted",
+          "total",
+          "plasma",
+          "concentration",
+          "(mg/L)",
+          "CL",
+          ":",
+          "Individual",
+          "clearance",
+          "(L/h)",
+          "V",
+          ":",
+          "Individual",
+          "central",
+          "volume",
+          "(L)",
+          "Q",
+          ":",
+          "Individual",
+          "intercompartmental",
+          "clearance",
+          "(L/h)",
+          "VP",
+          ":",
+          "Individual",
+          "peripheral",
+          "volume",
+          "(L)",
+          "K10",
+          ":",
+          "Individual",
+          "elimination",
+          "rate",
+          "constant",
+          "(1/h)",
+          "KCP",
+          ":",
+          "Central-to-peripheral",
+          "rate",
+          "constant",
+          "(1/h)",
+          "KPC",
+          ":",
+          "Peripheral-to-central",
+          "rate",
+          "constant",
+          "(1/h)",
+          "EGFR",
+          ":",
+          "2009",
+          "CKD-EPI",
+          "GFR",
+          "indexed",
+          "to",
+          "1.73",
+          "m2",
+          "AGFR",
+          ":",
+          "Absolute",
+          "GFR",
+          "used",
+          "by",
+          "the",
+          "published",
+          "model",
+          "(mL/min)"
+        ]
+      },
+      "parameters": [
+        "TVKE1",
+        "TVKE2",
+        "TVKCP",
+        "TVKPC",
+        "TVV",
+        "REF_AGFR",
+        "ERR_C0",
+        "ERR_C1",
+        "ERR_LAMBDA"
+      ],
+      "covariates": [
+        "CREAT",
+        "SEX",
+        "BLACK",
+        "AGE",
+        "BSA"
+      ],
+      "interindividualVariability": {
+        "etaIndices": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "omega": [
+          "@annotated @diagonal\nETA_KE1 : 0.0367 : Approximate MAP variance on KE1\nETA_V   : 0.0615 : Approximate MAP variance on V\nETA_KCP : 1.1100 : Approximate MAP variance on KCP\nETA_KPC : 0.1940 : Approximate MAP variance on KPC\nETA_KE2 : 0.0964 : Approximate MAP variance on KE2"
+        ]
+      },
+      "residualError": {
+        "epsIndices": [
+          1,
+          2
+        ],
+        "sigma": [
+          "@annotated @diagonal\nASSAY   : 1.0 : Unit variance scaled by the published SD polynomial\nPROCESS : 1.0 : Unit variance scaled by the published lambda term"
+        ]
+      },
+      "pmxAdaptations": "Le modèle source NPAG est non paramétrique. L'équation CKD-EPI 2009 et le modèle d'erreur publiés sont conservés, mais le prior OMEGA log-normal est une approximation pour MAP/mapbayr.",
+      "implementationStatus": "ADAPTED",
+      "softwareContractStatus": "SOFTWARE_TESTED",
+      "numericalCheckStatus": "not-checked",
+      "sourceReproductionStatus": "pending-independent-reproduction",
+      "mapTdm": {
+        "eligible": false,
+        "status": "Simulation uniquement"
+      },
+      "limitations": "Le modèle source NPAG est non paramétrique. L'équation CKD-EPI 2009 et le modèle d'erreur publiés sont conservés, mais le prior OMEGA log-normal est une approximation pour MAP/mapbayr."
+    },
+    {
+      "id": "cefazoline_cheng",
+      "sourceFile": "cefazoline_cheng.cpp",
+      "sourceSha256": "1ad33147d28f1d2d796d5cefec17dfac41cbbe5bfc697b1b639c68531690767f",
+      "primarySource": {
+        "citation": "Cheng V et al. Anaesth Crit Care Pain Med. 2026;45:101653.",
+        "doi": "10.1016/j.accpm.2025.101653",
+        "status": "verified"
+      },
+      "population": {
+        "description": "Enfants opérés en chirurgie cardiaque avec circulation extracorporelle.",
+        "tags": [
+          "Pédiatrique",
+          "Chirurgie",
+          "CEC"
+        ]
+      },
+      "administration": {
+        "routes": [
+          "IV"
+        ],
+        "modes": [
+          "IV_INTERMITTENT"
+        ],
+        "timeUnit": "h",
+        "concentrationUnit": "mg/L"
+      },
+      "structuralModel": {
+        "compartments": [
+          "CENT",
+          "PERIPH"
+        ],
+        "differentialEquations": [
+          "dxdt_CENT   = -(CL/V1)*CENT - (Q/V1)*CENT + (Q/V2)*PERIPH;",
+          "dxdt_PERIPH =  (Q/V1)*CENT - (Q/V2)*PERIPH;"
+        ],
+        "outputs": [
+          "@annotated",
+          "CP",
+          ":",
+          "Predicted",
+          "Unbound",
+          "Concentration",
+          "(mg/L)",
+          "CL",
+          ":",
+          "Individual",
+          "Clearance",
+          "(L/h)",
+          "V1",
+          ":",
+          "Individual",
+          "Central",
+          "Volume",
+          "(L)",
+          "Q",
+          ":",
+          "Individual",
+          "Inter-compartmental",
+          "Clearance",
+          "(L/h)",
+          "V2",
+          ":",
+          "Individual",
+          "Peripheral",
+          "Volume",
+          "(L)",
+          "eGFR_calc",
+          ":",
+          "Calculated",
+          "eGFR",
+          "(mL/min/1.73m2)",
+          "DV",
+          ":",
+          "Simulated",
+          "Unbound",
+          "Concentration",
+          "(mg/L)"
+        ]
+      },
+      "parameters": [
+        "TVCL",
+        "TVV1_INTRA",
+        "TVV1_POST",
+        "TVQ",
+        "TVV2",
+        "CL_WT_EXP",
+        "CL_eGFR_EXP",
+        "Q_WT_EXP",
+        "REF_WT",
+        "REF_eGFR"
+      ],
+      "covariates": [
+        "WT",
+        "HT",
+        "CREAT",
+        "PERIOD"
+      ],
+      "interindividualVariability": {
+        "etaIndices": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "omega": [
+          "@annotated @diagonal\nETA_CL : 0.033649 : Variance BSV on CL\nETA_V1 : 0.082319 : Variance BSV on V1\nETA_Q  : 0.436228 : Variance BSV on Q\nETA_V2 : 0.280802 : Variance BSV on V2"
+        ]
+      },
+      "residualError": {
+        "epsIndices": [
+          1,
+          2
+        ],
+        "sigma": [
+          "@annotated @diagonal\nPROP : 0.078400 : Proportional error variance\nADD  : 0.000000 : Additive error variance"
+        ]
+      },
+      "pmxAdaptations": "Les effets fixes périopératoire/postopératoire sont conservés. L'IOV publiée sur CL et V1 est omise car le moteur actuel ne représente pas encore des effets aléatoires indépendants par occasion.",
+      "implementationStatus": "ADAPTED",
+      "softwareContractStatus": "SOFTWARE_TESTED",
+      "numericalCheckStatus": "not-checked",
+      "sourceReproductionStatus": "pending-independent-reproduction",
+      "mapTdm": {
+        "eligible": false,
+        "status": "Simulation uniquement"
+      },
+      "limitations": "Les effets fixes périopératoire/postopératoire sont conservés. L'IOV publiée sur CL et V1 est omise car le moteur actuel ne représente pas encore des effets aléatoires indépendants par occasion."
+    },
+    {
+      "id": "cefazoline_lanoiselee",
+      "sourceFile": "cefazoline_lanoiselee.cpp",
+      "sourceSha256": "557304dd57f081e208bee6a74d26136c58631a18e9af99c893dd1c727cc784b8",
+      "primarySource": {
+        "citation": "Lanoiselée J et al. Sci Rep. 2021;11:19763.",
+        "doi": "10.1038/s41598-021-99162-7",
+        "status": "verified"
+      },
+      "population": {
+        "description": "Adultes de 24 à 91 ans opérés d'une arthroplastie totale de hanche.",
+        "tags": [
+          "Adulte",
+          "Chirurgie orthopédique",
+          "Hors ICU"
+        ]
+      },
+      "administration": {
+        "routes": [
+          "IV"
+        ],
+        "modes": [
+          "IV_INTERMITTENT"
+        ],
+        "timeUnit": "h",
+        "concentrationUnit": "mg/L"
+      },
+      "structuralModel": {
+        "compartments": [
+          "CENT",
+          "PERIPH"
+        ],
+        "differentialEquations": [
+          "dxdt_CENT   = -(CL/VC)*CENT - (Q/VC)*CENT + (Q/VP)*PERIPH;",
+          "dxdt_PERIPH =  (Q/VC)*CENT - (Q/VP)*PERIPH;"
+        ],
+        "outputs": [
+          "@annotated",
+          "CP",
+          ":",
+          "Predicted",
+          "Total",
+          "Concentration",
+          "(mg/L)",
+          "CP_FREE",
+          ":",
+          "Predicted",
+          "Unbound",
+          "Concentration",
+          "(mg/L)",
+          "CL",
+          ":",
+          "Individual",
+          "Clearance",
+          "(L/h)",
+          "VC",
+          ":",
+          "Individual",
+          "Central",
+          "Volume",
+          "(L)",
+          "Q",
+          ":",
+          "Individual",
+          "Inter-compartmental",
+          "Clearance",
+          "(L/h)",
+          "VP",
+          ":",
+          "Individual",
+          "Peripheral",
+          "Volume",
+          "(L)",
+          "CLCR",
+          ":",
+          "Calculated",
+          "CrCl",
+          "(mL/min/1.73m2)",
+          "DV",
+          ":",
+          "Simulated",
+          "Total",
+          "Concentration",
+          "(mg/L)"
+        ]
+      },
+      "parameters": [
+        "TVCL",
+        "THETA_CLCR",
+        "TVVC",
+        "TVVP",
+        "TVQ",
+        "REF_CLCR",
+        "FU"
+      ],
+      "covariates": [
+        "AGE",
+        "WT",
+        "HT",
+        "CREAT",
+        "SEX"
+      ],
+      "interindividualVariability": {
+        "etaIndices": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "omega": [
+          "@block @annotated\nIIV_CL  : 0.097719          : Variance on CL\nIIV_VC  : 0.137660 0.281483 : Covariance CL-VC / Variance on VC",
+          "@annotated\nIIV_Q   : 0.361541 : Variance on Q\nIIV_VP  : 0.009950 : Variance on VP"
+        ]
+      },
+      "residualError": {
+        "epsIndices": [
+          1,
+          2
+        ],
+        "sigma": [
+          "@annotated\nPROP : 0.014298 : Proportional error variance\nADD  : 0.000000 : Additive error variance"
+        ]
+      },
+      "pmxAdaptations": "No PMx adaptation documented.",
+      "implementationStatus": "ARTICLE",
+      "softwareContractStatus": "SOFTWARE_TESTED",
+      "numericalCheckStatus": "not-checked",
+      "sourceReproductionStatus": "pending-independent-reproduction",
+      "mapTdm": {
+        "eligible": true,
+        "status": "Prior MAP fondé sur l'article"
+      },
+      "limitations": "Numerical validity ranges and independent reproduction remain to be documented."
+    },
+    {
+      "id": "cefazoline_schmitz",
+      "sourceFile": "cefazoline_schmitz.cpp",
+      "sourceSha256": "814e5dcf210206df3bc8667147d761f59c43f93eeebc4598936597b18a5189bd",
+      "primarySource": {
+        "citation": "Schmitz ML et al. Antimicrob Agents Chemother. 2015;59:4173-4180.",
+        "doi": "10.1128/AAC.00082-15",
+        "status": "verified"
+      },
+      "population": {
+        "description": "Patients chirurgicaux pédiatriques, principalement 10-12 ans, avec comparaison adulte.",
+        "tags": [
+          "Pédiatrique",
+          "Adulte",
+          "Chirurgie"
+        ]
+      },
+      "administration": {
+        "routes": [
+          "IV"
+        ],
+        "modes": [
+          "IV_INTERMITTENT"
+        ],
+        "timeUnit": "h",
+        "concentrationUnit": "mg/L"
+      },
+      "structuralModel": {
+        "compartments": [
+          "CENT",
+          "PERIPH"
+        ],
+        "differentialEquations": [
+          "dxdt_CENT   = -(CL/VC)*CENT - (Q/VC)*CENT + (Q/VP)*PERIPH;",
+          "dxdt_PERIPH =  (Q/VC)*CENT - (Q/VP)*PERIPH;"
+        ],
+        "outputs": [
+          "@annotated",
+          "CP",
+          ":",
+          "Predicted",
+          "Total",
+          "Concentration",
+          "(mg/L)",
+          "CL",
+          ":",
+          "Individual",
+          "Clearance",
+          "(L/h)",
+          "VC",
+          ":",
+          "Individual",
+          "Central",
+          "Volume",
+          "(L)",
+          "Q",
+          ":",
+          "Individual",
+          "Inter-compartmental",
+          "Clearance",
+          "(L/h)",
+          "VP",
+          ":",
+          "Individual",
+          "Peripheral",
+          "Volume",
+          "(L)",
+          "clcr_safe:",
+          "Creatinine",
+          "clearance",
+          "used",
+          "by",
+          "the",
+          "model",
+          "(mL/min/1.73m2)",
+          "DV",
+          ":",
+          "Simulated",
+          "Total",
+          "Concentration",
+          "(mg/L)"
+        ]
+      },
+      "parameters": [
+        "TVCL_NR",
+        "TVCL_R",
+        "TVVC",
+        "TVVP",
+        "TVQ",
+        "POW_RCC",
+        "SHFT_PED",
+        "ALLO_CL",
+        "ALLO_V"
+      ],
+      "covariates": [
+        "WT",
+        "AGE",
+        "CLCR"
+      ],
+      "interindividualVariability": {
+        "etaIndices": [
+          1,
+          2
+        ],
+        "omega": [
+          "@annotated\nIIV_CL : 0.0122 : Variance on CL\nIIV_VC : 0.0351 : Variance on VC"
+        ]
+      },
+      "residualError": {
+        "epsIndices": [
+          1,
+          2
+        ],
+        "sigma": [
+          "@annotated\nPROP : 0.0112 : Proportional error variance\nADD  : 0.714025 : Squared published additive component (0.845 mg/L; combined2 adaptation)"
+        ]
+      },
+      "pmxAdaptations": "La CLCR est désormais saisie directement, comme dans l'équation publiée. L'IOV sur la clairance et la forme combined1 de l'erreur résiduelle ne sont pas représentées par le moteur MAP actuel; le modèle reste réservé à la simulation.",
+      "implementationStatus": "ADAPTED",
+      "softwareContractStatus": "SOFTWARE_TESTED",
+      "numericalCheckStatus": "not-checked",
+      "sourceReproductionStatus": "pending-independent-reproduction",
+      "mapTdm": {
+        "eligible": false,
+        "status": "Simulation uniquement"
+      },
+      "limitations": "La CLCR est désormais saisie directement, comme dans l'équation publiée. L'IOV sur la clairance et la forme combined1 de l'erreur résiduelle ne sont pas représentées par le moteur MAP actuel; le modèle reste réservé à la simulation."
+    },
+    {
+      "id": "cefepime_an",
+      "sourceFile": "cefepime_an.cpp",
+      "sourceSha256": "d473db4aa6730c2ad321de82b36b5ac889acf74cb344b9f01026829c315b8cd9",
+      "primarySource": {
+        "citation": "An G et al. J Antimicrob Chemother. 2023;78:1460-1470.",
+        "doi": "10.1093/jac/dkad106",
+        "status": "verified"
+      },
+      "population": {
+        "description": "Adultes en état critique hospitalisés en réanimation.",
+        "tags": [
+          "Adulte",
+          "ICU"
+        ]
+      },
+      "administration": {
+        "routes": [
+          "IV"
+        ],
+        "modes": [
+          "IV_INTERMITTENT"
+        ],
+        "timeUnit": "h",
+        "concentrationUnit": "mg/L"
+      },
+      "structuralModel": {
+        "compartments": [
+          "CENT",
+          "PERIPH"
+        ],
+        "differentialEquations": [
+          "dxdt_CENT   = -(k10 + k12) * CENT + k21 * PERIPH;",
+          "dxdt_PERIPH =   k12 * CENT - k21 * PERIPH;"
+        ],
+        "outputs": [
+          "@annotated",
+          "DV",
+          ":",
+          "DV",
+          "CL",
+          ":",
+          "Clairance",
+          "Individuelle",
+          "(L/h)",
+          "VC",
+          ":",
+          "Volume",
+          "Central",
+          "Individuel",
+          "(L)",
+          "CP",
+          ":",
+          "Concentration",
+          "Plasmatique",
+          "(mg/L)",
+          "LBW",
+          ":",
+          "Poids",
+          "Maigre",
+          "Calculé",
+          "en",
+          "Interne",
+          "(kg)",
+          "clcr_calc",
+          ":",
+          "CLCR",
+          "calculée",
+          "par",
+          "Cockcroft-Gault",
+          "sur",
+          "LBW",
+          "(mL/min)",
+          "on_crrt",
+          ":",
+          "Indicateur",
+          "CRRT",
+          "utilisé",
+          "dans",
+          "la",
+          "clairance"
+        ]
+      },
+      "parameters": [
+        "TVCLR",
+        "TVCLCRRT",
+        "TVCLNR",
+        "TVVC",
+        "TVVP",
+        "TVQ",
+        "REF_CLCR",
+        "REF_WT"
+      ],
+      "covariates": [
+        "AGE",
+        "WT",
+        "HT",
+        "CREAT",
+        "SEX",
+        "CRRT"
+      ],
+      "interindividualVariability": {
+        "etaIndices": [
+          1,
+          2,
+          3
+        ],
+        "omega": [
+          "@annotated @diagonal\n// Variances approximées par ln(CV^2 + 1)\nETA_CLT : 0.08563 : IIV Clairance Totale (CV 29.9%)\nETA_VC  : 0.35608 : IIV Volume Central (CV 65.4%)\nETA_VP  : 0.02949 : IIV Volume Périphérique (CV 17.3%)"
+        ]
+      },
+      "residualError": {
+        "epsIndices": [
+          1,
+          2
+        ],
+        "sigma": [
+          "@annotated\nPROP : 0.050176 : Erreur résiduelle proportionnelle (CV 22.4%)\nADD  : 41.4736 : Variance résiduelle additive (SD 6.44 mg/L)"
+        ]
+      },
+      "pmxAdaptations": "La branche CRRT publiée (CLCRRT 1,64 L/h) et l'erreur combinée (CV 22,4 %, SD additive 6,44 mg/L) sont implémentées.",
+      "implementationStatus": "ARTICLE",
+      "softwareContractStatus": "SOFTWARE_TESTED",
+      "numericalCheckStatus": "not-checked",
+      "sourceReproductionStatus": "pending-independent-reproduction",
+      "mapTdm": {
+        "eligible": true,
+        "status": "Prior MAP fondé sur l'article"
+      },
+      "limitations": "La branche CRRT publiée (CLCRRT 1,64 L/h) et l'erreur combinée (CV 22,4 %, SD additive 6,44 mg/L) sont implémentées."
+    },
+    {
+      "id": "cefepime_jonckheere",
+      "sourceFile": "cefepime_jonckheere.cpp",
+      "sourceSha256": "b0f5c19ff9d9a7362234bf9dc3d5d0066a930d78f28dce1d2e18711fb914c134",
+      "primarySource": {
+        "citation": "Jonckheere S et al. J Antimicrob Chemother. 2016;71:2538-2546.",
+        "doi": "10.1093/jac/dkw171",
+        "status": "verified"
+      },
+      "population": {
+        "description": "Adultes en réanimation, incluant insuffisance rénale et hémodialyse intermittente.",
+        "tags": [
+          "Adulte",
+          "ICU",
+          "Insuffisance rénale",
+          "Dialyse"
+        ]
+      },
+      "administration": {
+        "routes": [
+          "IV"
+        ],
+        "modes": [
+          "IV_INTERMITTENT"
+        ],
+        "timeUnit": "h",
+        "concentrationUnit": "mg/L"
+      },
+      "structuralModel": {
+        "compartments": [
+          "CENT",
+          "PERIPH"
+        ],
+        "differentialEquations": [
+          "dxdt_CENT = -CL * CP - Q * (CP - CPP);",
+          "dxdt_PERIPH = Q * (CP - CPP);"
+        ],
+        "outputs": [
+          "@annotated",
+          "DV",
+          ":",
+          "Simulated",
+          "plasma",
+          "concentration",
+          "(mg/L)",
+          "CP",
+          ":",
+          "Predicted",
+          "plasma",
+          "concentration",
+          "(mg/L)",
+          "CL",
+          ":",
+          "Total",
+          "individual",
+          "clearance",
+          "(L/h)",
+          "CLREN",
+          ":",
+          "Individual",
+          "renal",
+          "clearance",
+          "(L/h)",
+          "CLHD",
+          ":",
+          "Dialysis",
+          "clearance",
+          "active",
+          "at",
+          "this",
+          "time",
+          "(L/h)",
+          "V1",
+          ":",
+          "Individual",
+          "central",
+          "volume",
+          "(L)",
+          "V2",
+          ":",
+          "Peripheral",
+          "volume",
+          "(L)",
+          "Q",
+          ":",
+          "Intercompartmental",
+          "clearance",
+          "(L/h)",
+          "cg_lh",
+          ":",
+          "Cockcroft-Gault",
+          "creatinine",
+          "clearance",
+          "converted",
+          "to",
+          "L/h"
+        ]
+      },
+      "parameters": [
+        "TVV1",
+        "TVV2",
+        "TVQ",
+        "THETA1",
+        "THETA2",
+        "REF_CG_LH",
+        "CLDIAL",
+        "CLOTHER"
+      ],
+      "covariates": [
+        "CRCL",
+        "IHD"
+      ],
+      "interindividualVariability": {
+        "etaIndices": [
+          1,
+          2
+        ],
+        "omega": [
+          "@annotated @diagonal\nETA_CLREN : 0.2191 : Between-subject variance on renal clearance (CV 49.5%)\nETA_V1    : 0.1463 : Between-subject variance on central volume (CV 39.7%)"
+        ]
+      },
+      "residualError": {
+        "epsIndices": [
+          1,
+          2
+        ],
+        "sigma": [
+          "@annotated @diagonal\nPROP : 0.110224 : Proportional plasma residual variance (CV 33.2%)\nADD  : 0.0      : Additive residual variance fixed to zero"
+        ]
+      },
+      "pmxAdaptations": "No PMx adaptation documented.",
+      "implementationStatus": "ARTICLE",
+      "softwareContractStatus": "SOFTWARE_TESTED",
+      "numericalCheckStatus": "deterministic-software-regression",
+      "sourceReproductionStatus": "pending-independent-reproduction",
+      "mapTdm": {
+        "eligible": true,
+        "status": "Prior MAP fondé sur l'article"
+      },
+      "limitations": "Numerical validity ranges and independent reproduction remain to be documented."
+    },
+    {
+      "id": "cefepime_seo",
+      "sourceFile": "cefepime_seo.cpp",
+      "sourceSha256": "d265803dbe351ff7bfdd43ef9ede72d756ac45268aa5d8f98c328a6826043ccc",
+      "primarySource": {
+        "citation": "Seo H et al. Infect Chemother. 2023;55:29-41.",
+        "doi": "10.3947/ic.2022.0087",
+        "status": "verified"
+      },
+      "population": {
+        "description": "Adultes en état critique avec pneumonie nosocomiale ou associée à la ventilation.",
+        "tags": [
+          "Adulte",
+          "ICU",
+          "Pneumonie",
+          "Ventilé"
+        ]
+      },
+      "administration": {
+        "routes": [
+          "IV"
+        ],
+        "modes": [
+          "IV_INTERMITTENT"
+        ],
+        "timeUnit": "h",
+        "concentrationUnit": "mg/L"
+      },
+      "structuralModel": {
+        "compartments": [
+          "CENT",
+          "PERIPH"
+        ],
+        "differentialEquations": [
+          "dxdt_CENT   = K21 * PERIPH - (K10 + K12) * CENT;",
+          "dxdt_PERIPH = K12 * CENT - K21 * PERIPH;"
+        ],
+        "outputs": [
+          "@annotated",
+          "DV",
+          ":",
+          "Variable",
+          "Dépendante",
+          "Simulée",
+          "(mg/L)",
+          "CL",
+          ":",
+          "Clairance",
+          "Individuelle",
+          "(L/h)",
+          "V1",
+          ":",
+          "Volume",
+          "Central",
+          "Individuel",
+          "(L)",
+          "CP",
+          ":",
+          "Concentration",
+          "Plasmatique",
+          "(mg/L)",
+          "clcr_calc",
+          ":",
+          "CLCR",
+          "calculée",
+          "par",
+          "Cockcroft-Gault",
+          "(mL/min)"
+        ]
+      },
+      "parameters": [
+        "TVCL",
+        "TVV1",
+        "TVQ",
+        "TVV2",
+        "CL_EXP",
+        "REF_CLCR"
+      ],
+      "covariates": [
+        "AGE",
+        "WT",
+        "CREAT",
+        "SEX"
+      ],
+      "interindividualVariability": {
+        "etaIndices": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "omega": [
+          "@annotated @diagonal\n// Variances approximées par ln(CV^2 + 1)\nETA_CL : 0.10757 : Variabilité Inter-Individuelle CL (CV 33.7%)\nETA_V1 : 0.11000 : Variabilité Inter-Individuelle V1 (CV 34.1%)\nETA_Q  : 0.22957 : Variabilité Inter-Individuelle Q (CV 50.8%)\nETA_V2 : 0.14911 : Variabilité Inter-Individuelle V2 (CV 40.1%)"
+        ]
+      },
+      "residualError": {
+        "epsIndices": [
+          1,
+          2
+        ],
+        "sigma": [
+          "@annotated @diagonal\nPROP : 0.005806 : Erreur résiduelle proportionnelle (CV 7.62%)\nADD  : 0.000000 : Erreur résiduelle additive"
+        ]
+      },
+      "pmxAdaptations": "No PMx adaptation documented.",
+      "implementationStatus": "ARTICLE",
+      "softwareContractStatus": "SOFTWARE_TESTED",
+      "numericalCheckStatus": "not-checked",
+      "sourceReproductionStatus": "pending-independent-reproduction",
+      "mapTdm": {
+        "eligible": true,
+        "status": "Prior MAP fondé sur l'article"
+      },
+      "limitations": "Numerical validity ranges and independent reproduction remain to be documented."
+    },
+    {
+      "id": "ciclosporine_press_ddi",
+      "sourceFile": "ciclosporine_press_ddi.cpp",
+      "sourceSha256": "a01bad72087e909d7d48d112ee7f6b8b115adad482d899480f3f84cfc78ea919",
+      "primarySource": {
+        "citation": "Press RR et al. Eur J Clin Pharmacol. 2010;66:579-590.",
+        "doi": "10.1007/s00228-010-0810-9",
+        "status": "verified"
+      },
+      "population": {
+        "description": "Adultes au début de la période suivant une transplantation rénale.",
+        "tags": [
+          "Adulte",
+          "Transplantation rénale",
+          "Hors ICU"
+        ]
+      },
+      "administration": {
+        "routes": [
+          "Oral"
+        ],
+        "modes": [
+          "ORAL"
+        ],
+        "timeUnit": "h",
+        "concentrationUnit": "ng/mL"
+      },
+      "structuralModel": {
+        "compartments": [
+          "DEPOT_CSA",
+          "TR1_CSA",
+          "CENT_CSA",
+          "PERI_CSA"
+        ],
+        "differentialEquations": [
+          "dxdt_DEPOT_CSA = -KTR * DEPOT_CSA;",
+          "dxdt_TR1_CSA   = KTR * DEPOT_CSA - KA * TR1_CSA;",
+          "dxdt_CENT_CSA  = KA * TR1_CSA * F_BOOST - (CL_CSA_DDI + Q)*(CENT_CSA/V1) + Q*(PERI_CSA/V2);",
+          "dxdt_PERI_CSA  = Q*(CENT_CSA/V1) - Q*(PERI_CSA/V2);"
+        ],
+        "outputs": [
+          "DV",
+          "CONC",
+          "ratio",
+          "CL_CSA_DDI",
+          "CP_PERP",
+          "CL_OUT"
+        ]
+      },
+      "parameters": [
+        "TVCL_CSA",
+        "TVV1_CSA",
+        "TVQ_CSA",
+        "TVV2_CSA",
+        "TVKA_CSA",
+        "TVF_CSA",
+        "TVTLAG",
+        "WTCL",
+        "WTV",
+        "CYPCL",
+        "FM_CYP3A"
+      ],
+      "covariates": [
+        "WT",
+        "CYP"
+      ],
+      "interindividualVariability": {
+        "etaIndices": [
+          1,
+          2,
+          3
+        ],
+        "omega": [
+          "0.03 0.12 0.09"
+        ]
+      },
+      "residualError": {
+        "epsIndices": [
+          1,
+          2
+        ],
+        "sigma": [
+          "0.07 25.0"
+        ]
+      },
+      "pmxAdaptations": "Adaptation DDI : une fraction de clairance CYP3A de 0,50, calibrée sur une interaction clinique avec le voriconazole et non estimée dans le modèle Press, est ajoutée pour limiter les effets des inhibiteurs aux scénarios interactionnels.",
+      "implementationStatus": "ADAPTED",
+      "softwareContractStatus": "SOFTWARE_TESTED",
+      "numericalCheckStatus": "not-checked",
+      "sourceReproductionStatus": "pending-independent-reproduction",
+      "mapTdm": {
+        "eligible": false,
+        "status": "Simulation uniquement"
+      },
+      "limitations": "Adaptation DDI : une fraction de clairance CYP3A de 0,50, calibrée sur une interaction clinique avec le voriconazole et non estimée dans le modèle Press, est ajoutée pour limiter les effets des inhibiteurs aux scénarios interactionnels."
+    },
+    {
+      "id": "cobicistat_mathias_ddi",
+      "sourceFile": "cobicistat_mathias_ddi.cpp",
+      "sourceSha256": "e8d8ff1a81dcf01a1185ed3e75224556fdb460068fc1983848fc9c240f3570a1",
+      "primarySource": {
+        "citation": "Mathias AA et al. Clin Pharmacol Ther. 2010;87:322-329.",
+        "doi": "10.1038/clpt.2009.228",
+        "status": "verified"
+      },
+      "population": {
+        "description": "Adultes sains inclus dans une étude pharmacocinétique de recherche de dose.",
+        "tags": [
+          "Adulte",
+          "Volontaire sain",
+          "Hors ICU"
+        ]
+      },
+      "administration": {
+        "routes": [
+          "Oral"
+        ],
+        "modes": [
+          "ORAL"
+        ],
+        "timeUnit": "h",
+        "concentrationUnit": "mg/L"
+      },
+      "structuralModel": {
+        "compartments": [
+          "GUT",
+          "CENT"
+        ],
+        "differentialEquations": [
+          "dxdt_GUT = -TVKA * GUT;",
+          "dxdt_CENT = TVKA * GUT * TVF - (CL / V) * CENT;"
+        ],
+        "outputs": [
+          "DV",
+          "CL"
+        ]
+      },
+      "parameters": [
+        "TVCL",
+        "TVV",
+        "TVKA",
+        "TVF"
+      ],
+      "covariates": [],
+      "interindividualVariability": {
+        "etaIndices": [
+          1
+        ],
+        "omega": [
+          "@annotated\nIIV_CL : 0.09 : Engineering prior variance on clearance"
+        ]
+      },
+      "residualError": {
+        "epsIndices": [
+          1
+        ],
+        "sigma": [
+          "@annotated\nPROP : 0.04 : Engineering prior proportional residual variance\nADD  : 0.0  : Additive residual variance fixed to zero"
+        ]
+      },
+      "pmxAdaptations": "Validé uniquement comme module de sensibilité 50 mg; extrapolation à 150 mg non supportée.",
+      "implementationStatus": "ADAPTED",
+      "softwareContractStatus": "SOFTWARE_TESTED",
+      "numericalCheckStatus": "not-checked",
+      "sourceReproductionStatus": "pending-independent-reproduction",
+      "mapTdm": {
+        "eligible": false,
+        "status": "Simulation uniquement"
+      },
+      "limitations": "Validé uniquement comme module de sensibilité 50 mg; extrapolation à 150 mg non supportée."
+    },
+    {
+      "id": "dapto_dvorchik_IV_adults",
+      "sourceFile": "dapto_dvorchik_IV_adults.cpp",
+      "sourceSha256": "99c6937f025cdbd22ad8cabdd2983bdb5a178c42067afc87188c2270d6bb36a0",
+      "primarySource": {
+        "citation": "Dvorchik BH et al. Antimicrob Agents Chemother. 2004;48:2799-2807.",
+        "doi": "10.1128/AAC.48.8.2799-2807.2004",
+        "status": "verified"
+      },
+      "population": {
+        "description": "Adultes sains et adultes infectés issus d'essais cliniques regroupés.",
+        "tags": [
+          "Adulte",
+          "Population mixte",
+          "Hors ICU"
+        ]
+      },
+      "administration": {
+        "routes": [
+          "IV"
+        ],
+        "modes": [
+          "IV_INTERMITTENT"
+        ],
+        "timeUnit": "h",
+        "concentrationUnit": "mg/L"
+      },
+      "structuralModel": {
+        "compartments": [],
+        "differentialEquations": [],
+        "outputs": []
+      },
+      "parameters": [],
+      "covariates": [],
+      "interindividualVariability": {
+        "etaIndices": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "omega": []
+      },
+      "residualError": {
+        "epsIndices": [
+          1,
+          2
+        ],
+        "sigma": []
+      },
+      "pmxAdaptations": "Les branches dialyse/non-dialyse, l'effet du sexe sur CL et l'effet de l'infection sur V2 sont explicites. L'erreur additive correspond à l'essai LC/MS/MS (variance 4,28).",
+      "implementationStatus": "ARTICLE",
+      "softwareContractStatus": "SOFTWARE_TESTED",
+      "numericalCheckStatus": "deterministic-software-regression",
+      "sourceReproductionStatus": "pending-independent-reproduction",
+      "mapTdm": {
+        "eligible": true,
+        "status": "Prior MAP fondé sur l'article"
+      },
+      "limitations": "Les branches dialyse/non-dialyse, l'effet du sexe sur CL et l'effet de l'infection sur V2 sont explicites. L'erreur additive correspond à l'essai LC/MS/MS (variance 4,28)."
+    },
+    {
+      "id": "dapto_garreau",
+      "sourceFile": "dapto_garreau.cpp",
+      "sourceSha256": "d706e1c5de2f04e083b6daaac8f4b5ebbb6e7eb36dc89bfa097e59599431d334",
+      "primarySource": {
+        "citation": "Garreau R et al. J Antimicrob Chemother. 2021;76:1250-1257.",
+        "doi": "10.1093/jac/dkab006",
+        "status": "verified"
+      },
+      "population": {
+        "description": "Adultes traités pour une infection ostéo-articulaire.",
+        "tags": [
+          "Adulte",
+          "Infection ostéo-articulaire",
+          "Hors ICU"
+        ]
+      },
+      "administration": {
+        "routes": [
+          "IV"
+        ],
+        "modes": [
+          "IV_INTERMITTENT"
+        ],
+        "timeUnit": "h",
+        "concentrationUnit": "mg/L"
+      },
+      "structuralModel": {
+        "compartments": [
+          "CENT",
+          "PERI"
+        ],
+        "differentialEquations": [
+          "dxdt_CENT = -CL * CP - Q * (CP - CPP);",
+          "dxdt_PERI = Q * (CP - CPP);"
+        ],
+        "outputs": [
+          "@annotated",
+          "DV",
+          ":",
+          "Simulated",
+          "plasma",
+          "concentration",
+          "(mg/L)",
+          "CP",
+          ":",
+          "Predicted",
+          "plasma",
+          "concentration",
+          "(mg/L)",
+          "CL",
+          ":",
+          "Individual",
+          "clearance",
+          "(L/h)",
+          "V1",
+          ":",
+          "Individual",
+          "central",
+          "volume",
+          "(L)",
+          "Q",
+          ":",
+          "Individual",
+          "intercompartmental",
+          "clearance",
+          "(L/h)",
+          "V2",
+          ":",
+          "Individual",
+          "peripheral",
+          "volume",
+          "(L)"
+        ]
+      },
+      "parameters": [
+        "TVCL",
+        "TVV1",
+        "TVQ",
+        "TVV2",
+        "CLCR_CL",
+        "MALE_CL",
+        "AGE_V1",
+        "WT_V1",
+        "RIF_V1",
+        "MALE_V1",
+        "REF_CLCR",
+        "REF_AGE",
+        "REF_WT"
+      ],
+      "covariates": [
+        "CLCR",
+        "AGE",
+        "WT",
+        "SEX",
+        "RIF"
+      ],
+      "interindividualVariability": {
+        "etaIndices": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "omega": [
+          "@annotated @diagonal\nETA_CL : 0.038416 : Between-subject variance on CL (SD 0.196)\nETA_V1 : 0.015129 : Between-subject variance on V1 (SD 0.123)\nETA_Q  : 1.276900 : Between-subject variance on Q (SD 1.13)\nETA_V2 : 0.084100 : Between-subject variance on V2 (SD 0.29)"
+        ]
+      },
+      "residualError": {
+        "epsIndices": [
+          1,
+          2
+        ],
+        "sigma": [
+          "@annotated @diagonal\nPROP : 0.0496 : Proportional residual variance\nADD  : 2.55   : Additive residual variance"
+        ]
+      },
+      "pmxAdaptations": "Les effets de la clairance de la créatinine, du sexe, de l'âge, du poids et de la rifampicine sont conservés. L'IOV publiée sur CL et V1 est omise dans le flux MAP actuel.",
+      "implementationStatus": "ADAPTED",
+      "softwareContractStatus": "SOFTWARE_TESTED",
+      "numericalCheckStatus": "not-checked",
+      "sourceReproductionStatus": "pending-independent-reproduction",
+      "mapTdm": {
+        "eligible": false,
+        "status": "Simulation uniquement"
+      },
+      "limitations": "Les effets de la clairance de la créatinine, du sexe, de l'âge, du poids et de la rifampicine sont conservés. L'IOV publiée sur CL et V1 est omise dans le flux MAP actuel."
+    },
+    {
+      "id": "diltiazem_hermann_ddi",
+      "sourceFile": "diltiazem_hermann_ddi.cpp",
+      "sourceSha256": "b665d76436410db04dc0fe92571382e73442341a5529c0cbf51c6cf4f6cd0214",
+      "primarySource": {
+        "citation": "Hermann P et al. Eur J Clin Pharmacol. 1983;24:349-352.",
+        "doi": "10.1007/BF00610053",
+        "status": "verified"
+      },
+      "population": {
+        "description": "Adultes sains après diltiazem oral et intraveineux.",
+        "tags": [
+          "Adulte",
+          "Volontaire sain",
+          "Hors ICU"
+        ]
+      },
+      "administration": {
+        "routes": [
+          "Oral"
+        ],
+        "modes": [
+          "ORAL"
+        ],
+        "timeUnit": "h",
+        "concentrationUnit": "mg/L"
+      },
+      "structuralModel": {
+        "compartments": [
+          "GUT",
+          "CENT"
+        ],
+        "differentialEquations": [
+          "dxdt_GUT = -TVKA * GUT;",
+          "dxdt_CENT = TVKA * GUT * TVF - (CL / V) * CENT;"
+        ],
+        "outputs": [
+          "DV",
+          "CL"
+        ]
+      },
+      "parameters": [
+        "TVCL",
+        "TVV",
+        "TVKA",
+        "TVF"
+      ],
+      "covariates": [],
+      "interindividualVariability": {
+        "etaIndices": [
+          1
+        ],
+        "omega": [
+          "@annotated\nIIV_CL : 0.09 : Engineering prior variance on clearance"
+        ]
+      },
+      "residualError": {
+        "epsIndices": [
+          1
+        ],
+        "sigma": [
+          "@annotated\nPROP : 0.04 : Engineering prior proportional residual variance\nADD  : 0.0  : Additive residual variance fixed to zero"
+        ]
+      },
+      "pmxAdaptations": "Module DDI simplifié; prior OMEGA/SIGMA d'ingénierie.",
+      "implementationStatus": "ADAPTED",
+      "softwareContractStatus": "SOFTWARE_TESTED",
+      "numericalCheckStatus": "not-checked",
+      "sourceReproductionStatus": "pending-independent-reproduction",
+      "mapTdm": {
+        "eligible": false,
+        "status": "Simulation uniquement"
+      },
+      "limitations": "Module DDI simplifié; prior OMEGA/SIGMA d'ingénierie."
+    },
+    {
+      "id": "erythromycine_mather_ddi",
+      "sourceFile": "erythromycine_mather_ddi.cpp",
+      "sourceSha256": "e8c125318b992e2d9cddf57d66105e94b43b981430d1cc2dd548d6efce84fa16",
+      "primarySource": {
+        "citation": "Mather LE et al. Br J Clin Pharmacol. 1981;12:131-140.",
+        "doi": "10.1111/j.1365-2125.1981.tb01191.x",
+        "status": "verified"
+      },
+      "population": {
+        "description": "Adultes sains dans des études d'absorption et de biodisponibilité orale.",
+        "tags": [
+          "Adulte",
+          "Volontaire sain",
+          "Hors ICU"
+        ]
+      },
+      "administration": {
+        "routes": [
+          "Oral"
+        ],
+        "modes": [
+          "ORAL"
+        ],
+        "timeUnit": "h",
+        "concentrationUnit": "mg/L"
+      },
+      "structuralModel": {
+        "compartments": [
+          "GUT",
+          "CENT"
+        ],
+        "differentialEquations": [
+          "dxdt_GUT = -TVKA * GUT;",
+          "dxdt_CENT = TVKA * GUT * TVF - (CL / V) * CENT;"
+        ],
+        "outputs": [
+          "DV",
+          "CL"
+        ]
+      },
+      "parameters": [
+        "TVCL",
+        "TVV",
+        "TVKA",
+        "TVF"
+      ],
+      "covariates": [],
+      "interindividualVariability": {
+        "etaIndices": [
+          1
+        ],
+        "omega": [
+          "@annotated\nIIV_CL : 0.09 : Engineering prior variance on clearance"
+        ]
+      },
+      "residualError": {
+        "epsIndices": [
+          1
+        ],
+        "sigma": [
+          "@annotated\nPROP : 0.04 : Engineering prior proportional residual variance\nADD  : 0.0  : Additive residual variance fixed to zero"
+        ]
+      },
+      "pmxAdaptations": "Module DDI simplifié; prior OMEGA/SIGMA d'ingénierie.",
+      "implementationStatus": "ADAPTED",
+      "softwareContractStatus": "SOFTWARE_TESTED",
+      "numericalCheckStatus": "not-checked",
+      "sourceReproductionStatus": "pending-independent-reproduction",
+      "mapTdm": {
+        "eligible": false,
+        "status": "Simulation uniquement"
+      },
+      "limitations": "Module DDI simplifié; prior OMEGA/SIGMA d'ingénierie."
+    },
+    {
+      "id": "everolimus_moes_ddi",
+      "sourceFile": "everolimus_moes_ddi.cpp",
+      "sourceSha256": "32cab0a7fdf5139be6c42e42321c612238ae00f6c4615b18d7e08280d4b8bc54",
+      "primarySource": {
+        "citation": "Moes DJAR et al. Clin Pharmacokinet. 2012;51:467-480.",
+        "doi": "10.2165/11599710-000000000-00000",
+        "status": "verified"
+      },
+      "population": {
+        "description": "Adultes transplantés rénaux sous schéma sans inhibiteur de calcineurine.",
+        "tags": [
+          "Adulte",
+          "Transplantation rénale",
+          "Hors ICU"
+        ]
+      },
+      "administration": {
+        "routes": [
+          "Oral"
+        ],
+        "modes": [
+          "ORAL"
+        ],
+        "timeUnit": "h",
+        "concentrationUnit": "ng/mL"
+      },
+      "structuralModel": {
+        "compartments": [
+          "DEPOT_EVE",
+          "CENT_EVE",
+          "PERI_EVE"
+        ],
+        "differentialEquations": [
+          "dxdt_DEPOT_EVE = -KA * DEPOT_EVE;",
+          "dxdt_CENT_EVE  =  KA * DEPOT_EVE * F_BOOST - (CL_EVE_DDI + Q) * (CENT_EVE / V1)",
+          "dxdt_PERI_EVE  =  Q * (CENT_EVE / V1) - Q * (PERI_EVE / V2);"
+        ],
+        "outputs": [
+          "DV",
+          "CONC",
+          "ratio",
+          "CL_EVE_DDI",
+          "CP_PERP",
+          "CL_OUT"
+        ]
+      },
+      "parameters": [
+        "TVCL_EVE",
+        "TVV1_EVE",
+        "TVQ_EVE",
+        "TVV2_EVE",
+        "TVKA_EVE",
+        "TVALAG",
+        "IBW_REF",
+        "IBW_V1"
+      ],
+      "covariates": [
+        "IBW",
+        "WT"
+      ],
+      "interindividualVariability": {
+        "etaIndices": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "omega": [
+          "0.066 0.074 0.20 0.20 0.778"
+        ]
+      },
+      "residualError": {
+        "epsIndices": [
+          1,
+          2
+        ],
+        "sigma": [
+          "0.04 0.25"
+        ]
+      },
+      "pmxAdaptations": "Adaptation DDI : le lien dose-clairance décrit comme biais de TDM dans la source est omis. Des variances pragmatiques sont ajoutées pour Q et V2 et une fraction non-CYP de 10 % est utilisée pour les scénarios interactionnels.",
+      "implementationStatus": "ADAPTED",
+      "softwareContractStatus": "SOFTWARE_TESTED",
+      "numericalCheckStatus": "not-checked",
+      "sourceReproductionStatus": "pending-independent-reproduction",
+      "mapTdm": {
+        "eligible": false,
+        "status": "Simulation uniquement"
+      },
+      "limitations": "Adaptation DDI : le lien dose-clairance décrit comme biais de TDM dans la source est omis. Des variances pragmatiques sont ajoutées pour Q et V2 et une fraction non-CYP de 10 % est utilisée pour les scénarios interactionnels."
+    },
+    {
+      "id": "everolimus_terheine_ddi",
+      "sourceFile": "everolimus_terheine_ddi.cpp",
+      "sourceSha256": "72cd1d4ba89d83e90edc8c2bd2acd73425acf3c389af265688530fe1bf9b5544",
+      "primarySource": {
+        "citation": "ter Heine R et al. Br J Clin Pharmacol. 2018;84:1575-1586.",
+        "doi": "10.1111/bcp.13591",
+        "status": "verified"
+      },
+      "population": {
+        "description": "Adultes: cancers métastatiques thyroïdiens ou mammaires et transplantés rénaux.",
+        "tags": [
+          "Adulte",
+          "Cancer",
+          "Transplantation rénale",
+          "Hors ICU"
+        ]
+      },
+      "administration": {
+        "routes": [
+          "Oral"
+        ],
+        "modes": [
+          "ORAL"
+        ],
+        "timeUnit": "h",
+        "concentrationUnit": "ng/mL"
+      },
+      "structuralModel": {
+        "compartments": [
+          "DEPOT_EVE",
+          "TR1_EVE",
+          "TR2_EVE",
+          "TR3_EVE",
+          "TR4_EVE",
+          "LIV_EVE",
+          "CENT_EVE",
+          "PERI_EVE"
+        ],
+        "differentialEquations": [
+          "dxdt_DEPOT_EVE = -KTR_EVE * DEPOT_EVE;",
+          "dxdt_TR1_EVE   =  KTR_EVE * (DEPOT_EVE - TR1_EVE);",
+          "dxdt_TR2_EVE   =  KTR_EVE * (TR1_EVE   - TR2_EVE);",
+          "dxdt_TR3_EVE   =  KTR_EVE * (TR2_EVE   - TR3_EVE);",
+          "dxdt_TR4_EVE   =  KTR_EVE * (TR3_EVE   - TR4_EVE);",
+          "dxdt_LIV_EVE   =  KTR_EVE * TR4_EVE * F_BOOST + QHP_EVE * (CENT_EVE / VC_EVE)",
+          "dxdt_CENT_EVE  =  QHP_EVE * (1.0 - EH_EVE) * (LIV_EVE / VL_EVE) - QHP_EVE * (CENT_EVE / VC_EVE)",
+          "dxdt_PERI_EVE  =  Q_EVE * (CENT_EVE / VC_EVE) - Q_EVE * (PERI_EVE / VP_EVE);"
+        ],
+        "outputs": [
+          "DV",
+          "CONC",
+          "ratio",
+          "CL_EVE_DDI",
+          "CP_PERP",
+          "CL_OUT"
+        ]
+      },
+      "parameters": [
+        "TVMAT",
+        "TVCLINT",
+        "TVVC",
+        "TVVP",
+        "TVQ_EVE",
+        "QH_REF",
+        "FU_EVE",
+        "NTR",
+        "PREDNI_CL",
+        "FFM_REF",
+        "EXP_FLOW",
+        "EXP_VOL",
+        "BMAX_EVE",
+        "KD_EVE",
+        "KNS_EVE",
+        "VL_REF"
+      ],
+      "covariates": [
+        "WT",
+        "BH",
+        "SEX",
+        "HT",
+        "PREDNI"
+      ],
+      "interindividualVariability": {
+        "etaIndices": [
+          1,
+          2,
+          3
+        ],
+        "omega": [
+          "0.1087 0.1525 0.7930"
+        ]
+      },
+      "residualError": {
+        "epsIndices": [
+          1,
+          2
+        ],
+        "sigma": [
+          "0.0320 0.25"
+        ]
+      },
+      "pmxAdaptations": "Adaptation au moteur : le volume hépatique est fixé puis ajusté allométriquement faute de formule Small disponible ; la variabilité interoccasion sur MAT est représentée comme variabilité interindividuelle. Une fraction non-CYP de 10 % est ajoutée pour les scénarios DDI.",
+      "implementationStatus": "ADAPTED",
+      "softwareContractStatus": "SOFTWARE_TESTED",
+      "numericalCheckStatus": "not-checked",
+      "sourceReproductionStatus": "pending-independent-reproduction",
+      "mapTdm": {
+        "eligible": false,
+        "status": "Simulation uniquement"
+      },
+      "limitations": "Adaptation au moteur : le volume hépatique est fixé puis ajusté allométriquement faute de formule Small disponible ; la variabilité interoccasion sur MAT est représentée comme variabilité interindividuelle. Une fraction non-CYP de 10 % est ajoutée pour les scénarios DDI."
+    },
+    {
+      "id": "fluconazole_debruyne_ddi",
+      "sourceFile": "fluconazole_debruyne_ddi.cpp",
+      "sourceSha256": "f3f7702ec0ccc1822dfbd12ed89f6eeefe19d84415d629f9825f105b3383cb7d",
+      "primarySource": {
+        "citation": "Debruyne D, Ryckelynck JP. Clin Pharmacokinet. 1993;24:10-27.",
+        "doi": "10.2165/00003088-199324010-00002",
+        "status": "verified"
+      },
+      "population": {
+        "description": "Adultes issus des études de pharmacocinétique clinique synthétisées dans la revue.",
+        "tags": [
+          "Adulte",
+          "Population mixte",
+          "Hors ICU non précisé"
+        ]
+      },
+      "administration": {
+        "routes": [
+          "Oral"
+        ],
+        "modes": [
+          "ORAL"
+        ],
+        "timeUnit": "h",
+        "concentrationUnit": "mg/L"
+      },
+      "structuralModel": {
+        "compartments": [
+          "GUT",
+          "CENT"
+        ],
+        "differentialEquations": [
+          "dxdt_GUT = -TVKA * GUT;",
+          "dxdt_CENT = TVKA * GUT * TVF - (CL / V) * CENT;"
+        ],
+        "outputs": [
+          "DV",
+          "CL"
+        ]
+      },
+      "parameters": [
+        "TVCL",
+        "TVV",
+        "TVKA",
+        "TVF"
+      ],
+      "covariates": [],
+      "interindividualVariability": {
+        "etaIndices": [
+          1
+        ],
+        "omega": [
+          "@annotated\nIIV_CL : 0.09 : Engineering prior variance on clearance"
+        ]
+      },
+      "residualError": {
+        "epsIndices": [
+          1
+        ],
+        "sigma": [
+          "@annotated\nPROP : 0.04 : Engineering prior proportional residual variance\nADD  : 0.0  : Additive residual variance fixed to zero"
+        ]
+      },
+      "pmxAdaptations": "Module fondé sur une revue; prior OMEGA/SIGMA d'ingénierie.",
+      "implementationStatus": "ADAPTED",
+      "softwareContractStatus": "SOFTWARE_TESTED",
+      "numericalCheckStatus": "not-checked",
+      "sourceReproductionStatus": "pending-independent-reproduction",
+      "mapTdm": {
+        "eligible": false,
+        "status": "Simulation uniquement"
+      },
+      "limitations": "Module fondé sur une revue; prior OMEGA/SIGMA d'ingénierie."
+    },
+    {
+      "id": "genta_franck",
+      "sourceFile": "genta_franck.cpp",
+      "sourceSha256": "1881fe38e8cba3b84b4416884070d413a94356e0cfb22e5f0ca40a6fae3581d3",
+      "primarySource": {
+        "citation": "Franck B et al. Eur J Clin Pharmacol. 2020;76:947-955.",
+        "doi": "10.1007/s00228-020-02867-3",
+        "status": "verified"
+      },
+      "population": {
+        "description": "Adultes, majoritairement âgés, sous hémodialyse chronique.",
+        "tags": [
+          "Adulte",
+          "Âgé",
+          "Hémodialyse"
+        ]
+      },
+      "administration": {
+        "routes": [
+          "IV"
+        ],
+        "modes": [
+          "IV_INTERMITTENT"
+        ],
+        "timeUnit": "h",
+        "concentrationUnit": "mg/L"
+      },
+      "structuralModel": {
+        "compartments": [
+          "CENT",
+          "PERIPH"
+        ],
+        "differentialEquations": [
+          "dxdt_CENT   = - (KE + KCP) * CENT + KPC * PERIPH;",
+          "dxdt_PERIPH =         KCP  * CENT - KPC * PERIPH;"
+        ],
+        "outputs": [
+          "DV",
+          "CL",
+          "V",
+          "KE",
+          "KE1",
+          "KE2"
+        ]
+      },
+      "parameters": [
+        "TVKE1",
+        "TVKE2",
+        "TVV1",
+        "TVKCP",
+        "TVKPC",
+        "WTREF"
+      ],
+      "covariates": [
+        "WT",
+        "IHD",
+        "DIAL"
+      ],
+      "interindividualVariability": {
+        "etaIndices": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "omega": [
+          "0.5462 0.3882 0.1366 0.6721 1.0760"
+        ]
+      },
+      "residualError": {
+        "epsIndices": [
+          1,
+          2
+        ],
+        "sigma": [
+          "0.01     // proportional -- Pmetrics C1 = 0.1, so variance 0.1^2\n0.0724   // additive     -- sqrt(0.25^2 + 0.1^2) = 0.269, so variance 0.0724"
+        ]
+      },
+      "pmxAdaptations": "Adaptation documentée : le texte est ambigu entre poids maigre et poids total pour le centrage de V; l'interface fournit le poids total, utilisé ici.",
+      "implementationStatus": "ADAPTED",
+      "softwareContractStatus": "SOFTWARE_TESTED",
+      "numericalCheckStatus": "not-checked",
+      "sourceReproductionStatus": "pending-independent-reproduction",
+      "mapTdm": {
+        "eligible": false,
+        "status": "Simulation uniquement"
+      },
+      "limitations": "Adaptation documentée : le texte est ambigu entre poids maigre et poids total pour le centrage de V; l'interface fournit le poids total, utilisé ici."
+    },
+    {
+      "id": "genta_gomes",
+      "sourceFile": "genta_gomes.cpp",
+      "sourceSha256": "b3b3c1e828a22669b2046e743fa8475e70dfae7b66ee2380b1c54fdff0c13be2",
+      "primarySource": {
+        "citation": "Gomes A et al. PLoS One. 2017;12:e0177324.",
+        "doi": "10.1371/journal.pone.0177324",
+        "status": "verified"
+      },
+      "population": {
+        "description": "Adultes traités pour une endocardite infectieuse, hors dialyse.",
+        "tags": [
+          "Adulte",
+          "Endocardite",
+          "Hors dialyse"
+        ]
+      },
+      "administration": {
+        "routes": [
+          "IV"
+        ],
+        "modes": [
+          "IV_INTERMITTENT"
+        ],
+        "timeUnit": "h",
+        "concentrationUnit": "mg/L"
+      },
+      "structuralModel": {
+        "compartments": [
+          "CENT"
+        ],
+        "differentialEquations": [
+          "dxdt_CENT = - (CL / V) * CENT;"
+        ],
+        "outputs": [
+          "DV",
+          "CP",
+          "CL",
+          "V",
+          "CCR",
+          "LBMC"
+        ]
+      },
+      "parameters": [
+        "TVCLM",
+        "TVFR",
+        "TVVD",
+        "FATC"
+      ],
+      "covariates": [
+        "WT",
+        "HT",
+        "AGE",
+        "SEX",
+        "CREAT"
+      ],
+      "interindividualVariability": {
+        "etaIndices": [
+          1,
+          2,
+          3
+        ],
+        "omega": [
+          "0.0000 0.2335 0.0576"
+        ]
+      },
+      "residualError": {
+        "epsIndices": [
+          1
+        ],
+        "sigma": [
+          "1   // unit variance; the assay error polynomial scales it in $TABLE"
+        ]
+      },
+      "pmxAdaptations": "Adaptation documentée : l'article ne reproduit ni l'équation de masse maigre corrigée ni la variante exacte de Cockcroft-Gault; les choix implémentés sont explicités dans le code.",
+      "implementationStatus": "ADAPTED",
+      "softwareContractStatus": "SOFTWARE_TESTED",
+      "numericalCheckStatus": "not-checked",
+      "sourceReproductionStatus": "pending-independent-reproduction",
+      "mapTdm": {
+        "eligible": false,
+        "status": "Simulation uniquement"
+      },
+      "limitations": "Adaptation documentée : l'article ne reproduit ni l'équation de masse maigre corrigée ni la variante exacte de Cockcroft-Gault; les choix implémentés sont explicités dans le code."
+    },
+    {
+      "id": "genta_hodiamont",
+      "sourceFile": "genta_hodiamont.cpp",
+      "sourceSha256": "3f4af2097342da2160b442d81b0c8ffcb685b2aaf12db3d67d5778ce239e284a",
+      "primarySource": {
+        "citation": "Hodiamont CJ et al. Int J Antimicrob Agents. 2017;49:204-211.",
+        "doi": "10.1016/j.ijantimicag.2016.10.022",
+        "status": "verified"
+      },
+      "population": {
+        "description": "Adultes en réanimation, incluant hypoalbuminémie et certains patients sous épuration continue.",
+        "tags": [
+          "Adulte",
+          "ICU",
+          "CRRT"
+        ]
+      },
+      "administration": {
+        "routes": [
+          "IV"
+        ],
+        "modes": [
+          "IV_INTERMITTENT"
+        ],
+        "timeUnit": "h",
+        "concentrationUnit": "mg/L"
+      },
+      "structuralModel": {
+        "compartments": [
+          "CENT",
+          "PERIPH"
+        ],
+        "differentialEquations": [
+          "dxdt_CENT   = - (CL/V1)*CENT - (Q/V1)*CENT + (Q/V2)*PERIPH;",
+          "dxdt_PERIPH =                  (Q/V1)*CENT - (Q/V2)*PERIPH;"
+        ],
+        "outputs": [
+          "DV",
+          "CP",
+          "CL",
+          "V1",
+          "Q",
+          "V2",
+          "CLCR",
+          "IBW",
+          "ALBC"
+        ]
+      },
+      "parameters": [
+        "TVCL0",
+        "TVCLH",
+        "TVV1",
+        "TVQ",
+        "TVV2",
+        "SLCLCR",
+        "CTCLCR",
+        "EXALB",
+        "CTALB",
+        "FMISS",
+        "EXCL",
+        "EXV",
+        "ALBLO",
+        "ALBHI"
+      ],
+      "covariates": [
+        "WT",
+        "HT",
+        "AGE",
+        "SEX",
+        "CREAT",
+        "ALB",
+        "CVVH",
+        "FLAG"
+      ],
+      "interindividualVariability": {
+        "etaIndices": [
+          1,
+          2,
+          3
+        ],
+        "omega": [
+          "@block\n0.1660\n0.0000 0.0834\n0.0376 0.0000 0.0292"
+        ]
+      },
+      "residualError": {
+        "epsIndices": [
+          1
+        ],
+        "sigma": [
+          "0.1142   // proportional, 33.8% CV as published; sigma^2 = 0.338^2\n0        // additive residual variance fixed to zero"
+        ]
+      },
+      "pmxAdaptations": "Adaptation au moteur : quand aucune clairance urinaire mesurée sur 6 h est fournie, la CLCR est remplacée par Cockcroft-Gault ; albumine est bornée à la plage publiée de 10 à 36 g/L. Les exposants allométriques de Q et V2 sont des hypothèses documentées.",
+      "implementationStatus": "ADAPTED",
+      "softwareContractStatus": "SOFTWARE_TESTED",
+      "numericalCheckStatus": "not-checked",
+      "sourceReproductionStatus": "pending-independent-reproduction",
+      "mapTdm": {
+        "eligible": false,
+        "status": "Simulation uniquement"
+      },
+      "limitations": "Adaptation au moteur : quand aucune clairance urinaire mesurée sur 6 h est fournie, la CLCR est remplacée par Cockcroft-Gault ; albumine est bornée à la plage publiée de 10 à 36 g/L. Les exposants allométriques de Q et V2 sont des hypothèses documentées."
+    },
+    {
+      "id": "genta_rosario_clcr",
+      "sourceFile": "genta_rosario_clcr.cpp",
+      "sourceSha256": "631a241015b22a13167377983a7aa3ea4a9a71a92302c2a66453f1a1d09f4108",
+      "primarySource": {
+        "citation": "Rosario MC et al. Br J Clin Pharmacol. 1998;46:229-236.",
+        "doi": "10.1046/j.1365-2125.1998.00779.x",
+        "status": "verified"
+      },
+      "population": {
+        "description": "Adultes atteints de cancer; variante utilisant la clairance de la créatinine.",
+        "tags": [
+          "Adulte",
+          "Cancer",
+          "Hors ICU"
+        ]
+      },
+      "administration": {
+        "routes": [
+          "IV"
+        ],
+        "modes": [
+          "IV_INTERMITTENT"
+        ],
+        "timeUnit": "h",
+        "concentrationUnit": "mg/L"
+      },
+      "structuralModel": {
+        "compartments": [
+          "CENT",
+          "PERIPH"
+        ],
+        "differentialEquations": [
+          "dxdt_CENT   = - (CL / V1) * CENT - (Q / V1) * CENT + (Q / V2) * PERIPH;",
+          "dxdt_PERIPH =   (Q / V1) * CENT - (Q / V2) * PERIPH;"
+        ],
+        "outputs": [
+          "DV",
+          "CP",
+          "CL",
+          "V1",
+          "V2",
+          "Q",
+          "BSA",
+          "CLCR",
+          "ALBGL"
+        ]
+      },
+      "parameters": [
+        "TVCLINT",
+        "TVCLSLP",
+        "TVV1BSA",
+        "ALBEXP",
+        "TVQ",
+        "TVV2",
+        "ALBREF",
+        "CRFLOOR"
+      ],
+      "covariates": [
+        "WT",
+        "HT",
+        "AGE",
+        "SEX",
+        "CREAT",
+        "ALB"
+      ],
+      "interindividualVariability": {
+        "etaIndices": [
+          1,
+          2,
+          3
+        ],
+        "omega": [
+          "0.033652 0.076520 0.000000\n\n\n// Combined residual error as published: Y = C*exp(e1) + e2, variances\n// error1 = 0.025 (dimensionless, exponential) and error2 = 0.107 (mg/L)^2.\n// These are the printed three-decimal values; the trailing digit the PDF text\n// layer appends to each is a superscript footnote marker."
+        ]
+      },
+      "residualError": {
+        "epsIndices": [
+          1,
+          2
+        ],
+        "sigma": [
+          "0.025 0.107"
+        ]
+      },
+      "pmxAdaptations": "Adaptation au moteur : Cockcroft-Gault et la formule de surface corporelle sont calculés à partir des covariables disponibles. La matrice OMEGA est supposée diagonale et la variabilité non publiée de V1 est fixée à zéro.",
+      "implementationStatus": "ADAPTED",
+      "softwareContractStatus": "SOFTWARE_TESTED",
+      "numericalCheckStatus": "not-checked",
+      "sourceReproductionStatus": "pending-independent-reproduction",
+      "mapTdm": {
+        "eligible": false,
+        "status": "Simulation uniquement"
+      },
+      "limitations": "Adaptation au moteur : Cockcroft-Gault et la formule de surface corporelle sont calculés à partir des covariables disponibles. La matrice OMEGA est supposée diagonale et la variabilité non publiée de V1 est fixée à zéro."
+    },
+    {
+      "id": "genta_rosario_clinical",
+      "sourceFile": "genta_rosario_clinical.cpp",
+      "sourceSha256": "8dc5ff4f9bed643b3779f7866e9fb44544cd4db5331f10b11957948078cafb8b",
+      "primarySource": {
+        "citation": "Rosario MC et al. Br J Clin Pharmacol. 1998;46:229-236.",
+        "doi": "10.1046/j.1365-2125.1998.00779.x",
+        "status": "verified"
+      },
+      "population": {
+        "description": "Adultes atteints de cancer; variante à covariables cliniques.",
+        "tags": [
+          "Adulte",
+          "Cancer",
+          "Hors ICU"
+        ]
+      },
+      "administration": {
+        "routes": [
+          "IV"
+        ],
+        "modes": [
+          "IV_INTERMITTENT"
+        ],
+        "timeUnit": "h",
+        "concentrationUnit": "mg/L"
+      },
+      "structuralModel": {
+        "compartments": [
+          "CENT",
+          "PERIPH"
+        ],
+        "differentialEquations": [
+          "dxdt_CENT   = - (CL / V1) * CENT - (Q / V1) * CENT + (Q / V2) * PERIPH;",
+          "dxdt_PERIPH =   (Q / V1) * CENT - (Q / V2) * PERIPH;"
+        ],
+        "outputs": [
+          "DV",
+          "CP",
+          "CL",
+          "V1",
+          "V2",
+          "Q",
+          "BSA",
+          "CREAT70",
+          "ALBGL"
+        ]
+      },
+      "parameters": [
+        "TVCLBSA",
+        "CREXP",
+        "AGEEXP",
+        "TVV1BSA",
+        "ALBEXP",
+        "TVQ",
+        "TVV2",
+        "CRFLOOR",
+        "CRREF",
+        "AGEREF",
+        "ALBREF"
+      ],
+      "covariates": [
+        "WT",
+        "HT",
+        "AGE",
+        "CREAT",
+        "ALB",
+        "SEX"
+      ],
+      "interindividualVariability": {
+        "etaIndices": [
+          1,
+          2,
+          3
+        ],
+        "omega": [
+          "0.037696 0.086729 0.000000\n\n\n// Combined residual error as published: Y = C*exp(e1) + e2, variances\n// error1 = 0.025 (dimensionless, exponential) and error2 = 0.102 (mg/L)^2.\n// Three-decimal printed values; the trailing digit in the PDF text layer is a\n// superscript footnote marker, not a fourth decimal."
+        ]
+      },
+      "residualError": {
+        "epsIndices": [
+          1,
+          2
+        ],
+        "sigma": [
+          "0.025 0.102"
+        ]
+      },
+      "pmxAdaptations": "Adaptation au moteur : les formules cliniques nécessaires sont calculées à partir des covariables disponibles. La matrice OMEGA est supposée diagonale et la variabilité non publiée de V1 est fixée à zéro.",
+      "implementationStatus": "ADAPTED",
+      "softwareContractStatus": "SOFTWARE_TESTED",
+      "numericalCheckStatus": "not-checked",
+      "sourceReproductionStatus": "pending-independent-reproduction",
+      "mapTdm": {
+        "eligible": false,
+        "status": "Simulation uniquement"
+      },
+      "limitations": "Adaptation au moteur : les formules cliniques nécessaires sont calculées à partir des covariables disponibles. La matrice OMEGA est supposée diagonale et la variabilité non publiée de V1 est fixée à zéro."
+    },
+    {
+      "id": "isavuconazole_desai_ddi",
+      "sourceFile": "isavuconazole_desai_ddi.cpp",
+      "sourceSha256": "82db6b14ae484edd6ed1bb2d6c5d852c02778e3fc150daed197c556b9464a59a",
+      "primarySource": {
+        "citation": "Desai A et al. Antimicrob Agents Chemother. 2016;60:5483-5491.",
+        "doi": "10.1128/AAC.02819-15",
+        "status": "verified"
+      },
+      "population": {
+        "description": "Adultes sains et adultes avec infection fongique invasive, essais de phase 1 et SECURE.",
+        "tags": [
+          "Adulte",
+          "Infection fongique",
+          "Population mixte"
+        ]
+      },
+      "administration": {
+        "routes": [
+          "Oral"
+        ],
+        "modes": [
+          "ORAL"
+        ],
+        "timeUnit": "h",
+        "concentrationUnit": "mg/L"
+      },
+      "structuralModel": {
+        "compartments": [
+          "GUT",
+          "CENT",
+          "PERI"
+        ],
+        "differentialEquations": [
+          "dxdt_GUT = -KA * GUT;",
+          "dxdt_CENT = KA * GUT - ((CL + TVQ) / TVV1) * CENT + (TVQ / V2) * PERI;",
+          "dxdt_PERI = (TVQ / TVV1) * CENT - (TVQ / V2) * PERI;"
+        ],
+        "outputs": [
+          "DV",
+          "CL"
+        ]
+      },
+      "parameters": [
+        "TVCL",
+        "TVV1",
+        "TVV2",
+        "TVQ",
+        "KAMAX",
+        "RA",
+        "GAM1",
+        "EFF_BMI_V2",
+        "BMI_REF"
+      ],
+      "covariates": [
+        "BMI"
+      ],
+      "interindividualVariability": {
+        "etaIndices": [
+          1
+        ],
+        "omega": [
+          "@annotated\nIIV_CL : 0.09 : Engineering prior variance on clearance"
+        ]
+      },
+      "residualError": {
+        "epsIndices": [
+          1
+        ],
+        "sigma": [
+          "@annotated\nPROP : 0.04 : Engineering prior proportional residual variance\nADD  : 0.0  : Additive residual variance fixed to zero"
+        ]
+      },
+      "pmxAdaptations": "Absorption Weibull conservée; prior résiduel adapté pour mapbayr.",
+      "implementationStatus": "ADAPTED",
+      "softwareContractStatus": "SOFTWARE_TESTED",
+      "numericalCheckStatus": "not-checked",
+      "sourceReproductionStatus": "pending-independent-reproduction",
+      "mapTdm": {
+        "eligible": false,
+        "status": "Simulation uniquement"
+      },
+      "limitations": "Absorption Weibull conservée; prior résiduel adapté pour mapbayr."
+    },
+    {
+      "id": "isavuconazole_groll_ddi",
+      "sourceFile": "isavuconazole_groll_ddi.cpp",
+      "sourceSha256": "034b8bde7f96cf6b297102ab6008248751cc028b8e26d15ec11fa7113552aa44",
+      "primarySource": {
+        "citation": "Groll AH et al. Clin Pharmacol Drug Dev. 2017;6:76-85.",
+        "doi": "10.1002/cpdd.284",
+        "status": "verified"
+      },
+      "population": {
+        "description": "Adultes sains inclus dans des études contrôlées d'interactions médicamenteuses.",
+        "tags": [
+          "Adulte",
+          "Volontaire sain",
+          "Hors ICU"
+        ]
+      },
+      "administration": {
+        "routes": [
+          "Oral"
+        ],
+        "modes": [
+          "ORAL"
+        ],
+        "timeUnit": "h",
+        "concentrationUnit": "mg/L"
+      },
+      "structuralModel": {
+        "compartments": [
+          "GUT",
+          "CENT",
+          "PERI"
+        ],
+        "differentialEquations": [
+          "dxdt_GUT = -TVKA * GUT;",
+          "dxdt_CENT = TVKA * GUT * TVF - ((CL + Q) / V1) * CENT + (Q / V2) * PERI;",
+          "dxdt_PERI = (Q / V1) * CENT - (Q / V2) * PERI;"
+        ],
+        "outputs": [
+          "DV",
+          "CL"
+        ]
+      },
+      "parameters": [
+        "TVCL",
+        "TVV1",
+        "TVQ",
+        "TVV2",
+        "TVKA",
+        "TVF"
+      ],
+      "covariates": [
+        "WT"
+      ],
+      "interindividualVariability": {
+        "etaIndices": [
+          1
+        ],
+        "omega": [
+          "@annotated\nIIV_CL : 0.09 : Engineering prior variance on clearance"
+        ]
+      },
+      "residualError": {
+        "epsIndices": [
+          1
+        ],
+        "sigma": [
+          "@annotated\nPROP : 0.04 : Engineering prior proportional residual variance\nADD  : 0.0  : Additive residual variance fixed to zero"
+        ]
+      },
+      "pmxAdaptations": "Module DDI simplifié; prior OMEGA/SIGMA d'ingénierie.",
+      "implementationStatus": "ADAPTED",
+      "softwareContractStatus": "SOFTWARE_TESTED",
+      "numericalCheckStatus": "not-checked",
+      "sourceReproductionStatus": "pending-independent-reproduction",
+      "mapTdm": {
+        "eligible": false,
+        "status": "Simulation uniquement"
+      },
+      "limitations": "Module DDI simplifié; prior OMEGA/SIGMA d'ingénierie."
+    },
+    {
+      "id": "levo_canoui",
+      "sourceFile": "levo_canoui.cpp",
+      "sourceSha256": "177e20f058a90ab81f742d1ca54c0cf86fd753c7d717a7cb0ca36f3e0e4b386e",
+      "primarySource": {
+        "citation": "Canouï E et al. J Antimicrob Chemother. 2022;77:1344-1352.",
+        "doi": "10.1093/jac/dkac031",
+        "status": "verified"
+      },
+      "population": {
+        "description": "Adultes traités pour une infection ostéo-articulaire.",
+        "tags": [
+          "Adulte",
+          "Infection ostéo-articulaire",
+          "Hors ICU"
+        ]
+      },
+      "administration": {
+        "routes": [
+          "Oral"
+        ],
+        "modes": [
+          "ORAL"
+        ],
+        "timeUnit": "h",
+        "concentrationUnit": "mg/L"
+      },
+      "structuralModel": {
+        "compartments": [
+          "GUT",
+          "CENT"
+        ],
+        "differentialEquations": [
+          "dxdt_GUT = -KA * GUT;",
+          "dxdt_CENT = KA * GUT - CL * (CENT / V);"
+        ],
+        "outputs": [
+          "@annotated",
+          "DV",
+          ":",
+          "Simulated",
+          "plasma",
+          "concentration",
+          "(mg/L)",
+          "CP",
+          ":",
+          "Predicted",
+          "plasma",
+          "concentration",
+          "(mg/L)",
+          "CL",
+          ":",
+          "Individual",
+          "apparent",
+          "clearance",
+          "(L/h)",
+          "V",
+          ":",
+          "Individual",
+          "apparent",
+          "volume",
+          "(L)",
+          "KA",
+          ":",
+          "Absorption",
+          "rate",
+          "constant",
+          "(1/h)"
+        ]
+      },
+      "parameters": [
+        "TVCL",
+        "TVV",
+        "KA",
+        "CLCR_CL",
+        "AGE_CL",
+        "REF_CLCR",
+        "REF_AGE"
+      ],
+      "covariates": [
+        "CLCR",
+        "AGE"
+      ],
+      "interindividualVariability": {
+        "etaIndices": [
+          1,
+          2
+        ],
+        "omega": [
+          "@annotated @diagonal\nETA_V  : 0.080089 : Between-subject variance on V/F (SD 0.283)\nETA_CL : 0.134689 : Between-subject variance on CL/F (SD 0.367)"
+        ]
+      },
+      "residualError": {
+        "epsIndices": [
+          1,
+          2
+        ],
+        "sigma": [
+          "@annotated @diagonal\nPROP : 0.274576 : Multiplicative residual variance (SD 0.524)\nADD  : 0.0      : Additive residual variance fixed to zero"
+        ]
+      },
+      "pmxAdaptations": "No PMx adaptation documented.",
+      "implementationStatus": "ARTICLE",
+      "softwareContractStatus": "SOFTWARE_TESTED",
+      "numericalCheckStatus": "not-checked",
+      "sourceReproductionStatus": "pending-independent-reproduction",
+      "mapTdm": {
+        "eligible": true,
+        "status": "Prior MAP fondé sur l'article"
+      },
+      "limitations": "Numerical validity ranges and independent reproduction remain to be documented."
+    },
+    {
+      "id": "levo_gergs",
+      "sourceFile": "levo_gergs.cpp",
+      "sourceSha256": "1cec07ac3d28eff6ae9eeccc14cc94d12f9a77b330eeece1f16df8fcd1a9a253",
+      "primarySource": {
+        "citation": "Gergs U et al. Clin Pharmacol Drug Dev. 2018;7:692-698.",
+        "doi": "10.1002/cpdd.418",
+        "status": "verified"
+      },
+      "population": {
+        "description": "Adultes opérés d'une arthroplastie élective de hanche ou de genou.",
+        "tags": [
+          "Adulte",
+          "Chirurgie orthopédique",
+          "Hors ICU"
+        ]
+      },
+      "administration": {
+        "routes": [
+          "IV"
+        ],
+        "modes": [
+          "IV_INTERMITTENT"
+        ],
+        "timeUnit": "h",
+        "concentrationUnit": "mg/L"
+      },
+      "structuralModel": {
+        "compartments": [
+          "CENT"
+        ],
+        "differentialEquations": [
+          "dxdt_CENT = - (CL / V) * CENT;"
+        ],
+        "outputs": [
+          "DV",
+          "CL",
+          "V"
+        ]
+      },
+      "parameters": [
+        "TVCL",
+        "TVV"
+      ],
+      "covariates": [
+        "WT"
+      ],
+      "interindividualVariability": {
+        "etaIndices": [
+          1,
+          2
+        ],
+        "omega": [
+          "0.0975 0.2312   // ln(1+CV^2) for CV = 32% and 51%"
+        ]
+      },
+      "residualError": {
+        "epsIndices": [
+          1,
+          2
+        ],
+        "sigma": [
+          "0.01   // proportional -- ASSUMED, not published (see LIMITS 3)\n0.0001 // additive     -- ASSUMED, not published (see LIMITS 3)"
+        ]
+      },
+      "pmxAdaptations": "Adaptation plasmatique : le compartiment osseux irréversible publié est omis car il ne convient pas aux doses répétées. Les deux composantes de erreur résiduelle ne sont pas publiées et sont des valeurs pragmatiques explicitement signalées dans le code.",
+      "implementationStatus": "ADAPTED",
+      "softwareContractStatus": "SOFTWARE_TESTED",
+      "numericalCheckStatus": "not-checked",
+      "sourceReproductionStatus": "pending-independent-reproduction",
+      "mapTdm": {
+        "eligible": false,
+        "status": "Simulation uniquement"
+      },
+      "limitations": "Adaptation plasmatique : le compartiment osseux irréversible publié est omis car il ne convient pas aux doses répétées. Les deux composantes de erreur résiduelle ne sont pas publiées et sont des valeurs pragmatiques explicitement signalées dans le code."
+    },
+    {
+      "id": "linez_buerger",
+      "sourceFile": "linez_buerger.cpp",
+      "sourceSha256": "89c43521928a8d81f8419c770ad87bb1ecf870390f07fe32489f981bc4bda5c5",
+      "primarySource": {
+        "citation": "Buerger C et al. Antimicrob Agents Chemother. 2006;50:2455-2463.",
+        "doi": "10.1128/AAC.01468-05",
+        "status": "verified"
+      },
+      "population": {
+        "description": "Adultes en réanimation, sepsis sévère ou choc septique, ventilés.",
+        "tags": [
+          "Adulte",
+          "ICU",
+          "Sepsis",
+          "Ventilé"
+        ]
+      },
+      "administration": {
+        "routes": [
+          "IV"
+        ],
+        "modes": [
+          "IV_INTERMITTENT"
+        ],
+        "timeUnit": "h",
+        "concentrationUnit": "mg/L"
+      },
+      "structuralModel": {
+        "compartments": [
+          "CENT",
+          "PERIPH"
+        ],
+        "differentialEquations": [
+          "dxdt_CENT   = - (CL/V)*CENT - (Q/V)*CENT + (Q/V2)*PERIPH;",
+          "dxdt_PERIPH =                 (Q/V)*CENT - (Q/V2)*PERIPH;"
+        ],
+        "outputs": [
+          "DV",
+          "CP",
+          "CU",
+          "CSC",
+          "CIM",
+          "CL",
+          "Q",
+          "V",
+          "V2"
+        ]
+      },
+      "parameters": [
+        "TVCLU",
+        "TVVSSU",
+        "TVQU",
+        "FRV1",
+        "FU",
+        "FTSC",
+        "FTIM"
+      ],
+      "covariates": [
+        "WT",
+        "AGE",
+        "SEX",
+        "CREAT"
+      ],
+      "interindividualVariability": {
+        "etaIndices": [
+          1,
+          2,
+          3
+        ],
+        "omega": [
+          "0.289112 0.036201 0.572471\n\n\n// ASSUMED -- no residual error magnitude is published (LIMITS 10).\n// House default: proportional then additive."
+        ]
+      },
+      "residualError": {
+        "epsIndices": [
+          1,
+          2
+        ],
+        "sigma": [
+          "0.01\n0.0001"
+        ]
+      },
+      "pmxAdaptations": "Analyse PK individuelle publiée, adaptée ici comme prior populationnel.",
+      "implementationStatus": "ADAPTED",
+      "softwareContractStatus": "SOFTWARE_TESTED",
+      "numericalCheckStatus": "not-checked",
+      "sourceReproductionStatus": "pending-independent-reproduction",
+      "mapTdm": {
+        "eligible": false,
+        "status": "Simulation uniquement"
+      },
+      "limitations": "Analyse PK individuelle publiée, adaptée ici comme prior populationnel."
+    },
+    {
+      "id": "linez_sasaki",
+      "sourceFile": "linez_sasaki.cpp",
+      "sourceSha256": "f8de4c6c578628ef3cd2aef8e2dc9b6636af264dfad9362ad63a9a117af5975a",
+      "primarySource": {
+        "citation": "Sasaki T et al. Antimicrob Agents Chemother. 2011;55:1867-1873.",
+        "doi": "10.1128/AAC.01185-10",
+        "status": "verified"
+      },
+      "population": {
+        "description": "Adultes japonais hospitalisés pour infection.",
+        "tags": [
+          "Adulte",
+          "Hospitalisé",
+          "Hors ICU non précisé"
+        ]
+      },
+      "administration": {
+        "routes": [
+          "IV",
+          "Oral"
+        ],
+        "modes": [
+          "IV_INTERMITTENT",
+          "ORAL"
+        ],
+        "timeUnit": "h",
+        "concentrationUnit": "mg/L"
+      },
+      "structuralModel": {
+        "compartments": [
+          "GUT",
+          "CENT"
+        ],
+        "differentialEquations": [
+          "dxdt_GUT  = - KA * GUT;",
+          "dxdt_CENT =   KA * GUT - (CL / V) * CENT;"
+        ],
+        "outputs": [
+          "DV",
+          "CP",
+          "CL",
+          "V",
+          "CLCR"
+        ]
+      },
+      "parameters": [
+        "TVCL",
+        "TVV",
+        "KA",
+        "CLCRREF",
+        "BWREF",
+        "PWRCLCR",
+        "EFFCIR",
+        "CIR",
+        "TVF",
+        "CGFEM"
+      ],
+      "covariates": [
+        "WT",
+        "AGE",
+        "SEX",
+        "CREAT"
+      ],
+      "interindividualVariability": {
+        "etaIndices": [
+          1,
+          2
+        ],
+        "omega": [
+          "0.123904 0.094864\n\n\n// PUBLISHED residual error: ADDITIVE ONLY, SD 1.43 ug/mL -> variance 2.0449.\n// This is NOT the house 0.01/0.0001 default -- the paper prints it. There is\n// no proportional component. Do not import the platelet-model error pair."
+        ]
+      },
+      "residualError": {
+        "epsIndices": [
+          2
+        ],
+        "sigma": [
+          "0 2.0449"
+        ]
+      },
+      "pmxAdaptations": "Adaptation au moteur : la biodisponibilité orale est fixée à 1 et le facteur féminin de Cockcroft-Gault à 0,85, deux choix non précisés dans la source. Le modèle PD plaquettaire publié est hors du périmètre PK.",
+      "implementationStatus": "ADAPTED",
+      "softwareContractStatus": "SOFTWARE_TESTED",
+      "numericalCheckStatus": "not-checked",
+      "sourceReproductionStatus": "pending-independent-reproduction",
+      "mapTdm": {
+        "eligible": false,
+        "status": "Simulation uniquement"
+      },
+      "limitations": "Adaptation au moteur : la biodisponibilité orale est fixée à 1 et le facteur féminin de Cockcroft-Gault à 0,85, deux choix non précisés dans la source. Le modèle PD plaquettaire publié est hors du périmètre PK."
+    },
+    {
+      "id": "posaconazole_dolton_ddi",
+      "sourceFile": "posaconazole_dolton_ddi.cpp",
+      "sourceSha256": "2a55f44ddf430fe78e0d89ad9b2cec11e5ae6413a8f4e62e5835cde51fde5a2c",
+      "primarySource": {
+        "citation": "Dolton MJ et al. Antimicrob Agents Chemother. 2014;58:6879-6885.",
+        "doi": "10.1128/AAC.03777-14",
+        "status": "verified"
+      },
+      "population": {
+        "description": "Adultes sains et patients adultes sous posaconazole en prophylaxie ou traitement.",
+        "tags": [
+          "Adulte",
+          "Infection fongique",
+          "Population mixte"
+        ]
+      },
+      "administration": {
+        "routes": [
+          "Oral"
+        ],
+        "modes": [
+          "ORAL"
+        ],
+        "timeUnit": "h",
+        "concentrationUnit": "mg/L"
+      },
+      "structuralModel": {
+        "compartments": [
+          "GUT",
+          "CENT"
+        ],
+        "differentialEquations": [
+          "dxdt_GUT = -TVKA * GUT;",
+          "dxdt_CENT = TVKA * GUT * TVF - (CL / V) * CENT;"
+        ],
+        "outputs": [
+          "DV",
+          "CL"
+        ]
+      },
+      "parameters": [
+        "TVCL",
+        "TVV",
+        "TVKA",
+        "TVF"
+      ],
+      "covariates": [],
+      "interindividualVariability": {
+        "etaIndices": [
+          1
+        ],
+        "omega": [
+          "@annotated\nIIV_CL : 0.09 : Engineering prior variance on clearance"
+        ]
+      },
+      "residualError": {
+        "epsIndices": [
+          1
+        ],
+        "sigma": [
+          "@annotated\nPROP : 0.04 : Engineering prior proportional residual variance\nADD  : 0.0  : Additive residual variance fixed to zero"
+        ]
+      },
+      "pmxAdaptations": "Module DDI simplifié; prior OMEGA/SIGMA d'ingénierie.",
+      "implementationStatus": "ADAPTED",
+      "softwareContractStatus": "SOFTWARE_TESTED",
+      "numericalCheckStatus": "not-checked",
+      "sourceReproductionStatus": "pending-independent-reproduction",
+      "mapTdm": {
+        "eligible": false,
+        "status": "Simulation uniquement"
+      },
+      "limitations": "Module DDI simplifié; prior OMEGA/SIGMA d'ingénierie."
+    },
+    {
+      "id": "rifampicine_chang",
+      "sourceFile": "rifampicine_chang.cpp",
+      "sourceSha256": "5f696c28913208cf888a25fe75564d4d66b126fbbd7543a556b54642fc4981da",
+      "primarySource": {
+        "citation": "Chang MJ et al. Tuberculosis (Edinb). 2015;95:54-59.",
+        "doi": "10.1016/j.tube.2014.10.013",
+        "status": "verified"
+      },
+      "population": {
+        "description": "54 adultes sud-coréens avec tuberculose pulmonaire, dont 21 avec diabète.",
+        "tags": [
+          "Adulte",
+          "Tuberculose",
+          "Diabète",
+          "Hors ICU"
+        ]
+      },
+      "administration": {
+        "routes": [
+          "Oral"
+        ],
+        "modes": [
+          "ORAL"
+        ],
+        "timeUnit": "h",
+        "concentrationUnit": "mg/L"
+      },
+      "structuralModel": {
+        "compartments": [
+          "DEPOT",
+          "CENT"
+        ],
+        "differentialEquations": [
+          "dxdt_DEPOT = -Ka * DEPOT;",
+          "dxdt_CENT  =  Ka * DEPOT - (CL / V) * CENT;"
+        ],
+        "outputs": [
+          "@annotated",
+          "DV",
+          ":",
+          "Simulated",
+          "concentration",
+          "with",
+          "residual",
+          "error",
+          "(mg/L)",
+          "IPRED",
+          ":",
+          "Individual",
+          "predicted",
+          "concentration",
+          "(mg/L)",
+          "CL",
+          ":",
+          "Individual",
+          "clearance",
+          "(L/h)",
+          "V",
+          ":",
+          "Individual",
+          "volume",
+          "of",
+          "distribution",
+          "(L)",
+          "Ka",
+          ":",
+          "Individual",
+          "absorption",
+          "rate",
+          "constant",
+          "(1/h)",
+          "BMI",
+          ":",
+          "Body",
+          "mass",
+          "index",
+          "(kg/m2)"
+        ]
+      },
+      "parameters": [
+        "CL_INT",
+        "CL_BMI",
+        "BMIREF",
+        "VD_INT",
+        "VD_DM",
+        "KA_INT",
+        "KA_DM"
+      ],
+      "covariates": [
+        "WT",
+        "HT",
+        "DM"
+      ],
+      "interindividualVariability": {
+        "etaIndices": [
+          1,
+          2,
+          3
+        ],
+        "omega": [
+          "@annotated @diagonal\nETA_CL : 0.1022 : IIV on CL, from 32.8 %CV\nETA_VD : 0.2535 : IIV on Vd, from 53.7 %CV\nETA_KA : 0.2490 : Proportional IIV on Ka, from 49.9 %CV"
+        ]
+      },
+      "residualError": {
+        "epsIndices": [
+          1,
+          2
+        ],
+        "sigma": [
+          "@annotated @diagonal\nPROP : 0.0144 : Proportional residual error ((0.12)^2)\nADD  : 2.0164 : Additive residual error variance ((1.42 mg/L)^2)"
+        ]
+      },
+      "pmxAdaptations": "Texte intégral vérifié. L'article imprime l'effet du BMI sur CL sans opérateur avant 6,22; l'interprétation historique du dépôt est conservée et signalée dans le modèle.",
+      "implementationStatus": "ADAPTED",
+      "softwareContractStatus": "SOFTWARE_TESTED",
+      "numericalCheckStatus": "not-checked",
+      "sourceReproductionStatus": "pending-independent-reproduction",
+      "mapTdm": {
+        "eligible": false,
+        "status": "Simulation uniquement"
+      },
+      "limitations": "Texte intégral vérifié. L'article imprime l'effet du BMI sur CL sans opérateur avant 6,22; l'interprétation historique du dépôt est conservée et signalée dans le modèle."
+    },
+    {
+      "id": "rifampicine_jeremiah",
+      "sourceFile": "rifampicine_jeremiah.cpp",
+      "sourceSha256": "ef3f8b654e85136282cd0b387e06c5ca1bd87c0dd684bc00a1e3451a28188e05",
+      "primarySource": {
+        "citation": "Jeremiah K et al. Antimicrob Agents Chemother. 2014;58:3468-3474.",
+        "doi": "10.1128/AAC.02307-13",
+        "status": "verified"
+      },
+      "population": {
+        "description": "100 adultes tanzaniens avec tuberculose pulmonaire, avec ou sans VIH.",
+        "tags": [
+          "Adulte",
+          "Tuberculose",
+          "VIH",
+          "Hors ICU"
+        ]
+      },
+      "administration": {
+        "routes": [
+          "Oral"
+        ],
+        "modes": [
+          "ORAL"
+        ],
+        "timeUnit": "h",
+        "concentrationUnit": "mg/L"
+      },
+      "structuralModel": {
+        "compartments": [
+          "TR1",
+          "DEPOT",
+          "CENT"
+        ],
+        "differentialEquations": [
+          "dxdt_TR1   = -KTR * TR1;",
+          "dxdt_DEPOT =  KTR * TR1 - Ka * DEPOT;",
+          "dxdt_CENT  =  Ka * DEPOT - (CL / V) * CENT;"
+        ],
+        "outputs": [
+          "@annotated",
+          "DV",
+          ":",
+          "Simulated",
+          "concentration",
+          "with",
+          "residual",
+          "error",
+          "(mg/L)",
+          "IPRED",
+          ":",
+          "Individual",
+          "predicted",
+          "concentration",
+          "(mg/L)",
+          "CL",
+          ":",
+          "Individual",
+          "clearance",
+          "at",
+          "this",
+          "time,",
+          "INDUCTION-DEPENDENT",
+          "(L/h)",
+          "V",
+          ":",
+          "Individual",
+          "volume",
+          "of",
+          "distribution",
+          "(L)",
+          "Ka",
+          ":",
+          "Absorption",
+          "rate",
+          "constant",
+          "(1/h)",
+          "FFM",
+          ":",
+          "Fat-free",
+          "mass",
+          "(kg)"
+        ]
+      },
+      "parameters": [
+        "TVCL7",
+        "TVCLSS",
+        "TVVD",
+        "TVKA",
+        "TVMTT",
+        "NN",
+        "THALFI",
+        "FFMREF",
+        "ALLOCL"
+      ],
+      "covariates": [
+        "WT",
+        "HT",
+        "SEX"
+      ],
+      "interindividualVariability": {
+        "etaIndices": [
+          1
+        ],
+        "omega": [
+          "@annotated @diagonal\nETA_CL : 0.0560 : IIV on CL, from 24.0 %CV"
+        ]
+      },
+      "residualError": {
+        "epsIndices": [
+          1,
+          2
+        ],
+        "sigma": [
+          "@annotated @diagonal\nPROP : 0.01876 : Proportional residual error (13.7 %)\nADD  : 0.00174 : Additive residual error variance ((0.0417 mg/L)^2)"
+        ]
+      },
+      "pmxAdaptations": "Structure et paramètres vérifiés dans l'article; les effets VIH, supplémentation et variabilités interoccasion ne sont pas encore implémentés.",
+      "implementationStatus": "ADAPTED",
+      "softwareContractStatus": "SOFTWARE_TESTED",
+      "numericalCheckStatus": "not-checked",
+      "sourceReproductionStatus": "pending-independent-reproduction",
+      "mapTdm": {
+        "eligible": false,
+        "status": "Simulation uniquement"
+      },
+      "limitations": "Structure et paramètres vérifiés dans l'article; les effets VIH, supplémentation et variabilités interoccasion ne sont pas encore implémentés."
+    },
+    {
+      "id": "rifampicine_jing",
+      "sourceFile": "rifampicine_jing.cpp",
+      "sourceSha256": "73fed1f5b210551110f5026ced5496fa86ac9b29af0bec60917eabd2114c8ee8",
+      "primarySource": {
+        "citation": "Jing Y et al. J Clin Pharmacol. 2016;56:622-627.",
+        "doi": "10.1002/jcph.643",
+        "status": "verified"
+      },
+      "population": {
+        "description": "54 adultes chinois traités par rifampicine orale pour une tuberculose pulmonaire.",
+        "tags": [
+          "Adulte",
+          "Tuberculose",
+          "Hors ICU"
+        ]
+      },
+      "administration": {
+        "routes": [
+          "Oral"
+        ],
+        "modes": [
+          "ORAL"
+        ],
+        "timeUnit": "h",
+        "concentrationUnit": "mg/L"
+      },
+      "structuralModel": {
+        "compartments": [
+          "DEPOT",
+          "CENT"
+        ],
+        "differentialEquations": [
+          "dxdt_DEPOT = -Ka * DEPOT;",
+          "dxdt_CENT  =  Ka * DEPOT - (CL / V) * CENT;"
+        ],
+        "outputs": [
+          "@annotated",
+          "DV",
+          ":",
+          "Simulated",
+          "concentration",
+          "with",
+          "residual",
+          "error",
+          "(mg/L)",
+          "CL",
+          ":",
+          "Individual",
+          "clearance",
+          "(L/h)",
+          "V",
+          ":",
+          "Individual",
+          "volume",
+          "of",
+          "distribution",
+          "(L)",
+          "Ka",
+          ":",
+          "Absorption",
+          "rate",
+          "constant",
+          "(1/h)"
+        ]
+      },
+      "parameters": [
+        "TVCL",
+        "TVVD",
+        "TVKA"
+      ],
+      "covariates": [
+        "WT"
+      ],
+      "interindividualVariability": {
+        "etaIndices": [
+          1,
+          2
+        ],
+        "omega": [
+          "@annotated @diagonal\nETA_CL : 0.3479 : IIV on CL, from 64.5 %CV\nETA_VD : 0.0428 : IIV on Vd, from 20.9 %CV"
+        ]
+      },
+      "residualError": {
+        "epsIndices": [
+          2
+        ],
+        "sigma": [
+          "@annotated @diagonal\nPROP : 0       : Proportional residual error variance fixed to zero\nADD : 42.9025 : Additive residual error variance, from SD 6.55 mg/L"
+        ]
+      },
+      "pmxAdaptations": "No PMx adaptation documented.",
+      "implementationStatus": "ARTICLE",
+      "softwareContractStatus": "SOFTWARE_TESTED",
+      "numericalCheckStatus": "deterministic-software-regression",
+      "sourceReproductionStatus": "pending-independent-reproduction",
+      "mapTdm": {
+        "eligible": true,
+        "status": "Prior MAP fondé sur l'article"
+      },
+      "limitations": "Numerical validity ranges and independent reproduction remain to be documented."
+    },
+    {
+      "id": "rifampicine_loos_ddi",
+      "sourceFile": "rifampicine_loos_ddi.cpp",
+      "sourceSha256": "e110e04b87776590132017d5da519be8ccf164c7dd559b651ee167cf822b65ff",
+      "primarySource": {
+        "citation": "Loos U et al. Klin Wochenschr. 1985;63:1205-1211.",
+        "doi": "10.1007/BF01733779",
+        "status": "verified"
+      },
+      "population": {
+        "description": "Adultes sains après rifampicine orale et intraveineuse en administration chronique.",
+        "tags": [
+          "Adulte",
+          "Volontaire sain",
+          "Hors ICU"
+        ]
+      },
+      "administration": {
+        "routes": [
+          "Oral"
+        ],
+        "modes": [
+          "ORAL"
+        ],
+        "timeUnit": "h",
+        "concentrationUnit": "mg/L"
+      },
+      "structuralModel": {
+        "compartments": [
+          "GUT",
+          "CENT"
+        ],
+        "differentialEquations": [
+          "dxdt_GUT = -TVKA * GUT;",
+          "dxdt_CENT = TVKA * GUT * TVF - (CL / V) * CENT;"
+        ],
+        "outputs": [
+          "DV",
+          "CL"
+        ]
+      },
+      "parameters": [
+        "TVCL",
+        "TVV",
+        "TVKA",
+        "TVF"
+      ],
+      "covariates": [],
+      "interindividualVariability": {
+        "etaIndices": [
+          1
+        ],
+        "omega": [
+          "@annotated\nIIV_CL : 0.09 : Engineering prior variance on clearance"
+        ]
+      },
+      "residualError": {
+        "epsIndices": [
+          1
+        ],
+        "sigma": [
+          "@annotated\nPROP : 0.04 : Engineering prior proportional residual variance\nADD  : 0.0  : Additive residual variance fixed to zero"
+        ]
+      },
+      "pmxAdaptations": "Module DDI simplifié; prior OMEGA/SIGMA d'ingénierie.",
+      "implementationStatus": "ADAPTED",
+      "softwareContractStatus": "SOFTWARE_TESTED",
+      "numericalCheckStatus": "not-checked",
+      "sourceReproductionStatus": "pending-independent-reproduction",
+      "mapTdm": {
+        "eligible": false,
+        "status": "Simulation uniquement"
+      },
+      "limitations": "Module DDI simplifié; prior OMEGA/SIGMA d'ingénierie."
+    },
+    {
+      "id": "rifampicine_marsot",
+      "sourceFile": "rifampicine_marsot.cpp",
+      "sourceSha256": "ad485724a95d72a0e55412b92bbab195bea3a5da0349b3ad96d3f4ed96679d4a",
+      "primarySource": {
+        "citation": "Marsot A et al. Br J Clin Pharmacol. 2017;83:1039-1047.",
+        "doi": "10.1111/bcp.13178",
+        "status": "verified"
+      },
+      "population": {
+        "description": "Adultes traités pour une infection ostéo-articulaire, avec ou sans acide fusidique.",
+        "tags": [
+          "Adulte",
+          "Infection ostéo-articulaire",
+          "Hors ICU"
+        ]
+      },
+      "administration": {
+        "routes": [
+          "Oral"
+        ],
+        "modes": [
+          "ORAL"
+        ],
+        "timeUnit": "h",
+        "concentrationUnit": "mg/L"
+      },
+      "structuralModel": {
+        "compartments": [],
+        "differentialEquations": [],
+        "outputs": []
+      },
+      "parameters": [],
+      "covariates": [],
+      "interindividualVariability": {
+        "etaIndices": [
+          1,
+          2
+        ],
+        "omega": []
+      },
+      "residualError": {
+        "epsIndices": [
+          1,
+          2
+        ],
+        "sigma": []
+      },
+      "pmxAdaptations": "No PMx adaptation documented.",
+      "implementationStatus": "ARTICLE",
+      "softwareContractStatus": "SOFTWARE_TESTED",
+      "numericalCheckStatus": "not-checked",
+      "sourceReproductionStatus": "pending-independent-reproduction",
+      "mapTdm": {
+        "eligible": true,
+        "status": "Prior MAP fondé sur l'article"
+      },
+      "limitations": "Numerical validity ranges and independent reproduction remain to be documented."
+    },
+    {
+      "id": "ritonavir_kappelhoff_ddi",
+      "sourceFile": "ritonavir_kappelhoff_ddi.cpp",
+      "sourceSha256": "59cc87ebeda0f2e877917561f8dc1f9730c48b2ee202e132ad50d454850b293c",
+      "primarySource": {
+        "citation": "Kappelhoff BS et al. Br J Clin Pharmacol. 2005;59:174-182.",
+        "doi": "10.1111/j.1365-2125.2004.02241.x",
+        "status": "verified"
+      },
+      "population": {
+        "description": "Adultes vivant avec le VIH-1, ritonavir utilisé comme booster ou antiviral.",
+        "tags": [
+          "Adulte",
+          "VIH",
+          "Hors ICU"
+        ]
+      },
+      "administration": {
+        "routes": [
+          "Oral"
+        ],
+        "modes": [
+          "ORAL"
+        ],
+        "timeUnit": "h",
+        "concentrationUnit": "mg/L"
+      },
+      "structuralModel": {
+        "compartments": [
+          "GUT",
+          "CENT"
+        ],
+        "differentialEquations": [
+          "dxdt_GUT = -TVKA * GUT;",
+          "dxdt_CENT = TVKA * GUT * TVF - (CL / V) * CENT;"
+        ],
+        "outputs": [
+          "DV",
+          "CL"
+        ]
+      },
+      "parameters": [
+        "TVCL",
+        "TVV",
+        "TVKA",
+        "TVF"
+      ],
+      "covariates": [],
+      "interindividualVariability": {
+        "etaIndices": [
+          1
+        ],
+        "omega": [
+          "@annotated\nIIV_CL : 0.09 : Engineering prior variance on clearance"
+        ]
+      },
+      "residualError": {
+        "epsIndices": [
+          1
+        ],
+        "sigma": [
+          "@annotated\nPROP : 0.04 : Engineering prior proportional residual variance\nADD  : 0.0  : Additive residual variance fixed to zero"
+        ]
+      },
+      "pmxAdaptations": "Module DDI simplifié; prior OMEGA/SIGMA d'ingénierie.",
+      "implementationStatus": "ADAPTED",
+      "softwareContractStatus": "SOFTWARE_TESTED",
+      "numericalCheckStatus": "not-checked",
+      "sourceReproductionStatus": "pending-independent-reproduction",
+      "mapTdm": {
+        "eligible": false,
+        "status": "Simulation uniquement"
+      },
+      "limitations": "Module DDI simplifié; prior OMEGA/SIGMA d'ingénierie."
+    },
+    {
+      "id": "sirolimus_djebli_ddi",
+      "sourceFile": "sirolimus_djebli_ddi.cpp",
+      "sourceSha256": "3ded43c83f6480eb6d281aaaa0cb78e950e3c22a14bea0b6fb5839ec07948039",
+      "primarySource": {
+        "citation": "Djebli N et al. Clin Pharmacokinet. 2006;45:1135-1148.",
+        "doi": "10.2165/00003088-200645110-00007",
+        "status": "verified"
+      },
+      "population": {
+        "description": "Adultes transplantés rénaux sous sirolimus et mycophénolate, sans inhibiteur de calcineurine.",
+        "tags": [
+          "Adulte",
+          "Transplantation rénale",
+          "Hors ICU"
+        ]
+      },
+      "administration": {
+        "routes": [
+          "Oral"
+        ],
+        "modes": [
+          "ORAL"
+        ],
+        "timeUnit": "h",
+        "concentrationUnit": "ng/mL"
+      },
+      "structuralModel": {
+        "compartments": [
+          "DEPOT_SIR",
+          "TR1_SIR",
+          "TR2_SIR",
+          "TR3_SIR",
+          "CENT_SIR",
+          "PERI_SIR"
+        ],
+        "differentialEquations": [
+          "dxdt_DEPOT_SIR = -KTR * DEPOT_SIR;",
+          "dxdt_TR1_SIR   =  KTR * DEPOT_SIR - KTR * TR1_SIR;",
+          "dxdt_TR2_SIR   =  KTR * TR1_SIR   - KTR * TR2_SIR;",
+          "dxdt_TR3_SIR   =  KTR * TR2_SIR   - KTR * TR3_SIR;",
+          "dxdt_CENT_SIR  =  KTR * TR3_SIR * F_BOOST - (CL_SIR_DDI + Q) * (CENT_SIR / V1)",
+          "dxdt_PERI_SIR  =  Q * (CENT_SIR / V1) - Q * (PERI_SIR / V2);"
+        ],
+        "outputs": [
+          "DV",
+          "CONC",
+          "ratio",
+          "CL_SIR_DDI",
+          "CP_PERP",
+          "CL_OUT"
+        ]
+      },
+      "parameters": [
+        "TVCL_SIR",
+        "TVCLC_SIR",
+        "TVV1_SIR",
+        "TVQ_SIR",
+        "TVV2_SIR",
+        "TVKTR_SIR"
+      ],
+      "covariates": [
+        "CYP",
+        "WT"
+      ],
+      "interindividualVariability": {
+        "etaIndices": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "omega": [
+          "0.219 0.15 0.25 0.25 0.20"
+        ]
+      },
+      "residualError": {
+        "epsIndices": [
+          1,
+          2
+        ],
+        "sigma": [
+          "0.04 1.0"
+        ]
+      },
+      "pmxAdaptations": "Adaptation DDI : effet CYP3A5 additif publié conservé. Des variances pragmatiques sont ajoutées pour V1, Q, V2 et KTR faute de valeurs publiées utilisables, ainsi que 5 % de clairance non-CYP pour éviter une clairance nulle sous inhibition.",
+      "implementationStatus": "ADAPTED",
+      "softwareContractStatus": "SOFTWARE_TESTED",
+      "numericalCheckStatus": "not-checked",
+      "sourceReproductionStatus": "pending-independent-reproduction",
+      "mapTdm": {
+        "eligible": false,
+        "status": "Simulation uniquement"
+      },
+      "limitations": "Adaptation DDI : effet CYP3A5 additif publié conservé. Des variances pragmatiques sont ajoutées pour V1, Q, V2 et KTR faute de valeurs publiées utilisables, ainsi que 5 % de clairance non-CYP pour éviter une clairance nulle sous inhibition."
+    },
+    {
+      "id": "tacrolimus_kamp_envarsus_ddi",
+      "sourceFile": "tacrolimus_kamp_envarsus_ddi.cpp",
+      "sourceSha256": "50fbe5968f53ad0b381a372db0e36732b278c4d403500a803f5606a00bdcd6aa",
+      "primarySource": {
+        "citation": "Kamp J et al. Pharmaceutics. 2024;16:17.",
+        "doi": "10.3390/pharmaceutics16010017",
+        "status": "verified"
+      },
+      "population": {
+        "description": "Adultes transplantés rénaux recevant tacrolimus Envarsus.",
+        "tags": [
+          "Adulte",
+          "Transplantation rénale",
+          "Hors ICU"
+        ]
+      },
+      "administration": {
+        "routes": [
+          "Oral"
+        ],
+        "modes": [
+          "ORAL"
+        ],
+        "timeUnit": "h",
+        "concentrationUnit": "ng/mL"
+      },
+      "structuralModel": {
+        "compartments": [
+          "DEPOT_TAC",
+          "TRANS1_TAC",
+          "TRANS2_TAC",
+          "CENT_TAC",
+          "PERI_TAC"
+        ],
+        "differentialEquations": [
+          "dxdt_DEPOT_TAC    = -KTR * DEPOT_TAC;",
+          "dxdt_TRANS1_TAC   = KTR * DEPOT_TAC - KTR * TRANS1_TAC;",
+          "dxdt_TRANS2_TAC   = KTR * TRANS1_TAC   - KTR * TRANS2_TAC;",
+          "dxdt_CENT_TAC  = KTR * TRANS2_TAC * F_BOOST - (CL_TAC_DDI + Q)*(CENT_TAC/V1) + Q*(PERI_TAC/V2);",
+          "dxdt_PERI_TAC  = Q*(CENT_TAC/V1) - Q*(PERI_TAC/V2);"
+        ],
+        "outputs": [
+          "DV",
+          "CONC",
+          "ratio",
+          "CL_OUT",
+          "V1_OUT",
+          "F_OUT",
+          "CP_PERP"
+        ]
+      },
+      "parameters": [
+        "TVCL",
+        "TVV1",
+        "TVQ",
+        "TVV2",
+        "TVKTR",
+        "LAG",
+        "CYPCL"
+      ],
+      "covariates": [
+        "CYP"
+      ],
+      "interindividualVariability": {
+        "etaIndices": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "omega": [
+          "0.08 0.10 0.29 0.36 0.06"
+        ]
+      },
+      "residualError": {
+        "epsIndices": [
+          1,
+          2
+        ],
+        "sigma": [
+          "0.208 0.307"
+        ]
+      },
+      "pmxAdaptations": "Adaptation DDI : la PK de base conserve les paramètres Kamp, tandis que le découpage de clairance en fractions CYP3A4, CYP3A5 et non-CYP de 5 % est ajouté pour les scénarios interactionnels.",
+      "implementationStatus": "ADAPTED",
+      "softwareContractStatus": "SOFTWARE_TESTED",
+      "numericalCheckStatus": "not-checked",
+      "sourceReproductionStatus": "pending-independent-reproduction",
+      "mapTdm": {
+        "eligible": false,
+        "status": "Simulation uniquement"
+      },
+      "limitations": "Adaptation DDI : la PK de base conserve les paramètres Kamp, tandis que le découpage de clairance en fractions CYP3A4, CYP3A5 et non-CYP de 5 % est ajouté pour les scénarios interactionnels."
+    },
+    {
+      "id": "tacrolimus_woillard_ddi",
+      "sourceFile": "tacrolimus_woillard_ddi.cpp",
+      "sourceSha256": "707c997091068729ffb2e584d7f6c9e6ddbcf703be44b6268284fc958a96791c",
+      "primarySource": {
+        "citation": "Woillard JB et al. Br J Clin Pharmacol. 2011;71:391-402.",
+        "doi": "10.1111/j.1365-2125.2010.03837.x",
+        "status": "verified"
+      },
+      "population": {
+        "description": "Adultes transplantés rénaux recevant Prograf ou Advagraf.",
+        "tags": [
+          "Adulte",
+          "Transplantation rénale",
+          "Hors ICU"
+        ]
+      },
+      "administration": {
+        "routes": [
+          "Oral"
+        ],
+        "modes": [
+          "ORAL"
+        ],
+        "timeUnit": "h",
+        "concentrationUnit": "ng/mL"
+      },
+      "structuralModel": {
+        "compartments": [
+          "DEPOT_TAC",
+          "TR1_TAC",
+          "TR2_TAC",
+          "TR3_TAC",
+          "CENT_TAC",
+          "PERI_TAC"
+        ],
+        "differentialEquations": [
+          "dxdt_DEPOT_TAC = -KTR * DEPOT_TAC;",
+          "dxdt_TR1_TAC   = KTR * DEPOT_TAC - KTR * TR1_TAC;",
+          "dxdt_TR2_TAC   = KTR * TR1_TAC   - KTR * TR2_TAC;",
+          "dxdt_TR3_TAC   = KTR * TR2_TAC   - KTR * TR3_TAC;",
+          "dxdt_CENT_TAC  = KTR * TR3_TAC * F_BOOST - (CL_TAC_DDI + Q)*(CENT_TAC/V1) + Q*(PERI_TAC/V2);",
+          "dxdt_PERI_TAC  = Q*(CENT_TAC/V1) - Q*(PERI_TAC/V2);"
+        ],
+        "outputs": [
+          "DV",
+          "CONC",
+          "ratio",
+          "CL_TAC_DDI",
+          "CP_PERP",
+          "CL_OUT"
+        ]
+      },
+      "parameters": [
+        "TVCL_TAC",
+        "TVV1_TAC",
+        "TVQ_TAC",
+        "TVV2_TAC",
+        "TVKTR_TAC",
+        "HTCL",
+        "STV1",
+        "STKTR",
+        "CYPCL",
+        "FORME_OTH",
+        "CL_OTHER_LH",
+        "FRACT_OTH"
+      ],
+      "covariates": [
+        "HT",
+        "ST",
+        "CYP"
+      ],
+      "interindividualVariability": {
+        "etaIndices": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "omega": [
+          "0.08 0.10 0.29 0.36 0.06"
+        ]
+      },
+      "residualError": {
+        "epsIndices": [
+          1,
+          2
+        ],
+        "sigma": [
+          "0.012 0.1"
+        ]
+      },
+      "pmxAdaptations": "L'adaptation ajoute une décomposition de clairance destinée aux scénarios DDI, mais elle préserve exactement la clairance de base en l'absence d'interaction. Le prior PK publié reste utilisé pour l'ajustement MAP.",
+      "implementationStatus": "ADAPTED",
+      "softwareContractStatus": "SOFTWARE_TESTED",
+      "numericalCheckStatus": "deterministic-software-regression",
+      "sourceReproductionStatus": "pending-independent-reproduction",
+      "mapTdm": {
+        "eligible": true,
+        "status": "Prior MAP fondé sur l'article"
+      },
+      "limitations": "L'adaptation ajoute une décomposition de clairance destinée aux scénarios DDI, mais elle préserve exactement la clairance de base en l'absence d'interaction. Le prior PK publié reste utilisé pour l'ajustement MAP."
+    },
+    {
+      "id": "vanco_goti",
+      "sourceFile": "vanco_goti.cpp",
+      "sourceSha256": "224882c821ae81f8aadf91f95460974bfc945e1303ba9dbd26c391a05d8dc83d",
+      "primarySource": {
+        "citation": "Goti V et al. Ther Drug Monit. 2018;40:212-221.",
+        "doi": "10.1097/FTD.0000000000000490",
+        "status": "verified"
+      },
+      "population": {
+        "description": "Adultes hospitalisés avec ou sans hémodialyse.",
+        "tags": [
+          "Adulte",
+          "Hospitalisé",
+          "Hémodialyse"
+        ]
+      },
+      "administration": {
+        "routes": [
+          "IV"
+        ],
+        "modes": [
+          "IV_INTERMITTENT"
+        ],
+        "timeUnit": "h",
+        "concentrationUnit": "mg/L"
+      },
+      "structuralModel": {
+        "compartments": [
+          "CENT",
+          "PERIPH"
+        ],
+        "differentialEquations": [
+          "dxdt_CENT = -CL * CP - Q * (CP - CPP);",
+          "dxdt_PERIPH = Q * (CP - CPP);"
+        ],
+        "outputs": [
+          "@annotated",
+          "DV",
+          ":",
+          "Simulated",
+          "plasma",
+          "concentration",
+          "(mg/L)",
+          "CP",
+          ":",
+          "Predicted",
+          "plasma",
+          "concentration",
+          "(mg/L)",
+          "CL",
+          ":",
+          "Individual",
+          "clearance",
+          "(L/h)",
+          "V1",
+          ":",
+          "Individual",
+          "central",
+          "volume",
+          "(L)",
+          "V2",
+          ":",
+          "Individual",
+          "peripheral",
+          "volume",
+          "(L)",
+          "Q",
+          ":",
+          "Intercompartmental",
+          "clearance",
+          "(L/h)",
+          "CRCL",
+          ":",
+          "Cockcroft-Gault",
+          "creatinine",
+          "clearance",
+          "(mL/min)"
+        ]
+      },
+      "parameters": [
+        "TVCL",
+        "TVV1",
+        "TVV2",
+        "TVQ",
+        "CRCL_CL",
+        "DIAL_CL",
+        "DIAL_V1",
+        "REF_CRCL",
+        "REF_WT"
+      ],
+      "covariates": [
+        "AGE",
+        "WT",
+        "CREAT",
+        "SEX",
+        "DIAL"
+      ],
+      "interindividualVariability": {
+        "etaIndices": [
+          1,
+          2,
+          3
+        ],
+        "omega": [
+          "@annotated @diagonal\nETA_CL : 0.158 : Between-subject variance on CL\nETA_V1 : 0.510 : Between-subject variance on V1\nETA_V2 : 0.280 : Between-subject variance on V2"
+        ]
+      },
+      "residualError": {
+        "epsIndices": [
+          1,
+          2
+        ],
+        "sigma": [
+          "@annotated @diagonal\nPROP : 0.051529 : Proportional residual variance (CV 22.7%)\nADD  : 11.56    : Additive residual variance (SD 3.4 mg/L)"
+        ]
+      },
+      "pmxAdaptations": "No PMx adaptation documented.",
+      "implementationStatus": "ARTICLE",
+      "softwareContractStatus": "SOFTWARE_TESTED",
+      "numericalCheckStatus": "deterministic-software-regression",
+      "sourceReproductionStatus": "pending-independent-reproduction",
+      "mapTdm": {
+        "eligible": true,
+        "status": "Prior MAP fondé sur l'article"
+      },
+      "limitations": "Numerical validity ranges and independent reproduction remain to be documented."
+    },
+    {
+      "id": "vanco_pkjust",
+      "sourceFile": "vanco_pkjust.cpp",
+      "sourceSha256": "9bd56aec7dbcd05c726a4d4c1c6cfd8fec8242c393b1674a092fefb22ee8ee26",
+      "primarySource": {
+        "citation": "Revilla N et al. Br J Clin Pharmacol. 2010;70:201-212.",
+        "doi": "10.1111/j.1365-2125.2010.03679.x",
+        "status": "verified"
+      },
+      "population": {
+        "description": "Adultes en réanimation recevant la vancomycine IV intermittente ou continue; modèle fondé sur l'âge, la fonction rénale et le poids.",
+        "tags": [
+          "Adulte",
+          "ICU"
+        ]
+      },
+      "administration": {
+        "routes": [
+          "IV"
+        ],
+        "modes": [
+          "IV_INTERMITTENT",
+          "IV_CONTINUOUS"
+        ],
+        "timeUnit": "h",
+        "concentrationUnit": "mg/L"
+      },
+      "structuralModel": {
+        "compartments": [
+          "CENT"
+        ],
+        "differentialEquations": [
+          "dxdt_CENT   =  - (CL / V1)  * CENT ;"
+        ],
+        "outputs": [
+          "DV",
+          "CL",
+          "V1",
+          "clcr_per_kg"
+        ]
+      },
+      "parameters": [
+        "TVCLCR",
+        "TVV1",
+        "AGE_CL",
+        "CREAT_V"
+      ],
+      "covariates": [
+        "AGE",
+        "CRCL",
+        "CREAT",
+        "WT"
+      ],
+      "interindividualVariability": {
+        "etaIndices": [
+          1,
+          2
+        ],
+        "omega": [
+          "0.09 0.053"
+        ]
+      },
+      "residualError": {
+        "epsIndices": [
+          1,
+          2
+        ],
+        "sigma": [
+          "@annotated\nPROP : 0       : Proportional residual variance (not used in the article)\nADD  : 17.8929 : Additive residual variance (SD 4.23 mg/L)"
+        ]
+      },
+      "pmxAdaptations": "CRCL est la clairance de créatinine mesurée sur 24 h, comme dans l'article, et non une estimation de Cockcroft-Gault. Le modèle résiduel est additif (SD 4,23 mg/L).",
+      "implementationStatus": "ARTICLE",
+      "softwareContractStatus": "SOFTWARE_TESTED",
+      "numericalCheckStatus": "deterministic-software-regression",
+      "sourceReproductionStatus": "pending-independent-reproduction",
+      "mapTdm": {
+        "eligible": true,
+        "status": "Prior MAP fondé sur l'article"
+      },
+      "limitations": "CRCL est la clairance de créatinine mesurée sur 24 h, comme dans l'article, et non une estimation de Cockcroft-Gault. Le modèle résiduel est additif (SD 4,23 mg/L)."
+    },
+    {
+      "id": "vanco_roberts",
+      "sourceFile": "vanco_roberts.cpp",
+      "sourceSha256": "a0a654dede1e517fc4b846f903285163cfd3ff43e5bcc43fe5718b9c35a35780",
+      "primarySource": {
+        "citation": "Roberts JA et al. Antimicrob Agents Chemother. 2011;55:2704-2709.",
+        "doi": "10.1128/AAC.01708-10",
+        "status": "verified"
+      },
+      "population": {
+        "description": "Adultes septiques en réanimation recevant la vancomycine en perfusion continue.",
+        "tags": [
+          "Adulte",
+          "ICU",
+          "Sepsis"
+        ]
+      },
+      "administration": {
+        "routes": [
+          "IV"
+        ],
+        "modes": [
+          "IV_CONTINUOUS"
+        ],
+        "timeUnit": "h",
+        "concentrationUnit": "mg/L"
+      },
+      "structuralModel": {
+        "compartments": [
+          "CENT"
+        ],
+        "differentialEquations": [
+          "dxdt_CENT = -(CL / V) * CENT;"
+        ],
+        "outputs": [
+          "@annotated",
+          "DV",
+          ":",
+          "Simulated",
+          "concentration",
+          "with",
+          "residual",
+          "error",
+          "(mg/L)",
+          "CL",
+          ":",
+          "Individual",
+          "clearance",
+          "(L/h)",
+          "V",
+          ":",
+          "Individual",
+          "volume",
+          "of",
+          "distribution",
+          "(L)"
+        ]
+      },
+      "parameters": [
+        "TVCL",
+        "TVV"
+      ],
+      "covariates": [
+        "CRCL",
+        "WT"
+      ],
+      "interindividualVariability": {
+        "etaIndices": [
+          1,
+          2
+        ],
+        "omega": [
+          "@annotated @diagonal\nETA_CL : 0.1407 : IIV on CL, from 38.9 %CV\nETA_V  : 0.1308 : IIV on V, from 37.4 %CV"
+        ]
+      },
+      "residualError": {
+        "epsIndices": [
+          1,
+          2
+        ],
+        "sigma": [
+          "@annotated @diagonal\nPROP : 0.0396 : Proportional residual variance, from 19.9 %CV\nADD  : 5.76   : Additive residual variance, from SD 2.4 mg/L"
+        ]
+      },
+      "pmxAdaptations": "La clairance utilise la clairance urinaire de créatinine sur 24 h normalisée à 1,73 m², conformément à l'article.",
+      "implementationStatus": "ARTICLE",
+      "softwareContractStatus": "SOFTWARE_TESTED",
+      "numericalCheckStatus": "deterministic-software-regression",
+      "sourceReproductionStatus": "pending-independent-reproduction",
+      "mapTdm": {
+        "eligible": true,
+        "status": "Prior MAP fondé sur l'article"
+      },
+      "limitations": "La clairance utilise la clairance urinaire de créatinine sur 24 h normalisée à 1,73 m², conformément à l'article."
+    },
+    {
+      "id": "voriconazole_vandenborn_ddi",
+      "sourceFile": "voriconazole_vandenborn_ddi.cpp",
+      "sourceSha256": "781e12f1422a867838d1651d37f5f5603ecf3baf7101277e622f62fc62db4095",
+      "primarySource": {
+        "citation": "van den Born D et al. Int J Antimicrob Agents. 2023;61:106750.",
+        "doi": "10.1016/j.ijantimicag.2023.106750",
+        "status": "verified"
+      },
+      "population": {
+        "description": "Adultes traités par voriconazole; modèle non linéaire intégrant la CRP.",
+        "tags": [
+          "Adulte",
+          "Infection fongique",
+          "Hospitalisé"
+        ]
+      },
+      "administration": {
+        "routes": [
+          "Oral"
+        ],
+        "modes": [
+          "ORAL"
+        ],
+        "timeUnit": "h",
+        "concentrationUnit": "mg/L"
+      },
+      "structuralModel": {
+        "compartments": [
+          "GUT",
+          "CENT"
+        ],
+        "differentialEquations": [
+          "dxdt_GUT = -TVKA * GUT;",
+          "dxdt_CENT = TVKA * GUT * TVF - VMAX * CP / (TVKM + CP);"
+        ],
+        "outputs": [
+          "DV",
+          "VMAX"
+        ]
+      },
+      "parameters": [
+        "TVKA",
+        "TVVD",
+        "TVKM",
+        "TVVMAX",
+        "TVF",
+        "CRPEK"
+      ],
+      "covariates": [
+        "CRP"
+      ],
+      "interindividualVariability": {
+        "etaIndices": [
+          1
+        ],
+        "omega": [
+          "@annotated\nIIV_VMAX : 0.683 : Approximate log-variance derived from published CV 99 percent"
+        ]
+      },
+      "residualError": {
+        "epsIndices": [
+          1
+        ],
+        "sigma": [
+          "@annotated\nPROP : 0.04 : Engineering prior proportional residual variance\nADD  : 0.0  : Additive residual variance fixed to zero"
+        ]
+      },
+      "pmxAdaptations": "Prior OMEGA/SIGMA d'ingénierie ajouté pour la compatibilité MAP.",
+      "implementationStatus": "ADAPTED",
+      "softwareContractStatus": "SOFTWARE_TESTED",
+      "numericalCheckStatus": "not-checked",
+      "sourceReproductionStatus": "pending-independent-reproduction",
+      "mapTdm": {
+        "eligible": false,
+        "status": "Simulation uniquement"
+      },
+      "limitations": "Prior OMEGA/SIGMA d'ingénierie ajouté pour la compatibilité MAP."
+    }
+  ]
+}

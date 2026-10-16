@@ -1,0 +1,31 @@
+{
+  "schemaVersion": 1,
+  "capturedFrom": "MIPD-Engine GitHub Actions",
+  "capturedAt": "2026-10-16",
+  "rVersion": "4.6.1",
+  "coreCranSnapshot": "https://packagemanager.posit.co/cran/__linux__/noble/2026-10-16",
+  "directPackages": {
+    "shiny": "1.14.0",
+    "bslib": "0.12.0",
+    "mrgsolve": "2.0.1",
+    "mapbayr": "0.10.2",
+    "dplyr": "1.2.1",
+    "ggplot2": "4.0.3",
+    "DT": "0.34.0",
+    "jsonlite": "2.0.0",
+    "htmltools": "0.5.9",
+    "deSolve": "1.42",
+    "minpack.lm": "1.2.4",
+    "xgboost": "3.2.1.1",
+    "DALEX": "2.5.4",
+    "digest": "0.6.39",
+    "xml2": "1.6.0",
+    "httr": "1.4.9"
+  },
+  "pmetrics": {
+    "version": "3.2.6",
+    "rVersion": "4.6.1",
+    "repository": "https://lapkb.r-universe.dev"
+  },
+  "limitation": "Direct scientific/runtime dependencies are pinned and fail closed. This is not yet a complete transitive renv.lock or offline package mirror."
+}

@@ -1,10 +1,21 @@
 cff-version: 1.2.0
-message: "Please cite MIPD Engine by Racym Berrah when using or adapting the project."
-type: software
+message: "If you use MIPD Engine or its model library in research, please cite the archived release and the primary publications associated with each model."
 title: "MIPD Engine"
+type: software
 authors:
   - family-names: Berrah
     given-names: Racym
     orcid: "https://orcid.org/0009-0001-6432-2880"
 repository-code: "https://github.com/rberrah/MIPD-Engine"
 license: PolyForm-Noncommercial-1.0.0
+version: "0.1.0-migration"
+date-released: 2026-10-16
+abstract: "Standalone model-informed precision dosing engine and auditable population pharmacokinetic model library extracted from PMx Explain."
+keywords:
+  - pharmacometrics
+  - population pharmacokinetics
+  - model-informed precision dosing
+  - therapeutic drug monitoring
+  - mrgsolve
+  - mapbayr
+  - Pmetrics

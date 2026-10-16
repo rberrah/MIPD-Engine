@@ -1,0 +1,25 @@
+{
+  "benchmark": "known-truth parametric versus NPAG",
+  "generated_on": "2026-10-11",
+  "population_seed": 20261011,
+  "train_subjects": 90,
+  "test_subjects": 180,
+  "dose_mg": 100,
+  "volume_L": 30,
+  "train_times_h": [1, 4, 8],
+  "heldout_conditioning_time_h": 1,
+  "heldout_prediction_time_h": 8,
+  "residual_model": "Gaussian SD = 0.02 mg/L + 0.10 * prediction",
+  "npag_runs": [
+    {
+      "seed": 23,
+      "points": 40
+    },
+    {
+      "seed": 71,
+      "points": 80
+    }
+  ],
+  "npag_cycles": 50,
+  "note": "Synthetic methodological benchmark; not clinical validation or evidence of universal superiority."
+}

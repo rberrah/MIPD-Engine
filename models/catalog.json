@@ -1,0 +1,3518 @@
+{
+  "version": 5,
+  "models": [
+    {
+      "id": "amik_burdet",
+      "file": "amik_burdet.cpp",
+      "drugKey": "amik",
+      "timeUnit": "h",
+      "concentrationUnit": "mg/L",
+      "drug": "Amikacine",
+      "drugEn": "Amikacin",
+      "model": "Burdet",
+      "format": "mrgsolve/C++",
+      "href": "/tdm/models/amik_burdet.cpp",
+      "citation": "Burdet C et al. Eur J Clin Pharmacol. 2015;71:75-83.",
+      "doi": "10.1007/s00228-014-1766-y",
+      "population": "Adultes en réanimation, ventilation mécanique, pneumonie associée à la ventilation.",
+      "populationTags": [
+        "Adulte",
+        "ICU",
+        "Ventilé"
+      ],
+      "modelType": "PopPK publié adapté",
+      "sourceStatus": "verified",
+      "note": "Le fichier reproduit le modèle de base sans covariables du tableau 2, et non le modèle final de l'article. Il est conservé pour la simulation mais n'est pas proposé comme prior MAP fidèle au modèle final.",
+      "verificationStatus": "SOFTWARE_TESTED",
+      "validationStatus": "NONE",
+      "contextOfUse": "TEACHING_RESEARCH",
+      "analysisEligible": false,
+      "populationEn": "Mechanically ventilated adults in intensive care with ventilator-associated pneumonia.",
+      "populationTagsEn": [
+        "Adult",
+        "ICU",
+        "Mechanically ventilated"
+      ],
+      "modelTypeEn": "Adapted published PopPK",
+      "noteEn": "The file reproduces the covariate-free base model in Table 2, not the article's final model. It remains available for simulation but is not offered as a MAP prior faithful to the final model.",
+      "routes": [
+        "IV"
+      ],
+      "ivCmt": "CENT",
+      "oralCmt": null,
+      "administrationModes": [
+        "IV_INTERMITTENT"
+      ],
+      "administrationCategories": [
+        "IV intermittente"
+      ],
+      "administrationCategoriesEn": [
+        "Intermittent IV"
+      ],
+      "implementationStatus": "ADAPTED",
+      "implementationStatusLabel": "Adaptation documentée",
+      "implementationStatusLabelEn": "Documented adaptation",
+      "analysisEligibilityLabel": "Simulation uniquement",
+      "analysisEligibilityLabelEn": "Simulation only",
+      "tags": [
+        "Amikacine",
+        "Burdet",
+        "PopPK publié adapté",
+        "Burdet C et al. Eur J Clin Pharmacol. 2015;71:75-83.",
+        "10.1007/s00228-014-1766-y",
+        "Mechanically ventilated adults in intensive care with ventilator-associated pneumonia.",
+        "Amikacin",
+        "IV",
+        "IV_INTERMITTENT",
+        "IV intermittente",
+        "Intermittent IV",
+        "Adaptation documentée",
+        "Documented adaptation",
+        "Simulation uniquement",
+        "Simulation only",
+        "Adulte",
+        "ICU",
+        "Ventilé",
+        "Adult",
+        "Mechanically ventilated"
+      ]
+    },
+    {
+      "id": "amiodarone_pollak_ddi",
+      "file": "amiodarone_pollak_ddi.cpp",
+      "drugKey": "amiodarone",
+      "timeUnit": "h",
+      "concentrationUnit": "mg/L",
+      "drug": "Amiodarone",
+      "drugEn": "Amiodarone",
+      "model": "Pollak",
+      "format": "mrgsolve/C++",
+      "href": "/tdm/models/amiodarone_pollak_ddi.cpp",
+      "citation": "Pollak PT et al. Clin Pharmacol Ther. 2000;67:642-652.",
+      "doi": "10.1067/mcp.2000.107047",
+      "population": "Adultes recevant une amiodarone orale au long cours pour arythmie cardiaque.",
+      "populationTags": [
+        "Adulte",
+        "Cardiologie",
+        "Hors ICU non précisé"
+      ],
+      "modelType": "Module PK déterministe",
+      "sourceStatus": "verified",
+      "note": "Module DDI simplifié; prior OMEGA/SIGMA d'ingénierie.",
+      "verificationStatus": "SOFTWARE_TESTED",
+      "validationStatus": "NONE",
+      "contextOfUse": "TEACHING_RESEARCH",
+      "analysisEligible": false,
+      "populationEn": "Adults receiving long-term oral amiodarone for cardiac arrhythmia.",
+      "populationTagsEn": [
+        "Adult",
+        "Cardiology",
+        "ICU status not specified"
+      ],
+      "modelTypeEn": "Deterministic PK module",
+      "noteEn": "Simplified DDI module with an engineering OMEGA/SIGMA prior.",
+      "routes": [
+        "Oral"
+      ],
+      "ivCmt": null,
+      "oralCmt": "GUT",
+      "administrationModes": [
+        "ORAL"
+      ],
+      "administrationCategories": [
+        "Orale"
+      ],
+      "administrationCategoriesEn": [
+        "Oral"
+      ],
+      "implementationStatus": "ADAPTED",
+      "implementationStatusLabel": "Adaptation documentée",
+      "implementationStatusLabelEn": "Documented adaptation",
+      "analysisEligibilityLabel": "Simulation uniquement",
+      "analysisEligibilityLabelEn": "Simulation only",
+      "tags": [
+        "Amiodarone",
+        "Pollak",
+        "Module PK déterministe",
+        "Pollak PT et al. Clin Pharmacol Ther. 2000;67:642-652.",
+        "10.1067/mcp.2000.107047",
+        "Adults receiving long-term oral amiodarone for cardiac arrhythmia.",
+        "Oral",
+        "ORAL",
+        "Orale",
+        "Adaptation documentée",
+        "Documented adaptation",
+        "Simulation uniquement",
+        "Simulation only",
+        "Adulte",
+        "Cardiologie",
+        "Hors ICU non précisé",
+        "Adult",
+        "Cardiology",
+        "ICU status not specified"
+      ]
+    },
+    {
+      "id": "amox_carlier",
+      "file": "amox_carlier.cpp",
+      "drugKey": "amox",
+      "timeUnit": "h",
+      "concentrationUnit": "mg/L",
+      "drug": "Amoxicilline",
+      "drugEn": "Amoxicillin",
+      "model": "Carlier",
+      "format": "mrgsolve/C++",
+      "href": "/tdm/models/amox_carlier.cpp",
+      "citation": "Carlier M et al. J Antimicrob Chemother. 2013;68:2600-2608.",
+      "doi": "10.1093/jac/dkt240",
+      "population": "Adultes en état critique hospitalisés en réanimation.",
+      "populationTags": [
+        "Adulte",
+        "ICU"
+      ],
+      "modelType": "PopPK publié",
+      "sourceStatus": "verified",
+      "verificationStatus": "SOFTWARE_TESTED",
+      "validationStatus": "NONE",
+      "contextOfUse": "TEACHING_RESEARCH",
+      "analysisEligible": true,
+      "populationEn": "Critically ill adults hospitalized in intensive care.",
+      "populationTagsEn": [
+        "Adult",
+        "ICU"
+      ],
+      "modelTypeEn": "Published PopPK",
+      "noteEn": "",
+      "routes": [
+        "IV"
+      ],
+      "ivCmt": "CENT",
+      "oralCmt": null,
+      "administrationModes": [
+        "IV_INTERMITTENT"
+      ],
+      "administrationCategories": [
+        "IV intermittente"
+      ],
+      "administrationCategoriesEn": [
+        "Intermittent IV"
+      ],
+      "implementationStatus": "ARTICLE",
+      "implementationStatusLabel": "Implémentation de l'article",
+      "implementationStatusLabelEn": "Article implementation",
+      "analysisEligibilityLabel": "Prior MAP fondé sur l'article",
+      "analysisEligibilityLabelEn": "Article-based MAP prior",
+      "tags": [
+        "Amoxicilline",
+        "Carlier",
+        "PopPK publié",
+        "Carlier M et al. J Antimicrob Chemother. 2013;68:2600-2608.",
+        "10.1093/jac/dkt240",
+        "Critically ill adults hospitalized in intensive care.",
+        "Amoxicillin",
+        "IV",
+        "IV_INTERMITTENT",
+        "IV intermittente",
+        "Intermittent IV",
+        "Implémentation de l'article",
+        "Article implementation",
+        "Prior MAP fondé sur l'article",
+        "Article-based MAP prior",
+        "Adulte",
+        "ICU",
+        "Adult"
+      ]
+    },
+    {
+      "id": "amox_fournier",
+      "file": "amox_fournier.cpp",
+      "drugKey": "amox",
+      "timeUnit": "h",
+      "concentrationUnit": "mg/L",
+      "drug": "Amoxicilline",
+      "drugEn": "Amoxicillin",
+      "model": "Fournier",
+      "format": "mrgsolve/C++",
+      "href": "/tdm/models/amox_fournier.cpp",
+      "citation": "Fournier A et al. Antimicrob Agents Chemother. 2018;62:e00505-18.",
+      "doi": "10.1128/AAC.00505-18",
+      "population": "Adultes gravement brûlés hospitalisés en réanimation.",
+      "populationTags": [
+        "Adulte",
+        "ICU",
+        "Brûlé"
+      ],
+      "modelType": "PopPK publié adapté",
+      "sourceStatus": "verified",
+      "note": "L'article rapporte θCLCR = 0,53 comme une augmentation proportionnelle mais imprime une équation sans facteur d'échelle. L'implémentation applique l'effet centré normalisé par la CLCR de référence de 110 mL/min, cohérent avec les valeurs de clairance publiées.",
+      "verificationStatus": "SOFTWARE_TESTED",
+      "validationStatus": "NONE",
+      "contextOfUse": "TEACHING_RESEARCH",
+      "analysisEligible": false,
+      "populationEn": "Severely burned adults hospitalized in intensive care.",
+      "populationTagsEn": [
+        "Adult",
+        "ICU",
+        "Burn"
+      ],
+      "modelTypeEn": "Adapted published PopPK",
+      "noteEn": "The article reports θCLCR = 0.53 as a proportional increase but prints an equation without a scale factor. The implementation applies the centered effect normalized by the 110 mL/min reference creatinine clearance, consistently with the published clearance values.",
+      "routes": [
+        "IV"
+      ],
+      "ivCmt": "CENT",
+      "oralCmt": null,
+      "administrationModes": [
+        "IV_INTERMITTENT"
+      ],
+      "administrationCategories": [
+        "IV intermittente"
+      ],
+      "administrationCategoriesEn": [
+        "Intermittent IV"
+      ],
+      "implementationStatus": "ADAPTED",
+      "implementationStatusLabel": "Adaptation documentée",
+      "implementationStatusLabelEn": "Documented adaptation",
+      "analysisEligibilityLabel": "Simulation uniquement",
+      "analysisEligibilityLabelEn": "Simulation only",
+      "tags": [
+        "Amoxicilline",
+        "Fournier",
+        "PopPK publié adapté",
+        "Fournier A et al. Antimicrob Agents Chemother. 2018;62:e00505-18.",
+        "10.1128/AAC.00505-18",
+        "Severely burned adults hospitalized in intensive care.",
+        "Amoxicillin",
+        "IV",
+        "IV_INTERMITTENT",
+        "IV intermittente",
+        "Intermittent IV",
+        "Adaptation documentée",
+        "Documented adaptation",
+        "Simulation uniquement",
+        "Simulation only",
+        "Adulte",
+        "ICU",
+        "Brûlé",
+        "Adult",
+        "Burn"
+      ]
+    },
+    {
+      "id": "amox_mellon",
+      "file": "amox_mellon.cpp",
+      "drugKey": "amox",
+      "timeUnit": "h",
+      "concentrationUnit": "mg/L",
+      "drug": "Amoxicilline",
+      "drugEn": "Amoxicillin",
+      "model": "Mellon",
+      "format": "mrgsolve/C++",
+      "href": "/tdm/models/amox_mellon.cpp",
+      "citation": "Mellon G et al. J Antimicrob Chemother. 2020;75:3611-3618.",
+      "doi": "10.1093/jac/dkaa368",
+      "population": "Adultes obèses recevant de l'amoxicilline/acide clavulanique IV ou oral.",
+      "populationTags": [
+        "Adulte",
+        "Obèse",
+        "Hors ICU"
+      ],
+      "modelType": "PopPK publié adapté",
+      "sourceStatus": "verified",
+      "note": "La corrélation publiée entre CL et Q est conservée. La chaîne de transit orale reste une approximation : l'article principal ne fournit pas les équations exécutables permettant de reproduire simultanément Mtt et Ktr.",
+      "verificationStatus": "SOFTWARE_TESTED",
+      "validationStatus": "NONE",
+      "contextOfUse": "TEACHING_RESEARCH",
+      "analysisEligible": false,
+      "populationEn": "Adults with obesity receiving intravenous or oral amoxicillin/clavulanate.",
+      "populationTagsEn": [
+        "Adult",
+        "Obesity",
+        "Non-ICU"
+      ],
+      "modelTypeEn": "Adapted published PopPK",
+      "noteEn": "The published CL-Q correlation is retained. The oral transit chain remains an approximation because the main article does not provide executable equations that reproduce Mtt and Ktr simultaneously.",
+      "routes": [
+        "IV",
+        "Oral"
+      ],
+      "ivCmt": "CENT",
+      "oralCmt": "DEPOT",
+      "administrationModes": [
+        "IV_INTERMITTENT",
+        "ORAL"
+      ],
+      "administrationCategories": [
+        "IV intermittente",
+        "Orale"
+      ],
+      "administrationCategoriesEn": [
+        "Intermittent IV",
+        "Oral"
+      ],
+      "implementationStatus": "ADAPTED",
+      "implementationStatusLabel": "Adaptation documentée",
+      "implementationStatusLabelEn": "Documented adaptation",
+      "analysisEligibilityLabel": "Simulation uniquement",
+      "analysisEligibilityLabelEn": "Simulation only",
+      "tags": [
+        "Amoxicilline",
+        "Mellon",
+        "PopPK publié adapté",
+        "Mellon G et al. J Antimicrob Chemother. 2020;75:3611-3618.",
+        "10.1093/jac/dkaa368",
+        "Adults with obesity receiving intravenous or oral amoxicillin/clavulanate.",
+        "Amoxicillin",
+        "IV",
+        "Oral",
+        "IV_INTERMITTENT",
+        "ORAL",
+        "IV intermittente",
+        "Orale",
+        "Intermittent IV",
+        "Adaptation documentée",
+        "Documented adaptation",
+        "Simulation uniquement",
+        "Simulation only",
+        "Adulte",
+        "Obèse",
+        "Hors ICU",
+        "Adult",
+        "Obesity",
+        "Non-ICU"
+      ]
+    },
+    {
+      "id": "amox_rambaud",
+      "file": "amox_rambaud.cpp",
+      "drugKey": "amox",
+      "timeUnit": "h",
+      "concentrationUnit": "mg/L",
+      "drug": "Amoxicilline",
+      "drugEn": "Amoxicillin",
+      "model": "Rambaud",
+      "format": "mrgsolve/C++",
+      "href": "/tdm/models/amox_rambaud.cpp",
+      "citation": "Rambaud J et al. J Antimicrob Chemother. 2020;75:2941-2950.",
+      "doi": "10.1093/jac/dkaa232",
+      "population": "Adultes traités pour une endocardite infectieuse.",
+      "populationTags": [
+        "Adulte",
+        "Endocardite",
+        "Hors ICU"
+      ],
+      "modelType": "PopPK publié adapté",
+      "sourceStatus": "verified",
+      "administrationModes": [
+        "IV_CONTINUOUS"
+      ],
+      "note": "Le modèle source NPAG est non paramétrique. L'équation CKD-EPI 2009 et le modèle d'erreur publiés sont conservés, mais le prior OMEGA log-normal est une approximation pour MAP/mapbayr.",
+      "verificationStatus": "SOFTWARE_TESTED",
+      "validationStatus": "NONE",
+      "contextOfUse": "TEACHING_RESEARCH",
+      "analysisEligible": false,
+      "populationEn": "Adults treated for infective endocarditis.",
+      "populationTagsEn": [
+        "Adult",
+        "Endocarditis",
+        "Non-ICU"
+      ],
+      "modelTypeEn": "Adapted published PopPK",
+      "noteEn": "The source NPAG model is non-parametric. The published 2009 CKD-EPI equation and error model are retained, but the log-normal OMEGA prior is an approximation for MAP/mapbayr.",
+      "routes": [
+        "IV"
+      ],
+      "ivCmt": "CENT",
+      "oralCmt": null,
+      "administrationCategories": [
+        "IV continue"
+      ],
+      "administrationCategoriesEn": [
+        "Continuous IV"
+      ],
+      "implementationStatus": "ADAPTED",
+      "implementationStatusLabel": "Adaptation documentée",
+      "implementationStatusLabelEn": "Documented adaptation",
+      "analysisEligibilityLabel": "Simulation uniquement",
+      "analysisEligibilityLabelEn": "Simulation only",
+      "tags": [
+        "Amoxicilline",
+        "Rambaud",
+        "PopPK publié adapté",
+        "Rambaud J et al. J Antimicrob Chemother. 2020;75:2941-2950.",
+        "10.1093/jac/dkaa232",
+        "Adults treated for infective endocarditis.",
+        "Amoxicillin",
+        "IV",
+        "IV_CONTINUOUS",
+        "IV continue",
+        "Continuous IV",
+        "Adaptation documentée",
+        "Documented adaptation",
+        "Simulation uniquement",
+        "Simulation only",
+        "Adulte",
+        "Endocardite",
+        "Hors ICU",
+        "Adult",
+        "Endocarditis",
+        "Non-ICU"
+      ]
+    },
+    {
+      "id": "cefazoline_cheng",
+      "file": "cefazoline_cheng.cpp",
+      "drugKey": "cefazoline",
+      "timeUnit": "h",
+      "concentrationUnit": "mg/L",
+      "drug": "Cefazoline",
+      "drugEn": "Cefazolin",
+      "model": "Cheng",
+      "format": "mrgsolve/C++",
+      "href": "/tdm/models/cefazoline_cheng.cpp",
+      "citation": "Cheng V et al. Anaesth Crit Care Pain Med. 2026;45:101653.",
+      "doi": "10.1016/j.accpm.2025.101653",
+      "population": "Enfants opérés en chirurgie cardiaque avec circulation extracorporelle.",
+      "populationTags": [
+        "Pédiatrique",
+        "Chirurgie",
+        "CEC"
+      ],
+      "modelType": "PopPK publié adapté",
+      "sourceStatus": "verified",
+      "note": "Les effets fixes périopératoire/postopératoire sont conservés. L'IOV publiée sur CL et V1 est omise car le moteur actuel ne représente pas encore des effets aléatoires indépendants par occasion.",
+      "verificationStatus": "SOFTWARE_TESTED",
+      "validationStatus": "NONE",
+      "contextOfUse": "TEACHING_RESEARCH",
+      "analysisEligible": false,
+      "populationEn": "Children undergoing cardiac surgery with cardiopulmonary bypass.",
+      "populationTagsEn": [
+        "Pediatric",
+        "Surgery",
+        "CPB"
+      ],
+      "modelTypeEn": "Adapted published PopPK",
+      "noteEn": "The peri-operative and postoperative fixed effects are retained. Published IOV on CL and V1 is omitted because the current engine does not yet represent independent random effects by occasion.",
+      "routes": [
+        "IV"
+      ],
+      "ivCmt": "CENT",
+      "oralCmt": null,
+      "administrationModes": [
+        "IV_INTERMITTENT"
+      ],
+      "administrationCategories": [
+        "IV intermittente"
+      ],
+      "administrationCategoriesEn": [
+        "Intermittent IV"
+      ],
+      "implementationStatus": "ADAPTED",
+      "implementationStatusLabel": "Adaptation documentée",
+      "implementationStatusLabelEn": "Documented adaptation",
+      "analysisEligibilityLabel": "Simulation uniquement",
+      "analysisEligibilityLabelEn": "Simulation only",
+      "tags": [
+        "Cefazoline",
+        "Cheng",
+        "PopPK publié adapté",
+        "Cheng V et al. Anaesth Crit Care Pain Med. 2026;45:101653.",
+        "10.1016/j.accpm.2025.101653",
+        "Children undergoing cardiac surgery with cardiopulmonary bypass.",
+        "Cefazolin",
+        "IV",
+        "IV_INTERMITTENT",
+        "IV intermittente",
+        "Intermittent IV",
+        "Adaptation documentée",
+        "Documented adaptation",
+        "Simulation uniquement",
+        "Simulation only",
+        "Pédiatrique",
+        "Chirurgie",
+        "CEC",
+        "Pediatric",
+        "Surgery",
+        "CPB"
+      ]
+    },
+    {
+      "id": "cefazoline_lanoiselee",
+      "file": "cefazoline_lanoiselee.cpp",
+      "drugKey": "cefazoline",
+      "timeUnit": "h",
+      "concentrationUnit": "mg/L",
+      "drug": "Cefazoline",
+      "drugEn": "Cefazolin",
+      "model": "Lanoiselée",
+      "format": "mrgsolve/C++",
+      "href": "/tdm/models/cefazoline_lanoiselee.cpp",
+      "citation": "Lanoiselée J et al. Sci Rep. 2021;11:19763.",
+      "doi": "10.1038/s41598-021-99162-7",
+      "population": "Adultes de 24 à 91 ans opérés d'une arthroplastie totale de hanche.",
+      "populationTags": [
+        "Adulte",
+        "Chirurgie orthopédique",
+        "Hors ICU"
+      ],
+      "modelType": "PopPK publié",
+      "sourceStatus": "verified",
+      "verificationStatus": "SOFTWARE_TESTED",
+      "validationStatus": "NONE",
+      "contextOfUse": "TEACHING_RESEARCH",
+      "analysisEligible": true,
+      "populationEn": "Adults aged 24 to 91 years undergoing total hip arthroplasty.",
+      "populationTagsEn": [
+        "Adult",
+        "Orthopedic surgery",
+        "Non-ICU"
+      ],
+      "modelTypeEn": "Published PopPK",
+      "noteEn": "",
+      "routes": [
+        "IV"
+      ],
+      "ivCmt": "CENT",
+      "oralCmt": null,
+      "administrationModes": [
+        "IV_INTERMITTENT"
+      ],
+      "administrationCategories": [
+        "IV intermittente"
+      ],
+      "administrationCategoriesEn": [
+        "Intermittent IV"
+      ],
+      "implementationStatus": "ARTICLE",
+      "implementationStatusLabel": "Implémentation de l'article",
+      "implementationStatusLabelEn": "Article implementation",
+      "analysisEligibilityLabel": "Prior MAP fondé sur l'article",
+      "analysisEligibilityLabelEn": "Article-based MAP prior",
+      "tags": [
+        "Cefazoline",
+        "Lanoiselee",
+        "PopPK publié",
+        "Lanoiselée J et al. Sci Rep. 2021;11:19763.",
+        "10.1038/s41598-021-99162-7",
+        "Adults aged 24 to 91 years undergoing total hip arthroplasty.",
+        "Cefazolin",
+        "IV",
+        "IV_INTERMITTENT",
+        "IV intermittente",
+        "Intermittent IV",
+        "Implémentation de l'article",
+        "Article implementation",
+        "Prior MAP fondé sur l'article",
+        "Article-based MAP prior",
+        "Adulte",
+        "Chirurgie orthopédique",
+        "Hors ICU",
+        "Adult",
+        "Orthopedic surgery",
+        "Non-ICU"
+      ]
+    },
+    {
+      "id": "cefazoline_schmitz",
+      "file": "cefazoline_schmitz.cpp",
+      "drugKey": "cefazoline",
+      "timeUnit": "h",
+      "concentrationUnit": "mg/L",
+      "drug": "Cefazoline",
+      "drugEn": "Cefazolin",
+      "model": "Schmitz",
+      "format": "mrgsolve/C++",
+      "href": "/tdm/models/cefazoline_schmitz.cpp",
+      "citation": "Schmitz ML et al. Antimicrob Agents Chemother. 2015;59:4173-4180.",
+      "doi": "10.1128/AAC.00082-15",
+      "population": "Patients chirurgicaux pédiatriques, principalement 10-12 ans, avec comparaison adulte.",
+      "populationTags": [
+        "Pédiatrique",
+        "Adulte",
+        "Chirurgie"
+      ],
+      "modelType": "PopPK publié adapté",
+      "sourceStatus": "verified",
+      "note": "La CLCR est désormais saisie directement, comme dans l'équation publiée. L'IOV sur la clairance et la forme combined1 de l'erreur résiduelle ne sont pas représentées par le moteur MAP actuel; le modèle reste réservé à la simulation.",
+      "verificationStatus": "SOFTWARE_TESTED",
+      "validationStatus": "NONE",
+      "contextOfUse": "TEACHING_RESEARCH",
+      "analysisEligible": false,
+      "populationEn": "Pediatric surgical patients, mainly aged 10 to 12 years, with an adult comparison group.",
+      "populationTagsEn": [
+        "Pediatric",
+        "Adult",
+        "Surgery"
+      ],
+      "modelTypeEn": "Adapted published PopPK",
+      "noteEn": "Creatinine clearance is now entered directly, as in the published equation. The clearance IOV and combined1 residual-error form are not represented by the current MAP engine; this model remains simulation-only.",
+      "routes": [
+        "IV"
+      ],
+      "ivCmt": "CENT",
+      "oralCmt": null,
+      "administrationModes": [
+        "IV_INTERMITTENT"
+      ],
+      "administrationCategories": [
+        "IV intermittente"
+      ],
+      "administrationCategoriesEn": [
+        "Intermittent IV"
+      ],
+      "implementationStatus": "ADAPTED",
+      "implementationStatusLabel": "Adaptation documentée",
+      "implementationStatusLabelEn": "Documented adaptation",
+      "analysisEligibilityLabel": "Simulation uniquement",
+      "analysisEligibilityLabelEn": "Simulation only",
+      "tags": [
+        "Cefazoline",
+        "Schmitz",
+        "PopPK publié adapté",
+        "Schmitz ML et al. Antimicrob Agents Chemother. 2015;59:4173-4180.",
+        "10.1128/AAC.00082-15",
+        "Pediatric surgical patients, mainly aged 10 to 12 years, with an adult comparison group.",
+        "Cefazolin",
+        "IV",
+        "IV_INTERMITTENT",
+        "IV intermittente",
+        "Intermittent IV",
+        "Adaptation documentée",
+        "Documented adaptation",
+        "Simulation uniquement",
+        "Simulation only",
+        "Pédiatrique",
+        "Adulte",
+        "Chirurgie",
+        "Pediatric",
+        "Adult",
+        "Surgery"
+      ]
+    },
+    {
+      "id": "cefepime_an",
+      "file": "cefepime_an.cpp",
+      "drugKey": "cefepime",
+      "timeUnit": "h",
+      "concentrationUnit": "mg/L",
+      "drug": "Cefepime",
+      "drugEn": "Cefepime",
+      "model": "An",
+      "format": "mrgsolve/C++",
+      "href": "/tdm/models/cefepime_an.cpp",
+      "citation": "An G et al. J Antimicrob Chemother. 2023;78:1460-1470.",
+      "doi": "10.1093/jac/dkad106",
+      "population": "Adultes en état critique hospitalisés en réanimation.",
+      "populationTags": [
+        "Adulte",
+        "ICU"
+      ],
+      "modelType": "PopPK publié",
+      "sourceStatus": "verified",
+      "note": "La branche CRRT publiée (CLCRRT 1,64 L/h) et l'erreur combinée (CV 22,4 %, SD additive 6,44 mg/L) sont implémentées.",
+      "verificationStatus": "SOFTWARE_TESTED",
+      "validationStatus": "NONE",
+      "contextOfUse": "TEACHING_RESEARCH",
+      "analysisEligible": true,
+      "populationEn": "Critically ill adults hospitalized in intensive care.",
+      "populationTagsEn": [
+        "Adult",
+        "ICU"
+      ],
+      "modelTypeEn": "Published PopPK",
+      "noteEn": "The published CRRT branch (CLCRRT 1.64 L/h) and combined error (22.4% CV, additive SD 6.44 mg/L) are implemented.",
+      "routes": [
+        "IV"
+      ],
+      "ivCmt": "CENT",
+      "oralCmt": null,
+      "administrationModes": [
+        "IV_INTERMITTENT"
+      ],
+      "administrationCategories": [
+        "IV intermittente"
+      ],
+      "administrationCategoriesEn": [
+        "Intermittent IV"
+      ],
+      "implementationStatus": "ARTICLE",
+      "implementationStatusLabel": "Implémentation de l'article",
+      "implementationStatusLabelEn": "Article implementation",
+      "analysisEligibilityLabel": "Prior MAP fondé sur l'article",
+      "analysisEligibilityLabelEn": "Article-based MAP prior",
+      "tags": [
+        "Cefepime",
+        "An",
+        "PopPK publié",
+        "An G et al. J Antimicrob Chemother. 2023;78:1460-1470.",
+        "10.1093/jac/dkad106",
+        "Critically ill adults hospitalized in intensive care.",
+        "IV",
+        "IV_INTERMITTENT",
+        "IV intermittente",
+        "Intermittent IV",
+        "Implémentation de l'article",
+        "Article implementation",
+        "Prior MAP fondé sur l'article",
+        "Article-based MAP prior",
+        "Adulte",
+        "ICU",
+        "Adult"
+      ]
+    },
+    {
+      "id": "cefepime_jonckheere",
+      "file": "cefepime_jonckheere.cpp",
+      "drugKey": "cefepime",
+      "timeUnit": "h",
+      "concentrationUnit": "mg/L",
+      "drug": "Cefepime",
+      "drugEn": "Cefepime",
+      "model": "Jonckheere",
+      "format": "mrgsolve/C++",
+      "href": "/tdm/models/cefepime_jonckheere.cpp",
+      "citation": "Jonckheere S et al. J Antimicrob Chemother. 2016;71:2538-2546.",
+      "doi": "10.1093/jac/dkw171",
+      "population": "Adultes en réanimation, incluant insuffisance rénale et hémodialyse intermittente.",
+      "populationTags": [
+        "Adulte",
+        "ICU",
+        "Insuffisance rénale",
+        "Dialyse"
+      ],
+      "modelType": "PopPK publié",
+      "sourceStatus": "verified",
+      "verificationStatus": "SOFTWARE_TESTED",
+      "validationStatus": "NONE",
+      "contextOfUse": "TEACHING_RESEARCH",
+      "analysisEligible": true,
+      "populationEn": "Adults in intensive care, including renal impairment and intermittent hemodialysis.",
+      "populationTagsEn": [
+        "Adult",
+        "ICU",
+        "Renal impairment",
+        "Dialysis"
+      ],
+      "modelTypeEn": "Published PopPK",
+      "noteEn": "",
+      "routes": [
+        "IV"
+      ],
+      "ivCmt": "CENT",
+      "oralCmt": null,
+      "administrationModes": [
+        "IV_INTERMITTENT"
+      ],
+      "administrationCategories": [
+        "IV intermittente"
+      ],
+      "administrationCategoriesEn": [
+        "Intermittent IV"
+      ],
+      "implementationStatus": "ARTICLE",
+      "implementationStatusLabel": "Implémentation de l'article",
+      "implementationStatusLabelEn": "Article implementation",
+      "analysisEligibilityLabel": "Prior MAP fondé sur l'article",
+      "analysisEligibilityLabelEn": "Article-based MAP prior",
+      "tags": [
+        "Cefepime",
+        "Jonckheere",
+        "PopPK publié",
+        "Jonckheere S et al. J Antimicrob Chemother. 2016;71:2538-2546.",
+        "10.1093/jac/dkw171",
+        "Adults in intensive care, including renal impairment and intermittent hemodialysis.",
+        "IV",
+        "IV_INTERMITTENT",
+        "IV intermittente",
+        "Intermittent IV",
+        "Implémentation de l'article",
+        "Article implementation",
+        "Prior MAP fondé sur l'article",
+        "Article-based MAP prior",
+        "Adulte",
+        "ICU",
+        "Insuffisance rénale",
+        "Dialyse",
+        "Adult",
+        "Renal impairment",
+        "Dialysis"
+      ]
+    },
+    {
+      "id": "cefepime_seo",
+      "file": "cefepime_seo.cpp",
+      "drugKey": "cefepime",
+      "timeUnit": "h",
+      "concentrationUnit": "mg/L",
+      "drug": "Cefepime",
+      "drugEn": "Cefepime",
+      "model": "Seo",
+      "format": "mrgsolve/C++",
+      "href": "/tdm/models/cefepime_seo.cpp",
+      "citation": "Seo H et al. Infect Chemother. 2023;55:29-41.",
+      "doi": "10.3947/ic.2022.0087",
+      "population": "Adultes en état critique avec pneumonie nosocomiale ou associée à la ventilation.",
+      "populationTags": [
+        "Adulte",
+        "ICU",
+        "Pneumonie",
+        "Ventilé"
+      ],
+      "modelType": "PopPK publié",
+      "sourceStatus": "verified",
+      "verificationStatus": "SOFTWARE_TESTED",
+      "validationStatus": "NONE",
+      "contextOfUse": "TEACHING_RESEARCH",
+      "analysisEligible": true,
+      "populationEn": "Critically ill adults with hospital-acquired or ventilator-associated pneumonia.",
+      "populationTagsEn": [
+        "Adult",
+        "ICU",
+        "Pneumonia",
+        "Mechanically ventilated"
+      ],
+      "modelTypeEn": "Published PopPK",
+      "noteEn": "",
+      "routes": [
+        "IV"
+      ],
+      "ivCmt": "CENT",
+      "oralCmt": null,
+      "administrationModes": [
+        "IV_INTERMITTENT"
+      ],
+      "administrationCategories": [
+        "IV intermittente"
+      ],
+      "administrationCategoriesEn": [
+        "Intermittent IV"
+      ],
+      "implementationStatus": "ARTICLE",
+      "implementationStatusLabel": "Implémentation de l'article",
+      "implementationStatusLabelEn": "Article implementation",
+      "analysisEligibilityLabel": "Prior MAP fondé sur l'article",
+      "analysisEligibilityLabelEn": "Article-based MAP prior",
+      "tags": [
+        "Cefepime",
+        "Seo",
+        "PopPK publié",
+        "Seo H et al. Infect Chemother. 2023;55:29-41.",
+        "10.3947/ic.2022.0087",
+        "Critically ill adults with hospital-acquired or ventilator-associated pneumonia.",
+        "IV",
+        "IV_INTERMITTENT",
+        "IV intermittente",
+        "Intermittent IV",
+        "Implémentation de l'article",
+        "Article implementation",
+        "Prior MAP fondé sur l'article",
+        "Article-based MAP prior",
+        "Adulte",
+        "ICU",
+        "Pneumonie",
+        "Ventilé",
+        "Adult",
+        "Pneumonia",
+        "Mechanically ventilated"
+      ]
+    },
+    {
+      "id": "ciclosporine_press_ddi",
+      "file": "ciclosporine_press_ddi.cpp",
+      "drugKey": "ciclosporine",
+      "timeUnit": "h",
+      "concentrationUnit": "ng/mL",
+      "drug": "Ciclosporine",
+      "drugEn": "Cyclosporine",
+      "model": "Press",
+      "format": "mrgsolve/C++",
+      "href": "/tdm/models/ciclosporine_press_ddi.cpp",
+      "citation": "Press RR et al. Eur J Clin Pharmacol. 2010;66:579-590.",
+      "doi": "10.1007/s00228-010-0810-9",
+      "population": "Adultes au début de la période suivant une transplantation rénale.",
+      "populationTags": [
+        "Adulte",
+        "Transplantation rénale",
+        "Hors ICU"
+      ],
+      "modelType": "PopPK publié adapté",
+      "sourceStatus": "verified",
+      "verificationStatus": "SOFTWARE_TESTED",
+      "validationStatus": "NONE",
+      "contextOfUse": "TEACHING_RESEARCH",
+      "analysisEligible": false,
+      "note": "Adaptation DDI : une fraction de clairance CYP3A de 0,50, calibrée sur une interaction clinique avec le voriconazole et non estimée dans le modèle Press, est ajoutée pour limiter les effets des inhibiteurs aux scénarios interactionnels.",
+      "populationEn": "Adults in the early period after kidney transplantation.",
+      "populationTagsEn": [
+        "Adult",
+        "Kidney transplantation",
+        "Non-ICU"
+      ],
+      "modelTypeEn": "Adapted published PopPK",
+      "noteEn": "DDI adaptation: a CYP3A-dependent clearance fraction of 0.50, calibrated from a clinical voriconazole interaction rather than estimated in the Press model, is added to limit inhibitor effects to interaction scenarios.",
+      "routes": [
+        "Oral"
+      ],
+      "ivCmt": null,
+      "oralCmt": "DEPOT_CSA",
+      "administrationModes": [
+        "ORAL"
+      ],
+      "administrationCategories": [
+        "Orale"
+      ],
+      "administrationCategoriesEn": [
+        "Oral"
+      ],
+      "implementationStatus": "ADAPTED",
+      "implementationStatusLabel": "Adaptation documentée",
+      "implementationStatusLabelEn": "Documented adaptation",
+      "analysisEligibilityLabel": "Simulation uniquement",
+      "analysisEligibilityLabelEn": "Simulation only",
+      "tags": [
+        "Ciclosporine",
+        "Press",
+        "PopPK publié adapté",
+        "Press RR et al. Eur J Clin Pharmacol. 2010;66:579-590.",
+        "10.1007/s00228-010-0810-9",
+        "Adults in the early period after kidney transplantation.",
+        "Cyclosporine",
+        "Oral",
+        "ORAL",
+        "Orale",
+        "Adaptation documentée",
+        "Documented adaptation",
+        "Simulation uniquement",
+        "Simulation only",
+        "Adulte",
+        "Transplantation rénale",
+        "Hors ICU",
+        "Adult",
+        "Kidney transplantation",
+        "Non-ICU"
+      ]
+    },
+    {
+      "id": "cobicistat_mathias_ddi",
+      "file": "cobicistat_mathias_ddi.cpp",
+      "drugKey": "cobicistat",
+      "timeUnit": "h",
+      "concentrationUnit": "mg/L",
+      "drug": "Cobicistat",
+      "drugEn": "Cobicistat",
+      "model": "Mathias",
+      "format": "mrgsolve/C++",
+      "href": "/tdm/models/cobicistat_mathias_ddi.cpp",
+      "citation": "Mathias AA et al. Clin Pharmacol Ther. 2010;87:322-329.",
+      "doi": "10.1038/clpt.2009.228",
+      "population": "Adultes sains inclus dans une étude pharmacocinétique de recherche de dose.",
+      "populationTags": [
+        "Adulte",
+        "Volontaire sain",
+        "Hors ICU"
+      ],
+      "modelType": "Module de sensibilité déterministe",
+      "sourceStatus": "verified",
+      "note": "Validé uniquement comme module de sensibilité 50 mg; extrapolation à 150 mg non supportée.",
+      "verificationStatus": "SOFTWARE_TESTED",
+      "validationStatus": "NONE",
+      "contextOfUse": "TEACHING_RESEARCH",
+      "analysisEligible": false,
+      "populationEn": "Healthy adults enrolled in a dose-finding pharmacokinetic study.",
+      "populationTagsEn": [
+        "Adult",
+        "Healthy volunteer",
+        "Non-ICU"
+      ],
+      "modelTypeEn": "Deterministic sensitivity module",
+      "noteEn": "Validated only as a 50 mg sensitivity module; extrapolation to 150 mg is unsupported.",
+      "routes": [
+        "Oral"
+      ],
+      "ivCmt": null,
+      "oralCmt": "GUT",
+      "administrationModes": [
+        "ORAL"
+      ],
+      "administrationCategories": [
+        "Orale"
+      ],
+      "administrationCategoriesEn": [
+        "Oral"
+      ],
+      "implementationStatus": "ADAPTED",
+      "implementationStatusLabel": "Adaptation documentée",
+      "implementationStatusLabelEn": "Documented adaptation",
+      "analysisEligibilityLabel": "Simulation uniquement",
+      "analysisEligibilityLabelEn": "Simulation only",
+      "tags": [
+        "Cobicistat",
+        "Mathias",
+        "Module de sensibilité déterministe",
+        "Mathias AA et al. Clin Pharmacol Ther. 2010;87:322-329.",
+        "10.1038/clpt.2009.228",
+        "Healthy adults enrolled in a dose-finding pharmacokinetic study.",
+        "Oral",
+        "ORAL",
+        "Orale",
+        "Adaptation documentée",
+        "Documented adaptation",
+        "Simulation uniquement",
+        "Simulation only",
+        "Adulte",
+        "Volontaire sain",
+        "Hors ICU",
+        "Adult",
+        "Healthy volunteer",
+        "Non-ICU"
+      ]
+    },
+    {
+      "id": "dapto_dvorchik_IV_adults",
+      "file": "dapto_dvorchik_IV_adults.cpp",
+      "drugKey": "dapto",
+      "timeUnit": "h",
+      "concentrationUnit": "mg/L",
+      "drug": "Daptomycine",
+      "drugEn": "Daptomycin",
+      "model": "Dvorchik",
+      "format": "mrgsolve/C++",
+      "href": "/tdm/models/dapto_dvorchik_IV_adults.cpp",
+      "citation": "Dvorchik BH et al. Antimicrob Agents Chemother. 2004;48:2799-2807.",
+      "doi": "10.1128/AAC.48.8.2799-2807.2004",
+      "population": "Adultes sains et adultes infectés issus d'essais cliniques regroupés.",
+      "populationTags": [
+        "Adulte",
+        "Population mixte",
+        "Hors ICU"
+      ],
+      "modelType": "PopPK publié",
+      "sourceStatus": "verified",
+      "note": "Les branches dialyse/non-dialyse, l'effet du sexe sur CL et l'effet de l'infection sur V2 sont explicites. L'erreur additive correspond à l'essai LC/MS/MS (variance 4,28).",
+      "verificationStatus": "SOFTWARE_TESTED",
+      "validationStatus": "NONE",
+      "contextOfUse": "TEACHING_RESEARCH",
+      "analysisEligible": true,
+      "populationEn": "Healthy and infected adults pooled from clinical trials.",
+      "populationTagsEn": [
+        "Adult",
+        "Mixed population",
+        "Non-ICU"
+      ],
+      "modelTypeEn": "Published PopPK",
+      "noteEn": "Dialysis/non-dialysis branches, the sex effect on CL, and the infection effect on V2 are explicit. Additive error uses the LC/MS/MS assay (variance 4.28).",
+      "routes": [
+        "IV"
+      ],
+      "ivCmt": "CENT",
+      "oralCmt": null,
+      "administrationModes": [
+        "IV_INTERMITTENT"
+      ],
+      "administrationCategories": [
+        "IV intermittente"
+      ],
+      "administrationCategoriesEn": [
+        "Intermittent IV"
+      ],
+      "implementationStatus": "ARTICLE",
+      "implementationStatusLabel": "Implémentation de l'article",
+      "implementationStatusLabelEn": "Article implementation",
+      "analysisEligibilityLabel": "Prior MAP fondé sur l'article",
+      "analysisEligibilityLabelEn": "Article-based MAP prior",
+      "tags": [
+        "Daptomycine",
+        "Dvorchik IV Adults",
+        "PopPK publié",
+        "Dvorchik BH et al. Antimicrob Agents Chemother. 2004;48:2799-2807.",
+        "10.1128/AAC.48.8.2799-2807.2004",
+        "Healthy and infected adults pooled from clinical trials.",
+        "Daptomycin",
+        "IV",
+        "IV_INTERMITTENT",
+        "IV intermittente",
+        "Intermittent IV",
+        "Implémentation de l'article",
+        "Article implementation",
+        "Prior MAP fondé sur l'article",
+        "Article-based MAP prior",
+        "Adulte",
+        "Population mixte",
+        "Hors ICU",
+        "Adult",
+        "Mixed population",
+        "Non-ICU"
+      ]
+    },
+    {
+      "id": "dapto_garreau",
+      "file": "dapto_garreau.cpp",
+      "drugKey": "dapto",
+      "timeUnit": "h",
+      "concentrationUnit": "mg/L",
+      "drug": "Daptomycine",
+      "drugEn": "Daptomycin",
+      "model": "Garreau",
+      "format": "mrgsolve/C++",
+      "href": "/tdm/models/dapto_garreau.cpp",
+      "citation": "Garreau R et al. J Antimicrob Chemother. 2021;76:1250-1257.",
+      "doi": "10.1093/jac/dkab006",
+      "population": "Adultes traités pour une infection ostéo-articulaire.",
+      "populationTags": [
+        "Adulte",
+        "Infection ostéo-articulaire",
+        "Hors ICU"
+      ],
+      "modelType": "PopPK publié adapté",
+      "sourceStatus": "verified",
+      "note": "Les effets de la clairance de la créatinine, du sexe, de l'âge, du poids et de la rifampicine sont conservés. L'IOV publiée sur CL et V1 est omise dans le flux MAP actuel.",
+      "verificationStatus": "SOFTWARE_TESTED",
+      "validationStatus": "NONE",
+      "contextOfUse": "TEACHING_RESEARCH",
+      "analysisEligible": false,
+      "populationEn": "Adults treated for bone and joint infection.",
+      "populationTagsEn": [
+        "Adult",
+        "Bone and joint infection",
+        "Non-ICU"
+      ],
+      "modelTypeEn": "Adapted published PopPK",
+      "noteEn": "The effects of creatinine clearance, sex, age, weight and rifampicin are retained. Published IOV on CL and V1 is omitted from the current MAP workflow.",
+      "routes": [
+        "IV"
+      ],
+      "ivCmt": "CENT",
+      "oralCmt": null,
+      "administrationModes": [
+        "IV_INTERMITTENT"
+      ],
+      "administrationCategories": [
+        "IV intermittente"
+      ],
+      "administrationCategoriesEn": [
+        "Intermittent IV"
+      ],
+      "implementationStatus": "ADAPTED",
+      "implementationStatusLabel": "Adaptation documentée",
+      "implementationStatusLabelEn": "Documented adaptation",
+      "analysisEligibilityLabel": "Simulation uniquement",
+      "analysisEligibilityLabelEn": "Simulation only",
+      "tags": [
+        "Daptomycine",
+        "Garreau",
+        "PopPK publié adapté",
+        "Garreau R et al. J Antimicrob Chemother. 2021;76:1250-1257.",
+        "10.1093/jac/dkab006",
+        "Adults treated for bone and joint infection.",
+        "Daptomycin",
+        "IV",
+        "IV_INTERMITTENT",
+        "IV intermittente",
+        "Intermittent IV",
+        "Adaptation documentée",
+        "Documented adaptation",
+        "Simulation uniquement",
+        "Simulation only",
+        "Adulte",
+        "Infection ostéo-articulaire",
+        "Hors ICU",
+        "Adult",
+        "Bone and joint infection",
+        "Non-ICU"
+      ]
+    },
+    {
+      "id": "diltiazem_hermann_ddi",
+      "file": "diltiazem_hermann_ddi.cpp",
+      "drugKey": "diltiazem",
+      "timeUnit": "h",
+      "concentrationUnit": "mg/L",
+      "drug": "Diltiazem",
+      "drugEn": "Diltiazem",
+      "model": "Hermann",
+      "format": "mrgsolve/C++",
+      "href": "/tdm/models/diltiazem_hermann_ddi.cpp",
+      "citation": "Hermann P et al. Eur J Clin Pharmacol. 1983;24:349-352.",
+      "doi": "10.1007/BF00610053",
+      "population": "Adultes sains après diltiazem oral et intraveineux.",
+      "populationTags": [
+        "Adulte",
+        "Volontaire sain",
+        "Hors ICU"
+      ],
+      "modelType": "Module PK déterministe",
+      "sourceStatus": "verified",
+      "note": "Module DDI simplifié; prior OMEGA/SIGMA d'ingénierie.",
+      "verificationStatus": "SOFTWARE_TESTED",
+      "validationStatus": "NONE",
+      "contextOfUse": "TEACHING_RESEARCH",
+      "analysisEligible": false,
+      "populationEn": "Healthy adults after oral and intravenous diltiazem.",
+      "populationTagsEn": [
+        "Adult",
+        "Healthy volunteer",
+        "Non-ICU"
+      ],
+      "modelTypeEn": "Deterministic PK module",
+      "noteEn": "Simplified DDI module with an engineering OMEGA/SIGMA prior.",
+      "routes": [
+        "Oral"
+      ],
+      "ivCmt": null,
+      "oralCmt": "GUT",
+      "administrationModes": [
+        "ORAL"
+      ],
+      "administrationCategories": [
+        "Orale"
+      ],
+      "administrationCategoriesEn": [
+        "Oral"
+      ],
+      "implementationStatus": "ADAPTED",
+      "implementationStatusLabel": "Adaptation documentée",
+      "implementationStatusLabelEn": "Documented adaptation",
+      "analysisEligibilityLabel": "Simulation uniquement",
+      "analysisEligibilityLabelEn": "Simulation only",
+      "tags": [
+        "Diltiazem",
+        "Hermann",
+        "Module PK déterministe",
+        "Hermann P et al. Eur J Clin Pharmacol. 1983;24:349-352.",
+        "10.1007/BF00610053",
+        "Healthy adults after oral and intravenous diltiazem.",
+        "Oral",
+        "ORAL",
+        "Orale",
+        "Adaptation documentée",
+        "Documented adaptation",
+        "Simulation uniquement",
+        "Simulation only",
+        "Adulte",
+        "Volontaire sain",
+        "Hors ICU",
+        "Adult",
+        "Healthy volunteer",
+        "Non-ICU"
+      ]
+    },
+    {
+      "id": "erythromycine_mather_ddi",
+      "file": "erythromycine_mather_ddi.cpp",
+      "drugKey": "erythromycine",
+      "timeUnit": "h",
+      "concentrationUnit": "mg/L",
+      "drug": "Érythromycine",
+      "drugEn": "Erythromycin",
+      "model": "Mather",
+      "format": "mrgsolve/C++",
+      "href": "/tdm/models/erythromycine_mather_ddi.cpp",
+      "citation": "Mather LE et al. Br J Clin Pharmacol. 1981;12:131-140.",
+      "doi": "10.1111/j.1365-2125.1981.tb01191.x",
+      "population": "Adultes sains dans des études d'absorption et de biodisponibilité orale.",
+      "populationTags": [
+        "Adulte",
+        "Volontaire sain",
+        "Hors ICU"
+      ],
+      "modelType": "Module PK déterministe",
+      "sourceStatus": "verified",
+      "note": "Module DDI simplifié; prior OMEGA/SIGMA d'ingénierie.",
+      "verificationStatus": "SOFTWARE_TESTED",
+      "validationStatus": "NONE",
+      "contextOfUse": "TEACHING_RESEARCH",
+      "analysisEligible": false,
+      "populationEn": "Healthy adults in oral absorption and bioavailability studies.",
+      "populationTagsEn": [
+        "Adult",
+        "Healthy volunteer",
+        "Non-ICU"
+      ],
+      "modelTypeEn": "Deterministic PK module",
+      "noteEn": "Simplified DDI module with an engineering OMEGA/SIGMA prior.",
+      "routes": [
+        "Oral"
+      ],
+      "ivCmt": null,
+      "oralCmt": "GUT",
+      "administrationModes": [
+        "ORAL"
+      ],
+      "administrationCategories": [
+        "Orale"
+      ],
+      "administrationCategoriesEn": [
+        "Oral"
+      ],
+      "implementationStatus": "ADAPTED",
+      "implementationStatusLabel": "Adaptation documentée",
+      "implementationStatusLabelEn": "Documented adaptation",
+      "analysisEligibilityLabel": "Simulation uniquement",
+      "analysisEligibilityLabelEn": "Simulation only",
+      "tags": [
+        "Érythromycine",
+        "Mather",
+        "Module PK déterministe",
+        "Mather LE et al. Br J Clin Pharmacol. 1981;12:131-140.",
+        "10.1111/j.1365-2125.1981.tb01191.x",
+        "Healthy adults in oral absorption and bioavailability studies.",
+        "Erythromycin",
+        "Oral",
+        "ORAL",
+        "Orale",
+        "Adaptation documentée",
+        "Documented adaptation",
+        "Simulation uniquement",
+        "Simulation only",
+        "Adulte",
+        "Volontaire sain",
+        "Hors ICU",
+        "Adult",
+        "Healthy volunteer",
+        "Non-ICU"
+      ]
+    },
+    {
+      "id": "everolimus_moes_ddi",
+      "file": "everolimus_moes_ddi.cpp",
+      "drugKey": "everolimus",
+      "timeUnit": "h",
+      "concentrationUnit": "ng/mL",
+      "drug": "Évérolimus",
+      "drugEn": "Everolimus",
+      "model": "Moes",
+      "format": "mrgsolve/C++",
+      "href": "/tdm/models/everolimus_moes_ddi.cpp",
+      "citation": "Moes DJAR et al. Clin Pharmacokinet. 2012;51:467-480.",
+      "doi": "10.2165/11599710-000000000-00000",
+      "population": "Adultes transplantés rénaux sous schéma sans inhibiteur de calcineurine.",
+      "populationTags": [
+        "Adulte",
+        "Transplantation rénale",
+        "Hors ICU"
+      ],
+      "modelType": "PopPK publié adapté",
+      "sourceStatus": "verified",
+      "verificationStatus": "SOFTWARE_TESTED",
+      "validationStatus": "NONE",
+      "contextOfUse": "TEACHING_RESEARCH",
+      "analysisEligible": false,
+      "note": "Adaptation DDI : le lien dose-clairance décrit comme biais de TDM dans la source est omis. Des variances pragmatiques sont ajoutées pour Q et V2 et une fraction non-CYP de 10 % est utilisée pour les scénarios interactionnels.",
+      "populationEn": "Adult kidney transplant recipients on a calcineurin-inhibitor-free regimen.",
+      "populationTagsEn": [
+        "Adult",
+        "Kidney transplantation",
+        "Non-ICU"
+      ],
+      "modelTypeEn": "Adapted published PopPK",
+      "noteEn": "DDI adaptation: the dose-clearance association described as TDM bias in the source is omitted. Pragmatic variances are added for Q and V2, and a 10% non-CYP fraction is used for interaction scenarios.",
+      "routes": [
+        "Oral"
+      ],
+      "ivCmt": null,
+      "oralCmt": "DEPOT_EVE",
+      "administrationModes": [
+        "ORAL"
+      ],
+      "administrationCategories": [
+        "Orale"
+      ],
+      "administrationCategoriesEn": [
+        "Oral"
+      ],
+      "implementationStatus": "ADAPTED",
+      "implementationStatusLabel": "Adaptation documentée",
+      "implementationStatusLabelEn": "Documented adaptation",
+      "analysisEligibilityLabel": "Simulation uniquement",
+      "analysisEligibilityLabelEn": "Simulation only",
+      "tags": [
+        "Évérolimus",
+        "Moes",
+        "PopPK publié adapté",
+        "Moes DJAR et al. Clin Pharmacokinet. 2012;51:467-480.",
+        "10.2165/11599710-000000000-00000",
+        "Adult kidney transplant recipients on a calcineurin-inhibitor-free regimen.",
+        "Everolimus",
+        "Oral",
+        "ORAL",
+        "Orale",
+        "Adaptation documentée",
+        "Documented adaptation",
+        "Simulation uniquement",
+        "Simulation only",
+        "Adulte",
+        "Transplantation rénale",
+        "Hors ICU",
+        "Adult",
+        "Kidney transplantation",
+        "Non-ICU"
+      ]
+    },
+    {
+      "id": "everolimus_terheine_ddi",
+      "file": "everolimus_terheine_ddi.cpp",
+      "drugKey": "everolimus",
+      "timeUnit": "h",
+      "concentrationUnit": "ng/mL",
+      "drug": "Évérolimus",
+      "drugEn": "Everolimus",
+      "model": "ter Heine",
+      "format": "mrgsolve/C++",
+      "href": "/tdm/models/everolimus_terheine_ddi.cpp",
+      "citation": "ter Heine R et al. Br J Clin Pharmacol. 2018;84:1575-1586.",
+      "doi": "10.1111/bcp.13591",
+      "population": "Adultes: cancers métastatiques thyroïdiens ou mammaires et transplantés rénaux.",
+      "populationTags": [
+        "Adulte",
+        "Cancer",
+        "Transplantation rénale",
+        "Hors ICU"
+      ],
+      "modelType": "PopPK mécanistique adapté",
+      "sourceStatus": "verified",
+      "verificationStatus": "SOFTWARE_TESTED",
+      "validationStatus": "NONE",
+      "contextOfUse": "TEACHING_RESEARCH",
+      "analysisEligible": false,
+      "note": "Adaptation au moteur : le volume hépatique est fixé puis ajusté allométriquement faute de formule Small disponible ; la variabilité interoccasion sur MAT est représentée comme variabilité interindividuelle. Une fraction non-CYP de 10 % est ajoutée pour les scénarios DDI.",
+      "populationEn": "Adults with metastatic thyroid or breast cancer and adult kidney transplant recipients.",
+      "populationTagsEn": [
+        "Adult",
+        "Cancer",
+        "Kidney transplantation",
+        "Non-ICU"
+      ],
+      "modelTypeEn": "Adapted mechanistic PopPK",
+      "noteEn": "Engine adaptation: liver volume is fixed and allometrically scaled because the Small equation is unavailable; inter-occasion variability on MAT is represented as between-subject variability. A 10% non-CYP fraction is added for DDI scenarios.",
+      "routes": [
+        "Oral"
+      ],
+      "ivCmt": null,
+      "oralCmt": "DEPOT_EVE",
+      "administrationModes": [
+        "ORAL"
+      ],
+      "administrationCategories": [
+        "Orale"
+      ],
+      "administrationCategoriesEn": [
+        "Oral"
+      ],
+      "implementationStatus": "ADAPTED",
+      "implementationStatusLabel": "Adaptation documentée",
+      "implementationStatusLabelEn": "Documented adaptation",
+      "analysisEligibilityLabel": "Simulation uniquement",
+      "analysisEligibilityLabelEn": "Simulation only",
+      "tags": [
+        "Évérolimus",
+        "Terheine",
+        "PopPK mécanistique adapté",
+        "ter Heine R et al. Br J Clin Pharmacol. 2018;84:1575-1586.",
+        "10.1111/bcp.13591",
+        "Adults with metastatic thyroid or breast cancer and adult kidney transplant recipients.",
+        "Everolimus",
+        "Oral",
+        "ORAL",
+        "Orale",
+        "Adaptation documentée",
+        "Documented adaptation",
+        "Simulation uniquement",
+        "Simulation only",
+        "Adulte",
+        "Cancer",
+        "Transplantation rénale",
+        "Hors ICU",
+        "Adult",
+        "Kidney transplantation",
+        "Non-ICU"
+      ]
+    },
+    {
+      "id": "fluconazole_debruyne_ddi",
+      "file": "fluconazole_debruyne_ddi.cpp",
+      "drugKey": "fluconazole",
+      "timeUnit": "h",
+      "concentrationUnit": "mg/L",
+      "drug": "Fluconazole",
+      "drugEn": "Fluconazole",
+      "model": "Debruyne",
+      "format": "mrgsolve/C++",
+      "href": "/tdm/models/fluconazole_debruyne_ddi.cpp",
+      "citation": "Debruyne D, Ryckelynck JP. Clin Pharmacokinet. 1993;24:10-27.",
+      "doi": "10.2165/00003088-199324010-00002",
+      "population": "Adultes issus des études de pharmacocinétique clinique synthétisées dans la revue.",
+      "populationTags": [
+        "Adulte",
+        "Population mixte",
+        "Hors ICU non précisé"
+      ],
+      "modelType": "Module PK déterministe",
+      "sourceStatus": "verified",
+      "note": "Module fondé sur une revue; prior OMEGA/SIGMA d'ingénierie.",
+      "verificationStatus": "SOFTWARE_TESTED",
+      "validationStatus": "NONE",
+      "contextOfUse": "TEACHING_RESEARCH",
+      "analysisEligible": false,
+      "populationEn": "Adults from the clinical pharmacokinetic studies summarized in the review.",
+      "populationTagsEn": [
+        "Adult",
+        "Mixed population",
+        "ICU status not specified"
+      ],
+      "modelTypeEn": "Deterministic PK module",
+      "noteEn": "Review-based module with an engineering OMEGA/SIGMA prior.",
+      "routes": [
+        "Oral"
+      ],
+      "ivCmt": null,
+      "oralCmt": "GUT",
+      "administrationModes": [
+        "ORAL"
+      ],
+      "administrationCategories": [
+        "Orale"
+      ],
+      "administrationCategoriesEn": [
+        "Oral"
+      ],
+      "implementationStatus": "ADAPTED",
+      "implementationStatusLabel": "Adaptation documentée",
+      "implementationStatusLabelEn": "Documented adaptation",
+      "analysisEligibilityLabel": "Simulation uniquement",
+      "analysisEligibilityLabelEn": "Simulation only",
+      "tags": [
+        "Fluconazole",
+        "Debruyne",
+        "Module PK déterministe",
+        "Debruyne D, Ryckelynck JP. Clin Pharmacokinet. 1993;24:10-27.",
+        "10.2165/00003088-199324010-00002",
+        "Adults from the clinical pharmacokinetic studies summarized in the review.",
+        "Oral",
+        "ORAL",
+        "Orale",
+        "Adaptation documentée",
+        "Documented adaptation",
+        "Simulation uniquement",
+        "Simulation only",
+        "Adulte",
+        "Population mixte",
+        "Hors ICU non précisé",
+        "Adult",
+        "Mixed population",
+        "ICU status not specified"
+      ]
+    },
+    {
+      "id": "genta_franck",
+      "file": "genta_franck.cpp",
+      "drugKey": "genta",
+      "timeUnit": "h",
+      "concentrationUnit": "mg/L",
+      "drug": "Gentamicine",
+      "drugEn": "Gentamicin",
+      "model": "Franck",
+      "format": "mrgsolve/C++",
+      "href": "/tdm/models/genta_franck.cpp",
+      "citation": "Franck B et al. Eur J Clin Pharmacol. 2020;76:947-955.",
+      "doi": "10.1007/s00228-020-02867-3",
+      "population": "Adultes, majoritairement âgés, sous hémodialyse chronique.",
+      "populationTags": [
+        "Adulte",
+        "Âgé",
+        "Hémodialyse"
+      ],
+      "modelType": "PopPK publié",
+      "sourceStatus": "verified",
+      "note": "Adaptation documentée : le texte est ambigu entre poids maigre et poids total pour le centrage de V; l'interface fournit le poids total, utilisé ici.",
+      "verificationStatus": "SOFTWARE_TESTED",
+      "validationStatus": "NONE",
+      "contextOfUse": "TEACHING_RESEARCH",
+      "analysisEligible": false,
+      "populationEn": "Adults, mostly older, receiving chronic hemodialysis.",
+      "populationTagsEn": [
+        "Adult",
+        "Older adult",
+        "Hemodialysis"
+      ],
+      "modelTypeEn": "Published PopPK",
+      "noteEn": "Documented adaptation: the source is ambiguous between lean and total body weight for V centering; the interface supplies total body weight, which is used here.",
+      "routes": [
+        "IV"
+      ],
+      "ivCmt": "CENT",
+      "oralCmt": null,
+      "administrationModes": [
+        "IV_INTERMITTENT"
+      ],
+      "administrationCategories": [
+        "IV intermittente"
+      ],
+      "administrationCategoriesEn": [
+        "Intermittent IV"
+      ],
+      "implementationStatus": "ADAPTED",
+      "implementationStatusLabel": "Adaptation documentée",
+      "implementationStatusLabelEn": "Documented adaptation",
+      "analysisEligibilityLabel": "Simulation uniquement",
+      "analysisEligibilityLabelEn": "Simulation only",
+      "tags": [
+        "Gentamicine",
+        "Franck",
+        "PopPK publié",
+        "Franck B et al. Eur J Clin Pharmacol. 2020;76:947-955.",
+        "10.1007/s00228-020-02867-3",
+        "Adults, mostly older, receiving chronic hemodialysis.",
+        "Gentamicin",
+        "IV",
+        "IV_INTERMITTENT",
+        "IV intermittente",
+        "Intermittent IV",
+        "Adaptation documentée",
+        "Documented adaptation",
+        "Simulation uniquement",
+        "Simulation only",
+        "Adulte",
+        "Âgé",
+        "Hémodialyse",
+        "Adult",
+        "Older adult",
+        "Hemodialysis"
+      ]
+    },
+    {
+      "id": "genta_gomes",
+      "file": "genta_gomes.cpp",
+      "drugKey": "genta",
+      "timeUnit": "h",
+      "concentrationUnit": "mg/L",
+      "drug": "Gentamicine",
+      "drugEn": "Gentamicin",
+      "model": "Gomes",
+      "format": "mrgsolve/C++",
+      "href": "/tdm/models/genta_gomes.cpp",
+      "citation": "Gomes A et al. PLoS One. 2017;12:e0177324.",
+      "doi": "10.1371/journal.pone.0177324",
+      "population": "Adultes traités pour une endocardite infectieuse, hors dialyse.",
+      "populationTags": [
+        "Adulte",
+        "Endocardite",
+        "Hors dialyse"
+      ],
+      "modelType": "PopPK publié",
+      "sourceStatus": "verified",
+      "note": "Adaptation documentée : l'article ne reproduit ni l'équation de masse maigre corrigée ni la variante exacte de Cockcroft-Gault; les choix implémentés sont explicités dans le code.",
+      "verificationStatus": "SOFTWARE_TESTED",
+      "validationStatus": "NONE",
+      "contextOfUse": "TEACHING_RESEARCH",
+      "analysisEligible": false,
+      "populationEn": "Adults treated for infective endocarditis, excluding dialysis.",
+      "populationTagsEn": [
+        "Adult",
+        "Endocarditis",
+        "Not on dialysis"
+      ],
+      "modelTypeEn": "Published PopPK",
+      "noteEn": "Documented adaptation: the article does not reproduce the corrected lean-body-mass equation or the exact Cockcroft-Gault variant; the implemented choices are documented in code.",
+      "routes": [
+        "IV"
+      ],
+      "ivCmt": "CENT",
+      "oralCmt": null,
+      "administrationModes": [
+        "IV_INTERMITTENT"
+      ],
+      "administrationCategories": [
+        "IV intermittente"
+      ],
+      "administrationCategoriesEn": [
+        "Intermittent IV"
+      ],
+      "implementationStatus": "ADAPTED",
+      "implementationStatusLabel": "Adaptation documentée",
+      "implementationStatusLabelEn": "Documented adaptation",
+      "analysisEligibilityLabel": "Simulation uniquement",
+      "analysisEligibilityLabelEn": "Simulation only",
+      "tags": [
+        "Gentamicine",
+        "Gomes",
+        "PopPK publié",
+        "Gomes A et al. PLoS One. 2017;12:e0177324.",
+        "10.1371/journal.pone.0177324",
+        "Adults treated for infective endocarditis, excluding dialysis.",
+        "Gentamicin",
+        "IV",
+        "IV_INTERMITTENT",
+        "IV intermittente",
+        "Intermittent IV",
+        "Adaptation documentée",
+        "Documented adaptation",
+        "Simulation uniquement",
+        "Simulation only",
+        "Adulte",
+        "Endocardite",
+        "Hors dialyse",
+        "Adult",
+        "Endocarditis",
+        "Not on dialysis"
+      ]
+    },
+    {
+      "id": "genta_hodiamont",
+      "file": "genta_hodiamont.cpp",
+      "drugKey": "genta",
+      "timeUnit": "h",
+      "concentrationUnit": "mg/L",
+      "drug": "Gentamicine",
+      "drugEn": "Gentamicin",
+      "model": "Hodiamont",
+      "format": "mrgsolve/C++",
+      "href": "/tdm/models/genta_hodiamont.cpp",
+      "citation": "Hodiamont CJ et al. Int J Antimicrob Agents. 2017;49:204-211.",
+      "doi": "10.1016/j.ijantimicag.2016.10.022",
+      "population": "Adultes en réanimation, incluant hypoalbuminémie et certains patients sous épuration continue.",
+      "populationTags": [
+        "Adulte",
+        "ICU",
+        "CRRT"
+      ],
+      "modelType": "PopPK publié",
+      "sourceStatus": "verified",
+      "verificationStatus": "SOFTWARE_TESTED",
+      "validationStatus": "NONE",
+      "contextOfUse": "TEACHING_RESEARCH",
+      "analysisEligible": false,
+      "note": "Adaptation au moteur : quand aucune clairance urinaire mesurée sur 6 h est fournie, la CLCR est remplacée par Cockcroft-Gault ; albumine est bornée à la plage publiée de 10 à 36 g/L. Les exposants allométriques de Q et V2 sont des hypothèses documentées.",
+      "populationEn": "Adults in intensive care, including hypoalbuminemia and some patients receiving continuous renal replacement therapy.",
+      "populationTagsEn": [
+        "Adult",
+        "ICU",
+        "CRRT"
+      ],
+      "modelTypeEn": "Published PopPK",
+      "noteEn": "Engine adaptation: when a measured 6-hour urinary creatinine clearance is unavailable, CLCR is replaced by Cockcroft-Gault; albumin is clamped to the published 10-36 g/L range. The Q and V2 allometric exponents are documented assumptions.",
+      "routes": [
+        "IV"
+      ],
+      "ivCmt": "CENT",
+      "oralCmt": null,
+      "administrationModes": [
+        "IV_INTERMITTENT"
+      ],
+      "administrationCategories": [
+        "IV intermittente"
+      ],
+      "administrationCategoriesEn": [
+        "Intermittent IV"
+      ],
+      "implementationStatus": "ADAPTED",
+      "implementationStatusLabel": "Adaptation documentée",
+      "implementationStatusLabelEn": "Documented adaptation",
+      "analysisEligibilityLabel": "Simulation uniquement",
+      "analysisEligibilityLabelEn": "Simulation only",
+      "tags": [
+        "Gentamicine",
+        "Hodiamont",
+        "PopPK publié",
+        "Hodiamont CJ et al. Int J Antimicrob Agents. 2017;49:204-211.",
+        "10.1016/j.ijantimicag.2016.10.022",
+        "Adults in intensive care, including hypoalbuminemia and some patients receiving continuous renal replacement therapy.",
+        "Gentamicin",
+        "IV",
+        "IV_INTERMITTENT",
+        "IV intermittente",
+        "Intermittent IV",
+        "Adaptation documentée",
+        "Documented adaptation",
+        "Simulation uniquement",
+        "Simulation only",
+        "Adulte",
+        "ICU",
+        "CRRT",
+        "Adult"
+      ]
+    },
+    {
+      "id": "genta_rosario_clcr",
+      "file": "genta_rosario_clcr.cpp",
+      "drugKey": "genta",
+      "timeUnit": "h",
+      "concentrationUnit": "mg/L",
+      "drug": "Gentamicine",
+      "drugEn": "Gentamicin",
+      "model": "Rosario",
+      "format": "mrgsolve/C++",
+      "href": "/tdm/models/genta_rosario_clcr.cpp",
+      "citation": "Rosario MC et al. Br J Clin Pharmacol. 1998;46:229-236.",
+      "doi": "10.1046/j.1365-2125.1998.00779.x",
+      "population": "Adultes atteints de cancer; variante utilisant la clairance de la créatinine.",
+      "populationTags": [
+        "Adulte",
+        "Cancer",
+        "Hors ICU"
+      ],
+      "modelType": "PopPK publié",
+      "sourceStatus": "verified",
+      "verificationStatus": "SOFTWARE_TESTED",
+      "validationStatus": "NONE",
+      "contextOfUse": "TEACHING_RESEARCH",
+      "analysisEligible": false,
+      "note": "Adaptation au moteur : Cockcroft-Gault et la formule de surface corporelle sont calculés à partir des covariables disponibles. La matrice OMEGA est supposée diagonale et la variabilité non publiée de V1 est fixée à zéro.",
+      "populationEn": "Adults with cancer; variant using creatinine clearance.",
+      "populationTagsEn": [
+        "Adult",
+        "Cancer",
+        "Non-ICU"
+      ],
+      "modelTypeEn": "Published PopPK",
+      "noteEn": "Engine adaptation: Cockcroft-Gault and body-surface-area formulae are computed from available covariates. OMEGA is assumed diagonal and the unpublished V1 variability is fixed to zero.",
+      "routes": [
+        "IV"
+      ],
+      "ivCmt": "CENT",
+      "oralCmt": null,
+      "administrationModes": [
+        "IV_INTERMITTENT"
+      ],
+      "administrationCategories": [
+        "IV intermittente"
+      ],
+      "administrationCategoriesEn": [
+        "Intermittent IV"
+      ],
+      "implementationStatus": "ADAPTED",
+      "implementationStatusLabel": "Adaptation documentée",
+      "implementationStatusLabelEn": "Documented adaptation",
+      "analysisEligibilityLabel": "Simulation uniquement",
+      "analysisEligibilityLabelEn": "Simulation only",
+      "tags": [
+        "Gentamicine",
+        "Rosario Clcr",
+        "PopPK publié",
+        "Rosario MC et al. Br J Clin Pharmacol. 1998;46:229-236.",
+        "10.1046/j.1365-2125.1998.00779.x",
+        "Adults with cancer; variant using creatinine clearance.",
+        "Gentamicin",
+        "IV",
+        "IV_INTERMITTENT",
+        "IV intermittente",
+        "Intermittent IV",
+        "Adaptation documentée",
+        "Documented adaptation",
+        "Simulation uniquement",
+        "Simulation only",
+        "Adulte",
+        "Cancer",
+        "Hors ICU",
+        "Adult",
+        "Non-ICU"
+      ]
+    },
+    {
+      "id": "genta_rosario_clinical",
+      "file": "genta_rosario_clinical.cpp",
+      "drugKey": "genta",
+      "timeUnit": "h",
+      "concentrationUnit": "mg/L",
+      "drug": "Gentamicine",
+      "drugEn": "Gentamicin",
+      "model": "Rosario",
+      "format": "mrgsolve/C++",
+      "href": "/tdm/models/genta_rosario_clinical.cpp",
+      "citation": "Rosario MC et al. Br J Clin Pharmacol. 1998;46:229-236.",
+      "doi": "10.1046/j.1365-2125.1998.00779.x",
+      "population": "Adultes atteints de cancer; variante à covariables cliniques.",
+      "populationTags": [
+        "Adulte",
+        "Cancer",
+        "Hors ICU"
+      ],
+      "modelType": "PopPK publié",
+      "sourceStatus": "verified",
+      "verificationStatus": "SOFTWARE_TESTED",
+      "validationStatus": "NONE",
+      "contextOfUse": "TEACHING_RESEARCH",
+      "analysisEligible": false,
+      "note": "Adaptation au moteur : les formules cliniques nécessaires sont calculées à partir des covariables disponibles. La matrice OMEGA est supposée diagonale et la variabilité non publiée de V1 est fixée à zéro.",
+      "populationEn": "Adults with cancer; variant using clinical covariates.",
+      "populationTagsEn": [
+        "Adult",
+        "Cancer",
+        "Non-ICU"
+      ],
+      "modelTypeEn": "Published PopPK",
+      "noteEn": "Engine adaptation: required clinical formulae are computed from available covariates. OMEGA is assumed diagonal and the unpublished V1 variability is fixed to zero.",
+      "routes": [
+        "IV"
+      ],
+      "ivCmt": "CENT",
+      "oralCmt": null,
+      "administrationModes": [
+        "IV_INTERMITTENT"
+      ],
+      "administrationCategories": [
+        "IV intermittente"
+      ],
+      "administrationCategoriesEn": [
+        "Intermittent IV"
+      ],
+      "implementationStatus": "ADAPTED",
+      "implementationStatusLabel": "Adaptation documentée",
+      "implementationStatusLabelEn": "Documented adaptation",
+      "analysisEligibilityLabel": "Simulation uniquement",
+      "analysisEligibilityLabelEn": "Simulation only",
+      "tags": [
+        "Gentamicine",
+        "Rosario Clinical",
+        "PopPK publié",
+        "Rosario MC et al. Br J Clin Pharmacol. 1998;46:229-236.",
+        "10.1046/j.1365-2125.1998.00779.x",
+        "Adults with cancer; variant using clinical covariates.",
+        "Gentamicin",
+        "IV",
+        "IV_INTERMITTENT",
+        "IV intermittente",
+        "Intermittent IV",
+        "Adaptation documentée",
+        "Documented adaptation",
+        "Simulation uniquement",
+        "Simulation only",
+        "Adulte",
+        "Cancer",
+        "Hors ICU",
+        "Adult",
+        "Non-ICU"
+      ]
+    },
+    {
+      "id": "isavuconazole_desai_ddi",
+      "file": "isavuconazole_desai_ddi.cpp",
+      "drugKey": "isavuconazole",
+      "timeUnit": "h",
+      "concentrationUnit": "mg/L",
+      "drug": "Isavuconazole",
+      "drugEn": "Isavuconazole",
+      "model": "Desai",
+      "format": "mrgsolve/C++",
+      "href": "/tdm/models/isavuconazole_desai_ddi.cpp",
+      "citation": "Desai A et al. Antimicrob Agents Chemother. 2016;60:5483-5491.",
+      "doi": "10.1128/AAC.02819-15",
+      "population": "Adultes sains et adultes avec infection fongique invasive, essais de phase 1 et SECURE.",
+      "populationTags": [
+        "Adulte",
+        "Infection fongique",
+        "Population mixte"
+      ],
+      "modelType": "PopPK publié adapté",
+      "sourceStatus": "verified",
+      "note": "Absorption Weibull conservée; prior résiduel adapté pour mapbayr.",
+      "verificationStatus": "SOFTWARE_TESTED",
+      "validationStatus": "NONE",
+      "contextOfUse": "TEACHING_RESEARCH",
+      "analysisEligible": false,
+      "populationEn": "Healthy adults and adults with invasive fungal infection from phase 1 and SECURE trials.",
+      "populationTagsEn": [
+        "Adult",
+        "Fungal infection",
+        "Mixed population"
+      ],
+      "modelTypeEn": "Adapted published PopPK",
+      "noteEn": "Published Weibull absorption is retained; the residual prior is adapted for mapbayr.",
+      "routes": [
+        "Oral"
+      ],
+      "ivCmt": null,
+      "oralCmt": "GUT",
+      "administrationModes": [
+        "ORAL"
+      ],
+      "administrationCategories": [
+        "Orale"
+      ],
+      "administrationCategoriesEn": [
+        "Oral"
+      ],
+      "implementationStatus": "ADAPTED",
+      "implementationStatusLabel": "Adaptation documentée",
+      "implementationStatusLabelEn": "Documented adaptation",
+      "analysisEligibilityLabel": "Simulation uniquement",
+      "analysisEligibilityLabelEn": "Simulation only",
+      "tags": [
+        "Isavuconazole",
+        "Desai",
+        "PopPK publié adapté",
+        "Desai A et al. Antimicrob Agents Chemother. 2016;60:5483-5491.",
+        "10.1128/AAC.02819-15",
+        "Healthy adults and adults with invasive fungal infection from phase 1 and SECURE trials.",
+        "Oral",
+        "ORAL",
+        "Orale",
+        "Adaptation documentée",
+        "Documented adaptation",
+        "Simulation uniquement",
+        "Simulation only",
+        "Adulte",
+        "Infection fongique",
+        "Population mixte",
+        "Adult",
+        "Fungal infection",
+        "Mixed population"
+      ]
+    },
+    {
+      "id": "isavuconazole_groll_ddi",
+      "file": "isavuconazole_groll_ddi.cpp",
+      "drugKey": "isavuconazole",
+      "timeUnit": "h",
+      "concentrationUnit": "mg/L",
+      "drug": "Isavuconazole",
+      "drugEn": "Isavuconazole",
+      "model": "Groll",
+      "format": "mrgsolve/C++",
+      "href": "/tdm/models/isavuconazole_groll_ddi.cpp",
+      "citation": "Groll AH et al. Clin Pharmacol Drug Dev. 2017;6:76-85.",
+      "doi": "10.1002/cpdd.284",
+      "population": "Adultes sains inclus dans des études contrôlées d'interactions médicamenteuses.",
+      "populationTags": [
+        "Adulte",
+        "Volontaire sain",
+        "Hors ICU"
+      ],
+      "modelType": "Module PK déterministe",
+      "sourceStatus": "verified",
+      "note": "Module DDI simplifié; prior OMEGA/SIGMA d'ingénierie.",
+      "verificationStatus": "SOFTWARE_TESTED",
+      "validationStatus": "NONE",
+      "contextOfUse": "TEACHING_RESEARCH",
+      "analysisEligible": false,
+      "populationEn": "Healthy adults enrolled in controlled drug-interaction studies.",
+      "populationTagsEn": [
+        "Adult",
+        "Healthy volunteer",
+        "Non-ICU"
+      ],
+      "modelTypeEn": "Deterministic PK module",
+      "noteEn": "Simplified DDI module with an engineering OMEGA/SIGMA prior.",
+      "routes": [
+        "Oral"
+      ],
+      "ivCmt": null,
+      "oralCmt": "GUT",
+      "administrationModes": [
+        "ORAL"
+      ],
+      "administrationCategories": [
+        "Orale"
+      ],
+      "administrationCategoriesEn": [
+        "Oral"
+      ],
+      "implementationStatus": "ADAPTED",
+      "implementationStatusLabel": "Adaptation documentée",
+      "implementationStatusLabelEn": "Documented adaptation",
+      "analysisEligibilityLabel": "Simulation uniquement",
+      "analysisEligibilityLabelEn": "Simulation only",
+      "tags": [
+        "Isavuconazole",
+        "Groll",
+        "Module PK déterministe",
+        "Groll AH et al. Clin Pharmacol Drug Dev. 2017;6:76-85.",
+        "10.1002/cpdd.284",
+        "Healthy adults enrolled in controlled drug-interaction studies.",
+        "Oral",
+        "ORAL",
+        "Orale",
+        "Adaptation documentée",
+        "Documented adaptation",
+        "Simulation uniquement",
+        "Simulation only",
+        "Adulte",
+        "Volontaire sain",
+        "Hors ICU",
+        "Adult",
+        "Healthy volunteer",
+        "Non-ICU"
+      ]
+    },
+    {
+      "id": "levo_canoui",
+      "file": "levo_canoui.cpp",
+      "drugKey": "levo",
+      "timeUnit": "h",
+      "concentrationUnit": "mg/L",
+      "drug": "Levofloxacine",
+      "drugEn": "Levofloxacin",
+      "model": "Canouï",
+      "format": "mrgsolve/C++",
+      "href": "/tdm/models/levo_canoui.cpp",
+      "citation": "Canouï E et al. J Antimicrob Chemother. 2022;77:1344-1352.",
+      "doi": "10.1093/jac/dkac031",
+      "population": "Adultes traités pour une infection ostéo-articulaire.",
+      "populationTags": [
+        "Adulte",
+        "Infection ostéo-articulaire",
+        "Hors ICU"
+      ],
+      "modelType": "PopPK publié",
+      "sourceStatus": "verified",
+      "verificationStatus": "SOFTWARE_TESTED",
+      "validationStatus": "NONE",
+      "contextOfUse": "TEACHING_RESEARCH",
+      "analysisEligible": true,
+      "populationEn": "Adults treated for bone and joint infection.",
+      "populationTagsEn": [
+        "Adult",
+        "Bone and joint infection",
+        "Non-ICU"
+      ],
+      "modelTypeEn": "Published PopPK",
+      "noteEn": "",
+      "routes": [
+        "Oral"
+      ],
+      "ivCmt": null,
+      "oralCmt": "GUT",
+      "administrationModes": [
+        "ORAL"
+      ],
+      "administrationCategories": [
+        "Orale"
+      ],
+      "administrationCategoriesEn": [
+        "Oral"
+      ],
+      "implementationStatus": "ARTICLE",
+      "implementationStatusLabel": "Implémentation de l'article",
+      "implementationStatusLabelEn": "Article implementation",
+      "analysisEligibilityLabel": "Prior MAP fondé sur l'article",
+      "analysisEligibilityLabelEn": "Article-based MAP prior",
+      "tags": [
+        "Levofloxacine",
+        "Canoui",
+        "PopPK publié",
+        "Canouï E et al. J Antimicrob Chemother. 2022;77:1344-1352.",
+        "10.1093/jac/dkac031",
+        "Adults treated for bone and joint infection.",
+        "Levofloxacin",
+        "Oral",
+        "ORAL",
+        "Orale",
+        "Implémentation de l'article",
+        "Article implementation",
+        "Prior MAP fondé sur l'article",
+        "Article-based MAP prior",
+        "Adulte",
+        "Infection ostéo-articulaire",
+        "Hors ICU",
+        "Adult",
+        "Bone and joint infection",
+        "Non-ICU"
+      ]
+    },
+    {
+      "id": "levo_gergs",
+      "file": "levo_gergs.cpp",
+      "drugKey": "levo",
+      "timeUnit": "h",
+      "concentrationUnit": "mg/L",
+      "drug": "Levofloxacine",
+      "drugEn": "Levofloxacin",
+      "model": "Gergs",
+      "format": "mrgsolve/C++",
+      "href": "/tdm/models/levo_gergs.cpp",
+      "citation": "Gergs U et al. Clin Pharmacol Drug Dev. 2018;7:692-698.",
+      "doi": "10.1002/cpdd.418",
+      "population": "Adultes opérés d'une arthroplastie élective de hanche ou de genou.",
+      "populationTags": [
+        "Adulte",
+        "Chirurgie orthopédique",
+        "Hors ICU"
+      ],
+      "modelType": "PK publié",
+      "sourceStatus": "verified",
+      "verificationStatus": "SOFTWARE_TESTED",
+      "validationStatus": "NONE",
+      "contextOfUse": "TEACHING_RESEARCH",
+      "analysisEligible": false,
+      "note": "Adaptation plasmatique : le compartiment osseux irréversible publié est omis car il ne convient pas aux doses répétées. Les deux composantes de erreur résiduelle ne sont pas publiées et sont des valeurs pragmatiques explicitement signalées dans le code.",
+      "populationEn": "Adults undergoing elective hip or knee arthroplasty.",
+      "populationTagsEn": [
+        "Adult",
+        "Orthopedic surgery",
+        "Non-ICU"
+      ],
+      "modelTypeEn": "Published PK",
+      "noteEn": "Plasma-model adaptation: the published irreversible bone compartment is omitted because it is unsuitable for repeated dosing. Neither residual-error component is published; both are pragmatic values explicitly labelled in the code.",
+      "routes": [
+        "IV"
+      ],
+      "ivCmt": "CENT",
+      "oralCmt": null,
+      "administrationModes": [
+        "IV_INTERMITTENT"
+      ],
+      "administrationCategories": [
+        "IV intermittente"
+      ],
+      "administrationCategoriesEn": [
+        "Intermittent IV"
+      ],
+      "implementationStatus": "ADAPTED",
+      "implementationStatusLabel": "Adaptation documentée",
+      "implementationStatusLabelEn": "Documented adaptation",
+      "analysisEligibilityLabel": "Simulation uniquement",
+      "analysisEligibilityLabelEn": "Simulation only",
+      "tags": [
+        "Levofloxacine",
+        "Gergs",
+        "PK publié",
+        "Gergs U et al. Clin Pharmacol Drug Dev. 2018;7:692-698.",
+        "10.1002/cpdd.418",
+        "Adults undergoing elective hip or knee arthroplasty.",
+        "Levofloxacin",
+        "IV",
+        "IV_INTERMITTENT",
+        "IV intermittente",
+        "Intermittent IV",
+        "Adaptation documentée",
+        "Documented adaptation",
+        "Simulation uniquement",
+        "Simulation only",
+        "Adulte",
+        "Chirurgie orthopédique",
+        "Hors ICU",
+        "Adult",
+        "Orthopedic surgery",
+        "Non-ICU"
+      ]
+    },
+    {
+      "id": "linez_buerger",
+      "file": "linez_buerger.cpp",
+      "drugKey": "linez",
+      "timeUnit": "h",
+      "concentrationUnit": "mg/L",
+      "drug": "Linezolide",
+      "drugEn": "Linezolid",
+      "model": "Buerger",
+      "format": "mrgsolve/C++",
+      "href": "/tdm/models/linez_buerger.cpp",
+      "citation": "Buerger C et al. Antimicrob Agents Chemother. 2006;50:2455-2463.",
+      "doi": "10.1128/AAC.01468-05",
+      "population": "Adultes en réanimation, sepsis sévère ou choc septique, ventilés.",
+      "populationTags": [
+        "Adulte",
+        "ICU",
+        "Sepsis",
+        "Ventilé"
+      ],
+      "modelType": "PK publié adapté",
+      "sourceStatus": "verified",
+      "note": "Analyse PK individuelle publiée, adaptée ici comme prior populationnel.",
+      "verificationStatus": "SOFTWARE_TESTED",
+      "validationStatus": "NONE",
+      "contextOfUse": "TEACHING_RESEARCH",
+      "analysisEligible": false,
+      "populationEn": "Mechanically ventilated adults in intensive care with severe sepsis or septic shock.",
+      "populationTagsEn": [
+        "Adult",
+        "ICU",
+        "Sepsis",
+        "Mechanically ventilated"
+      ],
+      "modelTypeEn": "Adapted published PK",
+      "noteEn": "Published individual PK analysis adapted here as a population prior.",
+      "routes": [
+        "IV"
+      ],
+      "ivCmt": "CENT",
+      "oralCmt": null,
+      "administrationModes": [
+        "IV_INTERMITTENT"
+      ],
+      "administrationCategories": [
+        "IV intermittente"
+      ],
+      "administrationCategoriesEn": [
+        "Intermittent IV"
+      ],
+      "implementationStatus": "ADAPTED",
+      "implementationStatusLabel": "Adaptation documentée",
+      "implementationStatusLabelEn": "Documented adaptation",
+      "analysisEligibilityLabel": "Simulation uniquement",
+      "analysisEligibilityLabelEn": "Simulation only",
+      "tags": [
+        "Linezolide",
+        "Buerger",
+        "PK publié adapté",
+        "Buerger C et al. Antimicrob Agents Chemother. 2006;50:2455-2463.",
+        "10.1128/AAC.01468-05",
+        "Mechanically ventilated adults in intensive care with severe sepsis or septic shock.",
+        "Linezolid",
+        "IV",
+        "IV_INTERMITTENT",
+        "IV intermittente",
+        "Intermittent IV",
+        "Adaptation documentée",
+        "Documented adaptation",
+        "Simulation uniquement",
+        "Simulation only",
+        "Adulte",
+        "ICU",
+        "Sepsis",
+        "Ventilé",
+        "Adult",
+        "Mechanically ventilated"
+      ]
+    },
+    {
+      "id": "linez_sasaki",
+      "file": "linez_sasaki.cpp",
+      "drugKey": "linez",
+      "timeUnit": "h",
+      "concentrationUnit": "mg/L",
+      "drug": "Linezolide",
+      "drugEn": "Linezolid",
+      "model": "Sasaki",
+      "format": "mrgsolve/C++",
+      "href": "/tdm/models/linez_sasaki.cpp",
+      "citation": "Sasaki T et al. Antimicrob Agents Chemother. 2011;55:1867-1873.",
+      "doi": "10.1128/AAC.01185-10",
+      "population": "Adultes japonais hospitalisés pour infection.",
+      "populationTags": [
+        "Adulte",
+        "Hospitalisé",
+        "Hors ICU non précisé"
+      ],
+      "modelType": "PopPK publié",
+      "sourceStatus": "verified",
+      "verificationStatus": "SOFTWARE_TESTED",
+      "validationStatus": "NONE",
+      "contextOfUse": "TEACHING_RESEARCH",
+      "analysisEligible": false,
+      "note": "Adaptation au moteur : la biodisponibilité orale est fixée à 1 et le facteur féminin de Cockcroft-Gault à 0,85, deux choix non précisés dans la source. Le modèle PD plaquettaire publié est hors du périmètre PK.",
+      "populationEn": "Hospitalized Japanese adults treated for infection.",
+      "populationTagsEn": [
+        "Adult",
+        "Hospitalized",
+        "ICU status not specified"
+      ],
+      "modelTypeEn": "Published PopPK",
+      "noteEn": "Engine adaptation: oral bioavailability is fixed to 1 and the Cockcroft-Gault female factor to 0.85, two choices not specified in the source. The published platelet PD model is outside this PK scope.",
+      "routes": [
+        "IV",
+        "Oral"
+      ],
+      "ivCmt": "CENT",
+      "oralCmt": "GUT",
+      "administrationModes": [
+        "IV_INTERMITTENT",
+        "ORAL"
+      ],
+      "administrationCategories": [
+        "IV intermittente",
+        "Orale"
+      ],
+      "administrationCategoriesEn": [
+        "Intermittent IV",
+        "Oral"
+      ],
+      "implementationStatus": "ADAPTED",
+      "implementationStatusLabel": "Adaptation documentée",
+      "implementationStatusLabelEn": "Documented adaptation",
+      "analysisEligibilityLabel": "Simulation uniquement",
+      "analysisEligibilityLabelEn": "Simulation only",
+      "tags": [
+        "Linezolide",
+        "Sasaki",
+        "PopPK publié",
+        "Sasaki T et al. Antimicrob Agents Chemother. 2011;55:1867-1873.",
+        "10.1128/AAC.01185-10",
+        "Hospitalized Japanese adults treated for infection.",
+        "Linezolid",
+        "IV",
+        "Oral",
+        "IV_INTERMITTENT",
+        "ORAL",
+        "IV intermittente",
+        "Orale",
+        "Intermittent IV",
+        "Adaptation documentée",
+        "Documented adaptation",
+        "Simulation uniquement",
+        "Simulation only",
+        "Adulte",
+        "Hospitalisé",
+        "Hors ICU non précisé",
+        "Adult",
+        "Hospitalized",
+        "ICU status not specified"
+      ]
+    },
+    {
+      "id": "posaconazole_dolton_ddi",
+      "file": "posaconazole_dolton_ddi.cpp",
+      "drugKey": "posaconazole",
+      "timeUnit": "h",
+      "concentrationUnit": "mg/L",
+      "drug": "Posaconazole",
+      "drugEn": "Posaconazole",
+      "model": "Dolton",
+      "format": "mrgsolve/C++",
+      "href": "/tdm/models/posaconazole_dolton_ddi.cpp",
+      "citation": "Dolton MJ et al. Antimicrob Agents Chemother. 2014;58:6879-6885.",
+      "doi": "10.1128/AAC.03777-14",
+      "population": "Adultes sains et patients adultes sous posaconazole en prophylaxie ou traitement.",
+      "populationTags": [
+        "Adulte",
+        "Infection fongique",
+        "Population mixte"
+      ],
+      "modelType": "Module PK déterministe",
+      "sourceStatus": "verified",
+      "note": "Module DDI simplifié; prior OMEGA/SIGMA d'ingénierie.",
+      "verificationStatus": "SOFTWARE_TESTED",
+      "validationStatus": "NONE",
+      "contextOfUse": "TEACHING_RESEARCH",
+      "analysisEligible": false,
+      "populationEn": "Healthy adults and adult patients receiving posaconazole for prophylaxis or treatment.",
+      "populationTagsEn": [
+        "Adult",
+        "Fungal infection",
+        "Mixed population"
+      ],
+      "modelTypeEn": "Deterministic PK module",
+      "noteEn": "Simplified DDI module with an engineering OMEGA/SIGMA prior.",
+      "routes": [
+        "Oral"
+      ],
+      "ivCmt": null,
+      "oralCmt": "GUT",
+      "administrationModes": [
+        "ORAL"
+      ],
+      "administrationCategories": [
+        "Orale"
+      ],
+      "administrationCategoriesEn": [
+        "Oral"
+      ],
+      "implementationStatus": "ADAPTED",
+      "implementationStatusLabel": "Adaptation documentée",
+      "implementationStatusLabelEn": "Documented adaptation",
+      "analysisEligibilityLabel": "Simulation uniquement",
+      "analysisEligibilityLabelEn": "Simulation only",
+      "tags": [
+        "Posaconazole",
+        "Dolton",
+        "Module PK déterministe",
+        "Dolton MJ et al. Antimicrob Agents Chemother. 2014;58:6879-6885.",
+        "10.1128/AAC.03777-14",
+        "Healthy adults and adult patients receiving posaconazole for prophylaxis or treatment.",
+        "Oral",
+        "ORAL",
+        "Orale",
+        "Adaptation documentée",
+        "Documented adaptation",
+        "Simulation uniquement",
+        "Simulation only",
+        "Adulte",
+        "Infection fongique",
+        "Population mixte",
+        "Adult",
+        "Fungal infection",
+        "Mixed population"
+      ]
+    },
+    {
+      "id": "rifampicine_chang",
+      "file": "rifampicine_chang.cpp",
+      "drugKey": "rifampicine",
+      "timeUnit": "h",
+      "concentrationUnit": "mg/L",
+      "drug": "Rifampicine",
+      "drugEn": "Rifampicin",
+      "model": "Chang",
+      "format": "mrgsolve/C++",
+      "href": "/tdm/models/rifampicine_chang.cpp",
+      "citation": "Chang MJ et al. Tuberculosis (Edinb). 2015;95:54-59.",
+      "doi": "10.1016/j.tube.2014.10.013",
+      "population": "54 adultes sud-coréens avec tuberculose pulmonaire, dont 21 avec diabète.",
+      "populationTags": [
+        "Adulte",
+        "Tuberculose",
+        "Diabète",
+        "Hors ICU"
+      ],
+      "modelType": "PopPK publié adapté",
+      "sourceStatus": "verified",
+      "note": "Texte intégral vérifié. L'article imprime l'effet du BMI sur CL sans opérateur avant 6,22; l'interprétation historique du dépôt est conservée et signalée dans le modèle.",
+      "verificationStatus": "SOFTWARE_TESTED",
+      "validationStatus": "NONE",
+      "contextOfUse": "TEACHING_RESEARCH",
+      "analysisEligible": false,
+      "populationEn": "54 South Korean adults with pulmonary tuberculosis, including 21 with diabetes.",
+      "populationTagsEn": [
+        "Adult",
+        "Tuberculosis",
+        "Diabetes",
+        "Non-ICU"
+      ],
+      "modelTypeEn": "Adapted published PopPK",
+      "noteEn": "Full text verified. The article prints the BMI effect on CL without an operator before 6.22; the repository's historical interpretation is retained and flagged in the model.",
+      "routes": [
+        "Oral"
+      ],
+      "ivCmt": null,
+      "oralCmt": "DEPOT",
+      "administrationModes": [
+        "ORAL"
+      ],
+      "administrationCategories": [
+        "Orale"
+      ],
+      "administrationCategoriesEn": [
+        "Oral"
+      ],
+      "implementationStatus": "ADAPTED",
+      "implementationStatusLabel": "Adaptation documentée",
+      "implementationStatusLabelEn": "Documented adaptation",
+      "analysisEligibilityLabel": "Simulation uniquement",
+      "analysisEligibilityLabelEn": "Simulation only",
+      "tags": [
+        "Rifampicine",
+        "Chang",
+        "PopPK publié adapté",
+        "Chang MJ et al. Tuberculosis (Edinb). 2015;95:54-59.",
+        "10.1016/j.tube.2014.10.013",
+        "54 South Korean adults with pulmonary tuberculosis, including 21 with diabetes.",
+        "Rifampicin",
+        "Oral",
+        "ORAL",
+        "Orale",
+        "Adaptation documentée",
+        "Documented adaptation",
+        "Simulation uniquement",
+        "Simulation only",
+        "Adulte",
+        "Tuberculose",
+        "Diabète",
+        "Hors ICU",
+        "Adult",
+        "Tuberculosis",
+        "Diabetes",
+        "Non-ICU"
+      ]
+    },
+    {
+      "id": "rifampicine_jeremiah",
+      "file": "rifampicine_jeremiah.cpp",
+      "drugKey": "rifampicine",
+      "timeUnit": "h",
+      "concentrationUnit": "mg/L",
+      "drug": "Rifampicine",
+      "drugEn": "Rifampicin",
+      "model": "Jeremiah",
+      "format": "mrgsolve/C++",
+      "href": "/tdm/models/rifampicine_jeremiah.cpp",
+      "citation": "Jeremiah K et al. Antimicrob Agents Chemother. 2014;58:3468-3474.",
+      "doi": "10.1128/AAC.02307-13",
+      "population": "100 adultes tanzaniens avec tuberculose pulmonaire, avec ou sans VIH.",
+      "populationTags": [
+        "Adulte",
+        "Tuberculose",
+        "VIH",
+        "Hors ICU"
+      ],
+      "modelType": "PopPK publié adapté",
+      "sourceStatus": "verified",
+      "note": "Structure et paramètres vérifiés dans l'article; les effets VIH, supplémentation et variabilités interoccasion ne sont pas encore implémentés.",
+      "verificationStatus": "SOFTWARE_TESTED",
+      "validationStatus": "NONE",
+      "contextOfUse": "TEACHING_RESEARCH",
+      "analysisEligible": false,
+      "populationEn": "100 Tanzanian adults with pulmonary tuberculosis, with or without HIV.",
+      "populationTagsEn": [
+        "Adult",
+        "Tuberculosis",
+        "HIV",
+        "Non-ICU"
+      ],
+      "modelTypeEn": "Adapted published PopPK",
+      "noteEn": "Structure and parameters were verified in the article; HIV, supplementation and inter-occasion effects are not yet implemented.",
+      "routes": [
+        "Oral"
+      ],
+      "ivCmt": null,
+      "oralCmt": "TR1",
+      "administrationModes": [
+        "ORAL"
+      ],
+      "administrationCategories": [
+        "Orale"
+      ],
+      "administrationCategoriesEn": [
+        "Oral"
+      ],
+      "implementationStatus": "ADAPTED",
+      "implementationStatusLabel": "Adaptation documentée",
+      "implementationStatusLabelEn": "Documented adaptation",
+      "analysisEligibilityLabel": "Simulation uniquement",
+      "analysisEligibilityLabelEn": "Simulation only",
+      "tags": [
+        "Rifampicine",
+        "Jeremiah",
+        "PopPK publié adapté",
+        "Jeremiah K et al. Antimicrob Agents Chemother. 2014;58:3468-3474.",
+        "10.1128/AAC.02307-13",
+        "100 Tanzanian adults with pulmonary tuberculosis, with or without HIV.",
+        "Rifampicin",
+        "Oral",
+        "ORAL",
+        "Orale",
+        "Adaptation documentée",
+        "Documented adaptation",
+        "Simulation uniquement",
+        "Simulation only",
+        "Adulte",
+        "Tuberculose",
+        "VIH",
+        "Hors ICU",
+        "Adult",
+        "Tuberculosis",
+        "HIV",
+        "Non-ICU"
+      ]
+    },
+    {
+      "id": "rifampicine_jing",
+      "file": "rifampicine_jing.cpp",
+      "drugKey": "rifampicine",
+      "timeUnit": "h",
+      "concentrationUnit": "mg/L",
+      "drug": "Rifampicine",
+      "drugEn": "Rifampicin",
+      "model": "Jing",
+      "format": "mrgsolve/C++",
+      "href": "/tdm/models/rifampicine_jing.cpp",
+      "citation": "Jing Y et al. J Clin Pharmacol. 2016;56:622-627.",
+      "doi": "10.1002/jcph.643",
+      "population": "54 adultes chinois traités par rifampicine orale pour une tuberculose pulmonaire.",
+      "populationTags": [
+        "Adulte",
+        "Tuberculose",
+        "Hors ICU"
+      ],
+      "modelType": "PopPK publié",
+      "sourceStatus": "verified",
+      "verificationStatus": "SOFTWARE_TESTED",
+      "validationStatus": "NONE",
+      "contextOfUse": "TEACHING_RESEARCH",
+      "analysisEligible": true,
+      "populationEn": "54 Chinese adults receiving oral rifampicin for pulmonary tuberculosis.",
+      "populationTagsEn": [
+        "Adult",
+        "Tuberculosis",
+        "Non-ICU"
+      ],
+      "modelTypeEn": "Published PopPK",
+      "noteEn": "",
+      "routes": [
+        "Oral"
+      ],
+      "ivCmt": null,
+      "oralCmt": "DEPOT",
+      "administrationModes": [
+        "ORAL"
+      ],
+      "administrationCategories": [
+        "Orale"
+      ],
+      "administrationCategoriesEn": [
+        "Oral"
+      ],
+      "implementationStatus": "ARTICLE",
+      "implementationStatusLabel": "Implémentation de l'article",
+      "implementationStatusLabelEn": "Article implementation",
+      "analysisEligibilityLabel": "Prior MAP fondé sur l'article",
+      "analysisEligibilityLabelEn": "Article-based MAP prior",
+      "tags": [
+        "Rifampicine",
+        "Jing",
+        "PopPK publié",
+        "Jing Y et al. J Clin Pharmacol. 2016;56:622-627.",
+        "10.1002/jcph.643",
+        "54 Chinese adults receiving oral rifampicin for pulmonary tuberculosis.",
+        "Rifampicin",
+        "Oral",
+        "ORAL",
+        "Orale",
+        "Implémentation de l'article",
+        "Article implementation",
+        "Prior MAP fondé sur l'article",
+        "Article-based MAP prior",
+        "Adulte",
+        "Tuberculose",
+        "Hors ICU",
+        "Adult",
+        "Tuberculosis",
+        "Non-ICU"
+      ]
+    },
+    {
+      "id": "rifampicine_loos_ddi",
+      "file": "rifampicine_loos_ddi.cpp",
+      "drugKey": "rifampicine",
+      "timeUnit": "h",
+      "concentrationUnit": "mg/L",
+      "drug": "Rifampicine",
+      "drugEn": "Rifampicin",
+      "model": "Loos",
+      "format": "mrgsolve/C++",
+      "href": "/tdm/models/rifampicine_loos_ddi.cpp",
+      "citation": "Loos U et al. Klin Wochenschr. 1985;63:1205-1211.",
+      "doi": "10.1007/BF01733779",
+      "population": "Adultes sains après rifampicine orale et intraveineuse en administration chronique.",
+      "populationTags": [
+        "Adulte",
+        "Volontaire sain",
+        "Hors ICU"
+      ],
+      "modelType": "Module PK déterministe",
+      "sourceStatus": "verified",
+      "note": "Module DDI simplifié; prior OMEGA/SIGMA d'ingénierie.",
+      "verificationStatus": "SOFTWARE_TESTED",
+      "validationStatus": "NONE",
+      "contextOfUse": "TEACHING_RESEARCH",
+      "analysisEligible": false,
+      "populationEn": "Healthy adults after chronic oral and intravenous rifampicin.",
+      "populationTagsEn": [
+        "Adult",
+        "Healthy volunteer",
+        "Non-ICU"
+      ],
+      "modelTypeEn": "Deterministic PK module",
+      "noteEn": "Simplified DDI module with an engineering OMEGA/SIGMA prior.",
+      "routes": [
+        "Oral"
+      ],
+      "ivCmt": null,
+      "oralCmt": "GUT",
+      "administrationModes": [
+        "ORAL"
+      ],
+      "administrationCategories": [
+        "Orale"
+      ],
+      "administrationCategoriesEn": [
+        "Oral"
+      ],
+      "implementationStatus": "ADAPTED",
+      "implementationStatusLabel": "Adaptation documentée",
+      "implementationStatusLabelEn": "Documented adaptation",
+      "analysisEligibilityLabel": "Simulation uniquement",
+      "analysisEligibilityLabelEn": "Simulation only",
+      "tags": [
+        "Rifampicine",
+        "Loos",
+        "Module PK déterministe",
+        "Loos U et al. Klin Wochenschr. 1985;63:1205-1211.",
+        "10.1007/BF01733779",
+        "Healthy adults after chronic oral and intravenous rifampicin.",
+        "Rifampicin",
+        "Oral",
+        "ORAL",
+        "Orale",
+        "Adaptation documentée",
+        "Documented adaptation",
+        "Simulation uniquement",
+        "Simulation only",
+        "Adulte",
+        "Volontaire sain",
+        "Hors ICU",
+        "Adult",
+        "Healthy volunteer",
+        "Non-ICU"
+      ]
+    },
+    {
+      "id": "rifampicine_marsot",
+      "file": "rifampicine_marsot.cpp",
+      "drugKey": "rifampicine",
+      "timeUnit": "h",
+      "concentrationUnit": "mg/L",
+      "drug": "Rifampicine",
+      "drugEn": "Rifampicin",
+      "model": "Marsot",
+      "format": "mrgsolve/C++",
+      "href": "/tdm/models/rifampicine_marsot.cpp",
+      "citation": "Marsot A et al. Br J Clin Pharmacol. 2017;83:1039-1047.",
+      "doi": "10.1111/bcp.13178",
+      "population": "Adultes traités pour une infection ostéo-articulaire, avec ou sans acide fusidique.",
+      "populationTags": [
+        "Adulte",
+        "Infection ostéo-articulaire",
+        "Hors ICU"
+      ],
+      "modelType": "PopPK publié",
+      "sourceStatus": "verified",
+      "verificationStatus": "SOFTWARE_TESTED",
+      "validationStatus": "NONE",
+      "contextOfUse": "TEACHING_RESEARCH",
+      "analysisEligible": true,
+      "populationEn": "Adults treated for bone and joint infection, with or without fusidic acid.",
+      "populationTagsEn": [
+        "Adult",
+        "Bone and joint infection",
+        "Non-ICU"
+      ],
+      "modelTypeEn": "Published PopPK",
+      "noteEn": "",
+      "routes": [
+        "Oral"
+      ],
+      "ivCmt": null,
+      "oralCmt": "TR",
+      "administrationModes": [
+        "ORAL"
+      ],
+      "administrationCategories": [
+        "Orale"
+      ],
+      "administrationCategoriesEn": [
+        "Oral"
+      ],
+      "implementationStatus": "ARTICLE",
+      "implementationStatusLabel": "Implémentation de l'article",
+      "implementationStatusLabelEn": "Article implementation",
+      "analysisEligibilityLabel": "Prior MAP fondé sur l'article",
+      "analysisEligibilityLabelEn": "Article-based MAP prior",
+      "tags": [
+        "Rifampicine",
+        "Marsot",
+        "PopPK publié",
+        "Marsot A et al. Br J Clin Pharmacol. 2017;83:1039-1047.",
+        "10.1111/bcp.13178",
+        "Adults treated for bone and joint infection, with or without fusidic acid.",
+        "Rifampicin",
+        "Oral",
+        "ORAL",
+        "Orale",
+        "Implémentation de l'article",
+        "Article implementation",
+        "Prior MAP fondé sur l'article",
+        "Article-based MAP prior",
+        "Adulte",
+        "Infection ostéo-articulaire",
+        "Hors ICU",
+        "Adult",
+        "Bone and joint infection",
+        "Non-ICU"
+      ]
+    },
+    {
+      "id": "ritonavir_kappelhoff_ddi",
+      "file": "ritonavir_kappelhoff_ddi.cpp",
+      "drugKey": "ritonavir",
+      "timeUnit": "h",
+      "concentrationUnit": "mg/L",
+      "drug": "Ritonavir",
+      "drugEn": "Ritonavir",
+      "model": "Kappelhoff",
+      "format": "mrgsolve/C++",
+      "href": "/tdm/models/ritonavir_kappelhoff_ddi.cpp",
+      "citation": "Kappelhoff BS et al. Br J Clin Pharmacol. 2005;59:174-182.",
+      "doi": "10.1111/j.1365-2125.2004.02241.x",
+      "population": "Adultes vivant avec le VIH-1, ritonavir utilisé comme booster ou antiviral.",
+      "populationTags": [
+        "Adulte",
+        "VIH",
+        "Hors ICU"
+      ],
+      "modelType": "Module PK déterministe",
+      "sourceStatus": "verified",
+      "note": "Module DDI simplifié; prior OMEGA/SIGMA d'ingénierie.",
+      "verificationStatus": "SOFTWARE_TESTED",
+      "validationStatus": "NONE",
+      "contextOfUse": "TEACHING_RESEARCH",
+      "analysisEligible": false,
+      "populationEn": "Adults living with HIV-1 receiving ritonavir as a booster or antiviral.",
+      "populationTagsEn": [
+        "Adult",
+        "HIV",
+        "Non-ICU"
+      ],
+      "modelTypeEn": "Deterministic PK module",
+      "noteEn": "Simplified DDI module with an engineering OMEGA/SIGMA prior.",
+      "routes": [
+        "Oral"
+      ],
+      "ivCmt": null,
+      "oralCmt": "GUT",
+      "administrationModes": [
+        "ORAL"
+      ],
+      "administrationCategories": [
+        "Orale"
+      ],
+      "administrationCategoriesEn": [
+        "Oral"
+      ],
+      "implementationStatus": "ADAPTED",
+      "implementationStatusLabel": "Adaptation documentée",
+      "implementationStatusLabelEn": "Documented adaptation",
+      "analysisEligibilityLabel": "Simulation uniquement",
+      "analysisEligibilityLabelEn": "Simulation only",
+      "tags": [
+        "Ritonavir",
+        "Kappelhoff",
+        "Module PK déterministe",
+        "Kappelhoff BS et al. Br J Clin Pharmacol. 2005;59:174-182.",
+        "10.1111/j.1365-2125.2004.02241.x",
+        "Adults living with HIV-1 receiving ritonavir as a booster or antiviral.",
+        "Oral",
+        "ORAL",
+        "Orale",
+        "Adaptation documentée",
+        "Documented adaptation",
+        "Simulation uniquement",
+        "Simulation only",
+        "Adulte",
+        "VIH",
+        "Hors ICU",
+        "Adult",
+        "HIV",
+        "Non-ICU"
+      ]
+    },
+    {
+      "id": "sirolimus_djebli_ddi",
+      "file": "sirolimus_djebli_ddi.cpp",
+      "drugKey": "sirolimus",
+      "timeUnit": "h",
+      "concentrationUnit": "ng/mL",
+      "drug": "Sirolimus",
+      "drugEn": "Sirolimus",
+      "model": "Djebli",
+      "format": "mrgsolve/C++",
+      "href": "/tdm/models/sirolimus_djebli_ddi.cpp",
+      "citation": "Djebli N et al. Clin Pharmacokinet. 2006;45:1135-1148.",
+      "doi": "10.2165/00003088-200645110-00007",
+      "population": "Adultes transplantés rénaux sous sirolimus et mycophénolate, sans inhibiteur de calcineurine.",
+      "populationTags": [
+        "Adulte",
+        "Transplantation rénale",
+        "Hors ICU"
+      ],
+      "modelType": "PopPK publié adapté",
+      "sourceStatus": "verified",
+      "verificationStatus": "SOFTWARE_TESTED",
+      "validationStatus": "NONE",
+      "contextOfUse": "TEACHING_RESEARCH",
+      "analysisEligible": false,
+      "note": "Adaptation DDI : effet CYP3A5 additif publié conservé. Des variances pragmatiques sont ajoutées pour V1, Q, V2 et KTR faute de valeurs publiées utilisables, ainsi que 5 % de clairance non-CYP pour éviter une clairance nulle sous inhibition.",
+      "populationEn": "Adult kidney transplant recipients receiving sirolimus and mycophenolate without a calcineurin inhibitor.",
+      "populationTagsEn": [
+        "Adult",
+        "Kidney transplantation",
+        "Non-ICU"
+      ],
+      "modelTypeEn": "Adapted published PopPK",
+      "noteEn": "DDI adaptation: the published additive CYP3A5 effect is retained. Pragmatic variances are added for V1, Q, V2 and KTR because usable published values were unavailable, together with a 5% non-CYP fraction that prevents zero clearance under inhibition.",
+      "routes": [
+        "Oral"
+      ],
+      "ivCmt": null,
+      "oralCmt": "DEPOT_SIR",
+      "administrationModes": [
+        "ORAL"
+      ],
+      "administrationCategories": [
+        "Orale"
+      ],
+      "administrationCategoriesEn": [
+        "Oral"
+      ],
+      "implementationStatus": "ADAPTED",
+      "implementationStatusLabel": "Adaptation documentée",
+      "implementationStatusLabelEn": "Documented adaptation",
+      "analysisEligibilityLabel": "Simulation uniquement",
+      "analysisEligibilityLabelEn": "Simulation only",
+      "tags": [
+        "Sirolimus",
+        "Djebli",
+        "PopPK publié adapté",
+        "Djebli N et al. Clin Pharmacokinet. 2006;45:1135-1148.",
+        "10.2165/00003088-200645110-00007",
+        "Adult kidney transplant recipients receiving sirolimus and mycophenolate without a calcineurin inhibitor.",
+        "Oral",
+        "ORAL",
+        "Orale",
+        "Adaptation documentée",
+        "Documented adaptation",
+        "Simulation uniquement",
+        "Simulation only",
+        "Adulte",
+        "Transplantation rénale",
+        "Hors ICU",
+        "Adult",
+        "Kidney transplantation",
+        "Non-ICU"
+      ]
+    },
+    {
+      "id": "tacrolimus_kamp_envarsus_ddi",
+      "file": "tacrolimus_kamp_envarsus_ddi.cpp",
+      "drugKey": "tacrolimus",
+      "timeUnit": "h",
+      "concentrationUnit": "ng/mL",
+      "drug": "Tacrolimus",
+      "drugEn": "Tacrolimus",
+      "model": "Kamp",
+      "format": "mrgsolve/C++",
+      "href": "/tdm/models/tacrolimus_kamp_envarsus_ddi.cpp",
+      "citation": "Kamp J et al. Pharmaceutics. 2024;16:17.",
+      "doi": "10.3390/pharmaceutics16010017",
+      "population": "Adultes transplantés rénaux recevant tacrolimus Envarsus.",
+      "populationTags": [
+        "Adulte",
+        "Transplantation rénale",
+        "Hors ICU"
+      ],
+      "modelType": "PopPK publié adapté",
+      "sourceStatus": "verified",
+      "verificationStatus": "SOFTWARE_TESTED",
+      "validationStatus": "NONE",
+      "contextOfUse": "TEACHING_RESEARCH",
+      "analysisEligible": false,
+      "note": "Adaptation DDI : la PK de base conserve les paramètres Kamp, tandis que le découpage de clairance en fractions CYP3A4, CYP3A5 et non-CYP de 5 % est ajouté pour les scénarios interactionnels.",
+      "populationEn": "Adult kidney transplant recipients receiving Envarsus tacrolimus.",
+      "populationTagsEn": [
+        "Adult",
+        "Kidney transplantation",
+        "Non-ICU"
+      ],
+      "modelTypeEn": "Adapted published PopPK",
+      "noteEn": "DDI adaptation: baseline PK retains the Kamp parameters, while a clearance split into CYP3A4, CYP3A5 and a 5% non-CYP fraction is added for interaction scenarios.",
+      "routes": [
+        "Oral"
+      ],
+      "ivCmt": null,
+      "oralCmt": "DEPOT_TAC",
+      "administrationModes": [
+        "ORAL"
+      ],
+      "administrationCategories": [
+        "Orale"
+      ],
+      "administrationCategoriesEn": [
+        "Oral"
+      ],
+      "implementationStatus": "ADAPTED",
+      "implementationStatusLabel": "Adaptation documentée",
+      "implementationStatusLabelEn": "Documented adaptation",
+      "analysisEligibilityLabel": "Simulation uniquement",
+      "analysisEligibilityLabelEn": "Simulation only",
+      "tags": [
+        "Tacrolimus",
+        "Kamp Envarsus",
+        "PopPK publié adapté",
+        "Kamp J et al. Pharmaceutics. 2024;16:17.",
+        "10.3390/pharmaceutics16010017",
+        "Adult kidney transplant recipients receiving Envarsus tacrolimus.",
+        "Oral",
+        "ORAL",
+        "Orale",
+        "Adaptation documentée",
+        "Documented adaptation",
+        "Simulation uniquement",
+        "Simulation only",
+        "Adulte",
+        "Transplantation rénale",
+        "Hors ICU",
+        "Adult",
+        "Kidney transplantation",
+        "Non-ICU"
+      ]
+    },
+    {
+      "id": "tacrolimus_woillard_ddi",
+      "file": "tacrolimus_woillard_ddi.cpp",
+      "drugKey": "tacrolimus",
+      "timeUnit": "h",
+      "concentrationUnit": "ng/mL",
+      "drug": "Tacrolimus",
+      "drugEn": "Tacrolimus",
+      "model": "Woillard",
+      "format": "mrgsolve/C++",
+      "href": "/tdm/models/tacrolimus_woillard_ddi.cpp",
+      "citation": "Woillard JB et al. Br J Clin Pharmacol. 2011;71:391-402.",
+      "doi": "10.1111/j.1365-2125.2010.03837.x",
+      "population": "Adultes transplantés rénaux recevant Prograf ou Advagraf.",
+      "populationTags": [
+        "Adulte",
+        "Transplantation rénale",
+        "Hors ICU"
+      ],
+      "modelType": "PopPK publié adapté",
+      "sourceStatus": "verified",
+      "analysisEligible": true,
+      "note": "L'adaptation ajoute une décomposition de clairance destinée aux scénarios DDI, mais elle préserve exactement la clairance de base en l'absence d'interaction. Le prior PK publié reste utilisé pour l'ajustement MAP.",
+      "verificationStatus": "SOFTWARE_TESTED",
+      "validationStatus": "NONE",
+      "contextOfUse": "TEACHING_RESEARCH",
+      "populationEn": "Adult kidney transplant recipients receiving Prograf or Advagraf.",
+      "populationTagsEn": [
+        "Adult",
+        "Kidney transplantation",
+        "Non-ICU"
+      ],
+      "modelTypeEn": "Adapted published PopPK",
+      "noteEn": "The adaptation adds a clearance split for DDI scenarios while exactly preserving baseline clearance when no interaction is active. The published PK prior remains the basis of MAP estimation.",
+      "routes": [
+        "Oral"
+      ],
+      "ivCmt": null,
+      "oralCmt": "DEPOT_TAC",
+      "administrationModes": [
+        "ORAL"
+      ],
+      "administrationCategories": [
+        "Orale"
+      ],
+      "administrationCategoriesEn": [
+        "Oral"
+      ],
+      "implementationStatus": "ADAPTED",
+      "implementationStatusLabel": "Adaptation documentée",
+      "implementationStatusLabelEn": "Documented adaptation",
+      "analysisEligibilityLabel": "Prior MAP fondé sur l'article",
+      "analysisEligibilityLabelEn": "Article-based MAP prior",
+      "tags": [
+        "Tacrolimus",
+        "Woillard",
+        "PopPK publié adapté",
+        "Woillard JB et al. Br J Clin Pharmacol. 2011;71:391-402.",
+        "10.1111/j.1365-2125.2010.03837.x",
+        "Adult kidney transplant recipients receiving Prograf or Advagraf.",
+        "Oral",
+        "ORAL",
+        "Orale",
+        "Adaptation documentée",
+        "Documented adaptation",
+        "Prior MAP fondé sur l'article",
+        "Article-based MAP prior",
+        "Adulte",
+        "Transplantation rénale",
+        "Hors ICU",
+        "Adult",
+        "Kidney transplantation",
+        "Non-ICU"
+      ]
+    },
+    {
+      "id": "vanco_goti",
+      "file": "vanco_goti.cpp",
+      "drugKey": "vanco",
+      "timeUnit": "h",
+      "concentrationUnit": "mg/L",
+      "drug": "Vancomycine",
+      "drugEn": "Vancomycin",
+      "model": "Goti",
+      "format": "mrgsolve/C++",
+      "href": "/tdm/models/vanco_goti.cpp",
+      "citation": "Goti V et al. Ther Drug Monit. 2018;40:212-221.",
+      "doi": "10.1097/FTD.0000000000000490",
+      "population": "Adultes hospitalisés avec ou sans hémodialyse.",
+      "populationTags": [
+        "Adulte",
+        "Hospitalisé",
+        "Hémodialyse"
+      ],
+      "modelType": "PopPK publié",
+      "sourceStatus": "verified",
+      "verificationStatus": "SOFTWARE_TESTED",
+      "validationStatus": "NONE",
+      "contextOfUse": "TEACHING_RESEARCH",
+      "analysisEligible": true,
+      "populationEn": "Hospitalized adults with or without hemodialysis.",
+      "populationTagsEn": [
+        "Adult",
+        "Hospitalized",
+        "Hemodialysis"
+      ],
+      "modelTypeEn": "Published PopPK",
+      "noteEn": "",
+      "routes": [
+        "IV"
+      ],
+      "ivCmt": "CENT",
+      "oralCmt": null,
+      "administrationModes": [
+        "IV_INTERMITTENT"
+      ],
+      "administrationCategories": [
+        "IV intermittente"
+      ],
+      "administrationCategoriesEn": [
+        "Intermittent IV"
+      ],
+      "implementationStatus": "ARTICLE",
+      "implementationStatusLabel": "Implémentation de l'article",
+      "implementationStatusLabelEn": "Article implementation",
+      "analysisEligibilityLabel": "Prior MAP fondé sur l'article",
+      "analysisEligibilityLabelEn": "Article-based MAP prior",
+      "tags": [
+        "Vancomycine",
+        "Goti",
+        "PopPK publié",
+        "Goti V et al. Ther Drug Monit. 2018;40:212-221.",
+        "10.1097/FTD.0000000000000490",
+        "Hospitalized adults with or without hemodialysis.",
+        "Vancomycin",
+        "IV",
+        "IV_INTERMITTENT",
+        "IV intermittente",
+        "Intermittent IV",
+        "Implémentation de l'article",
+        "Article implementation",
+        "Prior MAP fondé sur l'article",
+        "Article-based MAP prior",
+        "Adulte",
+        "Hospitalisé",
+        "Hémodialyse",
+        "Adult",
+        "Hospitalized",
+        "Hemodialysis"
+      ]
+    },
+    {
+      "id": "vanco_pkjust",
+      "file": "vanco_pkjust.cpp",
+      "drugKey": "vanco",
+      "timeUnit": "h",
+      "concentrationUnit": "mg/L",
+      "drug": "Vancomycine",
+      "drugEn": "Vancomycin",
+      "model": "Revilla",
+      "format": "mrgsolve/C++",
+      "href": "/tdm/models/vanco_pkjust.cpp",
+      "citation": "Revilla N et al. Br J Clin Pharmacol. 2010;70:201-212.",
+      "doi": "10.1111/j.1365-2125.2010.03679.x",
+      "population": "Adultes en réanimation recevant la vancomycine IV intermittente ou continue; modèle fondé sur l'âge, la fonction rénale et le poids.",
+      "populationTags": [
+        "Adulte",
+        "ICU"
+      ],
+      "modelType": "PopPK publié",
+      "sourceStatus": "verified",
+      "administrationModes": [
+        "IV_INTERMITTENT",
+        "IV_CONTINUOUS"
+      ],
+      "note": "CRCL est la clairance de créatinine mesurée sur 24 h, comme dans l'article, et non une estimation de Cockcroft-Gault. Le modèle résiduel est additif (SD 4,23 mg/L).",
+      "verificationStatus": "SOFTWARE_TESTED",
+      "validationStatus": "NONE",
+      "contextOfUse": "TEACHING_RESEARCH",
+      "analysisEligible": true,
+      "populationEn": "Adults in intensive care receiving intermittent or continuous IV vancomycin; model based on age, renal function and body weight.",
+      "populationTagsEn": [
+        "Adult",
+        "ICU"
+      ],
+      "modelTypeEn": "Published PopPK",
+      "noteEn": "CRCL is the 24-hour measured creatinine clearance used in the article, not a Cockcroft-Gault estimate. The residual model is additive (SD 4.23 mg/L).",
+      "routes": [
+        "IV"
+      ],
+      "ivCmt": "CENT",
+      "oralCmt": null,
+      "administrationCategories": [
+        "IV intermittente",
+        "IV continue"
+      ],
+      "administrationCategoriesEn": [
+        "Intermittent IV",
+        "Continuous IV"
+      ],
+      "implementationStatus": "ARTICLE",
+      "implementationStatusLabel": "Implémentation de l'article",
+      "implementationStatusLabelEn": "Article implementation",
+      "analysisEligibilityLabel": "Prior MAP fondé sur l'article",
+      "analysisEligibilityLabelEn": "Article-based MAP prior",
+      "tags": [
+        "Vancomycine",
+        "Pkjust",
+        "PopPK publié",
+        "Revilla N et al. Br J Clin Pharmacol. 2010;70:201-212.",
+        "10.1111/j.1365-2125.2010.03679.x",
+        "Adults in intensive care receiving intermittent or continuous IV vancomycin; model based on age, renal function and body weight.",
+        "Vancomycin",
+        "IV",
+        "IV_INTERMITTENT",
+        "IV_CONTINUOUS",
+        "IV intermittente",
+        "IV continue",
+        "Intermittent IV",
+        "Continuous IV",
+        "Implémentation de l'article",
+        "Article implementation",
+        "Prior MAP fondé sur l'article",
+        "Article-based MAP prior",
+        "Adulte",
+        "ICU",
+        "Adult"
+      ]
+    },
+    {
+      "id": "vanco_roberts",
+      "file": "vanco_roberts.cpp",
+      "drugKey": "vanco",
+      "timeUnit": "h",
+      "concentrationUnit": "mg/L",
+      "drug": "Vancomycine",
+      "drugEn": "Vancomycin",
+      "model": "Roberts",
+      "format": "mrgsolve/C++",
+      "href": "/tdm/models/vanco_roberts.cpp",
+      "citation": "Roberts JA et al. Antimicrob Agents Chemother. 2011;55:2704-2709.",
+      "doi": "10.1128/AAC.01708-10",
+      "population": "Adultes septiques en réanimation recevant la vancomycine en perfusion continue.",
+      "populationTags": [
+        "Adulte",
+        "ICU",
+        "Sepsis"
+      ],
+      "modelType": "PopPK publié",
+      "sourceStatus": "verified",
+      "administrationModes": [
+        "IV_CONTINUOUS"
+      ],
+      "note": "La clairance utilise la clairance urinaire de créatinine sur 24 h normalisée à 1,73 m², conformément à l'article.",
+      "verificationStatus": "SOFTWARE_TESTED",
+      "validationStatus": "NONE",
+      "contextOfUse": "TEACHING_RESEARCH",
+      "analysisEligible": true,
+      "populationEn": "Adults with sepsis in intensive care receiving vancomycin by continuous infusion.",
+      "populationTagsEn": [
+        "Adult",
+        "ICU",
+        "Sepsis"
+      ],
+      "modelTypeEn": "Published PopPK",
+      "noteEn": "Clearance uses 24-hour urinary creatinine clearance normalized to 1.73 m2, as reported in the article.",
+      "routes": [
+        "IV"
+      ],
+      "ivCmt": "CENT",
+      "oralCmt": null,
+      "administrationCategories": [
+        "IV continue"
+      ],
+      "administrationCategoriesEn": [
+        "Continuous IV"
+      ],
+      "implementationStatus": "ARTICLE",
+      "implementationStatusLabel": "Implémentation de l'article",
+      "implementationStatusLabelEn": "Article implementation",
+      "analysisEligibilityLabel": "Prior MAP fondé sur l'article",
+      "analysisEligibilityLabelEn": "Article-based MAP prior",
+      "tags": [
+        "Vancomycine",
+        "Roberts",
+        "PopPK publié",
+        "Roberts JA et al. Antimicrob Agents Chemother. 2011;55:2704-2709.",
+        "10.1128/AAC.01708-10",
+        "Adults with sepsis in intensive care receiving vancomycin by continuous infusion.",
+        "Vancomycin",
+        "IV",
+        "IV_CONTINUOUS",
+        "IV continue",
+        "Continuous IV",
+        "Implémentation de l'article",
+        "Article implementation",
+        "Prior MAP fondé sur l'article",
+        "Article-based MAP prior",
+        "Adulte",
+        "ICU",
+        "Sepsis",
+        "Adult"
+      ]
+    },
+    {
+      "id": "voriconazole_vandenborn_ddi",
+      "file": "voriconazole_vandenborn_ddi.cpp",
+      "drugKey": "voriconazole",
+      "timeUnit": "h",
+      "concentrationUnit": "mg/L",
+      "drug": "Voriconazole",
+      "drugEn": "Voriconazole",
+      "model": "van den Born",
+      "format": "mrgsolve/C++",
+      "href": "/tdm/models/voriconazole_vandenborn_ddi.cpp",
+      "citation": "van den Born D et al. Int J Antimicrob Agents. 2023;61:106750.",
+      "doi": "10.1016/j.ijantimicag.2023.106750",
+      "population": "Adultes traités par voriconazole; modèle non linéaire intégrant la CRP.",
+      "populationTags": [
+        "Adulte",
+        "Infection fongique",
+        "Hospitalisé"
+      ],
+      "modelType": "Module PK adapté",
+      "sourceStatus": "verified",
+      "note": "Prior OMEGA/SIGMA d'ingénierie ajouté pour la compatibilité MAP.",
+      "verificationStatus": "SOFTWARE_TESTED",
+      "validationStatus": "NONE",
+      "contextOfUse": "TEACHING_RESEARCH",
+      "analysisEligible": false,
+      "populationEn": "Adults treated with voriconazole; nonlinear model incorporating CRP.",
+      "populationTagsEn": [
+        "Adult",
+        "Fungal infection",
+        "Hospitalized"
+      ],
+      "modelTypeEn": "Adapted PK module",
+      "noteEn": "Engineering OMEGA/SIGMA prior added for MAP compatibility.",
+      "routes": [
+        "Oral"
+      ],
+      "ivCmt": null,
+      "oralCmt": "GUT",
+      "administrationModes": [
+        "ORAL"
+      ],
+      "administrationCategories": [
+        "Orale"
+      ],
+      "administrationCategoriesEn": [
+        "Oral"
+      ],
+      "implementationStatus": "ADAPTED",
+      "implementationStatusLabel": "Adaptation documentée",
+      "implementationStatusLabelEn": "Documented adaptation",
+      "analysisEligibilityLabel": "Simulation uniquement",
+      "analysisEligibilityLabelEn": "Simulation only",
+      "tags": [
+        "Voriconazole",
+        "Vandenborn",
+        "Module PK adapté",
+        "van den Born D et al. Int J Antimicrob Agents. 2023;61:106750.",
+        "10.1016/j.ijantimicag.2023.106750",
+        "Adults treated with voriconazole; nonlinear model incorporating CRP.",
+        "Oral",
+        "ORAL",
+        "Orale",
+        "Adaptation documentée",
+        "Documented adaptation",
+        "Simulation uniquement",
+        "Simulation only",
+        "Adulte",
+        "Infection fongique",
+        "Hospitalisé",
+        "Adult",
+        "Fungal infection",
+        "Hospitalized"
+      ]
+    }
+  ]
+}
