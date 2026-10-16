@@ -35,6 +35,7 @@
     "sirolimus_djebli_ddi": "Adaptation pour les DDI : certaines variances ne sont pas documentées et la fraction non-CYP est une hypothèse d'interaction. Vérification limitée au résumé de la source.",
     "tacrolimus_kamp_envarsus_ddi": "Adaptation pour les DDI : allométrie et absorption conservées mais IOV de CL et changement de l'erreur résiduelle selon les prélèvements omis ; décomposition CYP supplémentaire.",
     "tacrolimus_woillard_ddi": "Adaptation pour les DDI : la PK de base publiée (Prograf/Advagraf) est conservée ; la clairance est décomposée en fractions sensibles et non sensibles aux interactions sans changer la clairance initiale.",
-    "voriconazole_vandenborn_ddi": "Adaptation pour les DDI : seuls les effets aléatoires de Vmax sont conservés et le modèle d'erreur résiduelle est un prior de simulation adapté."
+    "voriconazole_vandenborn_ddi": "Adaptation pour les DDI : seuls les effets aléatoires de Vmax sont conservés et le modèle d'erreur résiduelle est un prior de simulation adapté.",
+    "vanco_goti": "La structure bicompartimentale et les coefficients publiés sont reproduits pour trois scénarios de covariables sans déclencher les bornes rénales. Mais une reconstitution publiée en 2023 (Antibiotics 12:301, tableau 2) décrit un plafonnement de la ClCr à 150 mL/min et un plancher de créatininémie à 1 mg/dL chez certains patients >65 ans, absents du code actuel. Fidélité sur ces limites non vérifiée : comparaison directe à l'article primaire, correction éventuelle du code et requalification ML/MAP requises. Simulation/recherche uniquement."
   }
 }

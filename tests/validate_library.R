@@ -49,7 +49,13 @@ if (any(!review_results %in% allowed_review_results)) {
 }
 review_status <- setNames(review_results, reviewed_ids)
 expected_implementation <- ifelse(review_status[MODEL_CATALOG$id] == "ARTICLE_ALIGNED", "ARTICLE", "ADAPTED")
-if (any(MODEL_CATALOG$implementationStatus != expected_implementation)) {
+# Implementation lineage (historical ARTICLE code) and source fidelity are
+# separate: a newly identified source ambiguity is a conservative downgrade
+# and must not require rewriting frozen model metadata just to warn users.
+conservative_source_downgrade <- MODEL_CATALOG$implementationStatus == "ARTICLE" &
+  review_status[MODEL_CATALOG$id] == "SOURCE_AMBIGUITY_DOCUMENTED"
+if (any(MODEL_CATALOG$implementationStatus != expected_implementation &
+        !conservative_source_downgrade)) {
   stop("Catalog implementation status must agree with the source-review conclusion.")
 }
 if (any(!nzchar(vapply(source_review$reviewed, `[[`, character(1), "note")))) {

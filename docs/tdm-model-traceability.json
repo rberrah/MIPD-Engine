@@ -4751,8 +4751,8 @@
           "status": "full-text-reviewed",
           "evidence": "LOCAL_PRIMARY_FULL_TEXT",
           "date": "2026-10-16",
-          "result": "ARTICLE_ALIGNED",
-          "note": "Structure and covariates align with the article. CL OMEGA is converted consistently from the published 39.8% CV using log(1 + CV^2)."
+          "result": "SOURCE_AMBIGUITY_DOCUMENTED",
+          "note": "The reported Goti CL/V1/Q/V2 formulas agree within conventional covariate ranges (independent analytical tests). However a 2023 published reconstruction (Antibiotics 12:301, Table 2, doi:10.3390/antibiotics12020301) describes capping calculated CrCl at 150 mL/min and a serum-creatinine floor at 1 mg/dL for patients older than 65. Neither rule is in the current mrgsolve implementation. Primary-article re-review is needed; source fidelity of the boundary branches is NOT verified. MAP prior remains experimental; original C++/ML artifacts unchanged."
         }
       },
       "population": {

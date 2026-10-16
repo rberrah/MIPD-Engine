@@ -76,6 +76,46 @@
         "clinical decision validation"
       ],
       "reviewedOn": "2026-10-16"
+    },
+    {
+      "modelId": "vanco_goti",
+      "level": "PARTIAL_SOURCE_EQUATIONS",
+      "primaryDoi": "10.1097/FTD.0000000000000490",
+      "primaryUrl": "https://pubmed.ncbi.nlm.nih.gov/29470227/",
+      "sourceLocation": "Goti et al. (2018), final fixed-effect 2-compartment model; parameter equations independently corroborated in Antibiotics 2023;12:301, Table 2, doi:10.3390/antibiotics12020301",
+      "population": "Hospitalized adults with and without intermittent hemodialysis",
+      "sourceValues": {
+        "CL_L_per_h_at_CRCL120": 4.5,
+        "CL_CRCL_exponent": 0.8,
+        "CL_dialysis_factor": 0.7,
+        "V1_reference_L": 58.4,
+        "V1_weight_reference_kg": 70,
+        "V1_dialysis_factor": 0.5,
+        "Q_L_per_h": 6.5,
+        "V2_L": 38.4
+      },
+      "mathematicalOracle": "Two-compartment independent analytical IV bolus biexponential: k10=CL/V1; k12=Q/V1; k21=Q/V2; alpha,beta are roots of the disposition characteristic polynomial; C(t)=D/V1*((alpha-k21)/(alpha-beta)*exp(-alpha*t)+(k21-beta)/(alpha-beta)*exp(-beta*t)). Published CL and V1 renal, weight and dialysis equations are independently evaluated. Only within-domain CRCL<150 mL/min and no low-creatinine elderly floor conditions are tested.",
+      "testPath": "tests/goti_source_equations.R",
+      "scenarios": [
+        "male 50 years, weight 70 kg, creatinine 80 umol/L, without hemodialysis",
+        "female 55 years, weight 85 kg, creatinine 125 umol/L, with hemodialysis",
+        "older male 70 years, weight 75 kg, creatinine 110 umol/L, without hemodialysis"
+      ],
+      "verifiedScope": [
+        "published typical CL, V1, V2 and Q with dialysis-status effects in tested domain",
+        "Cockcroft-Gault sex/weight/age/creatinine units within tested range",
+        "independently calculated two-compartment bolus IV concentration-time solution"
+      ],
+      "exclusions": [
+        "renal CRCL 150 mL/min upper cap and serum creatinine 1 mg/dL floor for selected elderly patients: documented discrepancy against published secondary reproduction; primary-source confirmation and code reconciliation pending",
+        "time-varying dialysis mass clearance",
+        "OMEGA and SIGMA distributional fit",
+        "MAP posterior fitting",
+        "external-patient predictive performance",
+        "clinical decision validation"
+      ],
+      "reviewedOn": "2026-10-16",
+      "supplementarySource": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9952184/"
     }
   ]
 }
