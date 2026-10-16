@@ -1,10 +1,27 @@
 # Migration plan
 
-## Phase 1 — frozen baseline
-Copy the engine, 46-model library, provenance, tests, Pmetrics fixtures and experimental ML layer from PMx commit `2f97f109c3f4af257776a595f6546c9cd5f2321d`. Do not remove the PMx copy.
+## Phase 1 — frozen baseline — COMPLETE
 
-## Phase 2 — standalone qualification
-A clean installation must compile all 46 models, reproduce the 8 current deterministic reference profiles, pass MAP/privacy/Lego/DDI/PD/oncology/infectiology tests, run Pmetrics independently on a compatible runner, verify ML artifact hashes, and deploy with arbitrary C++ disabled.
+The engine, 46-model library, provenance, tests, Pmetrics fixtures and full frozen experimental ML artifact set were copied from PMx commit `2f97f109c3f4af257776a595f6546c9cd5f2321d`. Origin parity is machine-checked by Git blob hashes. PMx remains untouched until cut-over.
+
+## Phase 2 — standalone qualification — IN PROGRESS
+
+Completed in standalone CI:
+
+- compile/contract validation of all 46 models;
+- 8 deterministic software-regression reference profiles;
+- core MAP/privacy/Lego/DDI/PD/oncology/infectiology tests that own their fixtures;
+- Pmetrics 3.2.6 patient-level backend on R 4.6.1;
+- 92 ML artifact origin hashes;
+- deterministic catalogue regeneration with no drift;
+- R 4.6.1 plus dated CRAN snapshot and exact direct-package runtime contract.
+
+Still required before PMx cut-over:
+
+- independent deployment candidate with arbitrary C++ disabled;
+- live session-isolation/non-retention smoke;
+- PMx-to-MIPD integration tests against that deployment;
+- optional full transitive `renv.lock` / offline package mirror.
 
 ## Phase 3 — PMx cut-over
 PMx becomes a consumer of the independently deployed engine through versioned contracts. Only then remove duplicated engine/library files from PMx, in a separate reversible PR.
