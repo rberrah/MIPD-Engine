@@ -3960,7 +3960,7 @@
         "unseenValidationGenerators": ["cefepime_an", "cefepime_jonckheere"],
         "regimenConfiguration": "ml/training-regimens.json",
         "populationConfiguration": "ml/training-populations.json",
-        "sourcePopulation": "doi:10.3390/antibiotics12040659, Table 1",
+        "sourcePopulation": "doi:10.3947/ic.2022.0087, Table 1",
         "variedCovariates": ["AGE", "WT", "CREAT", "SEX"],
         "referenceCovariates": [],
         "target": "log(individual AUC24 / population AUC24)",
