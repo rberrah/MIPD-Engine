@@ -1,6 +1,7 @@
 # Standalone public Shiny deployment to the EXISTING tdmhub app.
 # Normal invocation validates dependencies without touching a live service.
-# --verify-bundle tests production packaging offline; --deploy uploads it.\n# --deploy bundles an immutable, public release fingerprint so post-deploy
+# --verify-bundle tests production packaging offline; --deploy uploads it.
+# --deploy bundles an immutable, public release fingerprint so post-deploy
 # monitoring can distinguish a tested Git SHA from whatever is actually live.
 run_mipd_deployment <- function() {
   args <- commandArgs(trailingOnly = TRUE)
@@ -35,6 +36,10 @@ run_mipd_deployment <- function() {
             all(file.exists(file.path(root, files))))
   release_path <- file.path(root, "www", "deployment-release.json")
   if (bundle_release) {
+    # Fail closed if the local checkout contains modifications that would
+    # make the published release SHA inconsistent with the deployed source.
+    source(file.path(root, "R", "deployment_profile.R"), local = TRUE)
+    assert_clean_mipd_release_checkout(root)
     if (file.exists(release_path)) {
       stop("Refusing to overwrite pre-existing local deployment-release.json.")
     }
