@@ -1,0 +1,27 @@
+args <- commandArgs(FALSE)
+path <- sub("^--file=", "", grep("^--file=", args, value = TRUE)[1])
+APP_ROOT <- normalizePath(file.path(dirname(path), ".."), winslash = "/")
+setwd(APP_ROOT)
+source("app.R", local = TRUE)
+stopifnot(pd_pk_units("tacrolimus_woillard_ddi")$concentration_scale == .001,
+  pd_pk_units("vanco_pkjust", .001, "day")$concentration_scale == 1,
+  pd_pk_units("vanco_pkjust", .001, "day")$time_unit == "h",
+  pd_pk_units("custom", .001, "day")$time_unit == "day")
+spec <- list(id = "vanco_pkjust", label = "Revilla", route = "IV", mode = "IV_INTERMITTENT", adm_cmt_name = "CENT")
+doses <- data.frame(time = 0, amount = 1000, interval = 12, count = 4, infusion = 1, ss = 0)
+observations <- data.frame(time = c(38,47.5), concentration = c(32,18))
+covariates <- list(WT = 70, AGE = 65, CREAT = 90, CREAT2 = 90, SEX = 0)
+fit <- fit_one_model(spec, doses, observations, covariates, allow_custom = FALSE)
+context <- pd_pk_tdm_context(fit)
+expected <- individual_model(fit)
+stopifnot(identical(as.list(param(context$model)), as.list(param(expected))), context$source == "tdm")
+fit$ml_eta_override <- list(ETA1 = 9)
+stopifnot(identical(as.list(param(pd_pk_tdm_context(fit)$model)), as.list(param(expected))))
+store <- reactiveVal(list(fits = list(vanco_pkjust = fit)))
+shiny::testServer(pd_pk_server, args = list(soloc = tempdir(), cache = new.env(), analysis_store = store), {
+  session$setInputs(source = "tdm", tdm_model = "vanco_pkjust", scale = .001, time_unit = "day")
+  stopifnot(context()$time_unit == "h", context()$concentration_scale == 1, context()$source == "tdm")
+  store(NULL); session$flushReact()
+  stopifnot(inherits(try(context(), silent = TRUE), "try-error"))
+})
+cat("PD Bayesian reuse: real mapbayr fit, posterior parameters, no ML override, library units and session invalidation passed.\n")
