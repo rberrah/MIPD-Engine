@@ -105,6 +105,31 @@ A complete acceptance report must identify the GitHub Actions deployment
 run, deployment commit and fingerprint equality; absence of a run or marker
 means **not deployed/verified**, regardless of a green standalone CI.
 
+### Independent read-only re-verification and release artifact
+
+A second GitHub Actions workflow,
+[`Reverify public MIPD Shiny release`](https://github.com/rberrah/MIPD-Engine/actions/workflows/verify-public-shiny.yml),
+can be run manually on `main` **without Shinyapps credentials**. Leave
+`expected_sha` empty to compare the public application to the current
+`main` commit, or provide an existing full 40-character released SHA.
+
+It automatically runs again after a **successful** production deployment
+workflow. A passing run proves public fingerprint/URL status and two real
+websocket-connected, distinct Shiny sessions. It uploads
+`public-mipd-live-verification` as a non-sensitive JSON artifact with the
+deployed SHA, test date, public URL and proof-run URL.
+
+**Important:** a release-verification run that is skipped, absent or fails
+is not evidence of a successful production deployment. The independent
+artifact is intended for the PMx consumer integration gate, alongside
+source-catalogue parity and browser tests. No workflow creates secret
+configuration, deploys without authorization or examines private user data.
+
+The deployment script also rejects locally modified **tracked** Git files
+when creating a release fingerprint; a dirty checkout must be committed
+and qualified before publishing. Untracked files are excluded from the
+`git ls-files` deployment manifest.
+
 ### PMx Explain compatibility gate
 
 On 2026-10-16, PMx Explain removed its executable `tdm-engine/` mirror and
