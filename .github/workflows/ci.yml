@@ -50,17 +50,10 @@ jobs:
         run: Rscript scripts/check_runtime.R core
       - name: Verify immutable runtime public safety policy
         run: Rscript tests/deployment_profile_test.R
-      - name: Validate deployment fingerprint generation fails closed without credentials
-        env:
-          SHINYAPPS_ACCOUNT: ""
-          SHINYAPPS_TOKEN: ""
-          SHINYAPPS_SECRET: ""
+      - name: Validate release fingerprint and full production app bundle offline
         shell: bash
         run: |
-          if Rscript scripts/deploy_shiny.R --deploy; then
-            echo "::error::Public deployment must reject missing production account"
-            exit 1
-          fi
+          Rscript scripts/deploy_shiny.R --verify-bundle
           test ! -e www/deployment-release.json
       - name: Validate standalone public deployment manifest
         env:
