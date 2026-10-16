@@ -70,3 +70,7 @@ The simulation-trained XGBoost layer is experimental. Its 92 binary RDS artifact
 ### Reproducible runtime
 
 Core standalone CI is pinned to R 4.6.1 and the dated CRAN snapshot `2026-10-16`. `renv.lock` freezes the complete public dependency graph, while `runtime/reference-runtime.json` independently checks exact direct scientific package versions (including mrgsolve, mapbayr and XGBoost). Pmetrics is excluded from the public lock and separately pinned to 3.2.6 on R 4.6.1. The repository does not claim an offline package mirror or a frozen operating-system toolchain.
+
+### Scientific qualification programme
+
+Scientific source fidelity is tracked separately from regression testing. The first independently transcribed primary-source fixed-effect equation checks cover vancomycin models Roberts (2011) and Revilla (2010), using six synthetic analytical scenarios. **Partial equation reproduction is not full model reproduction, external validation or proof of clinical utility.** See [scientific qualification](docs/scientific-qualification.md) and [evidence records](scientific-validation/source-evidence.json). CI exports a 46-model coverage report without altering frozen model implementations or ML artifacts.
