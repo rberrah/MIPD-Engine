@@ -26,16 +26,19 @@
         "published typical fixed effects",
         "renal and weight covariates",
         "unit conversion",
-        "population concentrations for a single continuous infusion"
+        "population concentrations for a single continuous infusion",
+        "Source-reported OMEGA/SIGMA scales checked against frozen mrgsolve matrices (including reported-CV conversion discrepancy)",
+        "Synthetic two-ETA MAP posterior independently optimized from analytical 1-compartment C(t), log heteroscedastic Gaussian observation variance and diagonal Gaussian prior; compared to mapbayr"
       ],
       "exclusions": [
-        "OMEGA distribution / sampling",
-        "SIGMA sampling",
-        "MAP posterior fitting",
         "external-patient predictive performance",
-        "clinical decision validation"
+        "clinical decision validation",
+        "No stochastic distributional goodness-of-fit on original individual participant data; IIV CV conversion discrepancies are printed",
+        "No author-original MAP individual EBEs, covariance validation, or original-clinical-cohort reanalysis"
       ],
-      "reviewedOn": "2026-10-16"
+      "reviewedOn": "2026-10-16",
+      "mapOracleTestPath": "tests/independent_map_prior_oracles.R",
+      "testedMapScope": "Independent optimization of source-informed diagonal Gaussian prior and concentration-dependent observation variance against mapbayr on a single synthetic patient, without using implementation-generated trajectories as expected outcomes"
     },
     {
       "modelId": "vanco_pkjust",
@@ -65,17 +68,20 @@
         "age and renal effects",
         "serum-creatinine threshold",
         "conversion of kg-normalized mL/min clearance to L/h",
-        "population concentrations following an IV bolus"
+        "population concentrations following an IV bolus",
+        "Source-reported OMEGA/SIGMA scales checked against frozen mrgsolve matrices (including reported-CV conversion discrepancy)",
+        "Synthetic two-ETA MAP posterior independently optimized from analytical 1-compartment C(t), log heteroscedastic Gaussian observation variance and diagonal Gaussian prior; compared to mapbayr"
       ],
       "exclusions": [
-        "OMEGA distribution / sampling",
-        "SIGMA sampling",
         "infusion protocol predictions",
-        "MAP posterior fitting",
         "external-patient predictive performance",
-        "clinical decision validation"
+        "clinical decision validation",
+        "No stochastic distributional goodness-of-fit on original individual participant data; IIV CV conversion discrepancies are printed",
+        "No author-original MAP individual EBEs, covariance validation, or original-clinical-cohort reanalysis"
       ],
-      "reviewedOn": "2026-10-16"
+      "reviewedOn": "2026-10-16",
+      "mapOracleTestPath": "tests/independent_map_prior_oracles.R",
+      "testedMapScope": "Independent optimization of source-informed diagonal Gaussian prior and concentration-dependent observation variance against mapbayr on a single synthetic patient, without using implementation-generated trajectories as expected outcomes"
     },
     {
       "modelId": "vanco_goti",
