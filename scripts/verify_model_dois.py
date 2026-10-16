@@ -23,6 +23,21 @@ HEADERS = {
     "User-Agent": "MIPD-Engine-DOI-audit/1.0 (https://github.com/rberrah/MIPD-Engine)",
 }
 
+DRUG_ALIASES = {
+    "amik": ["amikacin"], "amox": ["amoxicillin"],
+    "cefazoline": ["cefazolin"], "cefepime": ["cefepime"],
+    "ciclosporine": ["ciclosporin", "cyclosporin", "cyclosporine"],
+    "cobicistat": ["cobicistat", "gs9350"],
+    "dapto": ["daptomycin"], "diltiazem": ["diltiazem"],
+    "erythromycine": ["erythromycin"], "everolimus": ["everolimus"],
+    "fluconazole": ["fluconazole"], "genta": ["gentamicin"],
+    "isavuconazole": ["isavuconazole"], "levo": ["levofloxacin"],
+    "linez": ["linezolid"], "posaconazole": ["posaconazole"],
+    "rifampicine": ["rifampin", "rifampicin"], "ritonavir": ["ritonavir"],
+    "sirolimus": ["sirolimus"], "tacrolimus": ["tacrolimus"],
+    "vanco": ["vancomycin"], "voriconazole": ["voriconazole"],
+}
+
 
 def normalized(value):
     plain = unicodedata.normalize("NFKD", value or "")
@@ -88,6 +103,12 @@ def check_entry(entry, record, error):
             reasons.append(f"Year mismatch: expected {year}, got {got_year}")
         if not title:
             reasons.append("Missing registered article title")
+        aliases = DRUG_ALIASES.get(entry["drugKey"], [])
+        if not aliases or not any(normalized(term) in normalized(title) for term in aliases):
+            reasons.append(
+                f"Title does not identify the catalogued drug {entry['drugEn']}: {title}"
+            )
+
         if reasons:
             status = "MISMATCH"
         else:
