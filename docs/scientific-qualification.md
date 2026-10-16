@@ -27,6 +27,22 @@ science gaps. Thus 3/46 PARTIAL_SOURCE_EQUATIONS; 0/46
 FULL_SOURCE_REPRODUCTION; 43 pending. These counts must not be
 misrepresented as 2 completely validated models.
 
+### MAP prior and posterior numerical qualification — Roberts and Revilla
+
+`tests/independent_map_prior_oracles.R` independently calculates one-compartment
+concentrations, Gaussian diagonal prior penalties and mixed/additive residual
+likelihoods, then solves a two-ETA MAP optimization with base R. It compares
+that optimum with `mapbayr` for one synthetic profile per model, checks
+`OMEGA`/`SIGMA` against the two primary publications and explicitly prints
+the small differences between reported CV-derived log-variances and historical
+stored variances. CI acceptance is bounded and reproducible.
+
+This qualifies the **software MAP optimization contract for those synthetic
+input scenarios**, not the clinical predictive properties of the original
+articles or individual posteriors fitted on the study cohorts. The original
+`models/*.cpp`, model cards, and 92 ML binaries are unchanged. Coverage
+remains **3/46 partial**, **0/46 full** and **0 external validations**.
+
 The source-to-model evidence records are in
 scientific-validation/source-evidence.json. Every CI run generates the
 46-row report scientific-validation/coverage.generated.json with
