@@ -3,15 +3,9 @@
   "sourceRepository": "rberrah/rberrah.github.io",
   "sourceCommit": "2f97f109c3f4af257776a595f6546c9cd5f2321d",
   "extractionDate": "2026-10-16",
-  "copiedCount": 177,
+  "copiedCount": 175,
   "pendingCount": 0,
   "copied": [
-    {
-      "source": "tdm-engine/app.R",
-      "target": "app.R",
-      "gitBlob": "5127510354e64d7962c75081fb4f323364b14f1f",
-      "size": 242843
-    },
     {
       "source": "tdm-engine/README.md",
       "target": "docs/engine-reference.md",
@@ -1057,12 +1051,6 @@
       "size": 3333
     },
     {
-      "source": "tdm-engine/www/app.css",
-      "target": "www/app.css",
-      "gitBlob": "873d83eb079588dbe84cb352e62729458c7b2ada",
-      "size": 23843
-    },
-    {
       "source": "tdm-engine/www/workbench.js",
       "target": "www/workbench.js",
       "gitBlob": "27003be87afc1a97f91814a503f6d9edbbd4cea6",
@@ -1378,7 +1366,21 @@
       "gitBlob": "d7ffb35b85145f60629013498ca5e801eb1e34ff",
       "size": 16525,
       "reason": "covariates-aligned-with-source-audited-models"
+    },
+    {
+      "source": "tdm-engine/app.R",
+      "target": "app.R",
+      "gitBlob": "5127510354e64d7962c75081fb4f323364b14f1f",
+      "size": 242843,
+      "reason": "standalone-library-five-field-cards-with-adaptation-disclosures"
+    },
+    {
+      "source": "tdm-engine/www/app.css",
+      "target": "www/app.css",
+      "gitBlob": "873d83eb079588dbe84cb352e62729458c7b2ada",
+      "size": 23843,
+      "reason": "standalone-library-five-field-cards-with-adaptation-disclosures"
     }
   ],
-  "adaptedCount": 44
+  "adaptedCount": 46
 }
