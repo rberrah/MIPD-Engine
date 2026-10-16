@@ -2,7 +2,7 @@
 
 Standalone research and educational engine for model-informed precision dosing, extracted from **PMx Explain**.
 
-This repository is being initialized from the validated PMx source at:
+This repository was initialized from the validated PMx source at:
 
 - source repository: `rberrah/rberrah.github.io`
 - source commit: `2f97f109c3f4af257776a595f6546c9cd5f2321d`
@@ -43,7 +43,7 @@ Public deployments must keep arbitrary uploaded C++ disabled. Patient-shaped inp
 
 ## Migration status
 
-The first migration phase copies the scientific engine and model-library baseline without removing anything from PMx Explain. Removal from the original repository will occur only after parity tests, independent CI and deployment checks pass.
+The frozen scientific engine and model-library baseline has been copied without removing the active PMx consumer. The standalone repository now contains the 46-model library, all 92 frozen experimental ML RDS artifacts, model provenance, Pmetrics fixtures and the engine test suite. Removal from PMx remains gated on an independently verified deployment and cross-repository compatibility checks.
 
 See `MIGRATION.md` and `ORIGIN.md`.
 
@@ -63,4 +63,8 @@ Current migration branch qualification:
 
 Tests that require fixtures produced by PMx Explain remain cross-repository integration contracts and are not reclassified as standalone tests.
 
-The simulation-trained XGBoost layer is experimental. Its binary RDS artifact set is being migrated separately and is not required to establish the pharmacometric model library baseline.
+The simulation-trained XGBoost layer is experimental. Its 92 binary RDS artifacts are now migrated bit-for-bit from the frozen source and remain explicitly distinct from source-reproduced or externally validated model evidence.
+
+### Reproducible runtime
+
+Core standalone CI is pinned to R 4.6.1 and the dated CRAN snapshot `2026-10-16`. `runtime/reference-runtime.json` records exact direct package versions (including mrgsolve, mapbayr and XGBoost), and CI fails closed on drift. Pmetrics is separately pinned to 3.2.6 on R 4.6.1. A complete transitive `renv.lock` / offline mirror remains a later reproducibility enhancement rather than an unverified claim.
