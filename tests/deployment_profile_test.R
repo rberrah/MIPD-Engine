@@ -37,4 +37,32 @@ for (broken in list(
   err <- tryCatch(enforce_mipd_deployment_profile(tmp),error=identity)
   stopifnot(inherits(err,"error"))
 }
+# Git source integrity is part of the public-release fingerprint contract.
+# Test the dirty-checkout rejection in a separate disposable local repository
+# instead of altering this live checkout used by parallel CI jobs.
+git_repo <- tempfile("mipd-sha-integrity-")
+dir.create(git_repo)
+on.exit(unlink(git_repo, recursive = TRUE), add = TRUE)
+git <- function(...) {
+  args <- c("-C", git_repo, ...)
+  result <- suppressWarnings(system2("git", args, stdout = TRUE, stderr = TRUE))
+  status <- attr(result, "status")
+  if (!is.null(status) && status != 0L) {
+    stop("Test fixture git failed: ", paste(result, collapse = " | "))
+  }
+  invisible(result)
+}
+git("init", "--quiet")
+writeLines("clean baseline", file.path(git_repo, "fixture.txt"))
+git("add", "fixture.txt")
+git("-c", "user.email=mipd-test@example.invalid",
+    "-c", "user.name=MIPD Test", "commit", "--quiet", "-m", "Fixture baseline")
+stopifnot(isTRUE(assert_clean_mipd_release_checkout(git_repo)))
+writeLines("uncommitted change", file.path(git_repo, "fixture.txt"))
+stopifnot(inherits(tryCatch(
+  assert_clean_mipd_release_checkout(git_repo), error=identity
+), "error"))
+git("reset", "--hard", "HEAD")
+stopifnot(isTRUE(assert_clean_mipd_release_checkout(git_repo)))
+
 cat("MIPD production release fingerprint and host-policy override: PASS.\n")
