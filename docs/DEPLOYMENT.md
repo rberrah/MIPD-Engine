@@ -34,7 +34,14 @@ Configure the account locally with `rsconnect::setAccountInfo()`, then inspect t
 Rscript scripts/deploy_shiny.R
 ```
 
-Deploy only after the manifest is reviewed:
+Run a credential-free dry-run of the **exact production bundle** (including a
+temporary immutable Git SHA fingerprint, then safely removing it):
+
+```bash
+Rscript scripts/deploy_shiny.R --verify-bundle
+```
+
+Deploy only after the manifest and bundle are reviewed:
 
 ```bash
 ALLOW_CUSTOM_MODELS=false ENABLE_PMETRICS=false \
