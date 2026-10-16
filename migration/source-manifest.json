@@ -3,7 +3,7 @@
   "sourceRepository": "rberrah/rberrah.github.io",
   "sourceCommit": "2f97f109c3f4af257776a595f6546c9cd5f2321d",
   "extractionDate": "2026-10-16",
-  "copiedCount": 175,
+  "copiedCount": 174,
   "pendingCount": 0,
   "copied": [
     {
@@ -533,12 +533,6 @@
       "target": "ml/validation/all-models-2026-09-06.csv",
       "gitBlob": "bd48623fe9e0f40282e29eba0da65747ebf55dde",
       "size": 11236
-    },
-    {
-      "source": "tdm-engine/ml/validation/c0-c0post-all-models-2026-09-24.csv",
-      "target": "ml/validation/c0-c0post-all-models-2026-09-24.csv",
-      "gitBlob": "dfa2a47af896c92222834180632a0e28954f4ccf",
-      "size": 27864
     },
     {
       "source": "tdm-engine/ml/validation/paired-auc-benchmark.json",
@@ -1380,7 +1374,14 @@
       "gitBlob": "873d83eb079588dbe84cb352e62729458c7b2ada",
       "size": 23843,
       "reason": "standalone-library-five-field-cards-with-adaptation-disclosures"
+    },
+    {
+      "source": "tdm-engine/ml/validation/c0-c0post-all-models-2026-09-24.csv",
+      "target": "ml/validation/c0-c0post-all-models-2026-09-24.csv",
+      "gitBlob": "dfa2a47af896c92222834180632a0e28954f4ccf",
+      "size": 27864,
+      "reason": "bibliographic-doi-provenance-correction-no-numeric-model-change"
     }
   ],
-  "adaptedCount": 46
+  "adaptedCount": 47
 }
