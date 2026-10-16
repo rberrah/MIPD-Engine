@@ -4,7 +4,7 @@ suppressPackageStartupMessages({
   library(jsonlite)
 })
 
-output <- file.path(getwd(), "tdm-engine", "pmetrics", "benchmarks", "pmetrics-npod-smoke.json")
+output <- file.path(getwd(), "pmetrics", "benchmarks", "pmetrics-npod-smoke.json")
 dir.create(dirname(output), recursive = TRUE, showWarnings = FALSE)
 
 model <- PM_model$new(

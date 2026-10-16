@@ -117,7 +117,7 @@ result <- list(
 output <- Sys.getenv("PMETRICS_BENCHMARK_OUTPUT", unset = "")
 if (!nzchar(output)) {
   output <- if (full_run) {
-    file.path(getwd(), "tdm-engine", "pmetrics", "benchmarks", "pmetrics-official-example.json")
+    file.path(getwd(), "pmetrics", "benchmarks", "pmetrics-official-example.json")
   } else {
     tempfile("pmetrics-official-smoke-", fileext = ".json")
   }

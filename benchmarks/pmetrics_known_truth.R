@@ -5,7 +5,7 @@ suppressPackageStartupMessages({
 })
 
 root <- normalizePath(getwd(), winslash = "/", mustWork = TRUE)
-output_dir <- file.path(root, "tdm-engine", "pmetrics", "benchmarks")
+output_dir <- file.path(root, "pmetrics", "benchmarks")
 dir.create(output_dir, recursive = TRUE, showWarnings = FALSE)
 
 config <- list(

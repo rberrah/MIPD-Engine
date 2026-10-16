@@ -3,7 +3,7 @@
   "sourceRepository": "rberrah/rberrah.github.io",
   "sourceCommit": "2f97f109c3f4af257776a595f6546c9cd5f2321d",
   "extractionDate": "2026-10-16",
-  "copiedCount": 129,
+  "copiedCount": 122,
   "pendingCount": 92,
   "copied": [
     {
@@ -179,30 +179,6 @@
       "target": "app.R",
       "gitBlob": "5127510354e64d7962c75081fb4f323364b14f1f",
       "size": 242843
-    },
-    {
-      "source": "tdm-engine/benchmarks/pmetrics_known_truth.R",
-      "target": "benchmarks/pmetrics_known_truth.R",
-      "gitBlob": "9da46ea1d9430c977800bb6b38230aeaf3001bd0",
-      "size": 10663
-    },
-    {
-      "source": "tdm-engine/benchmarks/pmetrics_npod_smoke.R",
-      "target": "benchmarks/pmetrics_npod_smoke.R",
-      "gitBlob": "b3b9b63e5765d5c6070af1d46eba101f3ac6df73",
-      "size": 3397
-    },
-    {
-      "source": "tdm-engine/benchmarks/pmetrics_official_example.R",
-      "target": "benchmarks/pmetrics_official_example.R",
-      "gitBlob": "71ad70df79e81c28d64df51e7c10cd46ae3ccb9d",
-      "size": 5436
-    },
-    {
-      "source": "tdm-engine/ml/README.md",
-      "target": "ml/README.md",
-      "gitBlob": "c1a6da1e8e32ff4ee79606beb8a2ab7e4e80a18f",
-      "size": 12635
     },
     {
       "source": "tdm-engine/ml/paired_auc_benchmark.R",
@@ -655,12 +631,6 @@
       "size": 8109
     },
     {
-      "source": "tdm-engine/tests/input_labs_test.R",
-      "target": "tests/input_labs_test.R",
-      "gitBlob": "83d5f3343400e0ae186c6ba9db90331adc94f581",
-      "size": 2141
-    },
-    {
       "source": "tdm-engine/tests/lego_external_exports.R",
       "target": "tests/lego_external_exports.R",
       "gitBlob": "6cfa96316308a381b4b13a1b4fba960495c7b4a8",
@@ -727,12 +697,6 @@
       "size": 2729
     },
     {
-      "source": "tdm-engine/tests/pmetrics_backend_test.R",
-      "target": "tests/pmetrics_backend_test.R",
-      "gitBlob": "3f2d5333b1a4814302a19c922708d56b208fb0ef",
-      "size": 8649
-    },
-    {
       "source": "tdm-engine/tests/privacy_nonretention_test.R",
       "target": "tests/privacy_nonretention_test.R",
       "gitBlob": "7689a8897f8b06fa3e96eec610009f3406c6390f",
@@ -749,12 +713,6 @@
       "target": "tests/smoke_test.R",
       "gitBlob": "ee6ff8e95dd682a2dc486c0ed72c4595ffff2b5a",
       "size": 30971
-    },
-    {
-      "source": "tdm-engine/tests/teaching_lab_test.R",
-      "target": "tests/teaching_lab_test.R",
-      "gitBlob": "5bdfd184a0b0a099f44936557ee4de427877b5e4",
-      "size": 2829
     },
     {
       "source": "tdm-engine/tests/validate_library.R",
@@ -1426,5 +1384,57 @@
       "size": 104835,
       "reason": "binary-rds-migration-pending"
     }
-  ]
+  ],
+  "adapted": [
+    {
+      "source": "tdm-engine/benchmarks/pmetrics_known_truth.R",
+      "target": "benchmarks/pmetrics_known_truth.R",
+      "gitBlob": "9da46ea1d9430c977800bb6b38230aeaf3001bd0",
+      "size": 10663,
+      "reason": "standalone-root-path-adaptation"
+    },
+    {
+      "source": "tdm-engine/benchmarks/pmetrics_npod_smoke.R",
+      "target": "benchmarks/pmetrics_npod_smoke.R",
+      "gitBlob": "b3b9b63e5765d5c6070af1d46eba101f3ac6df73",
+      "size": 3397,
+      "reason": "standalone-root-path-adaptation"
+    },
+    {
+      "source": "tdm-engine/benchmarks/pmetrics_official_example.R",
+      "target": "benchmarks/pmetrics_official_example.R",
+      "gitBlob": "71ad70df79e81c28d64df51e7c10cd46ae3ccb9d",
+      "size": 5436,
+      "reason": "standalone-root-path-adaptation"
+    },
+    {
+      "source": "tdm-engine/ml/README.md",
+      "target": "ml/README.md",
+      "gitBlob": "c1a6da1e8e32ff4ee79606beb8a2ab7e4e80a18f",
+      "size": 12635,
+      "reason": "standalone-root-path-adaptation"
+    },
+    {
+      "source": "tdm-engine/tests/input_labs_test.R",
+      "target": "tests/input_labs_test.R",
+      "gitBlob": "83d5f3343400e0ae186c6ba9db90331adc94f581",
+      "size": 2141,
+      "reason": "standalone-root-path-adaptation"
+    },
+    {
+      "source": "tdm-engine/tests/pmetrics_backend_test.R",
+      "target": "tests/pmetrics_backend_test.R",
+      "gitBlob": "3f2d5333b1a4814302a19c922708d56b208fb0ef",
+      "size": 8649,
+      "reason": "standalone-root-path-adaptation"
+    },
+    {
+      "source": "tdm-engine/tests/teaching_lab_test.R",
+      "target": "tests/teaching_lab_test.R",
+      "gitBlob": "5bdfd184a0b0a099f44936557ee4de427877b5e4",
+      "size": 2829,
+      "reason": "standalone-root-path-adaptation"
+    }
+  ],
+  "adaptedCount": 7
 }

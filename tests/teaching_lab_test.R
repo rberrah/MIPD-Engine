@@ -1,7 +1,7 @@
 suppressPackageStartupMessages({ library(mrgsolve); library(jsonlite) })
-APP_ROOT <- normalizePath("tdm-engine", winslash = "/", mustWork = TRUE)
-source("tdm-engine/R/model_library.R")
-source("tdm-engine/R/teaching_lab.R")
+APP_ROOT <- normalizePath(".", winslash = "/", mustWork = TRUE)
+source("R/model_library.R")
+source("R/teaching_lab.R")
 run <- function() {
   directory <- tempfile("pk-lab-test-")
   dir.create(directory)

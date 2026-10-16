@@ -44,7 +44,7 @@ RMSE relative = `100*sqrt(mean(e^2))`, AUC bien predites = proportion avec
 methodes pour les biais/RMSE; le taux a +/-20 % porte sur tout le jeu de test,
 les echecs comptant comme mal predits. Les effectifs et echecs sont affiches.
 
-Depuis `tdm-engine` :
+Depuis la racine du dépôt :
 
 ```powershell
 Rscript tests/paired_benchmark_test.R

@@ -6,7 +6,7 @@ suppressPackageStartupMessages({
 })
 
 `%||%` <- function(value, fallback) if (is.null(value) || !length(value)) fallback else value
-APP_ROOT <- normalizePath(file.path(getwd(), "tdm-engine"), winslash = "/", mustWork = TRUE)
+arguments <- commandArgs(trailingOnly = FALSE)\nfile_argument <- sub("^--file=", "", grep("^--file=", arguments, value = TRUE)[1])\nAPP_ROOT <- normalizePath(file.path(dirname(file_argument), ".."), winslash = "/", mustWork = TRUE)
 source(file.path(APP_ROOT, "R", "model_library.R"), local = TRUE)
 source(file.path(APP_ROOT, "R", "pmetrics_engine.R"), local = TRUE)
 source(file.path(APP_ROOT, "R", "engine.R"), local = TRUE)
