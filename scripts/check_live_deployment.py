@@ -45,7 +45,7 @@ def main():
         try:
             html, _ = fetch(base + "?lang=en", args.timeout)
             decoded = html.decode("utf-8", errors="replace")
-            if not re.search(r"<html\\b", decoded, re.IGNORECASE):
+            if not re.search(r"<html\b", decoded, re.IGNORECASE):
                 raise ValueError("Public app did not respond with an HTML document")
             if not re.search(r"(shiny|shinyapps)", decoded, re.IGNORECASE):
                 raise ValueError("Public response is not recognizable as a Shiny app")
