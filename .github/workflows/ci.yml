@@ -23,6 +23,8 @@ jobs:
         run: python scripts/verify_origin_manifest.py
       - name: Check public-release probe rejects stale and unsafe versions
         run: python3 tests/check_live_deployment_test.py
+      - name: Syntax-check public session browser probe
+        run: python3 -m py_compile scripts/check_live_deployment.py scripts/check_live_sessions.py
       - name: Check model and ML DOI provenance consistency
         run: python scripts/check_doi_consistency.py
       - name: Regenerate standalone model catalogue
@@ -48,6 +50,18 @@ jobs:
         run: Rscript scripts/check_runtime.R core
       - name: Verify immutable runtime public safety policy
         run: Rscript tests/deployment_profile_test.R
+      - name: Validate deployment fingerprint generation fails closed without credentials
+        env:
+          SHINYAPPS_ACCOUNT: ""
+          SHINYAPPS_TOKEN: ""
+          SHINYAPPS_SECRET: ""
+        shell: bash
+        run: |
+          if Rscript scripts/deploy_shiny.R --deploy; then
+            echo "::error::Public deployment must reject missing production account"
+            exit 1
+          fi
+          test ! -e www/deployment-release.json
       - name: Validate standalone public deployment manifest
         env:
           ALLOW_CUSTOM_MODELS: "false"
