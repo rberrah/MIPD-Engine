@@ -40,9 +40,14 @@ jobs:
           Rscript -e 'options(repos=c(CRAN=Sys.getenv("CORE_CRAN_SNAPSHOT")));
           install.packages(c(
           "shiny","bslib","mrgsolve","mapbayr","dplyr","ggplot2","DT","jsonlite",
-          "htmltools","deSolve","minpack.lm","xgboost","DALEX","digest","xml2","httr"))'
+          "htmltools","deSolve","minpack.lm","xgboost","DALEX","digest","xml2","httr","rsconnect"))'
       - name: Verify exact core runtime contract
         run: Rscript scripts/check_runtime.R core
+      - name: Validate standalone public deployment manifest
+        env:
+          ALLOW_CUSTOM_MODELS: "false"
+          ENABLE_PMETRICS: "false"
+        run: Rscript scripts/deploy_shiny.R
       - name: Compile and validate all 46 models
         run: Rscript tests/validate_library.R
       - name: Run deterministic model references
