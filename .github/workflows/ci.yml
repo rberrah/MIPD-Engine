@@ -1,0 +1,75 @@
+name: Standalone MIPD qualification
+
+on:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  origin-parity:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.13"
+      - name: Verify frozen PMx origin hashes
+        run: python scripts/verify_origin_manifest.py
+      - name: Regenerate standalone model catalogue
+        run: node scripts/generate_model_catalog.mjs
+      - name: Verify generated model-library outputs are committed
+        run: git diff --exit-code -- models ml/catalog-summary.generated.json
+
+  core-r:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v5
+      - uses: r-lib/actions/setup-r@v2
+        with:
+          use-public-rspm: true
+      - name: Install core engine dependencies
+        run: >
+          Rscript -e 'install.packages(c(
+          "shiny","bslib","mrgsolve","mapbayr","dplyr","ggplot2","DT","jsonlite",
+          "htmltools","deSolve","minpack.lm","xgboost","DALEX","digest","xml2","httr"))'
+      - name: Compile and validate all 46 models
+        run: Rscript tests/validate_library.R
+      - name: Run deterministic model references
+        run: Rscript tests/model_reference_cases.R
+      - name: Test safe Lego contract
+        run: Rscript tests/safe_lego_test.R
+      - name: Test private workspace cleanup
+        run: Rscript tests/privacy_nonretention_test.R
+      - name: Run remaining standalone R regression suite
+        shell: bash
+        run: |
+          set -euo pipefail
+          for test in tests/*.R; do
+            case "$(basename "$test")" in
+              validate_library.R|model_reference_cases.R|safe_lego_test.R|privacy_nonretention_test.R|pmetrics_backend_test.R|paired_benchmark_test.R|advanced_lego_test.R|lego_external_exports.R|lego_mlxtran_exports.R|lego_native_exports.R|covariates_native_test.R|input_labs_test.R|teaching_lab_test.R)
+                continue
+                ;;
+            esac
+            echo "=== $test ==="
+            Rscript "$test"
+          done
+
+  pmetrics:
+    runs-on: ubuntu-26.04
+    timeout-minutes: 35
+    env:
+      PMETRICS_VERSION: "3.2.6"
+    steps:
+      - uses: actions/checkout@v5
+      - uses: r-lib/actions/setup-r@v2
+        with:
+          r-version: "4.6.1"
+          use-public-rspm: true
+      - name: Install pinned Pmetrics runtime
+        run: |
+          Rscript -e 'rv <- paste(R.version$major, strsplit(R.version$minor, "\\.")[[1]][1], sep = "."); binary_repo <- function(universe) sprintf("https://%s.r-universe.dev/bin/linux/resolute-%s/%s", universe, R.version$arch, rv); options(repos = c(LAPKB = binary_repo("lapkb"), CRAN = binary_repo("cran"))); install.packages(c("Pmetrics","mrgsolve","mapbayr","jsonlite")); stopifnot(as.character(packageVersion("Pmetrics")) == Sys.getenv("PMETRICS_VERSION"))'
+      - name: Test Pmetrics patient-level backend
+        run: Rscript tests/pmetrics_backend_test.R
