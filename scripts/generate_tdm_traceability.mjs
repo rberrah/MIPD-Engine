@@ -59,7 +59,14 @@ function escapeCell(value) {
   return String(value ?? '').replace(/\|/g, '\\|').replace(/\s+/g, ' ').trim();
 }
 
-function articleStatus(model) {
+function articleStatus(model, review) {
+  // The implementation family and its independently reviewed source fidelity
+  // are different axes. A historical ARTICLE implementation may be downgraded
+  // to unverified without rewriting the frozen C++ or changing its family.
+  if (review.result === 'SOURCE_AMBIGUITY_DOCUMENTED' &&
+      model.implementationStatus === 'ARTICLE') {
+    return 'Article-derived implementation; source fidelity NOT VERIFIED for identified boundary branches.';
+  }
   return model.implementationStatus === 'ARTICLE'
     ? 'Article implementation according to the author audit; independent reproduction pending.'
     : 'Documented adaptation; see the implementation note below.';
@@ -79,7 +86,10 @@ if (new Set(reviewIds).size !== reviewIds.length ||
 for (const model of catalog.models) {
   const review = reviewedSources.get(model.id);
   const expectedStatus = review.result === 'ARTICLE_ALIGNED' ? 'ARTICLE' : 'ADAPTED';
-  if (model.implementationStatus !== expectedStatus) {
+  const conservativeSourceDowngrade =
+    model.implementationStatus === 'ARTICLE' &&
+    review.result === 'SOURCE_AMBIGUITY_DOCUMENTED';
+  if (model.implementationStatus !== expectedStatus && !conservativeSourceDowngrade) {
     throw new Error(`Catalog/source-review status mismatch for ${model.id}: expected ${expectedStatus}.`);
   }
 }
@@ -177,7 +187,7 @@ for (const { model, parameters, covariates, etaUses, epsUses } of records) {
     `- **Covariates declared in code:** ${compactList(covariates)}.`,
     `- **Random and residual effects used by the equations:** ${etaUses.length ? `ETA indices ${etaUses.join(', ')}` : 'no indexed ETA use'}; ${epsUses.length ? `EPS indices ${epsUses.join(', ')}` : 'no indexed EPS use'}. OMEGA/SIGMA details remain authoritative in [the model source](../models/${model.file}).`,
     `- **MAP prior:** ${model.analysisEligible ? 'exposed in the TDM analysis workflow' : 'not exposed; simulation only'}.`,
-    `- **Fidelity status:** ${articleStatus(model)}`,
+    `- **Fidelity status:** ${articleStatus(model, sourceFinding)}`,
     `- **Primary-source review:** ${sourceFinding.result} (${sourceFinding.evidence}, ${sourceReview.reviewDate}). ${sourceFinding.note}`,
     `- **Documented modification or limitation:** ${note}`,
     `- **Reference testing:** ${reference ? `${reference}; zero ETA and residual errors; deterministic software-regression tolerance \`1e-7\`.` : 'compilation and interface-contract test only; no frozen numeric profile yet.'}`,
