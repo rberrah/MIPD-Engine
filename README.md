@@ -46,3 +46,21 @@ Public deployments must keep arbitrary uploaded C++ disabled. Patient-shaped inp
 The first migration phase copies the scientific engine and model-library baseline without removing anything from PMx Explain. Removal from the original repository will occur only after parity tests, independent CI and deployment checks pass.
 
 See `MIGRATION.md` and `ORIGIN.md`.
+
+
+## Standalone qualification status
+
+The extraction is intentionally staged. PMx Explain remains the active consumer until this repository is independently deployable.
+
+Current migration branch qualification:
+
+- origin/hash parity for frozen source files;
+- deterministic regeneration of the 46-model catalogue;
+- compilation/contract validation of all 46 models;
+- 8 deterministic software-regression reference profiles;
+- safe Lego import contract and session cleanup;
+- Pmetrics 3.2.6 patient-level backend on a compatible runner.
+
+Tests that require fixtures produced by PMx Explain remain cross-repository integration contracts and are not reclassified as standalone tests.
+
+The simulation-trained XGBoost layer is experimental. Its binary RDS artifact set is being migrated separately and is not required to establish the pharmacometric model library baseline.
