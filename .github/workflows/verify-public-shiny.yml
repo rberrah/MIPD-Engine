@@ -1,0 +1,92 @@
+name: Reverify public MIPD Shiny release
+
+on:
+  workflow_dispatch:
+    inputs:
+      expected_sha:
+        description: "Exact deployed MIPD commit SHA (blank = current main)"
+        required: false
+        type: string
+        default: ""
+  workflow_run:
+    workflows: ["Deploy standalone MIPD Engine to Shinyapps"]
+    types: [completed]
+
+permissions:
+  contents: read
+
+jobs:
+  live-verification:
+    if: github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.13"
+      - name: Resolve immutable production revision
+        env:
+          MANUAL_SHA: ${{ inputs.expected_sha }}
+          DEPLOYED_SHA: ${{ github.event.workflow_run.head_sha }}
+        run: |
+          set -euo pipefail
+          SHA="${DEPLOYED_SHA:-${MANUAL_SHA:-$GITHUB_SHA}}"
+          if ! [[ "$SHA" =~ ^[0-9a-f]{40}$ ]]; then
+            echo "::error::A full immutable 40-character SHA is required"
+            exit 1
+          fi
+          echo "EXPECTED_SHA=$SHA" >> "$GITHUB_ENV"
+          echo "Public MIPD target: tdmhub/MIPD_Engine @ $SHA"
+      - name: Verify live app URL, exact SHA and restricted production profile
+        run: python3 scripts/check_live_deployment.py --expected-sha "$EXPECTED_SHA" --attempts 7 --timeout 40
+      - name: Install isolated headless browser
+        run: |
+          python3 -m pip install playwright==1.56.0
+          python3 -m playwright install --with-deps chromium
+      - name: Confirm two independent real Shiny sessions
+        run: python3 scripts/check_live_sessions.py
+      - name: Record successful, non-sensitive production verification
+        env:
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          GITHUB_RUN_ID: ${{ github.run_id }}
+          GITHUB_SHA: ${{ github.sha }}
+        run: |
+          python3 - <<'PY'
+          import datetime
+          import json
+          import os
+          attestation = {
+              "schema": "mipd-live-verification.v1",
+              "result": "PASS",
+              "sourceRepository": "rberrah/MIPD-Engine",
+              "deployedSourceSha": os.environ["EXPECTED_SHA"],
+              "verifierSourceSha": os.environ["GITHUB_SHA"],
+              "publicUrl": "https://tdmhub.shinyapps.io/MIPD_Engine/",
+              "modelCount": 46,
+              "productionCustomCpp": False,
+              "productionPmetrics": False,
+              "checks": [
+                  "public Shiny HTML HTTP 200",
+                  "public exact immutable SHA fingerprint",
+                  "46-model safety declaration and production feature restrictions",
+                  "two distinct live Shiny websocket sessions",
+                  "remaining session connected after other session closes"
+              ],
+              "verifiedAtUtc": datetime.datetime.now(datetime.timezone.utc).isoformat(),
+              "workflowRunUrl": "https://github.com/{}/actions/runs/{}".format(
+                  os.environ["GITHUB_REPOSITORY"], os.environ["GITHUB_RUN_ID"]
+              ),
+              "limitations": "No patient data or clinical validation; runtime server logs/filesystem retention not inspected."
+          }
+          with open("public-shiny-release-proof.json", "w", encoding="utf-8") as handle:
+              json.dump(attestation, handle, indent=2)
+              handle.write("\n")
+          print("Public release independently reverified at", attestation["deployedSourceSha"])
+          PY
+      - name: Archive immutable live production evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: public-mipd-live-verification
+          path: public-shiny-release-proof.json
+          if-no-files-found: error
