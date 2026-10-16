@@ -19,6 +19,10 @@ jobs:
           python-version: "3.13"
       - name: Verify frozen PMx origin hashes
         run: python scripts/verify_origin_manifest.py
+      - name: Regenerate standalone model catalogue
+        run: node scripts/generate_model_catalog.mjs
+      - name: Verify generated model-library outputs are committed
+        run: git diff --exit-code -- models ml/catalog-summary.generated.json
 
   core-r:
     runs-on: ubuntu-latest
@@ -41,6 +45,19 @@ jobs:
         run: Rscript tests/safe_lego_test.R
       - name: Test private workspace cleanup
         run: Rscript tests/privacy_nonretention_test.R
+      - name: Run remaining standalone R regression suite
+        shell: bash
+        run: |
+          set -euo pipefail
+          for test in tests/*.R; do
+            case "$(basename "$test")" in
+              validate_library.R|model_reference_cases.R|safe_lego_test.R|privacy_nonretention_test.R|pmetrics_backend_test.R|paired_benchmark_test.R)
+                continue
+                ;;
+            esac
+            echo "=== $test ==="
+            Rscript "$test"
+          done
 
   pmetrics:
     runs-on: ubuntu-26.04
