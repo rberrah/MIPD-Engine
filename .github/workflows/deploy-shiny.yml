@@ -22,7 +22,6 @@ jobs:
     environment: production
     timeout-minutes: 45
     env:
-      CORE_CRAN_SNAPSHOT: "https://packagemanager.posit.co/cran/__linux__/noble/2026-10-16"
       SHINYAPPS_ACCOUNT: ${{ secrets.SHINYAPPS_ACCOUNT }}
       SHINYAPPS_TOKEN: ${{ secrets.SHINYAPPS_TOKEN }}
       SHINYAPPS_SECRET: ${{ secrets.SHINYAPPS_SECRET }}
@@ -32,12 +31,9 @@ jobs:
         with:
           r-version: "4.6.1"
           use-public-rspm: false
-      - name: Install pinned public runtime and rsconnect
-        run: >
-          Rscript -e 'options(repos=c(CRAN=Sys.getenv("CORE_CRAN_SNAPSHOT")));
-          install.packages(c(
-          "shiny","bslib","mrgsolve","mapbayr","dplyr","ggplot2","DT","jsonlite",
-          "htmltools","deSolve","minpack.lm","xgboost","DALEX","digest","xml2","httr","rsconnect"))'
+      - uses: r-lib/actions/setup-renv@v2
+        with:
+          cache-version: 1
       - name: Verify exact core runtime
         run: Rscript scripts/check_runtime.R core
       - name: Compile and validate all 46 models

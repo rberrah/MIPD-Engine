@@ -27,5 +27,5 @@
     "rVersion": "4.6.1",
     "repository": "https://lapkb.r-universe.dev"
   },
-  "limitation": "Direct scientific/runtime dependencies are pinned and fail closed. This is not yet a complete transitive renv.lock or offline package mirror."
+  "limitation": "The public dependency graph is frozen in renv.lock and direct scientific/runtime versions fail closed. Pmetrics is validated separately; no offline package mirror or operating-system image is frozen."
 }

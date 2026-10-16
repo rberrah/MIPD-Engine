@@ -15,7 +15,35 @@ check_versions <- function(expected) {
   }
 }
 
+check_lockfile <- function(path = "renv.lock") {
+  if (!file.exists(path)) stop("Missing runtime lockfile: ", path)
+  lock <- jsonlite::fromJSON(path, simplifyVector = FALSE)
+  if (!identical(lock$R$Version, contract$rVersion)) {
+    stop("Lockfile R drift: expected ", contract$rVersion, ", got ", lock$R$Version)
+  }
+
+  repository_urls <- vapply(lock$R$Repositories, `[[`, character(1), "URL")
+  portable_snapshot <- sub("/__linux__/noble/", "/", contract$coreCranSnapshot, fixed = TRUE)
+  if (!any(repository_urls %in% c(contract$coreCranSnapshot, portable_snapshot))) {
+    stop("Lockfile does not use the dated CRAN snapshot.")
+  }
+
+  locked <- lock$Packages
+  for (pkg in names(contract$directPackages)) {
+    if (is.null(locked[[pkg]])) stop("Package missing from lockfile: ", pkg)
+    expected <- package_version(contract$directPackages[[pkg]])
+    actual <- package_version(locked[[pkg]]$Version)
+    if (actual != expected) {
+      stop("Lockfile drift for ", pkg, ": expected ", expected, ", got ", actual)
+    }
+  }
+  if (is.null(locked$rsconnect)) stop("Package missing from lockfile: rsconnect")
+  if (!is.null(locked$Pmetrics)) stop("Pmetrics must remain outside the public lockfile.")
+  cat("Lockfile contract PASS:", length(locked), "packages\n")
+}
+
 if (identical(mode, "core")) {
+  check_lockfile()
   check_versions(contract$directPackages)
 } else if (identical(mode, "pmetrics")) {
   check_versions(c(

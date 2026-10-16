@@ -10,6 +10,7 @@ The production profile is deliberately conservative:
 - `ENABLE_PMETRICS=false` on the current Shinyapps runtime;
 - R 4.6.1;
 - dated CRAN snapshot `2026-10-16`;
+- complete public dependency graph restored from `renv.lock`;
 - exact direct scientific-package versions enforced by `runtime/reference-runtime.json`;
 - all 46 model contracts and deterministic reference cases rechecked immediately before deployment.
 

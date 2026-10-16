@@ -14,14 +14,14 @@ Completed in standalone CI:
 - Pmetrics 3.2.6 patient-level backend on R 4.6.1;
 - 92 ML artifact origin hashes;
 - deterministic catalogue regeneration with no drift;
-- R 4.6.1 plus dated CRAN snapshot and exact direct-package runtime contract.
+- R 4.6.1, dated CRAN snapshot, complete public `renv.lock` and exact direct-package runtime contract.
 
 Still required before PMx cut-over:
 
 - independent deployment candidate with arbitrary C++ disabled;
 - live session-isolation/non-retention smoke;
 - PMx-to-MIPD integration tests against that deployment;
-- optional full transitive `renv.lock` / offline package mirror.
+- optional offline package mirror.
 
 ## Phase 3 — PMx cut-over
 PMx becomes a consumer of the independently deployed engine through versioned contracts. Only then remove duplicated engine/library files from PMx, in a separate reversible PR.
