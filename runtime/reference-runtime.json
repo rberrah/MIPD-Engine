@@ -15,7 +15,7 @@
     "jsonlite": "2.0.0",
     "htmltools": "0.5.9",
     "deSolve": "1.42",
-    "minpack.lm": "1.2-4",
+    "minpack.lm": "1.2.4",
     "xgboost": "3.2.1.1",
     "DALEX": "2.5.4",
     "digest": "0.6.39",
