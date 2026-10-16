@@ -1,0 +1,35 @@
+{
+  "$schema": "../schema/pmetrics-artifact-v1.schema.json",
+  "schemaVersion": 1,
+  "id": "demo_two_comp_iv",
+  "engine": "Pmetrics",
+  "label": "Demonstration Pmetrics - IV 2 compartiments",
+  "labelEn": "Pmetrics demonstration - two-compartment IV",
+  "status": "demonstration",
+  "description": "Artefact synthetique pour tester une distribution IV a deux compartiments. Il ne correspond pas a un modele publie et ne doit pas guider une decision clinique.",
+  "descriptionEn": "Synthetic artifact for testing two-compartment IV distribution. It is not a published model and must not guide a clinical decision.",
+  "administration": {
+    "route": "IV",
+    "mode": "IV_INTERMITTENT"
+  },
+  "structure": {
+    "template": "two_compartment_iv",
+    "parameters": [
+      { "name": "ke", "lower": 0.02, "upper": 0.5 },
+      { "name": "k12", "lower": 0.03, "upper": 1.5 },
+      { "name": "k21", "lower": 0.02, "upper": 1 },
+      { "name": "v", "lower": 5, "upper": 80 }
+    ]
+  },
+  "error": {
+    "type": "proportional",
+    "initial": 1,
+    "coefficients": [0.01, 0.1, 0, 0],
+    "fixed": true
+  },
+  "supportPoints": [
+    { "ke": 0.07, "k12": 0.25, "k21": 0.12, "v": 38, "prob": 0.25 },
+    { "ke": 0.14, "k12": 0.5, "k21": 0.22, "v": 25, "prob": 0.5 },
+    { "ke": 0.24, "k12": 0.85, "k21": 0.38, "v": 16, "prob": 0.25 }
+  ]
+}

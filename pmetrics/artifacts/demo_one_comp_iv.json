@@ -1,0 +1,33 @@
+{
+  "$schema": "../schema/pmetrics-artifact-v1.schema.json",
+  "schemaVersion": 1,
+  "id": "demo_one_comp_iv",
+  "engine": "Pmetrics",
+  "label": "Demonstration Pmetrics - IV 1 compartiment",
+  "labelEn": "Pmetrics demonstration - one-compartment IV",
+  "status": "demonstration",
+  "description": "Artefact synthetique pour valider le backend. Ne correspond pas a un modele publie et ne doit pas guider une decision clinique.",
+  "descriptionEn": "Synthetic artifact used to validate the backend. It is not a published model and must not guide a clinical decision.",
+  "administration": {
+    "route": "IV",
+    "mode": "IV_INTERMITTENT"
+  },
+  "structure": {
+    "template": "one_compartment_iv",
+    "parameters": [
+      { "name": "ke", "lower": 0.02, "upper": 0.5 },
+      { "name": "v", "lower": 10, "upper": 100 }
+    ]
+  },
+  "error": {
+    "type": "proportional",
+    "initial": 1,
+    "coefficients": [0.01, 0.1, 0, 0],
+    "fixed": true
+  },
+  "supportPoints": [
+    { "ke": 0.08, "v": 22, "prob": 0.2 },
+    { "ke": 0.15, "v": 30, "prob": 0.6 },
+    { "ke": 0.25, "v": 42, "prob": 0.2 }
+  ]
+}
