@@ -580,6 +580,7 @@ ddi_panel <- function(lang = "fr") {
 
 app_ui <- function(request) {
   lang <- app_language_from_request(request)
+  t <- function(fr, en) app_t(lang, fr, en)
   query <- parseQueryString(tryCatch(request$QUERY_STRING, error = function(error) "") %||% "")
   initial_view <- if ((query$view %||% "") %in% c("ddi", "pd")) query$view else "analysis"
   model_choices <- catalog_choices_i18n(lang = lang, analysis_only = TRUE)
