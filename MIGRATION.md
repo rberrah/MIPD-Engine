@@ -2,7 +2,7 @@
 
 ## Phase 1 — frozen baseline — COMPLETE
 
-The engine, 46-model library, provenance, tests, Pmetrics fixtures and full frozen experimental ML artifact set were copied from PMx commit `2f97f109c3f4af257776a595f6546c9cd5f2321d`. Origin parity is machine-checked by Git blob hashes. PMx remains untouched until cut-over.
+The engine, 46-model library, provenance, tests, Pmetrics fixtures and full frozen experimental ML artifact set were copied from PMx commit `2f97f109c3f4af257776a595f6546c9cd5f2321d`. Origin parity is machine-checked by Git blob hashes. PMx Explain has since removed the executable `tdm-engine/` mirror, while retaining the `static/tdm/` browser model snapshot and pinning the external source to immutable SHA `83a3026df7c0881d2725333a90d81ef2ed218f90`; PMx remains a separately maintained consumer.
 
 ## Phase 2 — standalone qualification — IN PROGRESS
 
@@ -18,13 +18,14 @@ Completed in standalone CI:
 
 Still required before PMx cut-over:
 
-- independent deployment candidate with arbitrary C++ disabled;
-- live session-isolation/non-retention smoke;
-- PMx-to-MIPD integration tests against that deployment;
+- real standalone production deployment of `main` through the protected Shinyapps GitHub Actions workflow (production secrets required);
+- public SHA fingerprint verified against the code really running at `tdmhub.shinyapps.io/MIPD_Engine/`;
+- live two-browser session isolation smoke and separate hosting-provider non-retention audit;
+- update the pinned PMx immutable SHA and 46-model browser snapshot/source-fidelity UI **only after** this exact deployed SHA passes PMx cross-repository consumer checks;
 - optional offline package mirror.
 
-## Phase 3 — PMx cut-over
-PMx becomes a consumer of the independently deployed engine through versioned contracts. Only then remove duplicated engine/library files from PMx, in a separate reversible PR.
+## Phase 3 — PMx source-pin/live release alignment
+PMx has already removed the executable R/Shiny `tdm-engine/` mirror and consumes an immutable standalone SHA. Its 46-model static snapshot is a browser UI resource, not a second executable model library. The remaining work is to replace the stale immutable pin with an exactly deployed, independently tested MIPD commit, explicitly refresh source-fidelity badges (including Goti's `not verified` status), validate interface transfers and privacy, and preserve a reversible rollback to the last known working SHA. Do not delete the browser snapshot unless an equivalent versioned consumer mechanism exists.
 
 ## Evidence baseline
 - 46/46 software tested
