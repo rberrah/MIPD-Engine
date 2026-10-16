@@ -2,7 +2,7 @@ name: Standalone MIPD qualification
 
 on:
   push:
-    branches: [main, "migration/**"]
+    branches: [main]
   pull_request:
   workflow_dispatch:
 
