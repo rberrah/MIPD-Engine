@@ -1,13 +1,15 @@
 # Standalone public Shiny deployment to the EXISTING tdmhub app.
 # Normal invocation validates dependencies without touching a live service.
-# --deploy bundles an immutable, public release fingerprint so post-deploy
+# --verify-bundle tests production packaging offline; --deploy uploads it.\n# --deploy bundles an immutable, public release fingerprint so post-deploy
 # monitoring can distinguish a tested Git SHA from whatever is actually live.
 run_mipd_deployment <- function() {
   args <- commandArgs(trailingOnly = TRUE)
   root <- normalizePath(".", winslash = "/", mustWork = TRUE)
   with_pmetrics <- "--with-pmetrics" %in% args
   do_deploy <- "--deploy" %in% args
-  if (do_deploy && with_pmetrics) {
+  verify_bundle <- "--verify-bundle" %in% args
+  bundle_release <- do_deploy || verify_bundle
+  if (bundle_release && with_pmetrics) {
     stop("Pmetrics deployment is unsupported on the current Shinyapps image.")
   }
   options(repos = c(CRAN = "https://cloud.r-project.org"))
@@ -32,7 +34,7 @@ run_mipd_deployment <- function() {
             "models/catalog.json" %in% files,
             all(file.exists(file.path(root, files))))
   release_path <- file.path(root, "www", "deployment-release.json")
-  if (do_deploy) {
+  if (bundle_release) {
     if (file.exists(release_path)) {
       stop("Refusing to overwrite pre-existing local deployment-release.json.")
     }
@@ -69,6 +71,8 @@ run_mipd_deployment <- function() {
   if (with_pmetrics) required <- c(required, "Pmetrics")
   stopifnot(all(required %in% deps$Package))
   if (!with_pmetrics) stopifnot(!"Pmetrics" %in% deps$Package)
+
+  if (verify_bundle) cat("Dry-run public release bundle PASS: ", sha[[1]], "\n", sep = "")
 
   if (do_deploy) {
     account <- Sys.getenv("SHINYAPPS_ACCOUNT")
