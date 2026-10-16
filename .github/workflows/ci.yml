@@ -36,7 +36,7 @@ jobs:
         run: >
           Rscript -e 'install.packages(c(
           "shiny","bslib","mrgsolve","mapbayr","dplyr","ggplot2","DT","jsonlite",
-          "htmltools","deSolve","minpack.lm","xgboost","DALEX","digest"))'
+          "htmltools","deSolve","minpack.lm","xgboost","DALEX","digest","xml2","httr"))'
       - name: Compile and validate all 46 models
         run: Rscript tests/validate_library.R
       - name: Run deterministic model references
