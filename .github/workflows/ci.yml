@@ -61,6 +61,8 @@ jobs:
         run: Rscript tests/goti_source_equations.R
       - name: Compare Roberts and Revilla MAP priors against independent analytic optimization
         run: Rscript tests/independent_map_prior_oracles.R
+      - name: Verify Carlier amoxicillin analytical two-compartment and exposure invariants
+        run: Rscript tests/amox_carlier_analytical_invariants.R
       - name: Upload 46-model scientific evidence report
         if: always()
         uses: actions/upload-artifact@v4
@@ -78,7 +80,7 @@ jobs:
           set -euo pipefail
           for test in tests/*.R; do
             case "$(basename "$test")" in
-              validate_library.R|model_reference_cases.R|source_equation_reproduction.R|goti_source_equations.R|independent_map_prior_oracles.R|safe_lego_test.R|privacy_nonretention_test.R|pmetrics_backend_test.R|advanced_lego_test.R|lego_external_exports.R|lego_mlxtran_exports.R|lego_native_exports.R|covariates_native_test.R|input_labs_test.R|teaching_lab_test.R|workshop_pk_test.R)
+              validate_library.R|model_reference_cases.R|source_equation_reproduction.R|goti_source_equations.R|independent_map_prior_oracles.R|amox_carlier_analytical_invariants.R|safe_lego_test.R|privacy_nonretention_test.R|pmetrics_backend_test.R|advanced_lego_test.R|lego_external_exports.R|lego_mlxtran_exports.R|lego_native_exports.R|covariates_native_test.R|input_labs_test.R|teaching_lab_test.R|workshop_pk_test.R)
                 continue
                 ;;
             esac
