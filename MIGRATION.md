@@ -27,6 +27,30 @@ Still required before PMx cut-over:
 ## Phase 3 — PMx source-pin/live release alignment
 PMx has already removed the executable R/Shiny `tdm-engine/` mirror and consumes an immutable standalone SHA. Its 46-model static snapshot is a browser UI resource, not a second executable model library. The remaining work is to replace the stale immutable pin with an exactly deployed, independently tested MIPD commit, explicitly refresh source-fidelity badges (including Goti's `not verified` status), validate interface transfers and privacy, and preserve a reversible rollback to the last known working SHA. Do not delete the browser snapshot unless an equivalent versioned consumer mechanism exists.
 
+## PMx browser snapshot drift observed on 2026-10-17
+
+A fresh Git-blob comparison between standalone `models/*.cpp` and PMx
+`static/tdm/models/*.cpp` shows **28 identical** and **18 differing** files
+among the 46 active models. PMx additionally carries four retired/unlisted
+static files (`genta_debord`, `genta_evers_icu`, `genta_evers_standard`,
+`vanco_revilla`). That is expected for a pinned older consumer snapshot but
+**blocks advancing** the source pin without coordinated migration.
+
+Current differences: amiodarone_pollak_ddi, cefazoline_cheng,
+cefazoline_lanoiselee, cefepime_an, cefepime_seo,
+ciclosporine_press_ddi, cobicistat_mathias_ddi, diltiazem_hermann_ddi,
+erythromycine_mather_ddi, fluconazole_debruyne_ddi,
+isavuconazole_desai_ddi, isavuconazole_groll_ddi,
+posaconazole_dolton_ddi, rifampicine_loos_ddi, rifampicine_marsot,
+ritonavir_kappelhoff_ddi, tacrolimus_kamp_envarsus_ddi, vanco_goti.
+
+The PMx snapshot also derives `aligned/adapted/not verified` badges from its
+older static metadata; the standalone review downgraded `vanco_goti` to
+`not verified`. PMx's next integration PR must explicitly update all 18
+different browser-source files, regenerate the catalogue, and reconcile
+badges/Details from MIPD source review, retaining all 46 active models.
+A green PMx CI against old `83a3026` does not qualify the newer MIPD SHA.
+
 ## Evidence baseline
 - 46/46 software tested
 - 8/46 deterministic software-regression profiles
