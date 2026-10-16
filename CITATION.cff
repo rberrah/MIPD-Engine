@@ -1,0 +1,10 @@
+cff-version: 1.2.0
+message: "Please cite MIPD Engine by Racym Berrah when using or adapting the project."
+type: software
+title: "MIPD Engine"
+authors:
+  - family-names: Berrah
+    given-names: Racym
+    orcid: "https://orcid.org/0009-0001-6432-2880"
+repository-code: "https://github.com/rberrah/MIPD-Engine"
+license: PolyForm-Noncommercial-1.0.0
