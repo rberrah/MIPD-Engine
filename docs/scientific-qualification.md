@@ -85,6 +85,22 @@ conservation, AUC = F*dose/CL for valid linear systems, expected changes
 in exposure with clearance. Never generate source reproduction oracles
 from the software under examination.
 
+### P1 — Carlier 2013 independent structural-invariant tests (not source reproduction)
+
+`tests/amox_carlier_analytical_invariants.R` independently solves the
+linear two-compartment intravenous infusion equations for **three**
+renal-function/infusion-duration scenarios. For the frozen code it tests
+CL/Vc/Vp/Q, concentration-time curves, dose linearity and the physical
+identity AUC(0–infinity) = IV dose / CL by dense numerical integration.
+These are **mechanistic software/physical regression safeguards**.
+
+The primary DOI is [10.1093/jac/dkt240](https://doi.org/10.1093/jac/dkt240).
+Because the published model's complete fixed/random/residual parameterization
+has not yet been independently reproduced in this tranche, this test
+**does not** promote `amox_carlier` to partial or full primary-source
+reproduction. The corresponding source-equation, IIV/SIGMA and MAP tests
+remain in G1 (#6); real external patient validation remains in G3 (#8).
+
 ### P1 — Review 35 models without confirmed source alignment
 
 These comprise 25 models with documented adaptations and 11 that remain
