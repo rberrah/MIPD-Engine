@@ -69,3 +69,9 @@ jobs:
         run: Rscript scripts/deploy_shiny.R --deploy
       - name: Validate actual public Shiny release is current and safe
         run: python3 scripts/check_live_deployment.py --expected-sha "$GITHUB_SHA" --attempts 10 --timeout 40
+      - name: Install headless browser for public session verification
+        run: |
+          python3 -m pip install playwright==1.56.0
+          python3 -m playwright install --with-deps chromium
+      - name: Verify two real, isolated Shiny browser sessions
+        run: python3 scripts/check_live_sessions.py
