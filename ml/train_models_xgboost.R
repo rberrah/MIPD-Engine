@@ -875,6 +875,7 @@ publish_candidate <- function(evaluation) {
     (item$explanation %||% list())$backgroundPath %||% ""
   )), use.names = FALSE)
   manifest$artifacts <- c(manifest$artifacts[!same_scope], list(artifact))
+  manifest$artifacts <- manifest$artifacts[order(vapply(manifest$artifacts, `[[`, character(1), "id"))]
   manifest$version <- max(3L, as.integer(manifest$version %||% 0L))
   manifest$benchmarkDate <- format(Sys.Date(), "%Y-%m-%d")
   manifest$samplingDesign <- list(
@@ -902,6 +903,7 @@ prune_non_applicable_continuous_artifacts <- function() {
     (item$explanation %||% list())$backgroundPath %||% ""
   )), use.names = FALSE)
   manifest$artifacts <- manifest$artifacts[!remove]
+  manifest$artifacts <- manifest$artifacts[order(vapply(manifest$artifacts, `[[`, character(1), "id"))]
   jsonlite::write_json(manifest, ML_MANIFEST_PATH, auto_unbox = TRUE, pretty = TRUE, null = "null")
   for (relative_path in old_paths[nzchar(old_paths)]) {
     old_path <- file.path(APP_ROOT, "ml", relative_path)

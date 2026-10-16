@@ -1,6 +1,6 @@
 $PROB
-Cefazolin PopPK Model (Cheng et al. 2025)
-Reference: Cheng V et al. Anaesth Crit Care Pain Med. 2025; 45:10653.
+Cefazolin PopPK Model (Cheng et al.)
+Reference: Cheng V et al. Anaesth Crit Care Pain Med. 2026;45:101653.
 Population: Pediatric cardiac surgery patients with CPB
 Structure: 2 compartments, separate V1 for intra/post-op.
 The published inter-occasion variability on CL and V1 is omitted because the
@@ -14,7 +14,7 @@ TVQ         : 3.07  : Typical Inter-compartmental Clearance (L/h)
 TVV2        : 4.47  : Typical Peripheral Volume (L)
 CL_WT_EXP   : 0.75  : Allometric exponent of WT on CL
 CL_eGFR_EXP : 1.50  : Exponent of eGFR effect on CL
-Q_WT_EXP    : 0.78  : Allometric exponent of WT on Q
+Q_WT_EXP    : 0.78  : Published final-equation exponent of WT on Q
 REF_WT      : 6.8   : Reference WT (kg)
 REF_eGFR    : 77.3  : Reference eGFR (mL/min/1.73m2)
 ETA1 : 0.0 : Mapbayr ETA BSV on CL

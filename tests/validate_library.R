@@ -29,6 +29,29 @@ if (any(!nzchar(MODEL_CATALOG$citation)) || any(!nzchar(MODEL_CATALOG$doi))) {
 if (any(grepl("\\bDDI\\b", MODEL_CATALOG$model, ignore.case = TRUE))) {
   stop("Technical DDI suffixes are forbidden in displayed model names.")
 }
+
+source_review <- jsonlite::fromJSON(
+  file.path(APP_ROOT, "models", "source-review.json"),
+  simplifyVector = FALSE
+)
+reviewed_ids <- vapply(source_review$reviewed, `[[`, character(1), "id")
+awaiting_ids <- unlist(source_review$awaitingFullText, use.names = FALSE)
+review_ids <- c(reviewed_ids, awaiting_ids)
+if (anyDuplicated(review_ids) || !setequal(review_ids, MODEL_CATALOG$id)) {
+  stop("Source-review coverage must contain every active catalog model exactly once.")
+}
+allowed_review_results <- c(
+  "ARTICLE_ALIGNED",
+  "DOCUMENTED_ADAPTATION_CONFIRMED",
+  "SOURCE_AMBIGUITY_DOCUMENTED"
+)
+review_results <- vapply(source_review$reviewed, `[[`, character(1), "result")
+if (any(!review_results %in% allowed_review_results)) {
+  stop("Unknown source-review result.")
+}
+if (any(!nzchar(vapply(source_review$reviewed, `[[`, character(1), "note")))) {
+  stop("Every reviewed model must have a source-review note.")
+}
 woillard <- MODEL_CATALOG[MODEL_CATALOG$id == "tacrolimus_woillard_ddi", , drop = FALSE]
 if (nrow(woillard) != 1L || !identical(woillard$model[[1]], "Woillard")) {
   stop("The tacrolimus Woillard model must be displayed as `Woillard`.")
@@ -141,8 +164,10 @@ source_checks <- list(
   cefazoline_schmitz = c("CLCR     : 90.0", "ADD  : 0.714025", "pow(clcr_safe / 90.0, POW_RCC)"),
   cefepime_an = c("ADD  : 41.4736", "TVCLCRRT : 1.64"),
   dapto_dvorchik_IV_adults = c("4.28 // additive variance", "TVCL_DIAL : 0.269"),
-  rifampicine_marsot = c("TVKa       : 1.15", "2.256 //", "dxdt_DEPOT =  Ktr * TR"),
+  cefazoline_cheng = c("Q_WT_EXP    : 0.78", "Predicted Unbound Concentration"),
+  rifampicine_marsot = c("5.089536 // additive variance", "0        // no proportional residual error", "dxdt_DEPOT =  Ktr * TR"),
   tacrolimus_woillard_ddi = c("double CL_IND =", "double CL_TAC_DDI = CL_IND", "+ CL_OTH"),
+  vanco_goti = c("ETA_CL : 0.147043196", "published CV 39.8%"),
   vanco_pkjust = c("PROP : 0", "ADD  : 17.8929", "CRCL  : 74.7")
 )
 for (model_id in names(source_checks)) {

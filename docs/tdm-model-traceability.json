@@ -1,9 +1,9 @@
 {
   "version": 1,
   "generatedFrom": [
-    "tdm-engine/models/catalog.json",
-    "static/tdm/model-metadata.json",
-    "static/tdm/models/*.cpp"
+    "models/catalog.json",
+    "models/source-review.json",
+    "models/*.cpp"
   ],
   "models": [
     {
@@ -13,7 +13,13 @@
       "primarySource": {
         "citation": "Burdet C et al. Eur J Clin Pharmacol. 2015;71:75-83.",
         "doi": "10.1007/s00228-014-1766-y",
-        "status": "verified"
+        "status": "verified",
+        "fullTextReview": {
+          "status": "reviewed",
+          "date": "2026-10-16",
+          "result": "DOCUMENTED_ADAPTATION_CONFIRMED",
+          "note": "The executable file represents the base model from Table 2, not the final covariate model. It remains simulation-only."
+        }
       },
       "population": {
         "description": "Adultes en réanimation, ventilation mécanique, pneumonie associée à la ventilation.",
@@ -98,7 +104,10 @@
       "primarySource": {
         "citation": "Pollak PT et al. Clin Pharmacol Ther. 2000;67:642-652.",
         "doi": "10.1067/mcp.2000.107047",
-        "status": "verified"
+        "status": "verified",
+        "fullTextReview": {
+          "status": "required"
+        }
       },
       "population": {
         "description": "Adultes recevant une amiodarone orale au long cours pour arythmie cardiaque.",
@@ -177,7 +186,13 @@
       "primarySource": {
         "citation": "Carlier M et al. J Antimicrob Chemother. 2013;68:2600-2608.",
         "doi": "10.1093/jac/dkt240",
-        "status": "verified"
+        "status": "verified",
+        "fullTextReview": {
+          "status": "reviewed",
+          "date": "2026-10-16",
+          "result": "ARTICLE_ALIGNED",
+          "note": "Two-compartment structure, creatinine-clearance effect, variability and proportional residual error align with the article. The zero additive variance only satisfies the two-term engine contract."
+        }
       },
       "population": {
         "description": "Adultes en état critique hospitalisés en réanimation.",
@@ -320,7 +335,10 @@
       "primarySource": {
         "citation": "Fournier A et al. Antimicrob Agents Chemother. 2018;62:e00505-18.",
         "doi": "10.1128/AAC.00505-18",
-        "status": "verified"
+        "status": "verified",
+        "fullTextReview": {
+          "status": "required"
+        }
       },
       "population": {
         "description": "Adultes gravement brûlés hospitalisés en réanimation.",
@@ -477,7 +495,13 @@
       "primarySource": {
         "citation": "Mellon G et al. J Antimicrob Chemother. 2020;75:3611-3618.",
         "doi": "10.1093/jac/dkaa368",
-        "status": "verified"
+        "status": "verified",
+        "fullTextReview": {
+          "status": "reviewed",
+          "date": "2026-10-16",
+          "result": "DOCUMENTED_ADAPTATION_CONFIRMED",
+          "note": "Fixed and random-effect values align with Table 2; the oral transit chain remains a reconstruction because executable transit equations are absent from the main article."
+        }
       },
       "population": {
         "description": "Adultes obèses recevant de l'amoxicilline/acide clavulanique IV ou oral.",
@@ -669,7 +693,13 @@
       "primarySource": {
         "citation": "Rambaud J et al. J Antimicrob Chemother. 2020;75:2941-2950.",
         "doi": "10.1093/jac/dkaa232",
-        "status": "verified"
+        "status": "verified",
+        "fullTextReview": {
+          "status": "reviewed",
+          "date": "2026-10-16",
+          "result": "DOCUMENTED_ADAPTATION_CONFIRMED",
+          "note": "The source NPAG model is nonparametric; the log-normal OMEGA prior is an explicit mapbayr approximation."
+        }
       },
       "population": {
         "description": "Adultes traités pour une endocardite infectieuse.",
@@ -830,11 +860,17 @@
     {
       "id": "cefazoline_cheng",
       "sourceFile": "cefazoline_cheng.cpp",
-      "sourceSha256": "1ad33147d28f1d2d796d5cefec17dfac41cbbe5bfc697b1b639c68531690767f",
+      "sourceSha256": "79384a2b804114642da9f615db5eb1753c139a078dc4b67be53e3e4c9f8d060c",
       "primarySource": {
         "citation": "Cheng V et al. Anaesth Crit Care Pain Med. 2026;45:101653.",
         "doi": "10.1016/j.accpm.2025.101653",
-        "status": "verified"
+        "status": "verified",
+        "fullTextReview": {
+          "status": "reviewed",
+          "date": "2026-10-16",
+          "result": "DOCUMENTED_ADAPTATION_CONFIRMED",
+          "note": "The final unbound-concentration equations, including the published Q exponent 0.78, are retained. Published occasion variability is omitted."
+        }
       },
       "population": {
         "description": "Enfants opérés en chirurgie cardiaque avec circulation extracorporelle.",
@@ -945,7 +981,7 @@
           "@annotated @diagonal\nPROP : 0.078400 : Proportional error variance\nADD  : 0.000000 : Additive error variance"
         ]
       },
-      "pmxAdaptations": "Les effets fixes périopératoire/postopératoire sont conservés. L'IOV publiée sur CL et V1 est omise car le moteur actuel ne représente pas encore des effets aléatoires indépendants par occasion.",
+      "pmxAdaptations": "Les concentrations et sorties sont non liées. Les effets fixes périopératoire/postopératoire et l'exposant final publié de 0,78 sur Q sont conservés. Cet exposant diffère de la phrase méthodologique générique annonçant 0,75 pour les clairances. L'IOV publiée sur CL et V1 est omise car le moteur actuel ne représente pas encore des effets aléatoires indépendants par occasion.",
       "implementationStatus": "ADAPTED",
       "softwareContractStatus": "SOFTWARE_TESTED",
       "numericalCheckStatus": "not-checked",
@@ -954,7 +990,7 @@
         "eligible": false,
         "status": "Simulation uniquement"
       },
-      "limitations": "Les effets fixes périopératoire/postopératoire sont conservés. L'IOV publiée sur CL et V1 est omise car le moteur actuel ne représente pas encore des effets aléatoires indépendants par occasion."
+      "limitations": "Les concentrations et sorties sont non liées. Les effets fixes périopératoire/postopératoire et l'exposant final publié de 0,78 sur Q sont conservés. Cet exposant diffère de la phrase méthodologique générique annonçant 0,75 pour les clairances. L'IOV publiée sur CL et V1 est omise car le moteur actuel ne représente pas encore des effets aléatoires indépendants par occasion."
     },
     {
       "id": "cefazoline_lanoiselee",
@@ -963,7 +999,10 @@
       "primarySource": {
         "citation": "Lanoiselée J et al. Sci Rep. 2021;11:19763.",
         "doi": "10.1038/s41598-021-99162-7",
-        "status": "verified"
+        "status": "verified",
+        "fullTextReview": {
+          "status": "required"
+        }
       },
       "population": {
         "description": "Adultes de 24 à 91 ans opérés d'une arthroplastie totale de hanche.",
@@ -1097,7 +1136,10 @@
       "primarySource": {
         "citation": "Schmitz ML et al. Antimicrob Agents Chemother. 2015;59:4173-4180.",
         "doi": "10.1128/AAC.00082-15",
-        "status": "verified"
+        "status": "verified",
+        "fullTextReview": {
+          "status": "required"
+        }
       },
       "population": {
         "description": "Patients chirurgicaux pédiatriques, principalement 10-12 ans, avec comparaison adulte.",
@@ -1225,7 +1267,10 @@
       "primarySource": {
         "citation": "An G et al. J Antimicrob Chemother. 2023;78:1460-1470.",
         "doi": "10.1093/jac/dkad106",
-        "status": "verified"
+        "status": "verified",
+        "fullTextReview": {
+          "status": "required"
+        }
       },
       "population": {
         "description": "Adultes en état critique hospitalisés en réanimation.",
@@ -1356,7 +1401,13 @@
       "primarySource": {
         "citation": "Jonckheere S et al. J Antimicrob Chemother. 2016;71:2538-2546.",
         "doi": "10.1093/jac/dkw171",
-        "status": "verified"
+        "status": "verified",
+        "fullTextReview": {
+          "status": "reviewed",
+          "date": "2026-10-16",
+          "result": "ARTICLE_ALIGNED",
+          "note": "Structure, dialysis branch, fixed effects and log-normal variance conversion align with the publication."
+        }
       },
       "population": {
         "description": "Adultes en réanimation, incluant insuffisance rénale et hémodialyse intermittente.",
@@ -1497,7 +1548,10 @@
       "primarySource": {
         "citation": "Seo H et al. Infect Chemother. 2023;55:29-41.",
         "doi": "10.3947/ic.2022.0087",
-        "status": "verified"
+        "status": "verified",
+        "fullTextReview": {
+          "status": "required"
+        }
       },
       "population": {
         "description": "Adultes en état critique avec pneumonie nosocomiale ou associée à la ventilation.",
@@ -1612,7 +1666,10 @@
       "primarySource": {
         "citation": "Press RR et al. Eur J Clin Pharmacol. 2010;66:579-590.",
         "doi": "10.1007/s00228-010-0810-9",
-        "status": "verified"
+        "status": "verified",
+        "fullTextReview": {
+          "status": "required"
+        }
       },
       "population": {
         "description": "Adultes au début de la période suivant une transplantation rénale.",
@@ -1708,7 +1765,10 @@
       "primarySource": {
         "citation": "Mathias AA et al. Clin Pharmacol Ther. 2010;87:322-329.",
         "doi": "10.1038/clpt.2009.228",
-        "status": "verified"
+        "status": "verified",
+        "fullTextReview": {
+          "status": "required"
+        }
       },
       "population": {
         "description": "Adultes sains inclus dans une étude pharmacocinétique de recherche de dose.",
@@ -1783,7 +1843,13 @@
       "primarySource": {
         "citation": "Dvorchik BH et al. Antimicrob Agents Chemother. 2004;48:2799-2807.",
         "doi": "10.1128/AAC.48.8.2799-2807.2004",
-        "status": "verified"
+        "status": "verified",
+        "fullTextReview": {
+          "status": "reviewed",
+          "date": "2026-10-16",
+          "result": "ARTICLE_ALIGNED",
+          "note": "The two-compartment equations, dialysis, sex and infection effects and LC-MS/MS residual error align with the publication."
+        }
       },
       "population": {
         "description": "Adultes sains et adultes infectés issus d'essais cliniques regroupés.",
@@ -1804,12 +1870,47 @@
         "concentrationUnit": "mg/L"
       },
       "structuralModel": {
-        "compartments": [],
-        "differentialEquations": [],
-        "outputs": []
+        "compartments": [
+          "CENT",
+          "PERIPH"
+        ],
+        "differentialEquations": [
+          "dxdt_CENT   =  Q*PERIPH/V2 -CL*CENT/V1 -Q*CENT/V1 ;",
+          "dxdt_PERIPH =  Q*CENT/V1 -Q*PERIPH/V2 ;"
+        ],
+        "outputs": [
+          "DV",
+          "CL",
+          "V2",
+          "V1",
+          "Q",
+          "CL_R",
+          "sex_multiplier",
+          "infection_multiplier"
+        ]
       },
-      "parameters": [],
-      "covariates": [],
+      "parameters": [
+        "TVCL",
+        "TVV1",
+        "TVQ",
+        "TVV2",
+        "TVCL_DIAL",
+        "FEMALE_CL",
+        "INFECT_V2",
+        "CRCL",
+        "TCL",
+        "WTQ",
+        "WTV2"
+      ],
+      "covariates": [
+        "CREAT",
+        "TEMP",
+        "WT",
+        "SEX",
+        "AGE",
+        "DIAL",
+        "INFECT"
+      ],
       "interindividualVariability": {
         "etaIndices": [
           1,
@@ -1817,14 +1918,18 @@
           3,
           4
         ],
-        "omega": []
+        "omega": [
+          "0.093636\n0.3215\n0.425104\n0.0364810"
+        ]
       },
       "residualError": {
         "epsIndices": [
           1,
           2
         ],
-        "sigma": []
+        "sigma": [
+          "0    // proportional\n4.28 // additive variance (LC/MS/MS assay SD 2.07 mg/L)"
+        ]
       },
       "pmxAdaptations": "Les branches dialyse/non-dialyse, l'effet du sexe sur CL et l'effet de l'infection sur V2 sont explicites. L'erreur additive correspond à l'essai LC/MS/MS (variance 4,28).",
       "implementationStatus": "ARTICLE",
@@ -1844,7 +1949,13 @@
       "primarySource": {
         "citation": "Garreau R et al. J Antimicrob Chemother. 2021;76:1250-1257.",
         "doi": "10.1093/jac/dkab006",
-        "status": "verified"
+        "status": "verified",
+        "fullTextReview": {
+          "status": "reviewed",
+          "date": "2026-10-16",
+          "result": "DOCUMENTED_ADAPTATION_CONFIRMED",
+          "note": "Published fixed effects and between-subject variability are retained; inter-occasion variability on CL and V1 is omitted."
+        }
       },
       "population": {
         "description": "Adultes traités pour une infection ostéo-articulaire.",
@@ -1972,7 +2083,10 @@
       "primarySource": {
         "citation": "Hermann P et al. Eur J Clin Pharmacol. 1983;24:349-352.",
         "doi": "10.1007/BF00610053",
-        "status": "verified"
+        "status": "verified",
+        "fullTextReview": {
+          "status": "required"
+        }
       },
       "population": {
         "description": "Adultes sains après diltiazem oral et intraveineux.",
@@ -2047,7 +2161,10 @@
       "primarySource": {
         "citation": "Mather LE et al. Br J Clin Pharmacol. 1981;12:131-140.",
         "doi": "10.1111/j.1365-2125.1981.tb01191.x",
-        "status": "verified"
+        "status": "verified",
+        "fullTextReview": {
+          "status": "required"
+        }
       },
       "population": {
         "description": "Adultes sains dans des études d'absorption et de biodisponibilité orale.",
@@ -2122,7 +2239,10 @@
       "primarySource": {
         "citation": "Moes DJAR et al. Clin Pharmacokinet. 2012;51:467-480.",
         "doi": "10.2165/11599710-000000000-00000",
-        "status": "verified"
+        "status": "verified",
+        "fullTextReview": {
+          "status": "required"
+        }
       },
       "population": {
         "description": "Adultes transplantés rénaux sous schéma sans inhibiteur de calcineurine.",
@@ -2215,7 +2335,10 @@
       "primarySource": {
         "citation": "ter Heine R et al. Br J Clin Pharmacol. 2018;84:1575-1586.",
         "doi": "10.1111/bcp.13591",
-        "status": "verified"
+        "status": "verified",
+        "fullTextReview": {
+          "status": "required"
+        }
       },
       "population": {
         "description": "Adultes: cancers métastatiques thyroïdiens ou mammaires et transplantés rénaux.",
@@ -2328,7 +2451,10 @@
       "primarySource": {
         "citation": "Debruyne D, Ryckelynck JP. Clin Pharmacokinet. 1993;24:10-27.",
         "doi": "10.2165/00003088-199324010-00002",
-        "status": "verified"
+        "status": "verified",
+        "fullTextReview": {
+          "status": "required"
+        }
       },
       "population": {
         "description": "Adultes issus des études de pharmacocinétique clinique synthétisées dans la revue.",
@@ -2403,7 +2529,13 @@
       "primarySource": {
         "citation": "Franck B et al. Eur J Clin Pharmacol. 2020;76:947-955.",
         "doi": "10.1007/s00228-020-02867-3",
-        "status": "verified"
+        "status": "verified",
+        "fullTextReview": {
+          "status": "reviewed",
+          "date": "2026-10-16",
+          "result": "DOCUMENTED_ADAPTATION_CONFIRMED",
+          "note": "The publication is ambiguous about lean versus total body weight for V; the engine's total-weight choice is documented."
+        }
       },
       "population": {
         "description": "Adultes, majoritairement âgés, sous hémodialyse chronique.",
@@ -2493,7 +2625,13 @@
       "primarySource": {
         "citation": "Gomes A et al. PLoS One. 2017;12:e0177324.",
         "doi": "10.1371/journal.pone.0177324",
-        "status": "verified"
+        "status": "verified",
+        "fullTextReview": {
+          "status": "reviewed",
+          "date": "2026-10-16",
+          "result": "DOCUMENTED_ADAPTATION_CONFIRMED",
+          "note": "The article does not provide the exact corrected lean-body-mass and Cockcroft-Gault variants; the implemented choices are documented."
+        }
       },
       "population": {
         "description": "Adultes traités pour une endocardite infectieuse, hors dialyse.",
@@ -2578,7 +2716,13 @@
       "primarySource": {
         "citation": "Hodiamont CJ et al. Int J Antimicrob Agents. 2017;49:204-211.",
         "doi": "10.1016/j.ijantimicag.2016.10.022",
-        "status": "verified"
+        "status": "verified",
+        "fullTextReview": {
+          "status": "reviewed",
+          "date": "2026-10-16",
+          "result": "DOCUMENTED_ADAPTATION_CONFIRMED",
+          "note": "Cockcroft-Gault substitution, albumin bounds and unreported Q/V2 allometric assumptions are documented engine adaptations."
+        }
       },
       "population": {
         "description": "Adultes en réanimation, incluant hypoalbuminémie et certains patients sous épuration continue.",
@@ -2681,7 +2825,13 @@
       "primarySource": {
         "citation": "Rosario MC et al. Br J Clin Pharmacol. 1998;46:229-236.",
         "doi": "10.1046/j.1365-2125.1998.00779.x",
-        "status": "verified"
+        "status": "verified",
+        "fullTextReview": {
+          "status": "reviewed",
+          "date": "2026-10-16",
+          "result": "DOCUMENTED_ADAPTATION_CONFIRMED",
+          "note": "Clinical formulas are reconstructed from available covariates; unreported covariance and V1 variability are not invented."
+        }
       },
       "population": {
         "description": "Adultes atteints de cancer; variante utilisant la clairance de la créatinine.",
@@ -2777,7 +2927,13 @@
       "primarySource": {
         "citation": "Rosario MC et al. Br J Clin Pharmacol. 1998;46:229-236.",
         "doi": "10.1046/j.1365-2125.1998.00779.x",
-        "status": "verified"
+        "status": "verified",
+        "fullTextReview": {
+          "status": "reviewed",
+          "date": "2026-10-16",
+          "result": "DOCUMENTED_ADAPTATION_CONFIRMED",
+          "note": "Clinical formulas are reconstructed from available covariates; unreported covariance and V1 variability are not invented."
+        }
       },
       "population": {
         "description": "Adultes atteints de cancer; variante à covariables cliniques.",
@@ -2876,7 +3032,10 @@
       "primarySource": {
         "citation": "Desai A et al. Antimicrob Agents Chemother. 2016;60:5483-5491.",
         "doi": "10.1128/AAC.02819-15",
-        "status": "verified"
+        "status": "verified",
+        "fullTextReview": {
+          "status": "required"
+        }
       },
       "population": {
         "description": "Adultes sains et adultes avec infection fongique invasive, essais de phase 1 et SECURE.",
@@ -2960,7 +3119,10 @@
       "primarySource": {
         "citation": "Groll AH et al. Clin Pharmacol Drug Dev. 2017;6:76-85.",
         "doi": "10.1002/cpdd.284",
-        "status": "verified"
+        "status": "verified",
+        "fullTextReview": {
+          "status": "required"
+        }
       },
       "population": {
         "description": "Adultes sains inclus dans des études contrôlées d'interactions médicamenteuses.",
@@ -3041,7 +3203,13 @@
       "primarySource": {
         "citation": "Canouï E et al. J Antimicrob Chemother. 2022;77:1344-1352.",
         "doi": "10.1093/jac/dkac031",
-        "status": "verified"
+        "status": "verified",
+        "fullTextReview": {
+          "status": "reviewed",
+          "date": "2026-10-16",
+          "result": "ARTICLE_ALIGNED",
+          "note": "One-compartment oral structure, renal and age covariates, variability and residual error align with the article."
+        }
       },
       "population": {
         "description": "Adultes traités pour une infection ostéo-articulaire.",
@@ -3153,7 +3321,13 @@
       "primarySource": {
         "citation": "Gergs U et al. Clin Pharmacol Drug Dev. 2018;7:692-698.",
         "doi": "10.1002/cpdd.418",
-        "status": "verified"
+        "status": "verified",
+        "fullTextReview": {
+          "status": "reviewed",
+          "date": "2026-10-16",
+          "result": "DOCUMENTED_ADAPTATION_CONFIRMED",
+          "note": "The irreversible bone compartment is omitted for repeated-dose plasma simulation, and unpublished residual terms are marked pragmatic."
+        }
       },
       "population": {
         "description": "Adultes opérés d'une arthroplastie élective de hanche ou de genou.",
@@ -3229,7 +3403,13 @@
       "primarySource": {
         "citation": "Buerger C et al. Antimicrob Agents Chemother. 2006;50:2455-2463.",
         "doi": "10.1128/AAC.01468-05",
-        "status": "verified"
+        "status": "verified",
+        "fullTextReview": {
+          "status": "reviewed",
+          "date": "2026-10-16",
+          "result": "DOCUMENTED_ADAPTATION_CONFIRMED",
+          "note": "The publication reports an individual PK analysis; its use as a population prior is an explicit simulation-only adaptation."
+        }
       },
       "population": {
         "description": "Adultes en réanimation, sepsis sévère ou choc septique, ventilés.",
@@ -3323,7 +3503,13 @@
       "primarySource": {
         "citation": "Sasaki T et al. Antimicrob Agents Chemother. 2011;55:1867-1873.",
         "doi": "10.1128/AAC.01185-10",
-        "status": "verified"
+        "status": "verified",
+        "fullTextReview": {
+          "status": "reviewed",
+          "date": "2026-10-16",
+          "result": "DOCUMENTED_ADAPTATION_CONFIRMED",
+          "note": "Oral bioavailability and the female Cockcroft-Gault factor are engine assumptions; the published platelet PD component is out of scope."
+        }
       },
       "population": {
         "description": "Adultes japonais hospitalisés pour infection.",
@@ -3415,7 +3601,10 @@
       "primarySource": {
         "citation": "Dolton MJ et al. Antimicrob Agents Chemother. 2014;58:6879-6885.",
         "doi": "10.1128/AAC.03777-14",
-        "status": "verified"
+        "status": "verified",
+        "fullTextReview": {
+          "status": "required"
+        }
       },
       "population": {
         "description": "Adultes sains et patients adultes sous posaconazole en prophylaxie ou traitement.",
@@ -3490,7 +3679,13 @@
       "primarySource": {
         "citation": "Chang MJ et al. Tuberculosis (Edinb). 2015;95:54-59.",
         "doi": "10.1016/j.tube.2014.10.013",
-        "status": "verified"
+        "status": "verified",
+        "fullTextReview": {
+          "status": "reviewed",
+          "date": "2026-10-16",
+          "result": "SOURCE_AMBIGUITY_DOCUMENTED",
+          "note": "The printed BMI effect on CL lacks an operator before 6.22; the retained historical interpretation is explicitly flagged."
+        }
       },
       "population": {
         "description": "54 adultes sud-coréens avec tuberculose pulmonaire, dont 21 avec diabète.",
@@ -3614,7 +3809,10 @@
       "primarySource": {
         "citation": "Jeremiah K et al. Antimicrob Agents Chemother. 2014;58:3468-3474.",
         "doi": "10.1128/AAC.02307-13",
-        "status": "verified"
+        "status": "verified",
+        "fullTextReview": {
+          "status": "required"
+        }
       },
       "population": {
         "description": "100 adultes tanzaniens avec tuberculose pulmonaire, avec ou sans VIH.",
@@ -3742,7 +3940,13 @@
       "primarySource": {
         "citation": "Jing Y et al. J Clin Pharmacol. 2016;56:622-627.",
         "doi": "10.1002/jcph.643",
-        "status": "verified"
+        "status": "verified",
+        "fullTextReview": {
+          "status": "reviewed",
+          "date": "2026-10-16",
+          "result": "ARTICLE_ALIGNED",
+          "note": "One-compartment oral structure and reported fixed, random and residual parameters align with the article."
+        }
       },
       "population": {
         "description": "54 adultes chinois traités par rifampicine orale pour une tuberculose pulmonaire.",
@@ -3844,7 +4048,10 @@
       "primarySource": {
         "citation": "Loos U et al. Klin Wochenschr. 1985;63:1205-1211.",
         "doi": "10.1007/BF01733779",
-        "status": "verified"
+        "status": "verified",
+        "fullTextReview": {
+          "status": "required"
+        }
       },
       "population": {
         "description": "Adultes sains après rifampicine orale et intraveineuse en administration chronique.",
@@ -3915,11 +4122,17 @@
     {
       "id": "rifampicine_marsot",
       "sourceFile": "rifampicine_marsot.cpp",
-      "sourceSha256": "ad485724a95d72a0e55412b92bbab195bea3a5da0349b3ad96d3f4ed96679d4a",
+      "sourceSha256": "fa3b3fc12f0fa65582c33cea58ad3a850c9eb591a787e65572a94678f6eb6feb",
       "primarySource": {
         "citation": "Marsot A et al. Br J Clin Pharmacol. 2017;83:1039-1047.",
         "doi": "10.1111/bcp.13178",
-        "status": "verified"
+        "status": "verified",
+        "fullTextReview": {
+          "status": "reviewed",
+          "date": "2026-10-16",
+          "result": "SOURCE_AMBIGUITY_DOCUMENTED",
+          "note": "The final additive estimate 2.256 mg/L is implemented as an SD and squared for mrgsolve. The article also mentions log-transformed data despite its concentration-scale equation."
+        }
       },
       "population": {
         "description": "Adultes traités pour une infection ostéo-articulaire, avec ou sans acide fusidique.",
@@ -3940,27 +4153,52 @@
         "concentrationUnit": "mg/L"
       },
       "structuralModel": {
-        "compartments": [],
-        "differentialEquations": [],
-        "outputs": []
+        "compartments": [
+          "TR",
+          "DEPOT",
+          "CENT"
+        ],
+        "differentialEquations": [
+          "dxdt_TR    = -Ktr * TR;",
+          "dxdt_DEPOT =  Ktr * TR",
+          "dxdt_CENT  =  Ka * DEPOT"
+        ],
+        "outputs": [
+          "DV",
+          "CL",
+          "V",
+          "Ka"
+        ]
       },
-      "parameters": [],
-      "covariates": [],
+      "parameters": [
+        "TVKa",
+        "TVCL_NOFUS",
+        "TVV_NOFUS",
+        "TVCL_FUS",
+        "TVV_FUS"
+      ],
+      "covariates": [
+        "FUS"
+      ],
       "interindividualVariability": {
         "etaIndices": [
           1,
           2
         ],
-        "omega": []
+        "omega": [
+          "0.531\n0.349"
+        ]
       },
       "residualError": {
         "epsIndices": [
           1,
           2
         ],
-        "sigma": []
+        "sigma": [
+          "0        // no proportional residual error in the final model\n5.089536 // additive variance: published SD 2.256 mg/L squared"
+        ]
       },
-      "pmxAdaptations": "No PMx adaptation documented.",
+      "pmxAdaptations": "L'erreur finale est additive. La valeur publiée de 2,256 mg/L est traitée comme un écart-type et convertie en variance SIGMA pour mrgsolve. L'article mentionne aussi des données transformées en logarithme malgré une équation additive sur les concentrations et une estimation en mg/L; cette ambiguïté ne peut être levée sans le modèle source.",
       "implementationStatus": "ARTICLE",
       "softwareContractStatus": "SOFTWARE_TESTED",
       "numericalCheckStatus": "not-checked",
@@ -3969,7 +4207,7 @@
         "eligible": true,
         "status": "Prior MAP fondé sur l'article"
       },
-      "limitations": "Numerical validity ranges and independent reproduction remain to be documented."
+      "limitations": "L'erreur finale est additive. La valeur publiée de 2,256 mg/L est traitée comme un écart-type et convertie en variance SIGMA pour mrgsolve. L'article mentionne aussi des données transformées en logarithme malgré une équation additive sur les concentrations et une estimation en mg/L; cette ambiguïté ne peut être levée sans le modèle source."
     },
     {
       "id": "ritonavir_kappelhoff_ddi",
@@ -3978,7 +4216,10 @@
       "primarySource": {
         "citation": "Kappelhoff BS et al. Br J Clin Pharmacol. 2005;59:174-182.",
         "doi": "10.1111/j.1365-2125.2004.02241.x",
-        "status": "verified"
+        "status": "verified",
+        "fullTextReview": {
+          "status": "required"
+        }
       },
       "population": {
         "description": "Adultes vivant avec le VIH-1, ritonavir utilisé comme booster ou antiviral.",
@@ -4053,7 +4294,10 @@
       "primarySource": {
         "citation": "Djebli N et al. Clin Pharmacokinet. 2006;45:1135-1148.",
         "doi": "10.2165/00003088-200645110-00007",
-        "status": "verified"
+        "status": "verified",
+        "fullTextReview": {
+          "status": "required"
+        }
       },
       "population": {
         "description": "Adultes transplantés rénaux sous sirolimus et mycophénolate, sans inhibiteur de calcineurine.",
@@ -4150,7 +4394,10 @@
       "primarySource": {
         "citation": "Kamp J et al. Pharmaceutics. 2024;16:17.",
         "doi": "10.3390/pharmaceutics16010017",
-        "status": "verified"
+        "status": "verified",
+        "fullTextReview": {
+          "status": "required"
+        }
       },
       "population": {
         "description": "Adultes transplantés rénaux recevant tacrolimus Envarsus.",
@@ -4246,7 +4493,10 @@
       "primarySource": {
         "citation": "Woillard JB et al. Br J Clin Pharmacol. 2011;71:391-402.",
         "doi": "10.1111/j.1365-2125.2010.03837.x",
-        "status": "verified"
+        "status": "verified",
+        "fullTextReview": {
+          "status": "required"
+        }
       },
       "population": {
         "description": "Adultes transplantés rénaux recevant Prograf ou Advagraf.",
@@ -4346,11 +4596,17 @@
     {
       "id": "vanco_goti",
       "sourceFile": "vanco_goti.cpp",
-      "sourceSha256": "224882c821ae81f8aadf91f95460974bfc945e1303ba9dbd26c391a05d8dc83d",
+      "sourceSha256": "c8e2a6daba5ec941eec1a6201ed128b92a5bcc52f40b52b51c63a2d11003908d",
       "primarySource": {
         "citation": "Goti V et al. Ther Drug Monit. 2018;40:212-221.",
         "doi": "10.1097/FTD.0000000000000490",
-        "status": "verified"
+        "status": "verified",
+        "fullTextReview": {
+          "status": "reviewed",
+          "date": "2026-10-16",
+          "result": "ARTICLE_ALIGNED",
+          "note": "Structure and covariates align with the article. CL OMEGA is converted consistently from the published 39.8% CV using log(1 + CV^2)."
+        }
       },
       "population": {
         "description": "Adultes hospitalisés avec ou sans hémodialyse.",
@@ -4448,7 +4704,7 @@
           3
         ],
         "omega": [
-          "@annotated @diagonal\nETA_CL : 0.158 : Between-subject variance on CL\nETA_V1 : 0.510 : Between-subject variance on V1\nETA_V2 : 0.280 : Between-subject variance on V2"
+          "@annotated @diagonal\nETA_CL : 0.147043196 : Between-subject variance on CL (published CV 39.8%)\nETA_V1 : 0.510 : Between-subject variance on V1\nETA_V2 : 0.280 : Between-subject variance on V2"
         ]
       },
       "residualError": {
@@ -4478,7 +4734,13 @@
       "primarySource": {
         "citation": "Revilla N et al. Br J Clin Pharmacol. 2010;70:201-212.",
         "doi": "10.1111/j.1365-2125.2010.03679.x",
-        "status": "verified"
+        "status": "verified",
+        "fullTextReview": {
+          "status": "reviewed",
+          "date": "2026-10-16",
+          "result": "ARTICLE_ALIGNED",
+          "note": "The Revilla equations, measured 24-hour creatinine clearance and additive residual SD align with the article."
+        }
       },
       "population": {
         "description": "Adultes en réanimation recevant la vancomycine IV intermittente ou continue; modèle fondé sur l'âge, la fonction rénale et le poids.",
@@ -4560,7 +4822,13 @@
       "primarySource": {
         "citation": "Roberts JA et al. Antimicrob Agents Chemother. 2011;55:2704-2709.",
         "doi": "10.1128/AAC.01708-10",
-        "status": "verified"
+        "status": "verified",
+        "fullTextReview": {
+          "status": "reviewed",
+          "date": "2026-10-16",
+          "result": "ARTICLE_ALIGNED",
+          "note": "The continuous-infusion structure, measured 24-hour creatinine clearance and published parameter values align with the article."
+        }
       },
       "population": {
         "description": "Adultes septiques en réanimation recevant la vancomycine en perfusion continue.",
@@ -4655,7 +4923,10 @@
       "primarySource": {
         "citation": "van den Born D et al. Int J Antimicrob Agents. 2023;61:106750.",
         "doi": "10.1016/j.ijantimicag.2023.106750",
-        "status": "verified"
+        "status": "verified",
+        "fullTextReview": {
+          "status": "required"
+        }
       },
       "population": {
         "description": "Adultes traités par voriconazole; modèle non linéaire intégrant la CRP.",

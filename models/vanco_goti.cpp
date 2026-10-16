@@ -30,7 +30,7 @@ CENT   : Central compartment (mg) [ADM, OBS]
 PERIPH : Peripheral compartment (mg)
 
 $OMEGA @annotated @diagonal
-ETA_CL : 0.158 : Between-subject variance on CL
+ETA_CL : 0.147043196 : Between-subject variance on CL (published CV 39.8%)
 ETA_V1 : 0.510 : Between-subject variance on V1
 ETA_V2 : 0.280 : Between-subject variance on V2
 

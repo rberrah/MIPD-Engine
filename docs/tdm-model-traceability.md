@@ -5,63 +5,64 @@
 This inventory links each shipped model to its declared primary source and to the implementation that is actually executed. It is an implementation audit, **not** proof that the publication has been independently reproduced. Three levels are kept separate:
 
 1. **Syntax and contract:** the complete library compiles and satisfies the mrgsolve/TDM interface contract.
-2. **Deterministic software regression:** selected models have fixed inputs and expected outputs in `tdm-engine/tests/model_reference_cases.R`.
+2. **Deterministic software regression:** selected models have fixed inputs and expected outputs in `tests/model_reference_cases.R`.
 3. **Scientific reproduction:** comparison with source equations, source software or published reference outputs; this remains pending unless explicitly documented.
 
 Current catalog: **46 models** (12 labelled article implementations, 34 documented adaptations; 13 exposed as MAP priors). **8 models** currently have deterministic numeric reference profiles.
+Primary full text has been checked for **23/46 models**; **23** still require the primary full text. This author-led source audit is not independent reproduction.
 
 Population text and administration route define the currently encoded validity context. Numerical age, weight, renal-function and dose ranges are not yet structured for every article; absence of a range below must not be interpreted as permission to extrapolate.
 
 ## Summary
 
-| Model | Source | Route / mode | Units | Implementation | MAP | Numeric profile |
-| --- | --- | --- | --- | --- | --- | --- |
-| `amik_burdet` | [Burdet C et al. Eur J Clin Pharmacol. 2015;71:75-83.](https://doi.org/10.1007/s00228-014-1766-y) | IV / IV_INTERMITTENT | h; mg/L | ADAPTED | No | Compile + contract |
-| `amiodarone_pollak_ddi` | [Pollak PT et al. Clin Pharmacol Ther. 2000;67:642-652.](https://doi.org/10.1067/mcp.2000.107047) | Oral / ORAL | h; mg/L | ADAPTED | No | Compile + contract |
-| `amox_carlier` | [Carlier M et al. J Antimicrob Chemother. 2013;68:2600-2608.](https://doi.org/10.1093/jac/dkt240) | IV / IV_INTERMITTENT | h; mg/L | ARTICLE | Yes | Deterministic regression |
-| `amox_fournier` | [Fournier A et al. Antimicrob Agents Chemother. 2018;62:e00505-18.](https://doi.org/10.1128/AAC.00505-18) | IV / IV_INTERMITTENT | h; mg/L | ADAPTED | No | Compile + contract |
-| `amox_mellon` | [Mellon G et al. J Antimicrob Chemother. 2020;75:3611-3618.](https://doi.org/10.1093/jac/dkaa368) | IV + Oral / IV_INTERMITTENT, ORAL | h; mg/L | ADAPTED | No | Compile + contract |
-| `amox_rambaud` | [Rambaud J et al. J Antimicrob Chemother. 2020;75:2941-2950.](https://doi.org/10.1093/jac/dkaa232) | IV / IV_CONTINUOUS | h; mg/L | ADAPTED | No | Compile + contract |
-| `cefazoline_cheng` | [Cheng V et al. Anaesth Crit Care Pain Med. 2026;45:101653.](https://doi.org/10.1016/j.accpm.2025.101653) | IV / IV_INTERMITTENT | h; mg/L | ADAPTED | No | Compile + contract |
-| `cefazoline_lanoiselee` | [Lanoiselée J et al. Sci Rep. 2021;11:19763.](https://doi.org/10.1038/s41598-021-99162-7) | IV / IV_INTERMITTENT | h; mg/L | ARTICLE | Yes | Compile + contract |
-| `cefazoline_schmitz` | [Schmitz ML et al. Antimicrob Agents Chemother. 2015;59:4173-4180.](https://doi.org/10.1128/AAC.00082-15) | IV / IV_INTERMITTENT | h; mg/L | ADAPTED | No | Compile + contract |
-| `cefepime_an` | [An G et al. J Antimicrob Chemother. 2023;78:1460-1470.](https://doi.org/10.1093/jac/dkad106) | IV / IV_INTERMITTENT | h; mg/L | ARTICLE | Yes | Compile + contract |
-| `cefepime_jonckheere` | [Jonckheere S et al. J Antimicrob Chemother. 2016;71:2538-2546.](https://doi.org/10.1093/jac/dkw171) | IV / IV_INTERMITTENT | h; mg/L | ARTICLE | Yes | Deterministic regression |
-| `cefepime_seo` | [Seo H et al. Infect Chemother. 2023;55:29-41.](https://doi.org/10.3947/ic.2022.0087) | IV / IV_INTERMITTENT | h; mg/L | ARTICLE | Yes | Compile + contract |
-| `ciclosporine_press_ddi` | [Press RR et al. Eur J Clin Pharmacol. 2010;66:579-590.](https://doi.org/10.1007/s00228-010-0810-9) | Oral / ORAL | h; ng/mL | ADAPTED | No | Compile + contract |
-| `cobicistat_mathias_ddi` | [Mathias AA et al. Clin Pharmacol Ther. 2010;87:322-329.](https://doi.org/10.1038/clpt.2009.228) | Oral / ORAL | h; mg/L | ADAPTED | No | Compile + contract |
-| `dapto_dvorchik_IV_adults` | [Dvorchik BH et al. Antimicrob Agents Chemother. 2004;48:2799-2807.](https://doi.org/10.1128/AAC.48.8.2799-2807.2004) | IV / IV_INTERMITTENT | h; mg/L | ARTICLE | Yes | Deterministic regression |
-| `dapto_garreau` | [Garreau R et al. J Antimicrob Chemother. 2021;76:1250-1257.](https://doi.org/10.1093/jac/dkab006) | IV / IV_INTERMITTENT | h; mg/L | ADAPTED | No | Compile + contract |
-| `diltiazem_hermann_ddi` | [Hermann P et al. Eur J Clin Pharmacol. 1983;24:349-352.](https://doi.org/10.1007/BF00610053) | Oral / ORAL | h; mg/L | ADAPTED | No | Compile + contract |
-| `erythromycine_mather_ddi` | [Mather LE et al. Br J Clin Pharmacol. 1981;12:131-140.](https://doi.org/10.1111/j.1365-2125.1981.tb01191.x) | Oral / ORAL | h; mg/L | ADAPTED | No | Compile + contract |
-| `everolimus_moes_ddi` | [Moes DJAR et al. Clin Pharmacokinet. 2012;51:467-480.](https://doi.org/10.2165/11599710-000000000-00000) | Oral / ORAL | h; ng/mL | ADAPTED | No | Compile + contract |
-| `everolimus_terheine_ddi` | [ter Heine R et al. Br J Clin Pharmacol. 2018;84:1575-1586.](https://doi.org/10.1111/bcp.13591) | Oral / ORAL | h; ng/mL | ADAPTED | No | Compile + contract |
-| `fluconazole_debruyne_ddi` | [Debruyne D, Ryckelynck JP. Clin Pharmacokinet. 1993;24:10-27.](https://doi.org/10.2165/00003088-199324010-00002) | Oral / ORAL | h; mg/L | ADAPTED | No | Compile + contract |
-| `genta_franck` | [Franck B et al. Eur J Clin Pharmacol. 2020;76:947-955.](https://doi.org/10.1007/s00228-020-02867-3) | IV / IV_INTERMITTENT | h; mg/L | ADAPTED | No | Compile + contract |
-| `genta_gomes` | [Gomes A et al. PLoS One. 2017;12:e0177324.](https://doi.org/10.1371/journal.pone.0177324) | IV / IV_INTERMITTENT | h; mg/L | ADAPTED | No | Compile + contract |
-| `genta_hodiamont` | [Hodiamont CJ et al. Int J Antimicrob Agents. 2017;49:204-211.](https://doi.org/10.1016/j.ijantimicag.2016.10.022) | IV / IV_INTERMITTENT | h; mg/L | ADAPTED | No | Compile + contract |
-| `genta_rosario_clcr` | [Rosario MC et al. Br J Clin Pharmacol. 1998;46:229-236.](https://doi.org/10.1046/j.1365-2125.1998.00779.x) | IV / IV_INTERMITTENT | h; mg/L | ADAPTED | No | Compile + contract |
-| `genta_rosario_clinical` | [Rosario MC et al. Br J Clin Pharmacol. 1998;46:229-236.](https://doi.org/10.1046/j.1365-2125.1998.00779.x) | IV / IV_INTERMITTENT | h; mg/L | ADAPTED | No | Compile + contract |
-| `isavuconazole_desai_ddi` | [Desai A et al. Antimicrob Agents Chemother. 2016;60:5483-5491.](https://doi.org/10.1128/AAC.02819-15) | Oral / ORAL | h; mg/L | ADAPTED | No | Compile + contract |
-| `isavuconazole_groll_ddi` | [Groll AH et al. Clin Pharmacol Drug Dev. 2017;6:76-85.](https://doi.org/10.1002/cpdd.284) | Oral / ORAL | h; mg/L | ADAPTED | No | Compile + contract |
-| `levo_canoui` | [Canouï E et al. J Antimicrob Chemother. 2022;77:1344-1352.](https://doi.org/10.1093/jac/dkac031) | Oral / ORAL | h; mg/L | ARTICLE | Yes | Compile + contract |
-| `levo_gergs` | [Gergs U et al. Clin Pharmacol Drug Dev. 2018;7:692-698.](https://doi.org/10.1002/cpdd.418) | IV / IV_INTERMITTENT | h; mg/L | ADAPTED | No | Compile + contract |
-| `linez_buerger` | [Buerger C et al. Antimicrob Agents Chemother. 2006;50:2455-2463.](https://doi.org/10.1128/AAC.01468-05) | IV / IV_INTERMITTENT | h; mg/L | ADAPTED | No | Compile + contract |
-| `linez_sasaki` | [Sasaki T et al. Antimicrob Agents Chemother. 2011;55:1867-1873.](https://doi.org/10.1128/AAC.01185-10) | IV + Oral / IV_INTERMITTENT, ORAL | h; mg/L | ADAPTED | No | Compile + contract |
-| `posaconazole_dolton_ddi` | [Dolton MJ et al. Antimicrob Agents Chemother. 2014;58:6879-6885.](https://doi.org/10.1128/AAC.03777-14) | Oral / ORAL | h; mg/L | ADAPTED | No | Compile + contract |
-| `rifampicine_chang` | [Chang MJ et al. Tuberculosis (Edinb). 2015;95:54-59.](https://doi.org/10.1016/j.tube.2014.10.013) | Oral / ORAL | h; mg/L | ADAPTED | No | Compile + contract |
-| `rifampicine_jeremiah` | [Jeremiah K et al. Antimicrob Agents Chemother. 2014;58:3468-3474.](https://doi.org/10.1128/AAC.02307-13) | Oral / ORAL | h; mg/L | ADAPTED | No | Compile + contract |
-| `rifampicine_jing` | [Jing Y et al. J Clin Pharmacol. 2016;56:622-627.](https://doi.org/10.1002/jcph.643) | Oral / ORAL | h; mg/L | ARTICLE | Yes | Deterministic regression |
-| `rifampicine_loos_ddi` | [Loos U et al. Klin Wochenschr. 1985;63:1205-1211.](https://doi.org/10.1007/BF01733779) | Oral / ORAL | h; mg/L | ADAPTED | No | Compile + contract |
-| `rifampicine_marsot` | [Marsot A et al. Br J Clin Pharmacol. 2017;83:1039-1047.](https://doi.org/10.1111/bcp.13178) | Oral / ORAL | h; mg/L | ARTICLE | Yes | Compile + contract |
-| `ritonavir_kappelhoff_ddi` | [Kappelhoff BS et al. Br J Clin Pharmacol. 2005;59:174-182.](https://doi.org/10.1111/j.1365-2125.2004.02241.x) | Oral / ORAL | h; mg/L | ADAPTED | No | Compile + contract |
-| `sirolimus_djebli_ddi` | [Djebli N et al. Clin Pharmacokinet. 2006;45:1135-1148.](https://doi.org/10.2165/00003088-200645110-00007) | Oral / ORAL | h; ng/mL | ADAPTED | No | Compile + contract |
-| `tacrolimus_kamp_envarsus_ddi` | [Kamp J et al. Pharmaceutics. 2024;16:17.](https://doi.org/10.3390/pharmaceutics16010017) | Oral / ORAL | h; ng/mL | ADAPTED | No | Compile + contract |
-| `tacrolimus_woillard_ddi` | [Woillard JB et al. Br J Clin Pharmacol. 2011;71:391-402.](https://doi.org/10.1111/j.1365-2125.2010.03837.x) | Oral / ORAL | h; ng/mL | ADAPTED | Yes | Deterministic regression |
-| `vanco_goti` | [Goti V et al. Ther Drug Monit. 2018;40:212-221.](https://doi.org/10.1097/FTD.0000000000000490) | IV / IV_INTERMITTENT | h; mg/L | ARTICLE | Yes | Deterministic regression |
-| `vanco_pkjust` | [Revilla N et al. Br J Clin Pharmacol. 2010;70:201-212.](https://doi.org/10.1111/j.1365-2125.2010.03679.x) | IV / IV_INTERMITTENT, IV_CONTINUOUS | h; mg/L | ARTICLE | Yes | Deterministic regression |
-| `vanco_roberts` | [Roberts JA et al. Antimicrob Agents Chemother. 2011;55:2704-2709.](https://doi.org/10.1128/AAC.01708-10) | IV / IV_CONTINUOUS | h; mg/L | ARTICLE | Yes | Deterministic regression |
-| `voriconazole_vandenborn_ddi` | [van den Born D et al. Int J Antimicrob Agents. 2023;61:106750.](https://doi.org/10.1016/j.ijantimicag.2023.106750) | Oral / ORAL | h; mg/L | ADAPTED | No | Compile + contract |
+| Model | Source | Full-text review | Route / mode | Units | Implementation | MAP | Numeric profile |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| `amik_burdet` | [Burdet C et al. Eur J Clin Pharmacol. 2015;71:75-83.](https://doi.org/10.1007/s00228-014-1766-y) | DOCUMENTED_ADAPTATION_CONFIRMED | IV / IV_INTERMITTENT | h; mg/L | ADAPTED | No | Compile + contract |
+| `amiodarone_pollak_ddi` | [Pollak PT et al. Clin Pharmacol Ther. 2000;67:642-652.](https://doi.org/10.1067/mcp.2000.107047) | FULL_TEXT_REQUIRED | Oral / ORAL | h; mg/L | ADAPTED | No | Compile + contract |
+| `amox_carlier` | [Carlier M et al. J Antimicrob Chemother. 2013;68:2600-2608.](https://doi.org/10.1093/jac/dkt240) | ARTICLE_ALIGNED | IV / IV_INTERMITTENT | h; mg/L | ARTICLE | Yes | Deterministic regression |
+| `amox_fournier` | [Fournier A et al. Antimicrob Agents Chemother. 2018;62:e00505-18.](https://doi.org/10.1128/AAC.00505-18) | FULL_TEXT_REQUIRED | IV / IV_INTERMITTENT | h; mg/L | ADAPTED | No | Compile + contract |
+| `amox_mellon` | [Mellon G et al. J Antimicrob Chemother. 2020;75:3611-3618.](https://doi.org/10.1093/jac/dkaa368) | DOCUMENTED_ADAPTATION_CONFIRMED | IV + Oral / IV_INTERMITTENT, ORAL | h; mg/L | ADAPTED | No | Compile + contract |
+| `amox_rambaud` | [Rambaud J et al. J Antimicrob Chemother. 2020;75:2941-2950.](https://doi.org/10.1093/jac/dkaa232) | DOCUMENTED_ADAPTATION_CONFIRMED | IV / IV_CONTINUOUS | h; mg/L | ADAPTED | No | Compile + contract |
+| `cefazoline_cheng` | [Cheng V et al. Anaesth Crit Care Pain Med. 2026;45:101653.](https://doi.org/10.1016/j.accpm.2025.101653) | DOCUMENTED_ADAPTATION_CONFIRMED | IV / IV_INTERMITTENT | h; mg/L | ADAPTED | No | Compile + contract |
+| `cefazoline_lanoiselee` | [Lanoiselée J et al. Sci Rep. 2021;11:19763.](https://doi.org/10.1038/s41598-021-99162-7) | FULL_TEXT_REQUIRED | IV / IV_INTERMITTENT | h; mg/L | ARTICLE | Yes | Compile + contract |
+| `cefazoline_schmitz` | [Schmitz ML et al. Antimicrob Agents Chemother. 2015;59:4173-4180.](https://doi.org/10.1128/AAC.00082-15) | FULL_TEXT_REQUIRED | IV / IV_INTERMITTENT | h; mg/L | ADAPTED | No | Compile + contract |
+| `cefepime_an` | [An G et al. J Antimicrob Chemother. 2023;78:1460-1470.](https://doi.org/10.1093/jac/dkad106) | FULL_TEXT_REQUIRED | IV / IV_INTERMITTENT | h; mg/L | ARTICLE | Yes | Compile + contract |
+| `cefepime_jonckheere` | [Jonckheere S et al. J Antimicrob Chemother. 2016;71:2538-2546.](https://doi.org/10.1093/jac/dkw171) | ARTICLE_ALIGNED | IV / IV_INTERMITTENT | h; mg/L | ARTICLE | Yes | Deterministic regression |
+| `cefepime_seo` | [Seo H et al. Infect Chemother. 2023;55:29-41.](https://doi.org/10.3947/ic.2022.0087) | FULL_TEXT_REQUIRED | IV / IV_INTERMITTENT | h; mg/L | ARTICLE | Yes | Compile + contract |
+| `ciclosporine_press_ddi` | [Press RR et al. Eur J Clin Pharmacol. 2010;66:579-590.](https://doi.org/10.1007/s00228-010-0810-9) | FULL_TEXT_REQUIRED | Oral / ORAL | h; ng/mL | ADAPTED | No | Compile + contract |
+| `cobicistat_mathias_ddi` | [Mathias AA et al. Clin Pharmacol Ther. 2010;87:322-329.](https://doi.org/10.1038/clpt.2009.228) | FULL_TEXT_REQUIRED | Oral / ORAL | h; mg/L | ADAPTED | No | Compile + contract |
+| `dapto_dvorchik_IV_adults` | [Dvorchik BH et al. Antimicrob Agents Chemother. 2004;48:2799-2807.](https://doi.org/10.1128/AAC.48.8.2799-2807.2004) | ARTICLE_ALIGNED | IV / IV_INTERMITTENT | h; mg/L | ARTICLE | Yes | Deterministic regression |
+| `dapto_garreau` | [Garreau R et al. J Antimicrob Chemother. 2021;76:1250-1257.](https://doi.org/10.1093/jac/dkab006) | DOCUMENTED_ADAPTATION_CONFIRMED | IV / IV_INTERMITTENT | h; mg/L | ADAPTED | No | Compile + contract |
+| `diltiazem_hermann_ddi` | [Hermann P et al. Eur J Clin Pharmacol. 1983;24:349-352.](https://doi.org/10.1007/BF00610053) | FULL_TEXT_REQUIRED | Oral / ORAL | h; mg/L | ADAPTED | No | Compile + contract |
+| `erythromycine_mather_ddi` | [Mather LE et al. Br J Clin Pharmacol. 1981;12:131-140.](https://doi.org/10.1111/j.1365-2125.1981.tb01191.x) | FULL_TEXT_REQUIRED | Oral / ORAL | h; mg/L | ADAPTED | No | Compile + contract |
+| `everolimus_moes_ddi` | [Moes DJAR et al. Clin Pharmacokinet. 2012;51:467-480.](https://doi.org/10.2165/11599710-000000000-00000) | FULL_TEXT_REQUIRED | Oral / ORAL | h; ng/mL | ADAPTED | No | Compile + contract |
+| `everolimus_terheine_ddi` | [ter Heine R et al. Br J Clin Pharmacol. 2018;84:1575-1586.](https://doi.org/10.1111/bcp.13591) | FULL_TEXT_REQUIRED | Oral / ORAL | h; ng/mL | ADAPTED | No | Compile + contract |
+| `fluconazole_debruyne_ddi` | [Debruyne D, Ryckelynck JP. Clin Pharmacokinet. 1993;24:10-27.](https://doi.org/10.2165/00003088-199324010-00002) | FULL_TEXT_REQUIRED | Oral / ORAL | h; mg/L | ADAPTED | No | Compile + contract |
+| `genta_franck` | [Franck B et al. Eur J Clin Pharmacol. 2020;76:947-955.](https://doi.org/10.1007/s00228-020-02867-3) | DOCUMENTED_ADAPTATION_CONFIRMED | IV / IV_INTERMITTENT | h; mg/L | ADAPTED | No | Compile + contract |
+| `genta_gomes` | [Gomes A et al. PLoS One. 2017;12:e0177324.](https://doi.org/10.1371/journal.pone.0177324) | DOCUMENTED_ADAPTATION_CONFIRMED | IV / IV_INTERMITTENT | h; mg/L | ADAPTED | No | Compile + contract |
+| `genta_hodiamont` | [Hodiamont CJ et al. Int J Antimicrob Agents. 2017;49:204-211.](https://doi.org/10.1016/j.ijantimicag.2016.10.022) | DOCUMENTED_ADAPTATION_CONFIRMED | IV / IV_INTERMITTENT | h; mg/L | ADAPTED | No | Compile + contract |
+| `genta_rosario_clcr` | [Rosario MC et al. Br J Clin Pharmacol. 1998;46:229-236.](https://doi.org/10.1046/j.1365-2125.1998.00779.x) | DOCUMENTED_ADAPTATION_CONFIRMED | IV / IV_INTERMITTENT | h; mg/L | ADAPTED | No | Compile + contract |
+| `genta_rosario_clinical` | [Rosario MC et al. Br J Clin Pharmacol. 1998;46:229-236.](https://doi.org/10.1046/j.1365-2125.1998.00779.x) | DOCUMENTED_ADAPTATION_CONFIRMED | IV / IV_INTERMITTENT | h; mg/L | ADAPTED | No | Compile + contract |
+| `isavuconazole_desai_ddi` | [Desai A et al. Antimicrob Agents Chemother. 2016;60:5483-5491.](https://doi.org/10.1128/AAC.02819-15) | FULL_TEXT_REQUIRED | Oral / ORAL | h; mg/L | ADAPTED | No | Compile + contract |
+| `isavuconazole_groll_ddi` | [Groll AH et al. Clin Pharmacol Drug Dev. 2017;6:76-85.](https://doi.org/10.1002/cpdd.284) | FULL_TEXT_REQUIRED | Oral / ORAL | h; mg/L | ADAPTED | No | Compile + contract |
+| `levo_canoui` | [Canouï E et al. J Antimicrob Chemother. 2022;77:1344-1352.](https://doi.org/10.1093/jac/dkac031) | ARTICLE_ALIGNED | Oral / ORAL | h; mg/L | ARTICLE | Yes | Compile + contract |
+| `levo_gergs` | [Gergs U et al. Clin Pharmacol Drug Dev. 2018;7:692-698.](https://doi.org/10.1002/cpdd.418) | DOCUMENTED_ADAPTATION_CONFIRMED | IV / IV_INTERMITTENT | h; mg/L | ADAPTED | No | Compile + contract |
+| `linez_buerger` | [Buerger C et al. Antimicrob Agents Chemother. 2006;50:2455-2463.](https://doi.org/10.1128/AAC.01468-05) | DOCUMENTED_ADAPTATION_CONFIRMED | IV / IV_INTERMITTENT | h; mg/L | ADAPTED | No | Compile + contract |
+| `linez_sasaki` | [Sasaki T et al. Antimicrob Agents Chemother. 2011;55:1867-1873.](https://doi.org/10.1128/AAC.01185-10) | DOCUMENTED_ADAPTATION_CONFIRMED | IV + Oral / IV_INTERMITTENT, ORAL | h; mg/L | ADAPTED | No | Compile + contract |
+| `posaconazole_dolton_ddi` | [Dolton MJ et al. Antimicrob Agents Chemother. 2014;58:6879-6885.](https://doi.org/10.1128/AAC.03777-14) | FULL_TEXT_REQUIRED | Oral / ORAL | h; mg/L | ADAPTED | No | Compile + contract |
+| `rifampicine_chang` | [Chang MJ et al. Tuberculosis (Edinb). 2015;95:54-59.](https://doi.org/10.1016/j.tube.2014.10.013) | SOURCE_AMBIGUITY_DOCUMENTED | Oral / ORAL | h; mg/L | ADAPTED | No | Compile + contract |
+| `rifampicine_jeremiah` | [Jeremiah K et al. Antimicrob Agents Chemother. 2014;58:3468-3474.](https://doi.org/10.1128/AAC.02307-13) | FULL_TEXT_REQUIRED | Oral / ORAL | h; mg/L | ADAPTED | No | Compile + contract |
+| `rifampicine_jing` | [Jing Y et al. J Clin Pharmacol. 2016;56:622-627.](https://doi.org/10.1002/jcph.643) | ARTICLE_ALIGNED | Oral / ORAL | h; mg/L | ARTICLE | Yes | Deterministic regression |
+| `rifampicine_loos_ddi` | [Loos U et al. Klin Wochenschr. 1985;63:1205-1211.](https://doi.org/10.1007/BF01733779) | FULL_TEXT_REQUIRED | Oral / ORAL | h; mg/L | ADAPTED | No | Compile + contract |
+| `rifampicine_marsot` | [Marsot A et al. Br J Clin Pharmacol. 2017;83:1039-1047.](https://doi.org/10.1111/bcp.13178) | SOURCE_AMBIGUITY_DOCUMENTED | Oral / ORAL | h; mg/L | ARTICLE | Yes | Compile + contract |
+| `ritonavir_kappelhoff_ddi` | [Kappelhoff BS et al. Br J Clin Pharmacol. 2005;59:174-182.](https://doi.org/10.1111/j.1365-2125.2004.02241.x) | FULL_TEXT_REQUIRED | Oral / ORAL | h; mg/L | ADAPTED | No | Compile + contract |
+| `sirolimus_djebli_ddi` | [Djebli N et al. Clin Pharmacokinet. 2006;45:1135-1148.](https://doi.org/10.2165/00003088-200645110-00007) | FULL_TEXT_REQUIRED | Oral / ORAL | h; ng/mL | ADAPTED | No | Compile + contract |
+| `tacrolimus_kamp_envarsus_ddi` | [Kamp J et al. Pharmaceutics. 2024;16:17.](https://doi.org/10.3390/pharmaceutics16010017) | FULL_TEXT_REQUIRED | Oral / ORAL | h; ng/mL | ADAPTED | No | Compile + contract |
+| `tacrolimus_woillard_ddi` | [Woillard JB et al. Br J Clin Pharmacol. 2011;71:391-402.](https://doi.org/10.1111/j.1365-2125.2010.03837.x) | FULL_TEXT_REQUIRED | Oral / ORAL | h; ng/mL | ADAPTED | Yes | Deterministic regression |
+| `vanco_goti` | [Goti V et al. Ther Drug Monit. 2018;40:212-221.](https://doi.org/10.1097/FTD.0000000000000490) | ARTICLE_ALIGNED | IV / IV_INTERMITTENT | h; mg/L | ARTICLE | Yes | Deterministic regression |
+| `vanco_pkjust` | [Revilla N et al. Br J Clin Pharmacol. 2010;70:201-212.](https://doi.org/10.1111/j.1365-2125.2010.03679.x) | ARTICLE_ALIGNED | IV / IV_INTERMITTENT, IV_CONTINUOUS | h; mg/L | ARTICLE | Yes | Deterministic regression |
+| `vanco_roberts` | [Roberts JA et al. Antimicrob Agents Chemother. 2011;55:2704-2709.](https://doi.org/10.1128/AAC.01708-10) | ARTICLE_ALIGNED | IV / IV_CONTINUOUS | h; mg/L | ARTICLE | Yes | Deterministic regression |
+| `voriconazole_vandenborn_ddi` | [van den Born D et al. Int J Antimicrob Agents. 2023;61:106750.](https://doi.org/10.1016/j.ijantimicag.2023.106750) | FULL_TEXT_REQUIRED | Oral / ORAL | h; mg/L | ADAPTED | No | Compile + contract |
 
 ## Per-model implementation record
 
@@ -72,9 +73,10 @@ Population text and administration route define the currently encoded validity c
 - **Administration and units:** IV; IV_INTERMITTENT; time in h; concentration in mg/L.
 - **Structural/fixed parameters declared in code:** `TVCL`, `TVV1`, `TVQ`, `TVV2`.
 - **Covariates declared in code:** `WT`.
-- **Random and residual effects used by the equations:** ETA indices 1, 2, 3, 4; EPS indices 1, 2. OMEGA/SIGMA details remain authoritative in [the model source](../static/tdm/models/amik_burdet.cpp).
+- **Random and residual effects used by the equations:** ETA indices 1, 2, 3, 4; EPS indices 1, 2. OMEGA/SIGMA details remain authoritative in [the model source](../models/amik_burdet.cpp).
 - **MAP prior:** not exposed; simulation only.
 - **Fidelity status:** Documented adaptation; see the implementation note below.
+- **Primary full-text review:** DOCUMENTED_ADAPTATION_CONFIRMED (2026-10-16). The executable file represents the base model from Table 2, not the final covariate model. It remains simulation-only.
 - **Documented modification or limitation:** Le fichier reproduit le modèle de base sans covariables du tableau 2, et non le modèle final de l'article. Il est conservé pour la simulation mais n'est pas proposé comme prior MAP fidèle au modèle final.
 - **Reference testing:** compilation and interface-contract test only; no frozen numeric profile yet.
 
@@ -85,9 +87,10 @@ Population text and administration route define the currently encoded validity c
 - **Administration and units:** Oral; ORAL; time in h; concentration in mg/L.
 - **Structural/fixed parameters declared in code:** `TVCL`, `TVV1`, `TVQ`, `TVV2`, `TVKA`, `TVF`.
 - **Covariates declared in code:** None declared.
-- **Random and residual effects used by the equations:** ETA indices 1; EPS indices 1. OMEGA/SIGMA details remain authoritative in [the model source](../static/tdm/models/amiodarone_pollak_ddi.cpp).
+- **Random and residual effects used by the equations:** ETA indices 1; EPS indices 1. OMEGA/SIGMA details remain authoritative in [the model source](../models/amiodarone_pollak_ddi.cpp).
 - **MAP prior:** not exposed; simulation only.
 - **Fidelity status:** Documented adaptation; see the implementation note below.
+- **Primary full-text review:** FULL_TEXT_REQUIRED; equation-level comparison has not been completed.
 - **Documented modification or limitation:** Module DDI simplifié; prior OMEGA/SIGMA d'ingénierie.
 - **Reference testing:** compilation and interface-contract test only; no frozen numeric profile yet.
 
@@ -98,9 +101,10 @@ Population text and administration route define the currently encoded validity c
 - **Administration and units:** IV; IV_INTERMITTENT; time in h; concentration in mg/L.
 - **Structural/fixed parameters declared in code:** `TVCL`, `TVVC`, `TVVP`, `TVQ`, `REF_CRCL`.
 - **Covariates declared in code:** `CRCL`.
-- **Random and residual effects used by the equations:** ETA indices 1, 2; EPS indices 1, 2. OMEGA/SIGMA details remain authoritative in [the model source](../static/tdm/models/amox_carlier.cpp).
+- **Random and residual effects used by the equations:** ETA indices 1, 2; EPS indices 1, 2. OMEGA/SIGMA details remain authoritative in [the model source](../models/amox_carlier.cpp).
 - **MAP prior:** exposed in the TDM analysis workflow.
 - **Fidelity status:** Article implementation according to the author audit; independent reproduction pending.
+- **Primary full-text review:** ARTICLE_ALIGNED (2026-10-16). Two-compartment structure, creatinine-clearance effect, variability and proportional residual error align with the article. The zero additive variance only satisfies the two-term engine contract.
 - **Documented modification or limitation:** No adaptation is documented in catalog metadata. Independent source reproduction is still required.
 - **Reference testing:** 1 000 mg IV; concentrations at 1, 4, 12 and 24 h; zero ETA and residual errors; deterministic software-regression tolerance `1e-7`.
 
@@ -111,9 +115,10 @@ Population text and administration route define the currently encoded validity c
 - **Administration and units:** IV; IV_INTERMITTENT; time in h; concentration in mg/L.
 - **Structural/fixed parameters declared in code:** `TVCL`, `TVV1`, `TVQ`, `TVV2`, `CLCR_CL`, `REF_CLCR`, `REF_WT`.
 - **Covariates declared in code:** `AGE`, `WT`, `CREAT`, `SEX`.
-- **Random and residual effects used by the equations:** ETA indices 1; EPS indices 1, 2. OMEGA/SIGMA details remain authoritative in [the model source](../static/tdm/models/amox_fournier.cpp).
+- **Random and residual effects used by the equations:** ETA indices 1; EPS indices 1, 2. OMEGA/SIGMA details remain authoritative in [the model source](../models/amox_fournier.cpp).
 - **MAP prior:** not exposed; simulation only.
 - **Fidelity status:** Documented adaptation; see the implementation note below.
+- **Primary full-text review:** FULL_TEXT_REQUIRED; equation-level comparison has not been completed.
 - **Documented modification or limitation:** L'article rapporte θCLCR = 0,53 comme une augmentation proportionnelle mais imprime une équation sans facteur d'échelle. L'implémentation applique l'effet centré normalisé par la CLCR de référence de 110 mL/min, cohérent avec les valeurs de clairance publiées.
 - **Reference testing:** compilation and interface-contract test only; no frozen numeric profile yet.
 
@@ -124,9 +129,10 @@ Population text and administration route define the currently encoded validity c
 - **Administration and units:** IV + Oral; IV_INTERMITTENT, ORAL; time in h; concentration in mg/L.
 - **Structural/fixed parameters declared in code:** `TVF`, `TVMTT`, `TVKTR`, `TVKA`, `TVV1`, `TVCL`, `TVV2`, `TVQ`, `BETA_WT_KA`, `REF_WT`.
 - **Covariates declared in code:** `WT`, `AGE`, `CREAT`, `SEX`, `BSA`.
-- **Random and residual effects used by the equations:** ETA indices 1, 2, 3, 4, 5, 6, 7, 8; EPS indices 1, 2. OMEGA/SIGMA details remain authoritative in [the model source](../static/tdm/models/amox_mellon.cpp).
+- **Random and residual effects used by the equations:** ETA indices 1, 2, 3, 4, 5, 6, 7, 8; EPS indices 1, 2. OMEGA/SIGMA details remain authoritative in [the model source](../models/amox_mellon.cpp).
 - **MAP prior:** not exposed; simulation only.
 - **Fidelity status:** Documented adaptation; see the implementation note below.
+- **Primary full-text review:** DOCUMENTED_ADAPTATION_CONFIRMED (2026-10-16). Fixed and random-effect values align with Table 2; the oral transit chain remains a reconstruction because executable transit equations are absent from the main article.
 - **Documented modification or limitation:** La corrélation publiée entre CL et Q est conservée. La chaîne de transit orale reste une approximation : l'article principal ne fournit pas les équations exécutables permettant de reproduire simultanément Mtt et Ktr.
 - **Reference testing:** compilation and interface-contract test only; no frozen numeric profile yet.
 
@@ -137,9 +143,10 @@ Population text and administration route define the currently encoded validity c
 - **Administration and units:** IV; IV_CONTINUOUS; time in h; concentration in mg/L.
 - **Structural/fixed parameters declared in code:** `TVKE1`, `TVKE2`, `TVKCP`, `TVKPC`, `TVV`, `REF_AGFR`, `ERR_C0`, `ERR_C1`, `ERR_LAMBDA`.
 - **Covariates declared in code:** `CREAT`, `SEX`, `BLACK`, `AGE`, `BSA`.
-- **Random and residual effects used by the equations:** ETA indices 1, 2, 3, 4, 5; EPS indices 1, 2. OMEGA/SIGMA details remain authoritative in [the model source](../static/tdm/models/amox_rambaud.cpp).
+- **Random and residual effects used by the equations:** ETA indices 1, 2, 3, 4, 5; EPS indices 1, 2. OMEGA/SIGMA details remain authoritative in [the model source](../models/amox_rambaud.cpp).
 - **MAP prior:** not exposed; simulation only.
 - **Fidelity status:** Documented adaptation; see the implementation note below.
+- **Primary full-text review:** DOCUMENTED_ADAPTATION_CONFIRMED (2026-10-16). The source NPAG model is nonparametric; the log-normal OMEGA prior is an explicit mapbayr approximation.
 - **Documented modification or limitation:** Le modèle source NPAG est non paramétrique. L'équation CKD-EPI 2009 et le modèle d'erreur publiés sont conservés, mais le prior OMEGA log-normal est une approximation pour MAP/mapbayr.
 - **Reference testing:** compilation and interface-contract test only; no frozen numeric profile yet.
 
@@ -150,10 +157,11 @@ Population text and administration route define the currently encoded validity c
 - **Administration and units:** IV; IV_INTERMITTENT; time in h; concentration in mg/L.
 - **Structural/fixed parameters declared in code:** `TVCL`, `TVV1_INTRA`, `TVV1_POST`, `TVQ`, `TVV2`, `CL_WT_EXP`, `CL_eGFR_EXP`, `Q_WT_EXP`, `REF_WT`, `REF_eGFR`.
 - **Covariates declared in code:** `WT`, `HT`, `CREAT`, `PERIOD`.
-- **Random and residual effects used by the equations:** ETA indices 1, 2, 3, 4; EPS indices 1, 2. OMEGA/SIGMA details remain authoritative in [the model source](../static/tdm/models/cefazoline_cheng.cpp).
+- **Random and residual effects used by the equations:** ETA indices 1, 2, 3, 4; EPS indices 1, 2. OMEGA/SIGMA details remain authoritative in [the model source](../models/cefazoline_cheng.cpp).
 - **MAP prior:** not exposed; simulation only.
 - **Fidelity status:** Documented adaptation; see the implementation note below.
-- **Documented modification or limitation:** Les effets fixes périopératoire/postopératoire sont conservés. L'IOV publiée sur CL et V1 est omise car le moteur actuel ne représente pas encore des effets aléatoires indépendants par occasion.
+- **Primary full-text review:** DOCUMENTED_ADAPTATION_CONFIRMED (2026-10-16). The final unbound-concentration equations, including the published Q exponent 0.78, are retained. Published occasion variability is omitted.
+- **Documented modification or limitation:** Les concentrations et sorties sont non liées. Les effets fixes périopératoire/postopératoire et l'exposant final publié de 0,78 sur Q sont conservés. Cet exposant diffère de la phrase méthodologique générique annonçant 0,75 pour les clairances. L'IOV publiée sur CL et V1 est omise car le moteur actuel ne représente pas encore des effets aléatoires indépendants par occasion.
 - **Reference testing:** compilation and interface-contract test only; no frozen numeric profile yet.
 
 ### Cefazoline - Lanoiselée (`cefazoline_lanoiselee`)
@@ -163,9 +171,10 @@ Population text and administration route define the currently encoded validity c
 - **Administration and units:** IV; IV_INTERMITTENT; time in h; concentration in mg/L.
 - **Structural/fixed parameters declared in code:** `TVCL`, `THETA_CLCR`, `TVVC`, `TVVP`, `TVQ`, `REF_CLCR`, `FU`.
 - **Covariates declared in code:** `AGE`, `WT`, `HT`, `CREAT`, `SEX`.
-- **Random and residual effects used by the equations:** ETA indices 1, 2, 3, 4; EPS indices 1, 2. OMEGA/SIGMA details remain authoritative in [the model source](../static/tdm/models/cefazoline_lanoiselee.cpp).
+- **Random and residual effects used by the equations:** ETA indices 1, 2, 3, 4; EPS indices 1, 2. OMEGA/SIGMA details remain authoritative in [the model source](../models/cefazoline_lanoiselee.cpp).
 - **MAP prior:** exposed in the TDM analysis workflow.
 - **Fidelity status:** Article implementation according to the author audit; independent reproduction pending.
+- **Primary full-text review:** FULL_TEXT_REQUIRED; equation-level comparison has not been completed.
 - **Documented modification or limitation:** No adaptation is documented in catalog metadata. Independent source reproduction is still required.
 - **Reference testing:** compilation and interface-contract test only; no frozen numeric profile yet.
 
@@ -176,9 +185,10 @@ Population text and administration route define the currently encoded validity c
 - **Administration and units:** IV; IV_INTERMITTENT; time in h; concentration in mg/L.
 - **Structural/fixed parameters declared in code:** `TVCL_NR`, `TVCL_R`, `TVVC`, `TVVP`, `TVQ`, `POW_RCC`, `SHFT_PED`, `ALLO_CL`, `ALLO_V`.
 - **Covariates declared in code:** `WT`, `AGE`, `CLCR`.
-- **Random and residual effects used by the equations:** ETA indices 1, 2; EPS indices 1, 2. OMEGA/SIGMA details remain authoritative in [the model source](../static/tdm/models/cefazoline_schmitz.cpp).
+- **Random and residual effects used by the equations:** ETA indices 1, 2; EPS indices 1, 2. OMEGA/SIGMA details remain authoritative in [the model source](../models/cefazoline_schmitz.cpp).
 - **MAP prior:** not exposed; simulation only.
 - **Fidelity status:** Documented adaptation; see the implementation note below.
+- **Primary full-text review:** FULL_TEXT_REQUIRED; equation-level comparison has not been completed.
 - **Documented modification or limitation:** La CLCR est désormais saisie directement, comme dans l'équation publiée. L'IOV sur la clairance et la forme combined1 de l'erreur résiduelle ne sont pas représentées par le moteur MAP actuel; le modèle reste réservé à la simulation.
 - **Reference testing:** compilation and interface-contract test only; no frozen numeric profile yet.
 
@@ -189,9 +199,10 @@ Population text and administration route define the currently encoded validity c
 - **Administration and units:** IV; IV_INTERMITTENT; time in h; concentration in mg/L.
 - **Structural/fixed parameters declared in code:** `TVCLR`, `TVCLCRRT`, `TVCLNR`, `TVVC`, `TVVP`, `TVQ`, `REF_CLCR`, `REF_WT`.
 - **Covariates declared in code:** `AGE`, `WT`, `HT`, `CREAT`, `SEX`, `CRRT`.
-- **Random and residual effects used by the equations:** ETA indices 1, 2, 3; EPS indices 1, 2. OMEGA/SIGMA details remain authoritative in [the model source](../static/tdm/models/cefepime_an.cpp).
+- **Random and residual effects used by the equations:** ETA indices 1, 2, 3; EPS indices 1, 2. OMEGA/SIGMA details remain authoritative in [the model source](../models/cefepime_an.cpp).
 - **MAP prior:** exposed in the TDM analysis workflow.
 - **Fidelity status:** Article implementation according to the author audit; independent reproduction pending.
+- **Primary full-text review:** FULL_TEXT_REQUIRED; equation-level comparison has not been completed.
 - **Documented modification or limitation:** La branche CRRT publiée (CLCRRT 1,64 L/h) et l'erreur combinée (CV 22,4 %, SD additive 6,44 mg/L) sont implémentées.
 - **Reference testing:** compilation and interface-contract test only; no frozen numeric profile yet.
 
@@ -202,9 +213,10 @@ Population text and administration route define the currently encoded validity c
 - **Administration and units:** IV; IV_INTERMITTENT; time in h; concentration in mg/L.
 - **Structural/fixed parameters declared in code:** `TVV1`, `TVV2`, `TVQ`, `THETA1`, `THETA2`, `REF_CG_LH`, `CLDIAL`, `CLOTHER`.
 - **Covariates declared in code:** `CRCL`, `IHD`.
-- **Random and residual effects used by the equations:** ETA indices 1, 2; EPS indices 1, 2. OMEGA/SIGMA details remain authoritative in [the model source](../static/tdm/models/cefepime_jonckheere.cpp).
+- **Random and residual effects used by the equations:** ETA indices 1, 2; EPS indices 1, 2. OMEGA/SIGMA details remain authoritative in [the model source](../models/cefepime_jonckheere.cpp).
 - **MAP prior:** exposed in the TDM analysis workflow.
 - **Fidelity status:** Article implementation according to the author audit; independent reproduction pending.
+- **Primary full-text review:** ARTICLE_ALIGNED (2026-10-16). Structure, dialysis branch, fixed effects and log-normal variance conversion align with the publication.
 - **Documented modification or limitation:** No adaptation is documented in catalog metadata. Independent source reproduction is still required.
 - **Reference testing:** 2 000 mg by 30-minute IV infusion; concentrations at 1, 4, 12 and 24 h; zero ETA and residual errors; deterministic software-regression tolerance `1e-7`.
 
@@ -215,9 +227,10 @@ Population text and administration route define the currently encoded validity c
 - **Administration and units:** IV; IV_INTERMITTENT; time in h; concentration in mg/L.
 - **Structural/fixed parameters declared in code:** `TVCL`, `TVV1`, `TVQ`, `TVV2`, `CL_EXP`, `REF_CLCR`.
 - **Covariates declared in code:** `AGE`, `WT`, `CREAT`, `SEX`.
-- **Random and residual effects used by the equations:** ETA indices 1, 2, 3, 4; EPS indices 1, 2. OMEGA/SIGMA details remain authoritative in [the model source](../static/tdm/models/cefepime_seo.cpp).
+- **Random and residual effects used by the equations:** ETA indices 1, 2, 3, 4; EPS indices 1, 2. OMEGA/SIGMA details remain authoritative in [the model source](../models/cefepime_seo.cpp).
 - **MAP prior:** exposed in the TDM analysis workflow.
 - **Fidelity status:** Article implementation according to the author audit; independent reproduction pending.
+- **Primary full-text review:** FULL_TEXT_REQUIRED; equation-level comparison has not been completed.
 - **Documented modification or limitation:** No adaptation is documented in catalog metadata. Independent source reproduction is still required.
 - **Reference testing:** compilation and interface-contract test only; no frozen numeric profile yet.
 
@@ -228,9 +241,10 @@ Population text and administration route define the currently encoded validity c
 - **Administration and units:** Oral; ORAL; time in h; concentration in ng/mL.
 - **Structural/fixed parameters declared in code:** `TVCL_CSA`, `TVV1_CSA`, `TVQ_CSA`, `TVV2_CSA`, `TVKA_CSA`, `TVF_CSA`, `TVTLAG`, `WTCL`, `WTV`, `CYPCL`, `FM_CYP3A`.
 - **Covariates declared in code:** `WT`, `CYP`.
-- **Random and residual effects used by the equations:** ETA indices 1, 2, 3; EPS indices 1, 2. OMEGA/SIGMA details remain authoritative in [the model source](../static/tdm/models/ciclosporine_press_ddi.cpp).
+- **Random and residual effects used by the equations:** ETA indices 1, 2, 3; EPS indices 1, 2. OMEGA/SIGMA details remain authoritative in [the model source](../models/ciclosporine_press_ddi.cpp).
 - **MAP prior:** not exposed; simulation only.
 - **Fidelity status:** Documented adaptation; see the implementation note below.
+- **Primary full-text review:** FULL_TEXT_REQUIRED; equation-level comparison has not been completed.
 - **Documented modification or limitation:** Adaptation DDI : une fraction de clairance CYP3A de 0,50, calibrée sur une interaction clinique avec le voriconazole et non estimée dans le modèle Press, est ajoutée pour limiter les effets des inhibiteurs aux scénarios interactionnels.
 - **Reference testing:** compilation and interface-contract test only; no frozen numeric profile yet.
 
@@ -241,9 +255,10 @@ Population text and administration route define the currently encoded validity c
 - **Administration and units:** Oral; ORAL; time in h; concentration in mg/L.
 - **Structural/fixed parameters declared in code:** `TVCL`, `TVV`, `TVKA`, `TVF`.
 - **Covariates declared in code:** None declared.
-- **Random and residual effects used by the equations:** ETA indices 1; EPS indices 1. OMEGA/SIGMA details remain authoritative in [the model source](../static/tdm/models/cobicistat_mathias_ddi.cpp).
+- **Random and residual effects used by the equations:** ETA indices 1; EPS indices 1. OMEGA/SIGMA details remain authoritative in [the model source](../models/cobicistat_mathias_ddi.cpp).
 - **MAP prior:** not exposed; simulation only.
 - **Fidelity status:** Documented adaptation; see the implementation note below.
+- **Primary full-text review:** FULL_TEXT_REQUIRED; equation-level comparison has not been completed.
 - **Documented modification or limitation:** Validé uniquement comme module de sensibilité 50 mg; extrapolation à 150 mg non supportée.
 - **Reference testing:** compilation and interface-contract test only; no frozen numeric profile yet.
 
@@ -252,11 +267,12 @@ Population text and administration route define the currently encoded validity c
 - **Primary source:** Dvorchik BH et al. Antimicrob Agents Chemother. 2004;48:2799-2807. DOI: [10.1128/AAC.48.8.2799-2807.2004](https://doi.org/10.1128/AAC.48.8.2799-2807.2004).
 - **Source population:** Adultes sains et adultes infectés issus d'essais cliniques regroupés.
 - **Administration and units:** IV; IV_INTERMITTENT; time in h; concentration in mg/L.
-- **Structural/fixed parameters declared in code:** None declared.
-- **Covariates declared in code:** None declared.
-- **Random and residual effects used by the equations:** ETA indices 1, 2, 3, 4; EPS indices 1, 2. OMEGA/SIGMA details remain authoritative in [the model source](../static/tdm/models/dapto_dvorchik_IV_adults.cpp).
+- **Structural/fixed parameters declared in code:** `TVCL`, `TVV1`, `TVQ`, `TVV2`, `TVCL_DIAL`, `FEMALE_CL`, `INFECT_V2`, `CRCL`, `TCL`, `WTQ`, `WTV2`.
+- **Covariates declared in code:** `CREAT`, `TEMP`, `WT`, `SEX`, `AGE`, `DIAL`, `INFECT`.
+- **Random and residual effects used by the equations:** ETA indices 1, 2, 3, 4; EPS indices 1, 2. OMEGA/SIGMA details remain authoritative in [the model source](../models/dapto_dvorchik_IV_adults.cpp).
 - **MAP prior:** exposed in the TDM analysis workflow.
 - **Fidelity status:** Article implementation according to the author audit; independent reproduction pending.
+- **Primary full-text review:** ARTICLE_ALIGNED (2026-10-16). The two-compartment equations, dialysis, sex and infection effects and LC-MS/MS residual error align with the publication.
 - **Documented modification or limitation:** Les branches dialyse/non-dialyse, l'effet du sexe sur CL et l'effet de l'infection sur V2 sont explicites. L'erreur additive correspond à l'essai LC/MS/MS (variance 4,28).
 - **Reference testing:** 500 mg IV; concentrations at 1, 4, 12 and 24 h; zero ETA and residual errors; deterministic software-regression tolerance `1e-7`.
 
@@ -267,9 +283,10 @@ Population text and administration route define the currently encoded validity c
 - **Administration and units:** IV; IV_INTERMITTENT; time in h; concentration in mg/L.
 - **Structural/fixed parameters declared in code:** `TVCL`, `TVV1`, `TVQ`, `TVV2`, `CLCR_CL`, `MALE_CL`, `AGE_V1`, `WT_V1`, `RIF_V1`, `MALE_V1`, `REF_CLCR`, `REF_AGE`, `REF_WT`.
 - **Covariates declared in code:** `CLCR`, `AGE`, `WT`, `SEX`, `RIF`.
-- **Random and residual effects used by the equations:** ETA indices 1, 2, 3, 4; EPS indices 1, 2. OMEGA/SIGMA details remain authoritative in [the model source](../static/tdm/models/dapto_garreau.cpp).
+- **Random and residual effects used by the equations:** ETA indices 1, 2, 3, 4; EPS indices 1, 2. OMEGA/SIGMA details remain authoritative in [the model source](../models/dapto_garreau.cpp).
 - **MAP prior:** not exposed; simulation only.
 - **Fidelity status:** Documented adaptation; see the implementation note below.
+- **Primary full-text review:** DOCUMENTED_ADAPTATION_CONFIRMED (2026-10-16). Published fixed effects and between-subject variability are retained; inter-occasion variability on CL and V1 is omitted.
 - **Documented modification or limitation:** Les effets de la clairance de la créatinine, du sexe, de l'âge, du poids et de la rifampicine sont conservés. L'IOV publiée sur CL et V1 est omise dans le flux MAP actuel.
 - **Reference testing:** compilation and interface-contract test only; no frozen numeric profile yet.
 
@@ -280,9 +297,10 @@ Population text and administration route define the currently encoded validity c
 - **Administration and units:** Oral; ORAL; time in h; concentration in mg/L.
 - **Structural/fixed parameters declared in code:** `TVCL`, `TVV`, `TVKA`, `TVF`.
 - **Covariates declared in code:** None declared.
-- **Random and residual effects used by the equations:** ETA indices 1; EPS indices 1. OMEGA/SIGMA details remain authoritative in [the model source](../static/tdm/models/diltiazem_hermann_ddi.cpp).
+- **Random and residual effects used by the equations:** ETA indices 1; EPS indices 1. OMEGA/SIGMA details remain authoritative in [the model source](../models/diltiazem_hermann_ddi.cpp).
 - **MAP prior:** not exposed; simulation only.
 - **Fidelity status:** Documented adaptation; see the implementation note below.
+- **Primary full-text review:** FULL_TEXT_REQUIRED; equation-level comparison has not been completed.
 - **Documented modification or limitation:** Module DDI simplifié; prior OMEGA/SIGMA d'ingénierie.
 - **Reference testing:** compilation and interface-contract test only; no frozen numeric profile yet.
 
@@ -293,9 +311,10 @@ Population text and administration route define the currently encoded validity c
 - **Administration and units:** Oral; ORAL; time in h; concentration in mg/L.
 - **Structural/fixed parameters declared in code:** `TVCL`, `TVV`, `TVKA`, `TVF`.
 - **Covariates declared in code:** None declared.
-- **Random and residual effects used by the equations:** ETA indices 1; EPS indices 1. OMEGA/SIGMA details remain authoritative in [the model source](../static/tdm/models/erythromycine_mather_ddi.cpp).
+- **Random and residual effects used by the equations:** ETA indices 1; EPS indices 1. OMEGA/SIGMA details remain authoritative in [the model source](../models/erythromycine_mather_ddi.cpp).
 - **MAP prior:** not exposed; simulation only.
 - **Fidelity status:** Documented adaptation; see the implementation note below.
+- **Primary full-text review:** FULL_TEXT_REQUIRED; equation-level comparison has not been completed.
 - **Documented modification or limitation:** Module DDI simplifié; prior OMEGA/SIGMA d'ingénierie.
 - **Reference testing:** compilation and interface-contract test only; no frozen numeric profile yet.
 
@@ -306,9 +325,10 @@ Population text and administration route define the currently encoded validity c
 - **Administration and units:** Oral; ORAL; time in h; concentration in ng/mL.
 - **Structural/fixed parameters declared in code:** `TVCL_EVE`, `TVV1_EVE`, `TVQ_EVE`, `TVV2_EVE`, `TVKA_EVE`, `TVALAG`, `IBW_REF`, `IBW_V1`.
 - **Covariates declared in code:** `IBW`, `WT`.
-- **Random and residual effects used by the equations:** ETA indices 1, 2, 3, 4, 5; EPS indices 1, 2. OMEGA/SIGMA details remain authoritative in [the model source](../static/tdm/models/everolimus_moes_ddi.cpp).
+- **Random and residual effects used by the equations:** ETA indices 1, 2, 3, 4, 5; EPS indices 1, 2. OMEGA/SIGMA details remain authoritative in [the model source](../models/everolimus_moes_ddi.cpp).
 - **MAP prior:** not exposed; simulation only.
 - **Fidelity status:** Documented adaptation; see the implementation note below.
+- **Primary full-text review:** FULL_TEXT_REQUIRED; equation-level comparison has not been completed.
 - **Documented modification or limitation:** Adaptation DDI : le lien dose-clairance décrit comme biais de TDM dans la source est omis. Des variances pragmatiques sont ajoutées pour Q et V2 et une fraction non-CYP de 10 % est utilisée pour les scénarios interactionnels.
 - **Reference testing:** compilation and interface-contract test only; no frozen numeric profile yet.
 
@@ -319,9 +339,10 @@ Population text and administration route define the currently encoded validity c
 - **Administration and units:** Oral; ORAL; time in h; concentration in ng/mL.
 - **Structural/fixed parameters declared in code:** `TVMAT`, `TVCLINT`, `TVVC`, `TVVP`, `TVQ_EVE`, `QH_REF`, `FU_EVE`, `NTR`, `PREDNI_CL`, `FFM_REF`, `EXP_FLOW`, `EXP_VOL`, `BMAX_EVE`, `KD_EVE`, `KNS_EVE`, `VL_REF`.
 - **Covariates declared in code:** `WT`, `BH`, `SEX`, `HT`, `PREDNI`.
-- **Random and residual effects used by the equations:** ETA indices 1, 2, 3; EPS indices 1, 2. OMEGA/SIGMA details remain authoritative in [the model source](../static/tdm/models/everolimus_terheine_ddi.cpp).
+- **Random and residual effects used by the equations:** ETA indices 1, 2, 3; EPS indices 1, 2. OMEGA/SIGMA details remain authoritative in [the model source](../models/everolimus_terheine_ddi.cpp).
 - **MAP prior:** not exposed; simulation only.
 - **Fidelity status:** Documented adaptation; see the implementation note below.
+- **Primary full-text review:** FULL_TEXT_REQUIRED; equation-level comparison has not been completed.
 - **Documented modification or limitation:** Adaptation au moteur : le volume hépatique est fixé puis ajusté allométriquement faute de formule Small disponible ; la variabilité interoccasion sur MAT est représentée comme variabilité interindividuelle. Une fraction non-CYP de 10 % est ajoutée pour les scénarios DDI.
 - **Reference testing:** compilation and interface-contract test only; no frozen numeric profile yet.
 
@@ -332,9 +353,10 @@ Population text and administration route define the currently encoded validity c
 - **Administration and units:** Oral; ORAL; time in h; concentration in mg/L.
 - **Structural/fixed parameters declared in code:** `TVCL`, `TVV`, `TVKA`, `TVF`.
 - **Covariates declared in code:** None declared.
-- **Random and residual effects used by the equations:** ETA indices 1; EPS indices 1. OMEGA/SIGMA details remain authoritative in [the model source](../static/tdm/models/fluconazole_debruyne_ddi.cpp).
+- **Random and residual effects used by the equations:** ETA indices 1; EPS indices 1. OMEGA/SIGMA details remain authoritative in [the model source](../models/fluconazole_debruyne_ddi.cpp).
 - **MAP prior:** not exposed; simulation only.
 - **Fidelity status:** Documented adaptation; see the implementation note below.
+- **Primary full-text review:** FULL_TEXT_REQUIRED; equation-level comparison has not been completed.
 - **Documented modification or limitation:** Module fondé sur une revue; prior OMEGA/SIGMA d'ingénierie.
 - **Reference testing:** compilation and interface-contract test only; no frozen numeric profile yet.
 
@@ -345,9 +367,10 @@ Population text and administration route define the currently encoded validity c
 - **Administration and units:** IV; IV_INTERMITTENT; time in h; concentration in mg/L.
 - **Structural/fixed parameters declared in code:** `TVKE1`, `TVKE2`, `TVV1`, `TVKCP`, `TVKPC`, `WTREF`.
 - **Covariates declared in code:** `WT`, `IHD`, `DIAL`.
-- **Random and residual effects used by the equations:** ETA indices 1, 2, 3, 4, 5; EPS indices 1, 2. OMEGA/SIGMA details remain authoritative in [the model source](../static/tdm/models/genta_franck.cpp).
+- **Random and residual effects used by the equations:** ETA indices 1, 2, 3, 4, 5; EPS indices 1, 2. OMEGA/SIGMA details remain authoritative in [the model source](../models/genta_franck.cpp).
 - **MAP prior:** not exposed; simulation only.
 - **Fidelity status:** Documented adaptation; see the implementation note below.
+- **Primary full-text review:** DOCUMENTED_ADAPTATION_CONFIRMED (2026-10-16). The publication is ambiguous about lean versus total body weight for V; the engine's total-weight choice is documented.
 - **Documented modification or limitation:** Adaptation documentée : le texte est ambigu entre poids maigre et poids total pour le centrage de V; l'interface fournit le poids total, utilisé ici.
 - **Reference testing:** compilation and interface-contract test only; no frozen numeric profile yet.
 
@@ -358,9 +381,10 @@ Population text and administration route define the currently encoded validity c
 - **Administration and units:** IV; IV_INTERMITTENT; time in h; concentration in mg/L.
 - **Structural/fixed parameters declared in code:** `TVCLM`, `TVFR`, `TVVD`, `FATC`.
 - **Covariates declared in code:** `WT`, `HT`, `AGE`, `SEX`, `CREAT`.
-- **Random and residual effects used by the equations:** ETA indices 1, 2, 3; EPS indices 1. OMEGA/SIGMA details remain authoritative in [the model source](../static/tdm/models/genta_gomes.cpp).
+- **Random and residual effects used by the equations:** ETA indices 1, 2, 3; EPS indices 1. OMEGA/SIGMA details remain authoritative in [the model source](../models/genta_gomes.cpp).
 - **MAP prior:** not exposed; simulation only.
 - **Fidelity status:** Documented adaptation; see the implementation note below.
+- **Primary full-text review:** DOCUMENTED_ADAPTATION_CONFIRMED (2026-10-16). The article does not provide the exact corrected lean-body-mass and Cockcroft-Gault variants; the implemented choices are documented.
 - **Documented modification or limitation:** Adaptation documentée : l'article ne reproduit ni l'équation de masse maigre corrigée ni la variante exacte de Cockcroft-Gault; les choix implémentés sont explicités dans le code.
 - **Reference testing:** compilation and interface-contract test only; no frozen numeric profile yet.
 
@@ -371,9 +395,10 @@ Population text and administration route define the currently encoded validity c
 - **Administration and units:** IV; IV_INTERMITTENT; time in h; concentration in mg/L.
 - **Structural/fixed parameters declared in code:** `TVCL0`, `TVCLH`, `TVV1`, `TVQ`, `TVV2`, `SLCLCR`, `CTCLCR`, `EXALB`, `CTALB`, `FMISS`, `EXCL`, `EXV`, `ALBLO`, `ALBHI`.
 - **Covariates declared in code:** `WT`, `HT`, `AGE`, `SEX`, `CREAT`, `ALB`, `CVVH`, `FLAG`.
-- **Random and residual effects used by the equations:** ETA indices 1, 2, 3; EPS indices 1. OMEGA/SIGMA details remain authoritative in [the model source](../static/tdm/models/genta_hodiamont.cpp).
+- **Random and residual effects used by the equations:** ETA indices 1, 2, 3; EPS indices 1. OMEGA/SIGMA details remain authoritative in [the model source](../models/genta_hodiamont.cpp).
 - **MAP prior:** not exposed; simulation only.
 - **Fidelity status:** Documented adaptation; see the implementation note below.
+- **Primary full-text review:** DOCUMENTED_ADAPTATION_CONFIRMED (2026-10-16). Cockcroft-Gault substitution, albumin bounds and unreported Q/V2 allometric assumptions are documented engine adaptations.
 - **Documented modification or limitation:** Adaptation au moteur : quand aucune clairance urinaire mesurée sur 6 h est fournie, la CLCR est remplacée par Cockcroft-Gault ; albumine est bornée à la plage publiée de 10 à 36 g/L. Les exposants allométriques de Q et V2 sont des hypothèses documentées.
 - **Reference testing:** compilation and interface-contract test only; no frozen numeric profile yet.
 
@@ -384,9 +409,10 @@ Population text and administration route define the currently encoded validity c
 - **Administration and units:** IV; IV_INTERMITTENT; time in h; concentration in mg/L.
 - **Structural/fixed parameters declared in code:** `TVCLINT`, `TVCLSLP`, `TVV1BSA`, `ALBEXP`, `TVQ`, `TVV2`, `ALBREF`, `CRFLOOR`.
 - **Covariates declared in code:** `WT`, `HT`, `AGE`, `SEX`, `CREAT`, `ALB`.
-- **Random and residual effects used by the equations:** ETA indices 1, 2, 3; EPS indices 1, 2. OMEGA/SIGMA details remain authoritative in [the model source](../static/tdm/models/genta_rosario_clcr.cpp).
+- **Random and residual effects used by the equations:** ETA indices 1, 2, 3; EPS indices 1, 2. OMEGA/SIGMA details remain authoritative in [the model source](../models/genta_rosario_clcr.cpp).
 - **MAP prior:** not exposed; simulation only.
 - **Fidelity status:** Documented adaptation; see the implementation note below.
+- **Primary full-text review:** DOCUMENTED_ADAPTATION_CONFIRMED (2026-10-16). Clinical formulas are reconstructed from available covariates; unreported covariance and V1 variability are not invented.
 - **Documented modification or limitation:** Adaptation au moteur : Cockcroft-Gault et la formule de surface corporelle sont calculés à partir des covariables disponibles. La matrice OMEGA est supposée diagonale et la variabilité non publiée de V1 est fixée à zéro.
 - **Reference testing:** compilation and interface-contract test only; no frozen numeric profile yet.
 
@@ -397,9 +423,10 @@ Population text and administration route define the currently encoded validity c
 - **Administration and units:** IV; IV_INTERMITTENT; time in h; concentration in mg/L.
 - **Structural/fixed parameters declared in code:** `TVCLBSA`, `CREXP`, `AGEEXP`, `TVV1BSA`, `ALBEXP`, `TVQ`, `TVV2`, `CRFLOOR`, `CRREF`, `AGEREF`, `ALBREF`.
 - **Covariates declared in code:** `WT`, `HT`, `AGE`, `CREAT`, `ALB`, `SEX`.
-- **Random and residual effects used by the equations:** ETA indices 1, 2, 3; EPS indices 1, 2. OMEGA/SIGMA details remain authoritative in [the model source](../static/tdm/models/genta_rosario_clinical.cpp).
+- **Random and residual effects used by the equations:** ETA indices 1, 2, 3; EPS indices 1, 2. OMEGA/SIGMA details remain authoritative in [the model source](../models/genta_rosario_clinical.cpp).
 - **MAP prior:** not exposed; simulation only.
 - **Fidelity status:** Documented adaptation; see the implementation note below.
+- **Primary full-text review:** DOCUMENTED_ADAPTATION_CONFIRMED (2026-10-16). Clinical formulas are reconstructed from available covariates; unreported covariance and V1 variability are not invented.
 - **Documented modification or limitation:** Adaptation au moteur : les formules cliniques nécessaires sont calculées à partir des covariables disponibles. La matrice OMEGA est supposée diagonale et la variabilité non publiée de V1 est fixée à zéro.
 - **Reference testing:** compilation and interface-contract test only; no frozen numeric profile yet.
 
@@ -410,9 +437,10 @@ Population text and administration route define the currently encoded validity c
 - **Administration and units:** Oral; ORAL; time in h; concentration in mg/L.
 - **Structural/fixed parameters declared in code:** `TVCL`, `TVV1`, `TVV2`, `TVQ`, `KAMAX`, `RA`, `GAM1`, `EFF_BMI_V2`, `BMI_REF`.
 - **Covariates declared in code:** `BMI`.
-- **Random and residual effects used by the equations:** ETA indices 1; EPS indices 1. OMEGA/SIGMA details remain authoritative in [the model source](../static/tdm/models/isavuconazole_desai_ddi.cpp).
+- **Random and residual effects used by the equations:** ETA indices 1; EPS indices 1. OMEGA/SIGMA details remain authoritative in [the model source](../models/isavuconazole_desai_ddi.cpp).
 - **MAP prior:** not exposed; simulation only.
 - **Fidelity status:** Documented adaptation; see the implementation note below.
+- **Primary full-text review:** FULL_TEXT_REQUIRED; equation-level comparison has not been completed.
 - **Documented modification or limitation:** Absorption Weibull conservée; prior résiduel adapté pour mapbayr.
 - **Reference testing:** compilation and interface-contract test only; no frozen numeric profile yet.
 
@@ -423,9 +451,10 @@ Population text and administration route define the currently encoded validity c
 - **Administration and units:** Oral; ORAL; time in h; concentration in mg/L.
 - **Structural/fixed parameters declared in code:** `TVCL`, `TVV1`, `TVQ`, `TVV2`, `TVKA`, `TVF`.
 - **Covariates declared in code:** `WT`.
-- **Random and residual effects used by the equations:** ETA indices 1; EPS indices 1. OMEGA/SIGMA details remain authoritative in [the model source](../static/tdm/models/isavuconazole_groll_ddi.cpp).
+- **Random and residual effects used by the equations:** ETA indices 1; EPS indices 1. OMEGA/SIGMA details remain authoritative in [the model source](../models/isavuconazole_groll_ddi.cpp).
 - **MAP prior:** not exposed; simulation only.
 - **Fidelity status:** Documented adaptation; see the implementation note below.
+- **Primary full-text review:** FULL_TEXT_REQUIRED; equation-level comparison has not been completed.
 - **Documented modification or limitation:** Module DDI simplifié; prior OMEGA/SIGMA d'ingénierie.
 - **Reference testing:** compilation and interface-contract test only; no frozen numeric profile yet.
 
@@ -436,9 +465,10 @@ Population text and administration route define the currently encoded validity c
 - **Administration and units:** Oral; ORAL; time in h; concentration in mg/L.
 - **Structural/fixed parameters declared in code:** `TVCL`, `TVV`, `KA`, `CLCR_CL`, `AGE_CL`, `REF_CLCR`, `REF_AGE`.
 - **Covariates declared in code:** `CLCR`, `AGE`.
-- **Random and residual effects used by the equations:** ETA indices 1, 2; EPS indices 1, 2. OMEGA/SIGMA details remain authoritative in [the model source](../static/tdm/models/levo_canoui.cpp).
+- **Random and residual effects used by the equations:** ETA indices 1, 2; EPS indices 1, 2. OMEGA/SIGMA details remain authoritative in [the model source](../models/levo_canoui.cpp).
 - **MAP prior:** exposed in the TDM analysis workflow.
 - **Fidelity status:** Article implementation according to the author audit; independent reproduction pending.
+- **Primary full-text review:** ARTICLE_ALIGNED (2026-10-16). One-compartment oral structure, renal and age covariates, variability and residual error align with the article.
 - **Documented modification or limitation:** No adaptation is documented in catalog metadata. Independent source reproduction is still required.
 - **Reference testing:** compilation and interface-contract test only; no frozen numeric profile yet.
 
@@ -449,9 +479,10 @@ Population text and administration route define the currently encoded validity c
 - **Administration and units:** IV; IV_INTERMITTENT; time in h; concentration in mg/L.
 - **Structural/fixed parameters declared in code:** `TVCL`, `TVV`.
 - **Covariates declared in code:** `WT`.
-- **Random and residual effects used by the equations:** ETA indices 1, 2; EPS indices 1, 2. OMEGA/SIGMA details remain authoritative in [the model source](../static/tdm/models/levo_gergs.cpp).
+- **Random and residual effects used by the equations:** ETA indices 1, 2; EPS indices 1, 2. OMEGA/SIGMA details remain authoritative in [the model source](../models/levo_gergs.cpp).
 - **MAP prior:** not exposed; simulation only.
 - **Fidelity status:** Documented adaptation; see the implementation note below.
+- **Primary full-text review:** DOCUMENTED_ADAPTATION_CONFIRMED (2026-10-16). The irreversible bone compartment is omitted for repeated-dose plasma simulation, and unpublished residual terms are marked pragmatic.
 - **Documented modification or limitation:** Adaptation plasmatique : le compartiment osseux irréversible publié est omis car il ne convient pas aux doses répétées. Les deux composantes de erreur résiduelle ne sont pas publiées et sont des valeurs pragmatiques explicitement signalées dans le code.
 - **Reference testing:** compilation and interface-contract test only; no frozen numeric profile yet.
 
@@ -462,9 +493,10 @@ Population text and administration route define the currently encoded validity c
 - **Administration and units:** IV; IV_INTERMITTENT; time in h; concentration in mg/L.
 - **Structural/fixed parameters declared in code:** `TVCLU`, `TVVSSU`, `TVQU`, `FRV1`, `FU`, `FTSC`, `FTIM`.
 - **Covariates declared in code:** `WT`, `AGE`, `SEX`, `CREAT`.
-- **Random and residual effects used by the equations:** ETA indices 1, 2, 3; EPS indices 1, 2. OMEGA/SIGMA details remain authoritative in [the model source](../static/tdm/models/linez_buerger.cpp).
+- **Random and residual effects used by the equations:** ETA indices 1, 2, 3; EPS indices 1, 2. OMEGA/SIGMA details remain authoritative in [the model source](../models/linez_buerger.cpp).
 - **MAP prior:** not exposed; simulation only.
 - **Fidelity status:** Documented adaptation; see the implementation note below.
+- **Primary full-text review:** DOCUMENTED_ADAPTATION_CONFIRMED (2026-10-16). The publication reports an individual PK analysis; its use as a population prior is an explicit simulation-only adaptation.
 - **Documented modification or limitation:** Analyse PK individuelle publiée, adaptée ici comme prior populationnel.
 - **Reference testing:** compilation and interface-contract test only; no frozen numeric profile yet.
 
@@ -475,9 +507,10 @@ Population text and administration route define the currently encoded validity c
 - **Administration and units:** IV + Oral; IV_INTERMITTENT, ORAL; time in h; concentration in mg/L.
 - **Structural/fixed parameters declared in code:** `TVCL`, `TVV`, `KA`, `CLCRREF`, `BWREF`, `PWRCLCR`, `EFFCIR`, `CIR`, `TVF`, `CGFEM`.
 - **Covariates declared in code:** `WT`, `AGE`, `SEX`, `CREAT`.
-- **Random and residual effects used by the equations:** ETA indices 1, 2; EPS indices 2. OMEGA/SIGMA details remain authoritative in [the model source](../static/tdm/models/linez_sasaki.cpp).
+- **Random and residual effects used by the equations:** ETA indices 1, 2; EPS indices 2. OMEGA/SIGMA details remain authoritative in [the model source](../models/linez_sasaki.cpp).
 - **MAP prior:** not exposed; simulation only.
 - **Fidelity status:** Documented adaptation; see the implementation note below.
+- **Primary full-text review:** DOCUMENTED_ADAPTATION_CONFIRMED (2026-10-16). Oral bioavailability and the female Cockcroft-Gault factor are engine assumptions; the published platelet PD component is out of scope.
 - **Documented modification or limitation:** Adaptation au moteur : la biodisponibilité orale est fixée à 1 et le facteur féminin de Cockcroft-Gault à 0,85, deux choix non précisés dans la source. Le modèle PD plaquettaire publié est hors du périmètre PK.
 - **Reference testing:** compilation and interface-contract test only; no frozen numeric profile yet.
 
@@ -488,9 +521,10 @@ Population text and administration route define the currently encoded validity c
 - **Administration and units:** Oral; ORAL; time in h; concentration in mg/L.
 - **Structural/fixed parameters declared in code:** `TVCL`, `TVV`, `TVKA`, `TVF`.
 - **Covariates declared in code:** None declared.
-- **Random and residual effects used by the equations:** ETA indices 1; EPS indices 1. OMEGA/SIGMA details remain authoritative in [the model source](../static/tdm/models/posaconazole_dolton_ddi.cpp).
+- **Random and residual effects used by the equations:** ETA indices 1; EPS indices 1. OMEGA/SIGMA details remain authoritative in [the model source](../models/posaconazole_dolton_ddi.cpp).
 - **MAP prior:** not exposed; simulation only.
 - **Fidelity status:** Documented adaptation; see the implementation note below.
+- **Primary full-text review:** FULL_TEXT_REQUIRED; equation-level comparison has not been completed.
 - **Documented modification or limitation:** Module DDI simplifié; prior OMEGA/SIGMA d'ingénierie.
 - **Reference testing:** compilation and interface-contract test only; no frozen numeric profile yet.
 
@@ -501,9 +535,10 @@ Population text and administration route define the currently encoded validity c
 - **Administration and units:** Oral; ORAL; time in h; concentration in mg/L.
 - **Structural/fixed parameters declared in code:** `CL_INT`, `CL_BMI`, `BMIREF`, `VD_INT`, `VD_DM`, `KA_INT`, `KA_DM`.
 - **Covariates declared in code:** `WT`, `HT`, `DM`.
-- **Random and residual effects used by the equations:** ETA indices 1, 2, 3; EPS indices 1, 2. OMEGA/SIGMA details remain authoritative in [the model source](../static/tdm/models/rifampicine_chang.cpp).
+- **Random and residual effects used by the equations:** ETA indices 1, 2, 3; EPS indices 1, 2. OMEGA/SIGMA details remain authoritative in [the model source](../models/rifampicine_chang.cpp).
 - **MAP prior:** not exposed; simulation only.
 - **Fidelity status:** Documented adaptation; see the implementation note below.
+- **Primary full-text review:** SOURCE_AMBIGUITY_DOCUMENTED (2026-10-16). The printed BMI effect on CL lacks an operator before 6.22; the retained historical interpretation is explicitly flagged.
 - **Documented modification or limitation:** Texte intégral vérifié. L'article imprime l'effet du BMI sur CL sans opérateur avant 6,22; l'interprétation historique du dépôt est conservée et signalée dans le modèle.
 - **Reference testing:** compilation and interface-contract test only; no frozen numeric profile yet.
 
@@ -514,9 +549,10 @@ Population text and administration route define the currently encoded validity c
 - **Administration and units:** Oral; ORAL; time in h; concentration in mg/L.
 - **Structural/fixed parameters declared in code:** `TVCL7`, `TVCLSS`, `TVVD`, `TVKA`, `TVMTT`, `NN`, `THALFI`, `FFMREF`, `ALLOCL`.
 - **Covariates declared in code:** `WT`, `HT`, `SEX`.
-- **Random and residual effects used by the equations:** ETA indices 1; EPS indices 1, 2. OMEGA/SIGMA details remain authoritative in [the model source](../static/tdm/models/rifampicine_jeremiah.cpp).
+- **Random and residual effects used by the equations:** ETA indices 1; EPS indices 1, 2. OMEGA/SIGMA details remain authoritative in [the model source](../models/rifampicine_jeremiah.cpp).
 - **MAP prior:** not exposed; simulation only.
 - **Fidelity status:** Documented adaptation; see the implementation note below.
+- **Primary full-text review:** FULL_TEXT_REQUIRED; equation-level comparison has not been completed.
 - **Documented modification or limitation:** Structure et paramètres vérifiés dans l'article; les effets VIH, supplémentation et variabilités interoccasion ne sont pas encore implémentés.
 - **Reference testing:** compilation and interface-contract test only; no frozen numeric profile yet.
 
@@ -527,9 +563,10 @@ Population text and administration route define the currently encoded validity c
 - **Administration and units:** Oral; ORAL; time in h; concentration in mg/L.
 - **Structural/fixed parameters declared in code:** `TVCL`, `TVVD`, `TVKA`.
 - **Covariates declared in code:** `WT`.
-- **Random and residual effects used by the equations:** ETA indices 1, 2; EPS indices 2. OMEGA/SIGMA details remain authoritative in [the model source](../static/tdm/models/rifampicine_jing.cpp).
+- **Random and residual effects used by the equations:** ETA indices 1, 2; EPS indices 2. OMEGA/SIGMA details remain authoritative in [the model source](../models/rifampicine_jing.cpp).
 - **MAP prior:** exposed in the TDM analysis workflow.
 - **Fidelity status:** Article implementation according to the author audit; independent reproduction pending.
+- **Primary full-text review:** ARTICLE_ALIGNED (2026-10-16). One-compartment oral structure and reported fixed, random and residual parameters align with the article.
 - **Documented modification or limitation:** No adaptation is documented in catalog metadata. Independent source reproduction is still required.
 - **Reference testing:** 450 mg oral; concentrations at 1, 4, 12 and 24 h; zero ETA and residual errors; deterministic software-regression tolerance `1e-7`.
 
@@ -540,9 +577,10 @@ Population text and administration route define the currently encoded validity c
 - **Administration and units:** Oral; ORAL; time in h; concentration in mg/L.
 - **Structural/fixed parameters declared in code:** `TVCL`, `TVV`, `TVKA`, `TVF`.
 - **Covariates declared in code:** None declared.
-- **Random and residual effects used by the equations:** ETA indices 1; EPS indices 1. OMEGA/SIGMA details remain authoritative in [the model source](../static/tdm/models/rifampicine_loos_ddi.cpp).
+- **Random and residual effects used by the equations:** ETA indices 1; EPS indices 1. OMEGA/SIGMA details remain authoritative in [the model source](../models/rifampicine_loos_ddi.cpp).
 - **MAP prior:** not exposed; simulation only.
 - **Fidelity status:** Documented adaptation; see the implementation note below.
+- **Primary full-text review:** FULL_TEXT_REQUIRED; equation-level comparison has not been completed.
 - **Documented modification or limitation:** Module DDI simplifié; prior OMEGA/SIGMA d'ingénierie.
 - **Reference testing:** compilation and interface-contract test only; no frozen numeric profile yet.
 
@@ -551,12 +589,13 @@ Population text and administration route define the currently encoded validity c
 - **Primary source:** Marsot A et al. Br J Clin Pharmacol. 2017;83:1039-1047. DOI: [10.1111/bcp.13178](https://doi.org/10.1111/bcp.13178).
 - **Source population:** Adultes traités pour une infection ostéo-articulaire, avec ou sans acide fusidique.
 - **Administration and units:** Oral; ORAL; time in h; concentration in mg/L.
-- **Structural/fixed parameters declared in code:** None declared.
-- **Covariates declared in code:** None declared.
-- **Random and residual effects used by the equations:** ETA indices 1, 2; EPS indices 1, 2. OMEGA/SIGMA details remain authoritative in [the model source](../static/tdm/models/rifampicine_marsot.cpp).
+- **Structural/fixed parameters declared in code:** `TVKa`, `TVCL_NOFUS`, `TVV_NOFUS`, `TVCL_FUS`, `TVV_FUS`.
+- **Covariates declared in code:** `FUS`.
+- **Random and residual effects used by the equations:** ETA indices 1, 2; EPS indices 1, 2. OMEGA/SIGMA details remain authoritative in [the model source](../models/rifampicine_marsot.cpp).
 - **MAP prior:** exposed in the TDM analysis workflow.
 - **Fidelity status:** Article implementation according to the author audit; independent reproduction pending.
-- **Documented modification or limitation:** No adaptation is documented in catalog metadata. Independent source reproduction is still required.
+- **Primary full-text review:** SOURCE_AMBIGUITY_DOCUMENTED (2026-10-16). The final additive estimate 2.256 mg/L is implemented as an SD and squared for mrgsolve. The article also mentions log-transformed data despite its concentration-scale equation.
+- **Documented modification or limitation:** L'erreur finale est additive. La valeur publiée de 2,256 mg/L est traitée comme un écart-type et convertie en variance SIGMA pour mrgsolve. L'article mentionne aussi des données transformées en logarithme malgré une équation additive sur les concentrations et une estimation en mg/L; cette ambiguïté ne peut être levée sans le modèle source.
 - **Reference testing:** compilation and interface-contract test only; no frozen numeric profile yet.
 
 ### Ritonavir - Kappelhoff (`ritonavir_kappelhoff_ddi`)
@@ -566,9 +605,10 @@ Population text and administration route define the currently encoded validity c
 - **Administration and units:** Oral; ORAL; time in h; concentration in mg/L.
 - **Structural/fixed parameters declared in code:** `TVCL`, `TVV`, `TVKA`, `TVF`.
 - **Covariates declared in code:** None declared.
-- **Random and residual effects used by the equations:** ETA indices 1; EPS indices 1. OMEGA/SIGMA details remain authoritative in [the model source](../static/tdm/models/ritonavir_kappelhoff_ddi.cpp).
+- **Random and residual effects used by the equations:** ETA indices 1; EPS indices 1. OMEGA/SIGMA details remain authoritative in [the model source](../models/ritonavir_kappelhoff_ddi.cpp).
 - **MAP prior:** not exposed; simulation only.
 - **Fidelity status:** Documented adaptation; see the implementation note below.
+- **Primary full-text review:** FULL_TEXT_REQUIRED; equation-level comparison has not been completed.
 - **Documented modification or limitation:** Module DDI simplifié; prior OMEGA/SIGMA d'ingénierie.
 - **Reference testing:** compilation and interface-contract test only; no frozen numeric profile yet.
 
@@ -579,9 +619,10 @@ Population text and administration route define the currently encoded validity c
 - **Administration and units:** Oral; ORAL; time in h; concentration in ng/mL.
 - **Structural/fixed parameters declared in code:** `TVCL_SIR`, `TVCLC_SIR`, `TVV1_SIR`, `TVQ_SIR`, `TVV2_SIR`, `TVKTR_SIR`.
 - **Covariates declared in code:** `CYP`, `WT`.
-- **Random and residual effects used by the equations:** ETA indices 1, 2, 3, 4, 5; EPS indices 1, 2. OMEGA/SIGMA details remain authoritative in [the model source](../static/tdm/models/sirolimus_djebli_ddi.cpp).
+- **Random and residual effects used by the equations:** ETA indices 1, 2, 3, 4, 5; EPS indices 1, 2. OMEGA/SIGMA details remain authoritative in [the model source](../models/sirolimus_djebli_ddi.cpp).
 - **MAP prior:** not exposed; simulation only.
 - **Fidelity status:** Documented adaptation; see the implementation note below.
+- **Primary full-text review:** FULL_TEXT_REQUIRED; equation-level comparison has not been completed.
 - **Documented modification or limitation:** Adaptation DDI : effet CYP3A5 additif publié conservé. Des variances pragmatiques sont ajoutées pour V1, Q, V2 et KTR faute de valeurs publiées utilisables, ainsi que 5 % de clairance non-CYP pour éviter une clairance nulle sous inhibition.
 - **Reference testing:** compilation and interface-contract test only; no frozen numeric profile yet.
 
@@ -592,9 +633,10 @@ Population text and administration route define the currently encoded validity c
 - **Administration and units:** Oral; ORAL; time in h; concentration in ng/mL.
 - **Structural/fixed parameters declared in code:** `TVCL`, `TVV1`, `TVQ`, `TVV2`, `TVKTR`, `LAG`, `CYPCL`.
 - **Covariates declared in code:** `CYP`.
-- **Random and residual effects used by the equations:** ETA indices 1, 2, 3, 4, 5; EPS indices 1, 2. OMEGA/SIGMA details remain authoritative in [the model source](../static/tdm/models/tacrolimus_kamp_envarsus_ddi.cpp).
+- **Random and residual effects used by the equations:** ETA indices 1, 2, 3, 4, 5; EPS indices 1, 2. OMEGA/SIGMA details remain authoritative in [the model source](../models/tacrolimus_kamp_envarsus_ddi.cpp).
 - **MAP prior:** not exposed; simulation only.
 - **Fidelity status:** Documented adaptation; see the implementation note below.
+- **Primary full-text review:** FULL_TEXT_REQUIRED; equation-level comparison has not been completed.
 - **Documented modification or limitation:** Adaptation DDI : la PK de base conserve les paramètres Kamp, tandis que le découpage de clairance en fractions CYP3A4, CYP3A5 et non-CYP de 5 % est ajouté pour les scénarios interactionnels.
 - **Reference testing:** compilation and interface-contract test only; no frozen numeric profile yet.
 
@@ -605,9 +647,10 @@ Population text and administration route define the currently encoded validity c
 - **Administration and units:** Oral; ORAL; time in h; concentration in ng/mL.
 - **Structural/fixed parameters declared in code:** `TVCL_TAC`, `TVV1_TAC`, `TVQ_TAC`, `TVV2_TAC`, `TVKTR_TAC`, `HTCL`, `STV1`, `STKTR`, `CYPCL`, `FORME_OTH`, `CL_OTHER_LH`, `FRACT_OTH`.
 - **Covariates declared in code:** `HT`, `ST`, `CYP`.
-- **Random and residual effects used by the equations:** ETA indices 1, 2, 3, 4, 5; EPS indices 1, 2. OMEGA/SIGMA details remain authoritative in [the model source](../static/tdm/models/tacrolimus_woillard_ddi.cpp).
+- **Random and residual effects used by the equations:** ETA indices 1, 2, 3, 4, 5; EPS indices 1, 2. OMEGA/SIGMA details remain authoritative in [the model source](../models/tacrolimus_woillard_ddi.cpp).
 - **MAP prior:** exposed in the TDM analysis workflow.
 - **Fidelity status:** Documented adaptation; see the implementation note below.
+- **Primary full-text review:** FULL_TEXT_REQUIRED; equation-level comparison has not been completed.
 - **Documented modification or limitation:** L'adaptation ajoute une décomposition de clairance destinée aux scénarios DDI, mais elle préserve exactement la clairance de base en l'absence d'interaction. Le prior PK publié reste utilisé pour l'ajustement MAP.
 - **Reference testing:** 5 mg oral; concentrations at 1, 4, 12 and 24 h; zero ETA and residual errors; deterministic software-regression tolerance `1e-7`.
 
@@ -618,9 +661,10 @@ Population text and administration route define the currently encoded validity c
 - **Administration and units:** IV; IV_INTERMITTENT; time in h; concentration in mg/L.
 - **Structural/fixed parameters declared in code:** `TVCL`, `TVV1`, `TVV2`, `TVQ`, `CRCL_CL`, `DIAL_CL`, `DIAL_V1`, `REF_CRCL`, `REF_WT`.
 - **Covariates declared in code:** `AGE`, `WT`, `CREAT`, `SEX`, `DIAL`.
-- **Random and residual effects used by the equations:** ETA indices 1, 2, 3; EPS indices 1, 2. OMEGA/SIGMA details remain authoritative in [the model source](../static/tdm/models/vanco_goti.cpp).
+- **Random and residual effects used by the equations:** ETA indices 1, 2, 3; EPS indices 1, 2. OMEGA/SIGMA details remain authoritative in [the model source](../models/vanco_goti.cpp).
 - **MAP prior:** exposed in the TDM analysis workflow.
 - **Fidelity status:** Article implementation according to the author audit; independent reproduction pending.
+- **Primary full-text review:** ARTICLE_ALIGNED (2026-10-16). Structure and covariates align with the article. CL OMEGA is converted consistently from the published 39.8% CV using log(1 + CV^2).
 - **Documented modification or limitation:** No adaptation is documented in catalog metadata. Independent source reproduction is still required.
 - **Reference testing:** 1 000 mg IV; concentrations at 1, 4, 12 and 24 h; zero ETA and residual errors; deterministic software-regression tolerance `1e-7`.
 
@@ -631,9 +675,10 @@ Population text and administration route define the currently encoded validity c
 - **Administration and units:** IV; IV_INTERMITTENT, IV_CONTINUOUS; time in h; concentration in mg/L.
 - **Structural/fixed parameters declared in code:** `TVCLCR`, `TVV1`, `AGE_CL`, `CREAT_V`.
 - **Covariates declared in code:** `AGE`, `CRCL`, `CREAT`, `WT`.
-- **Random and residual effects used by the equations:** ETA indices 1, 2; EPS indices 1, 2. OMEGA/SIGMA details remain authoritative in [the model source](../static/tdm/models/vanco_pkjust.cpp).
+- **Random and residual effects used by the equations:** ETA indices 1, 2; EPS indices 1, 2. OMEGA/SIGMA details remain authoritative in [the model source](../models/vanco_pkjust.cpp).
 - **MAP prior:** exposed in the TDM analysis workflow.
 - **Fidelity status:** Article implementation according to the author audit; independent reproduction pending.
+- **Primary full-text review:** ARTICLE_ALIGNED (2026-10-16). The Revilla equations, measured 24-hour creatinine clearance and additive residual SD align with the article.
 - **Documented modification or limitation:** CRCL est la clairance de créatinine mesurée sur 24 h, comme dans l'article, et non une estimation de Cockcroft-Gault. Le modèle résiduel est additif (SD 4,23 mg/L).
 - **Reference testing:** 1 000 mg IV; concentrations at 1, 4, 12 and 24 h; zero ETA and residual errors; deterministic software-regression tolerance `1e-7`.
 
@@ -644,9 +689,10 @@ Population text and administration route define the currently encoded validity c
 - **Administration and units:** IV; IV_CONTINUOUS; time in h; concentration in mg/L.
 - **Structural/fixed parameters declared in code:** `TVCL`, `TVV`.
 - **Covariates declared in code:** `CRCL`, `WT`.
-- **Random and residual effects used by the equations:** ETA indices 1, 2; EPS indices 1, 2. OMEGA/SIGMA details remain authoritative in [the model source](../static/tdm/models/vanco_roberts.cpp).
+- **Random and residual effects used by the equations:** ETA indices 1, 2; EPS indices 1, 2. OMEGA/SIGMA details remain authoritative in [the model source](../models/vanco_roberts.cpp).
 - **MAP prior:** exposed in the TDM analysis workflow.
 - **Fidelity status:** Article implementation according to the author audit; independent reproduction pending.
+- **Primary full-text review:** ARTICLE_ALIGNED (2026-10-16). The continuous-infusion structure, measured 24-hour creatinine clearance and published parameter values align with the article.
 - **Documented modification or limitation:** La clairance utilise la clairance urinaire de créatinine sur 24 h normalisée à 1,73 m², conformément à l'article.
 - **Reference testing:** 1 000 mg/24 h by continuous IV infusion; concentrations at 1, 4, 12 and 24 h; zero ETA and residual errors; deterministic software-regression tolerance `1e-7`.
 
@@ -657,9 +703,10 @@ Population text and administration route define the currently encoded validity c
 - **Administration and units:** Oral; ORAL; time in h; concentration in mg/L.
 - **Structural/fixed parameters declared in code:** `TVKA`, `TVVD`, `TVKM`, `TVVMAX`, `TVF`, `CRPEK`.
 - **Covariates declared in code:** `CRP`.
-- **Random and residual effects used by the equations:** ETA indices 1; EPS indices 1. OMEGA/SIGMA details remain authoritative in [the model source](../static/tdm/models/voriconazole_vandenborn_ddi.cpp).
+- **Random and residual effects used by the equations:** ETA indices 1; EPS indices 1. OMEGA/SIGMA details remain authoritative in [the model source](../models/voriconazole_vandenborn_ddi.cpp).
 - **MAP prior:** not exposed; simulation only.
 - **Fidelity status:** Documented adaptation; see the implementation note below.
+- **Primary full-text review:** FULL_TEXT_REQUIRED; equation-level comparison has not been completed.
 - **Documented modification or limitation:** Prior OMEGA/SIGMA d'ingénierie ajouté pour la compatibilité MAP.
 - **Reference testing:** compilation and interface-contract test only; no frozen numeric profile yet.
 

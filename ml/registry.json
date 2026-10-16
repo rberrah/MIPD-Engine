@@ -1,6 +1,6 @@
 {
   "version": 3,
-  "benchmarkDate": "2026-09-24",
+  "benchmarkDate": "2026-10-16",
   "samplingDesign": {
     "primary": {
       "minimumObservations": 2,
@@ -2032,7 +2032,7 @@
         "residualError": "Model SIGMA retained for sparse concentrations; OMEGA supplied through idata."
       },
       "baseModelId": "cefazoline_cheng",
-      "baseModelSha256": "1ad33147d28f1d2d796d5cefec17dfac41cbbe5bfc697b1b639c68531690767f",
+      "baseModelSha256": "79384a2b804114642da9f615db5eb1753c139a078dc4b67be53e3e4c9f8d060c",
       "artifactPath": "artifacts/cefazoline_cheng-intermittent-c0-post-auc24-xgb-v4.rds",
       "artifactSha256": "e1f4bae72d811444de40d562126a739d459ba74b0476860d4feb7a5286ffeb1b",
       "explanation": {
@@ -2147,7 +2147,7 @@
         "doi": "10.1016/j.phrs.2021.105578",
         "developmentGenerators": "cefazoline_cheng",
         "developmentModelSha256": {
-          "cefazoline_cheng": "1ad33147d28f1d2d796d5cefec17dfac41cbbe5bfc697b1b639c68531690767f"
+          "cefazoline_cheng": "79384a2b804114642da9f615db5eb1753c139a078dc4b67be53e3e4c9f8d060c"
         },
         "unseenValidationGenerators": [
           "cefazoline_lanoiselee",
@@ -12844,13 +12844,13 @@
         "residualError": "Model SIGMA retained for sparse concentrations; OMEGA supplied through idata."
       },
       "baseModelId": "rifampicine_marsot",
-      "baseModelSha256": "ad485724a95d72a0e55412b92bbab195bea3a5da0349b3ad96d3f4ed96679d4a",
+      "baseModelSha256": "fa3b3fc12f0fa65582c33cea58ad3a850c9eb591a787e65572a94678f6eb6feb",
       "artifactPath": "artifacts/rifampicine_marsot-oral-c0-post-auc24-xgb-v4.rds",
-      "artifactSha256": "081dbd8896fbef1d71d78c1817507f2ed3386df5820cd9419229dcf3d534e981",
+      "artifactSha256": "696f663096ef4d49271a2c0e35a8e20a5099357a9329c1903629e81d9641d778",
       "explanation": {
         "type": "dalex_break_down",
         "backgroundPath": "artifacts/rifampicine_marsot-oral-c0-post-auc24-xgb-v4-dalex-background.rds",
-        "backgroundSha256": "4e46c87717226167700301f46d82503cac83b8f69ac7c3d391964afa1d2ba102",
+        "backgroundSha256": "6e13c368efe84045330d8a61d79d377c7ba626e5c745c0cb8f696df06af0fdf6",
         "sampleSize": 200,
         "synthetic": true
       },
@@ -12929,7 +12929,7 @@
         "doi": "10.1016/j.phrs.2021.105578",
         "developmentGenerators": "rifampicine_marsot",
         "developmentModelSha256": {
-          "rifampicine_marsot": "ad485724a95d72a0e55412b92bbab195bea3a5da0349b3ad96d3f4ed96679d4a"
+          "rifampicine_marsot": "fa3b3fc12f0fa65582c33cea58ad3a850c9eb591a787e65572a94678f6eb6feb"
         },
         "unseenValidationGenerators": [
           "rifampicine_chang",
@@ -12955,6 +12955,11 @@
         "nTraining": 750,
         "nUntouchedHoldout": 250,
         "nUnseenPopPk": 500,
+        "split": {
+          "unit": "simulated_patient",
+          "method": "seeded_random_75_25_before_model_fitting",
+          "holdoutUntouched": true
+        },
         "hyperparameters": {
           "max_depth": 4,
           "eta": 0.03,
@@ -12967,19 +12972,14 @@
           "R": "R version 4.4.1 (2024-06-14 ucrt)",
           "mrgsolve": "1.7.2",
           "xgboost": "3.2.1.1"
-        },
-        "split": {
-          "unit": "simulated_patient",
-          "method": "seeded_random_75_25_before_model_fitting",
-          "holdoutUntouched": true
         }
       },
       "trainingDomain": {
         "auc24": {
           "min": 5.0987,
-          "max": 1112.3048
+          "max": 1053.6437
         },
-        "concentrationMax": 45.3144,
+        "concentrationMax": 42.3506,
         "features": {
           "FUS": {
             "min": 0,
@@ -12998,16 +12998,16 @@
             "max": 24
           },
           "PREV_CONC": {
-            "min": 0.0054,
-            "max": 35.7427
+            "min": 0.0112,
+            "max": 38.2964
           },
           "PREV_TIME": {
             "min": 12,
             "max": 24
           },
           "LAST_CONC": {
-            "min": 0.0371,
-            "max": 45.3144
+            "min": 0.0137,
+            "max": 42.3506
           },
           "PREV_POP_CONC": {
             "min": 0.035,
@@ -13018,16 +13018,16 @@
             "max": 19.876
           },
           "PREV_CONC_RATIO": {
-            "min": 0.0098,
-            "max": 151.8794
+            "min": 0.0067,
+            "max": 179.3342
           },
           "LAST_CONC_RATIO": {
-            "min": 0.0254,
-            "max": 4.5078
+            "min": 0.0049,
+            "max": 5.376
           },
           "CONC_DIFF": {
-            "min": -3.8166,
-            "max": 36.1704
+            "min": -7.1992,
+            "max": 32.3576
           }
         }
       },
@@ -13040,46 +13040,46 @@
         },
         "repeatedCv": {
           "passed": false,
-          "relativeRmsePct": 34.8306,
-          "relativeBiasPct": -6.1046,
-          "within20Pct": 37.5333
+          "relativeRmsePct": 45.634,
+          "relativeBiasPct": -7.8924,
+          "within20Pct": 30.3333
         },
         "untouchedHoldout": {
           "passed": false,
-          "relativeRmsePct": 35.8844,
-          "relativeBiasPct": -4.3731,
-          "within20Pct": 37.2
+          "relativeRmsePct": 43.4233,
+          "relativeBiasPct": -7.2804,
+          "within20Pct": 34
         },
         "alternatePopPk": {
           "passed": false,
-          "relativeRmsePct": 76.2545,
-          "relativeBiasPct": 10.6758,
-          "within20Pct": 28.8
+          "relativeRmsePct": 69.1765,
+          "relativeBiasPct": 2.1519,
+          "within20Pct": 35.2
         },
         "populationBaseline": {
           "repeatedCv": {
             "passed": false,
-            "relativeRmsePct": 91.2519,
-            "relativeBiasPct": -23.8676,
-            "within20Pct": 22
+            "relativeRmsePct": 90.5421,
+            "relativeBiasPct": -20.256,
+            "within20Pct": 26.5333
           },
           "untouchedHoldout": {
             "passed": false,
-            "relativeRmsePct": 109.526,
-            "relativeBiasPct": -20.2798,
-            "within20Pct": 23.6
+            "relativeRmsePct": 108.4786,
+            "relativeBiasPct": -25.6799,
+            "within20Pct": 21.6
           },
           "alternatePopPk": {
             "passed": false,
-            "relativeRmsePct": 141.3722,
-            "relativeBiasPct": -25.0542,
-            "within20Pct": 23.4
+            "relativeRmsePct": 122.8365,
+            "relativeBiasPct": -20.5504,
+            "within20Pct": 23.2
           }
         },
         "comparison": {
-          "repeatedCvRelativeRmseGainPct": 61.8303,
-          "untouchedHoldoutRelativeRmseGainPct": 67.2366,
-          "alternatePopPkRelativeRmseGainPct": 46.0612
+          "repeatedCvRelativeRmseGainPct": 49.5992,
+          "untouchedHoldoutRelativeRmseGainPct": 59.9707,
+          "alternatePopPkRelativeRmseGainPct": 43.6841
         },
         "samplingStrategies": {
           "c0Only": {
@@ -13093,21 +13093,21 @@
             },
             "repeatedCv": {
               "passed": false,
-              "relativeRmsePct": 50.0591,
-              "relativeBiasPct": -7.6446,
-              "within20Pct": 31.3333
+              "relativeRmsePct": 52.7296,
+              "relativeBiasPct": -9.518,
+              "within20Pct": 30.1333
             },
             "untouchedHoldout": {
               "passed": false,
-              "relativeRmsePct": 48.273,
-              "relativeBiasPct": -7.8163,
-              "within20Pct": 26.4
+              "relativeRmsePct": 63.5163,
+              "relativeBiasPct": -10.7582,
+              "within20Pct": 21.2
             },
             "alternatePopPk": {
               "passed": false,
-              "relativeRmsePct": 87.1156,
-              "relativeBiasPct": -6.5634,
-              "within20Pct": 22.8
+              "relativeRmsePct": 78.5737,
+              "relativeBiasPct": -9.8267,
+              "within20Pct": 29.8
             }
           },
           "c0PlusOneHourPostInfusion": {
@@ -13121,21 +13121,21 @@
             },
             "repeatedCv": {
               "passed": false,
-              "relativeRmsePct": 34.8306,
-              "relativeBiasPct": -6.1046,
-              "within20Pct": 37.5333
+              "relativeRmsePct": 45.634,
+              "relativeBiasPct": -7.8924,
+              "within20Pct": 30.3333
             },
             "untouchedHoldout": {
               "passed": false,
-              "relativeRmsePct": 35.8844,
-              "relativeBiasPct": -4.3731,
-              "within20Pct": 37.2
+              "relativeRmsePct": 43.4233,
+              "relativeBiasPct": -7.2804,
+              "within20Pct": 34
             },
             "alternatePopPk": {
               "passed": false,
-              "relativeRmsePct": 76.2545,
-              "relativeBiasPct": 10.6758,
-              "within20Pct": 28.8
+              "relativeRmsePct": 69.1765,
+              "relativeBiasPct": 2.1519,
+              "within20Pct": 35.2
             }
           }
         },
@@ -14377,13 +14377,13 @@
         "residualError": "Model SIGMA retained for sparse concentrations; OMEGA supplied through idata."
       },
       "baseModelId": "vanco_goti",
-      "baseModelSha256": "224882c821ae81f8aadf91f95460974bfc945e1303ba9dbd26c391a05d8dc83d",
+      "baseModelSha256": "c8e2a6daba5ec941eec1a6201ed128b92a5bcc52f40b52b51c63a2d11003908d",
       "artifactPath": "artifacts/vanco_goti-intermittent-c0-post-auc24-xgb-v4.rds",
-      "artifactSha256": "e2d4b1c933f4fec1dd765dee175952ead9b414a9ab6db27a0ea89e07da13b052",
+      "artifactSha256": "33a25a771148e6b7f28bf2ccc91127b713967f194e8e884d3bba4f38f1500e90",
       "explanation": {
         "type": "dalex_break_down",
         "backgroundPath": "artifacts/vanco_goti-intermittent-c0-post-auc24-xgb-v4-dalex-background.rds",
-        "backgroundSha256": "9b3e213b02c9e2e4f565f4bd1621d34b5e6cd340c3d0999952ac393336f8c6ad",
+        "backgroundSha256": "1d0f554881580bbf45839986349a3b200c71c2f41fd2778a7a02949af27943de",
         "sampleSize": 200,
         "synthetic": true
       },
@@ -14497,7 +14497,7 @@
         "doi": "10.1016/j.phrs.2021.105578",
         "developmentGenerators": "vanco_goti",
         "developmentModelSha256": {
-          "vanco_goti": "224882c821ae81f8aadf91f95460974bfc945e1303ba9dbd26c391a05d8dc83d"
+          "vanco_goti": "c8e2a6daba5ec941eec1a6201ed128b92a5bcc52f40b52b51c63a2d11003908d"
         },
         "unseenValidationGenerators": "vanco_pkjust",
         "regimenConfiguration": "ml/training-regimens.json",
@@ -14524,6 +14524,11 @@
         "nTraining": 750,
         "nUntouchedHoldout": 250,
         "nUnseenPopPk": 500,
+        "split": {
+          "unit": "simulated_patient",
+          "method": "seeded_random_75_25_before_model_fitting",
+          "holdoutUntouched": true
+        },
         "hyperparameters": {
           "max_depth": 4,
           "eta": 0.03,
@@ -14536,31 +14541,26 @@
           "R": "R version 4.4.1 (2024-06-14 ucrt)",
           "mrgsolve": "1.7.2",
           "xgboost": "3.2.1.1"
-        },
-        "split": {
-          "unit": "simulated_patient",
-          "method": "seeded_random_75_25_before_model_fitting",
-          "holdoutUntouched": true
         }
       },
       "trainingDomain": {
         "auc24": {
-          "min": 57.751,
-          "max": 15191.2315
+          "min": 66.3526,
+          "max": 13684.2794
         },
-        "concentrationMax": 737.4037,
+        "concentrationMax": 554.9385,
         "features": {
           "AGE": {
-            "min": 17.1732,
-            "max": 100.869
+            "min": 17.1032,
+            "max": 100.9973
           },
           "WT": {
-            "min": 33.0103,
-            "max": 254.995
+            "min": 33.7125,
+            "max": 254.931
           },
           "CREAT": {
-            "min": 17.7953,
-            "max": 1413.7253
+            "min": 20.0957,
+            "max": 1414.3292
           },
           "SEX": {
             "min": 0,
@@ -14571,8 +14571,8 @@
             "max": 1
           },
           "POP_AUC24": {
-            "min": 93.5189,
-            "max": 9907.03
+            "min": 96.6436,
+            "max": 9429.4088
           },
           "DOSE": {
             "min": 500,
@@ -14588,7 +14588,7 @@
           },
           "PREV_CONC": {
             "min": 0.001,
-            "max": 703.1759
+            "max": 477.017
           },
           "PREV_TIME": {
             "min": 8,
@@ -14596,31 +14596,31 @@
           },
           "LAST_CONC": {
             "min": 0.001,
-            "max": 737.4037
+            "max": 554.9385
           },
           "LAST_TIME": {
             "min": 2,
             "max": 5
           },
           "PREV_POP_CONC": {
-            "min": 2.3525,
-            "max": 402.1959
+            "min": 1.9644,
+            "max": 384.1164
           },
           "LAST_POP_CONC": {
-            "min": 5.0954,
-            "max": 420.5937
+            "min": 5.0321,
+            "max": 396.4087
           },
           "PREV_CONC_RATIO": {
             "min": 0.0001,
-            "max": 6.3963
+            "max": 4.2184
           },
           "LAST_CONC_RATIO": {
             "min": 0.0001,
-            "max": 2.946
+            "max": 2.9971
           },
           "CONC_DIFF": {
-            "min": -382.6584,
-            "max": 230.092
+            "min": -97.725,
+            "max": 337.0771
           },
           "TIME_DIFF": {
             "min": 2,
@@ -14637,46 +14637,46 @@
         },
         "repeatedCv": {
           "passed": false,
-          "relativeRmsePct": 26.3474,
-          "relativeBiasPct": -1.4007,
-          "within20Pct": 71.1333
+          "relativeRmsePct": 28.3573,
+          "relativeBiasPct": -1.7322,
+          "within20Pct": 68.8
         },
         "untouchedHoldout": {
           "passed": false,
-          "relativeRmsePct": 22.8758,
-          "relativeBiasPct": 2.4222,
-          "within20Pct": 69.6
+          "relativeRmsePct": 30.4301,
+          "relativeBiasPct": 1.8277,
+          "within20Pct": 74.4
         },
         "alternatePopPk": {
           "passed": false,
-          "relativeRmsePct": 203.8989,
-          "relativeBiasPct": 132.8672,
-          "within20Pct": 10.6
+          "relativeRmsePct": 179.799,
+          "relativeBiasPct": 115.4384,
+          "within20Pct": 16.8
         },
         "populationBaseline": {
           "repeatedCv": {
             "passed": false,
-            "relativeRmsePct": 63.5869,
-            "relativeBiasPct": -10.2555,
-            "within20Pct": 40.5333
+            "relativeRmsePct": 56.6224,
+            "relativeBiasPct": -4.9625,
+            "within20Pct": 39.2
           },
           "untouchedHoldout": {
             "passed": false,
-            "relativeRmsePct": 51.7461,
-            "relativeBiasPct": -7.0599,
-            "within20Pct": 34.8
+            "relativeRmsePct": 60.3713,
+            "relativeBiasPct": -5.0685,
+            "within20Pct": 44.4
           },
           "alternatePopPk": {
             "passed": false,
-            "relativeRmsePct": 481.6827,
-            "relativeBiasPct": 333.7528,
-            "within20Pct": 2.8
+            "relativeRmsePct": 448.5835,
+            "relativeBiasPct": 307.7377,
+            "within20Pct": 5.8
           }
         },
         "comparison": {
-          "repeatedCvRelativeRmseGainPct": 58.5648,
-          "untouchedHoldoutRelativeRmseGainPct": 55.7923,
-          "alternatePopPkRelativeRmseGainPct": 57.6695
+          "repeatedCvRelativeRmseGainPct": 49.9185,
+          "untouchedHoldoutRelativeRmseGainPct": 49.5952,
+          "alternatePopPkRelativeRmseGainPct": 59.9185
         },
         "samplingStrategies": {
           "c0Only": {
@@ -14690,21 +14690,21 @@
             },
             "repeatedCv": {
               "passed": false,
-              "relativeRmsePct": 34.779,
-              "relativeBiasPct": -1.6046,
-              "within20Pct": 62.9333
+              "relativeRmsePct": 39.7282,
+              "relativeBiasPct": -2.8347,
+              "within20Pct": 59.2
             },
             "untouchedHoldout": {
               "passed": false,
-              "relativeRmsePct": 31.4703,
-              "relativeBiasPct": 2.5366,
-              "within20Pct": 60
+              "relativeRmsePct": 36.699,
+              "relativeBiasPct": 1.8277,
+              "within20Pct": 56.8
             },
             "alternatePopPk": {
               "passed": false,
-              "relativeRmsePct": 215.402,
-              "relativeBiasPct": 148.7409,
-              "within20Pct": 6.2
+              "relativeRmsePct": 238.4341,
+              "relativeBiasPct": 154.9288,
+              "within20Pct": 10.4
             }
           },
           "c0PlusOneHourPostInfusion": {
@@ -14718,21 +14718,21 @@
             },
             "repeatedCv": {
               "passed": false,
-              "relativeRmsePct": 26.3474,
-              "relativeBiasPct": -1.4007,
-              "within20Pct": 71.1333
+              "relativeRmsePct": 28.3573,
+              "relativeBiasPct": -1.7322,
+              "within20Pct": 68.8
             },
             "untouchedHoldout": {
               "passed": false,
-              "relativeRmsePct": 22.8758,
-              "relativeBiasPct": 2.4222,
-              "within20Pct": 69.6
+              "relativeRmsePct": 30.4301,
+              "relativeBiasPct": 1.8277,
+              "within20Pct": 74.4
             },
             "alternatePopPk": {
               "passed": false,
-              "relativeRmsePct": 203.8989,
-              "relativeBiasPct": 132.8672,
-              "within20Pct": 10.6
+              "relativeRmsePct": 179.799,
+              "relativeBiasPct": 115.4384,
+              "within20Pct": 16.8
             }
           }
         },

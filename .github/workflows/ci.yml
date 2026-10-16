@@ -21,8 +21,10 @@ jobs:
         run: python scripts/verify_origin_manifest.py
       - name: Regenerate standalone model catalogue
         run: node scripts/generate_model_catalog.mjs
+      - name: Regenerate model traceability
+        run: node scripts/generate_tdm_traceability.mjs
       - name: Verify generated model-library outputs are committed
-        run: git diff --exit-code -- models ml/catalog-summary.generated.json
+        run: git diff --exit-code -- models ml/catalog-summary.generated.json docs/tdm-model-traceability.md docs/tdm-model-traceability.json
 
   core-r:
     runs-on: ubuntu-latest

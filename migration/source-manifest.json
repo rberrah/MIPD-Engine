@@ -3,7 +3,7 @@
   "sourceRepository": "rberrah/rberrah.github.io",
   "sourceCommit": "2f97f109c3f4af257776a595f6546c9cd5f2321d",
   "extractionDate": "2026-10-16",
-  "copiedCount": 214,
+  "copiedCount": 199,
   "pendingCount": 0,
   "copied": [
     {
@@ -29,18 +29,6 @@
       "target": "docs/pmetrics-translator.md",
       "gitBlob": "f79955c1ccd5dacfb3db8684456385221db1c9bc",
       "size": 7154
-    },
-    {
-      "source": "docs/tdm-model-traceability.json",
-      "target": "docs/tdm-model-traceability.json",
-      "gitBlob": "d55cd19eac3083e9098743902a210eec7e5b799c",
-      "size": 133533
-    },
-    {
-      "source": "docs/tdm-model-traceability.md",
-      "target": "docs/tdm-model-traceability.md",
-      "gitBlob": "ba35366e877abe8f2a179c89e15834903803318b",
-      "size": 65987
     },
     {
       "source": "tdm-engine/ml/artifacts/amik_burdet-intermittent-c0-post-auc24-xgb-v4-dalex-background.rds",
@@ -499,18 +487,6 @@
       "size": 105993
     },
     {
-      "source": "tdm-engine/ml/artifacts/rifampicine_marsot-oral-c0-post-auc24-xgb-v4-dalex-background.rds",
-      "target": "ml/artifacts/rifampicine_marsot-oral-c0-post-auc24-xgb-v4-dalex-background.rds",
-      "gitBlob": "a3c0daca790267a63c255a4c7bd1a44ff6fa5994",
-      "size": 10260
-    },
-    {
-      "source": "tdm-engine/ml/artifacts/rifampicine_marsot-oral-c0-post-auc24-xgb-v4.rds",
-      "target": "ml/artifacts/rifampicine_marsot-oral-c0-post-auc24-xgb-v4.rds",
-      "gitBlob": "f450601c7014edd778b2cab8d22be4691c91c5df",
-      "size": 110829
-    },
-    {
       "source": "tdm-engine/ml/artifacts/ritonavir_kappelhoff_ddi-oral-c0-post-auc24-xgb-v4-dalex-background.rds",
       "target": "ml/artifacts/ritonavir_kappelhoff_ddi-oral-c0-post-auc24-xgb-v4-dalex-background.rds",
       "gitBlob": "a59fdeb18a9b5564e344ed9835aba1a3d41479c1",
@@ -559,18 +535,6 @@
       "size": 110861
     },
     {
-      "source": "tdm-engine/ml/artifacts/vanco_goti-intermittent-c0-post-auc24-xgb-v4-dalex-background.rds",
-      "target": "ml/artifacts/vanco_goti-intermittent-c0-post-auc24-xgb-v4-dalex-background.rds",
-      "gitBlob": "98449ff1a27ce9770855f8f38596cedbca7c0aa3",
-      "size": 18230
-    },
-    {
-      "source": "tdm-engine/ml/artifacts/vanco_goti-intermittent-c0-post-auc24-xgb-v4.rds",
-      "target": "ml/artifacts/vanco_goti-intermittent-c0-post-auc24-xgb-v4.rds",
-      "gitBlob": "eaa02ce8ed9b7f64a9b55784bee429eb37a90f10",
-      "size": 112589
-    },
-    {
       "source": "tdm-engine/ml/artifacts/vanco_pkjust-intermittent-c0-post-auc24-xgb-v4-dalex-background.rds",
       "target": "ml/artifacts/vanco_pkjust-intermittent-c0-post-auc24-xgb-v4-dalex-background.rds",
       "gitBlob": "fb816b1de4525f406710cb6bea9dcb7c22b0de12",
@@ -599,18 +563,6 @@
       "target": "ml/paired_auc_benchmark.R",
       "gitBlob": "3f944d195d0b8e3ba8708f807276559d399fba5d",
       "size": 16650
-    },
-    {
-      "source": "tdm-engine/ml/registry.json",
-      "target": "ml/registry.json",
-      "gitBlob": "20e1764bf75e91faa88fec27fda7da194d733229",
-      "size": 464605
-    },
-    {
-      "source": "tdm-engine/ml/train_models_xgboost.R",
-      "target": "ml/train_models_xgboost.R",
-      "gitBlob": "2b50ad6ed0ec0e72e1f475d5788d159be185b1a8",
-      "size": 45041
     },
     {
       "source": "tdm-engine/ml/training-populations.json",
@@ -677,18 +629,6 @@
       "target": "models/amox_rambaud.cpp",
       "gitBlob": "2ea956396903699f981e0ac451782952ed4a743a",
       "size": 3984
-    },
-    {
-      "source": "tdm-engine/models/catalog.json",
-      "target": "models/catalog.json",
-      "gitBlob": "0281c8209d7e5c1680fcbd388638d13dc0eab504",
-      "size": 120604
-    },
-    {
-      "source": "tdm-engine/models/cefazoline_cheng.cpp",
-      "target": "models/cefazoline_cheng.cpp",
-      "gitBlob": "422747cc0af0374a19b40e3974d1fdfe4c75d4d9",
-      "size": 2977
     },
     {
       "source": "tdm-engine/models/cefazoline_lanoiselee.cpp",
@@ -805,12 +745,6 @@
       "size": 26065
     },
     {
-      "source": "static/tdm/model-i18n.en.json",
-      "target": "models/i18n.en.json",
-      "gitBlob": "2a84a799b2f909401504bd901e63e3e02feaa0e7",
-      "size": 12207
-    },
-    {
       "source": "tdm-engine/models/isavuconazole_desai_ddi.cpp",
       "target": "models/isavuconazole_desai_ddi.cpp",
       "gitBlob": "2061f4a14254e171eee6fd5e0e3a7d88578fa972",
@@ -847,12 +781,6 @@
       "size": 19623
     },
     {
-      "source": "static/tdm/model-metadata.json",
-      "target": "models/metadata.json",
-      "gitBlob": "dfcf1b1d10248a4b5d4ef43b3cebd226ed5cfae3",
-      "size": 29980
-    },
-    {
       "source": "tdm-engine/models/posaconazole_dolton_ddi.cpp",
       "target": "models/posaconazole_dolton_ddi.cpp",
       "gitBlob": "2c0c15926da8fe52eba9917427f61bee6b05d0f6",
@@ -883,12 +811,6 @@
       "size": 1148
     },
     {
-      "source": "tdm-engine/models/rifampicine_marsot.cpp",
-      "target": "models/rifampicine_marsot.cpp",
-      "gitBlob": "562a84bdc0429fce1bdfa2ecedf1196ab6f7a592",
-      "size": 1305
-    },
-    {
       "source": "tdm-engine/models/ritonavir_kappelhoff_ddi.cpp",
       "target": "models/ritonavir_kappelhoff_ddi.cpp",
       "gitBlob": "e926b381f5ca6c4d11d7e4f6b6a9eacde6325e0f",
@@ -911,12 +833,6 @@
       "target": "models/tacrolimus_woillard_ddi.cpp",
       "gitBlob": "beeea9f3c832e2bb09b007f44f5572ce1c157332",
       "size": 4432
-    },
-    {
-      "source": "tdm-engine/models/vanco_goti.cpp",
-      "target": "models/vanco_goti.cpp",
-      "gitBlob": "f712ea90ddeddf4da08c4f66e270364ae40ec09e",
-      "size": 2687
     },
     {
       "source": "tdm-engine/models/vanco_pkjust.cpp",
@@ -1267,12 +1183,6 @@
       "size": 30971
     },
     {
-      "source": "tdm-engine/tests/validate_library.R",
-      "target": "tests/validate_library.R",
-      "gitBlob": "4339d47aa339b2b8c9d23ad1fd19de9703ca77a7",
-      "size": 8076
-    },
-    {
       "source": "tdm-engine/tests/workshop_pk_test.R",
       "target": "tests/workshop_pk_test.R",
       "gitBlob": "2d4308e17c4714be66f62f4e7f5c4a93da5b554d",
@@ -1341,7 +1251,112 @@
       "gitBlob": "5bdfd184a0b0a099f44936557ee4de427877b5e4",
       "size": 2829,
       "reason": "standalone-root-path-adaptation"
+    },
+    {
+      "source": "tdm-engine/models/catalog.json",
+      "target": "models/catalog.json",
+      "gitBlob": "0281c8209d7e5c1680fcbd388638d13dc0eab504",
+      "size": 120604,
+      "reason": "regenerated-after-source-full-text-audit"
+    },
+    {
+      "source": "tdm-engine/models/cefazoline_cheng.cpp",
+      "target": "models/cefazoline_cheng.cpp",
+      "gitBlob": "422747cc0af0374a19b40e3974d1fdfe4c75d4d9",
+      "size": 2977,
+      "reason": "source-full-text-citation-and-equation-annotation"
+    },
+    {
+      "source": "static/tdm/model-i18n.en.json",
+      "target": "models/i18n.en.json",
+      "gitBlob": "2a84a799b2f909401504bd901e63e3e02feaa0e7",
+      "size": 12207,
+      "reason": "source-full-text-audit-documentation"
+    },
+    {
+      "source": "static/tdm/model-metadata.json",
+      "target": "models/metadata.json",
+      "gitBlob": "dfcf1b1d10248a4b5d4ef43b3cebd226ed5cfae3",
+      "size": 29980,
+      "reason": "source-full-text-audit-documentation"
+    },
+    {
+      "source": "tdm-engine/models/rifampicine_marsot.cpp",
+      "target": "models/rifampicine_marsot.cpp",
+      "gitBlob": "562a84bdc0429fce1bdfa2ecedf1196ab6f7a592",
+      "size": 1305,
+      "reason": "source-full-text-residual-error-correction"
+    },
+    {
+      "source": "tdm-engine/models/vanco_goti.cpp",
+      "target": "models/vanco_goti.cpp",
+      "gitBlob": "f712ea90ddeddf4da08c4f66e270364ae40ec09e",
+      "size": 2687,
+      "reason": "source-full-text-between-subject-variance-correction"
+    },
+    {
+      "source": "tdm-engine/tests/validate_library.R",
+      "target": "tests/validate_library.R",
+      "gitBlob": "4339d47aa339b2b8c9d23ad1fd19de9703ca77a7",
+      "size": 8076,
+      "reason": "source-review-coverage-and-regression-guards"
+    },
+    {
+      "source": "tdm-engine/ml/artifacts/rifampicine_marsot-oral-c0-post-auc24-xgb-v4-dalex-background.rds",
+      "target": "ml/artifacts/rifampicine_marsot-oral-c0-post-auc24-xgb-v4-dalex-background.rds",
+      "gitBlob": "a3c0daca790267a63c255a4c7bd1a44ff6fa5994",
+      "size": 10260,
+      "reason": "retrained-after-source-model-correction"
+    },
+    {
+      "source": "tdm-engine/ml/artifacts/rifampicine_marsot-oral-c0-post-auc24-xgb-v4.rds",
+      "target": "ml/artifacts/rifampicine_marsot-oral-c0-post-auc24-xgb-v4.rds",
+      "gitBlob": "f450601c7014edd778b2cab8d22be4691c91c5df",
+      "size": 110829,
+      "reason": "retrained-after-source-model-correction"
+    },
+    {
+      "source": "tdm-engine/ml/artifacts/vanco_goti-intermittent-c0-post-auc24-xgb-v4-dalex-background.rds",
+      "target": "ml/artifacts/vanco_goti-intermittent-c0-post-auc24-xgb-v4-dalex-background.rds",
+      "gitBlob": "98449ff1a27ce9770855f8f38596cedbca7c0aa3",
+      "size": 18230,
+      "reason": "retrained-after-source-model-correction"
+    },
+    {
+      "source": "tdm-engine/ml/artifacts/vanco_goti-intermittent-c0-post-auc24-xgb-v4.rds",
+      "target": "ml/artifacts/vanco_goti-intermittent-c0-post-auc24-xgb-v4.rds",
+      "gitBlob": "eaa02ce8ed9b7f64a9b55784bee429eb37a90f10",
+      "size": 112589,
+      "reason": "retrained-after-source-model-correction"
+    },
+    {
+      "source": "tdm-engine/ml/registry.json",
+      "target": "ml/registry.json",
+      "gitBlob": "20e1764bf75e91faa88fec27fda7da194d733229",
+      "size": 464605,
+      "reason": "source-model-hashes-and-retrained-artifact-metadata"
+    },
+    {
+      "source": "docs/tdm-model-traceability.json",
+      "target": "docs/tdm-model-traceability.json",
+      "gitBlob": "d55cd19eac3083e9098743902a210eec7e5b799c",
+      "size": 133533,
+      "reason": "regenerated-by-standalone-traceability-generator"
+    },
+    {
+      "source": "docs/tdm-model-traceability.md",
+      "target": "docs/tdm-model-traceability.md",
+      "gitBlob": "ba35366e877abe8f2a179c89e15834903803318b",
+      "size": 65987,
+      "reason": "regenerated-by-standalone-traceability-generator"
+    },
+    {
+      "source": "tdm-engine/ml/train_models_xgboost.R",
+      "target": "ml/train_models_xgboost.R",
+      "gitBlob": "2b50ad6ed0ec0e72e1f475d5788d159be185b1a8",
+      "size": 45041,
+      "reason": "deterministic-artifact-ordering"
     }
   ],
-  "adaptedCount": 7
+  "adaptedCount": 22
 }

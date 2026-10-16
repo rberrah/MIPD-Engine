@@ -1,6 +1,6 @@
 {
   "version": 3,
-  "benchmarkDate": "2026-09-24",
+  "benchmarkDate": "2026-10-16",
   "samplingDesign": {
     "primary": {
       "minimumObservations": 2,
@@ -4890,46 +4890,46 @@
         },
         "repeatedCv": {
           "passed": false,
-          "relativeRmsePct": 34.8306,
-          "relativeBiasPct": -6.1046,
-          "within20Pct": 37.5333
+          "relativeRmsePct": 45.634,
+          "relativeBiasPct": -7.8924,
+          "within20Pct": 30.3333
         },
         "untouchedHoldout": {
           "passed": false,
-          "relativeRmsePct": 35.8844,
-          "relativeBiasPct": -4.3731,
-          "within20Pct": 37.2
+          "relativeRmsePct": 43.4233,
+          "relativeBiasPct": -7.2804,
+          "within20Pct": 34
         },
         "alternatePopPk": {
           "passed": false,
-          "relativeRmsePct": 76.2545,
-          "relativeBiasPct": 10.6758,
-          "within20Pct": 28.8
+          "relativeRmsePct": 69.1765,
+          "relativeBiasPct": 2.1519,
+          "within20Pct": 35.2
         },
         "populationBaseline": {
           "repeatedCv": {
             "passed": false,
-            "relativeRmsePct": 91.2519,
-            "relativeBiasPct": -23.8676,
-            "within20Pct": 22
+            "relativeRmsePct": 90.5421,
+            "relativeBiasPct": -20.256,
+            "within20Pct": 26.5333
           },
           "untouchedHoldout": {
             "passed": false,
-            "relativeRmsePct": 109.526,
-            "relativeBiasPct": -20.2798,
-            "within20Pct": 23.6
+            "relativeRmsePct": 108.4786,
+            "relativeBiasPct": -25.6799,
+            "within20Pct": 21.6
           },
           "alternatePopPk": {
             "passed": false,
-            "relativeRmsePct": 141.3722,
-            "relativeBiasPct": -25.0542,
-            "within20Pct": 23.4
+            "relativeRmsePct": 122.8365,
+            "relativeBiasPct": -20.5504,
+            "within20Pct": 23.2
           }
         },
         "comparison": {
-          "repeatedCvRelativeRmseGainPct": 61.8303,
-          "untouchedHoldoutRelativeRmseGainPct": 67.2366,
-          "alternatePopPkRelativeRmseGainPct": 46.0612
+          "repeatedCvRelativeRmseGainPct": 49.5992,
+          "untouchedHoldoutRelativeRmseGainPct": 59.9707,
+          "alternatePopPkRelativeRmseGainPct": 43.6841
         },
         "samplingStrategies": {
           "c0Only": {
@@ -4943,21 +4943,21 @@
             },
             "repeatedCv": {
               "passed": false,
-              "relativeRmsePct": 50.0591,
-              "relativeBiasPct": -7.6446,
-              "within20Pct": 31.3333
+              "relativeRmsePct": 52.7296,
+              "relativeBiasPct": -9.518,
+              "within20Pct": 30.1333
             },
             "untouchedHoldout": {
               "passed": false,
-              "relativeRmsePct": 48.273,
-              "relativeBiasPct": -7.8163,
-              "within20Pct": 26.4
+              "relativeRmsePct": 63.5163,
+              "relativeBiasPct": -10.7582,
+              "within20Pct": 21.2
             },
             "alternatePopPk": {
               "passed": false,
-              "relativeRmsePct": 87.1156,
-              "relativeBiasPct": -6.5634,
-              "within20Pct": 22.8
+              "relativeRmsePct": 78.5737,
+              "relativeBiasPct": -9.8267,
+              "within20Pct": 29.8
             }
           },
           "c0PlusOneHourPostInfusion": {
@@ -4971,21 +4971,21 @@
             },
             "repeatedCv": {
               "passed": false,
-              "relativeRmsePct": 34.8306,
-              "relativeBiasPct": -6.1046,
-              "within20Pct": 37.5333
+              "relativeRmsePct": 45.634,
+              "relativeBiasPct": -7.8924,
+              "within20Pct": 30.3333
             },
             "untouchedHoldout": {
               "passed": false,
-              "relativeRmsePct": 35.8844,
-              "relativeBiasPct": -4.3731,
-              "within20Pct": 37.2
+              "relativeRmsePct": 43.4233,
+              "relativeBiasPct": -7.2804,
+              "within20Pct": 34
             },
             "alternatePopPk": {
               "passed": false,
-              "relativeRmsePct": 76.2545,
-              "relativeBiasPct": 10.6758,
-              "within20Pct": 28.8
+              "relativeRmsePct": 69.1765,
+              "relativeBiasPct": 2.1519,
+              "within20Pct": 35.2
             }
           }
         },
@@ -5524,46 +5524,46 @@
         },
         "repeatedCv": {
           "passed": false,
-          "relativeRmsePct": 26.3474,
-          "relativeBiasPct": -1.4007,
-          "within20Pct": 71.1333
+          "relativeRmsePct": 28.3573,
+          "relativeBiasPct": -1.7322,
+          "within20Pct": 68.8
         },
         "untouchedHoldout": {
           "passed": false,
-          "relativeRmsePct": 22.8758,
-          "relativeBiasPct": 2.4222,
-          "within20Pct": 69.6
+          "relativeRmsePct": 30.4301,
+          "relativeBiasPct": 1.8277,
+          "within20Pct": 74.4
         },
         "alternatePopPk": {
           "passed": false,
-          "relativeRmsePct": 203.8989,
-          "relativeBiasPct": 132.8672,
-          "within20Pct": 10.6
+          "relativeRmsePct": 179.799,
+          "relativeBiasPct": 115.4384,
+          "within20Pct": 16.8
         },
         "populationBaseline": {
           "repeatedCv": {
             "passed": false,
-            "relativeRmsePct": 63.5869,
-            "relativeBiasPct": -10.2555,
-            "within20Pct": 40.5333
+            "relativeRmsePct": 56.6224,
+            "relativeBiasPct": -4.9625,
+            "within20Pct": 39.2
           },
           "untouchedHoldout": {
             "passed": false,
-            "relativeRmsePct": 51.7461,
-            "relativeBiasPct": -7.0599,
-            "within20Pct": 34.8
+            "relativeRmsePct": 60.3713,
+            "relativeBiasPct": -5.0685,
+            "within20Pct": 44.4
           },
           "alternatePopPk": {
             "passed": false,
-            "relativeRmsePct": 481.6827,
-            "relativeBiasPct": 333.7528,
-            "within20Pct": 2.8
+            "relativeRmsePct": 448.5835,
+            "relativeBiasPct": 307.7377,
+            "within20Pct": 5.8
           }
         },
         "comparison": {
-          "repeatedCvRelativeRmseGainPct": 58.5648,
-          "untouchedHoldoutRelativeRmseGainPct": 55.7923,
-          "alternatePopPkRelativeRmseGainPct": 57.6695
+          "repeatedCvRelativeRmseGainPct": 49.9185,
+          "untouchedHoldoutRelativeRmseGainPct": 49.5952,
+          "alternatePopPkRelativeRmseGainPct": 59.9185
         },
         "samplingStrategies": {
           "c0Only": {
@@ -5577,21 +5577,21 @@
             },
             "repeatedCv": {
               "passed": false,
-              "relativeRmsePct": 34.779,
-              "relativeBiasPct": -1.6046,
-              "within20Pct": 62.9333
+              "relativeRmsePct": 39.7282,
+              "relativeBiasPct": -2.8347,
+              "within20Pct": 59.2
             },
             "untouchedHoldout": {
               "passed": false,
-              "relativeRmsePct": 31.4703,
-              "relativeBiasPct": 2.5366,
-              "within20Pct": 60
+              "relativeRmsePct": 36.699,
+              "relativeBiasPct": 1.8277,
+              "within20Pct": 56.8
             },
             "alternatePopPk": {
               "passed": false,
-              "relativeRmsePct": 215.402,
-              "relativeBiasPct": 148.7409,
-              "within20Pct": 6.2
+              "relativeRmsePct": 238.4341,
+              "relativeBiasPct": 154.9288,
+              "within20Pct": 10.4
             }
           },
           "c0PlusOneHourPostInfusion": {
@@ -5605,21 +5605,21 @@
             },
             "repeatedCv": {
               "passed": false,
-              "relativeRmsePct": 26.3474,
-              "relativeBiasPct": -1.4007,
-              "within20Pct": 71.1333
+              "relativeRmsePct": 28.3573,
+              "relativeBiasPct": -1.7322,
+              "within20Pct": 68.8
             },
             "untouchedHoldout": {
               "passed": false,
-              "relativeRmsePct": 22.8758,
-              "relativeBiasPct": 2.4222,
-              "within20Pct": 69.6
+              "relativeRmsePct": 30.4301,
+              "relativeBiasPct": 1.8277,
+              "within20Pct": 74.4
             },
             "alternatePopPk": {
               "passed": false,
-              "relativeRmsePct": 203.8989,
-              "relativeBiasPct": 132.8672,
-              "within20Pct": 10.6
+              "relativeRmsePct": 179.799,
+              "relativeBiasPct": 115.4384,
+              "within20Pct": 16.8
             }
           }
         },
@@ -7136,7 +7136,7 @@
         },
         "model": "Cheng",
         "analysisEligible": false,
-        "hashMatches": true
+        "hashMatches": false
       },
       {
         "modelId": "cefazoline_lanoiselee",
@@ -12028,7 +12028,7 @@
         },
         "model": "Marsot",
         "analysisEligible": true,
-        "hashMatches": true
+        "hashMatches": false
       },
       {
         "modelId": "ritonavir_kappelhoff_ddi",
@@ -12785,7 +12785,7 @@
         },
         "model": "Goti",
         "analysisEligible": true,
-        "hashMatches": true
+        "hashMatches": false
       },
       {
         "modelId": "vanco_pkjust",

@@ -481,7 +481,7 @@
       ],
       "modelType": "PopPK publié adapté",
       "sourceStatus": "verified",
-      "note": "Les effets fixes périopératoire/postopératoire sont conservés. L'IOV publiée sur CL et V1 est omise car le moteur actuel ne représente pas encore des effets aléatoires indépendants par occasion.",
+      "note": "Les concentrations et sorties sont non liées. Les effets fixes périopératoire/postopératoire et l'exposant final publié de 0,78 sur Q sont conservés. Cet exposant diffère de la phrase méthodologique générique annonçant 0,75 pour les clairances. L'IOV publiée sur CL et V1 est omise car le moteur actuel ne représente pas encore des effets aléatoires indépendants par occasion.",
       "verificationStatus": "SOFTWARE_TESTED",
       "validationStatus": "NONE",
       "contextOfUse": "TEACHING_RESEARCH",
@@ -493,7 +493,7 @@
         "CPB"
       ],
       "modelTypeEn": "Adapted published PopPK",
-      "noteEn": "The peri-operative and postoperative fixed effects are retained. Published IOV on CL and V1 is omitted because the current engine does not yet represent independent random effects by occasion.",
+      "noteEn": "Concentrations and outputs are unbound. The peri-operative/postoperative fixed effects and the final published Q exponent of 0.78 are retained; this exponent differs from the generic methods statement specifying 0.75 for clearances. Published IOV on CL and V1 is omitted because the current engine does not yet represent independent random effects by occasion.",
       "routes": [
         "IV"
       ],
@@ -2856,6 +2856,7 @@
       ],
       "modelType": "PopPK publié",
       "sourceStatus": "verified",
+      "note": "L'erreur finale est additive. La valeur publiée de 2,256 mg/L est traitée comme un écart-type et convertie en variance SIGMA pour mrgsolve. L'article mentionne aussi des données transformées en logarithme malgré une équation additive sur les concentrations et une estimation en mg/L; cette ambiguïté ne peut être levée sans le modèle source.",
       "verificationStatus": "SOFTWARE_TESTED",
       "validationStatus": "NONE",
       "contextOfUse": "TEACHING_RESEARCH",
@@ -2867,7 +2868,7 @@
         "Non-ICU"
       ],
       "modelTypeEn": "Published PopPK",
-      "noteEn": "",
+      "noteEn": "The final residual model is additive. The published 2.256 mg/L estimate is treated as an SD and converted to an mrgsolve SIGMA variance. The article also mentions natural-log-transformed data despite presenting a concentration-scale additive equation and an mg/L estimate; the ambiguity cannot be resolved without the source model.",
       "routes": [
         "Oral"
       ],

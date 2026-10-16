@@ -47,6 +47,8 @@ The frozen scientific engine and model-library baseline has been copied without 
 
 See `MIGRATION.md` and `ORIGIN.md`.
 
+The current article-to-code review coverage is recorded in [`docs/model-source-review.md`](docs/model-source-review.md) and [`models/source-review.json`](models/source-review.json). It distinguishes full-text review from software testing and independent numerical reproduction.
+
 
 ## Standalone qualification status
 

@@ -1,0 +1,152 @@
+{
+  "version": 1,
+  "reviewDate": "2026-10-16",
+  "scope": "Author-led comparison of the executable library model with the locally available primary full text. This is not an independent reproduction of the source analysis.",
+  "resultDefinitions": {
+    "ARTICLE_ALIGNED": "Published structure, fixed effects, covariates, variability and residual model are represented without an identified structural adaptation.",
+    "DOCUMENTED_ADAPTATION_CONFIRMED": "The executable model differs from the publication, and the difference is explicitly documented in catalog metadata.",
+    "SOURCE_AMBIGUITY_DOCUMENTED": "The publication contains an ambiguity that cannot be resolved without the source control stream or supplementary model files."
+  },
+  "reviewed": [
+    {
+      "id": "amik_burdet",
+      "result": "DOCUMENTED_ADAPTATION_CONFIRMED",
+      "note": "The executable file represents the base model from Table 2, not the final covariate model. It remains simulation-only."
+    },
+    {
+      "id": "amox_carlier",
+      "result": "ARTICLE_ALIGNED",
+      "note": "Two-compartment structure, creatinine-clearance effect, variability and proportional residual error align with the article. The zero additive variance only satisfies the two-term engine contract."
+    },
+    {
+      "id": "amox_mellon",
+      "result": "DOCUMENTED_ADAPTATION_CONFIRMED",
+      "note": "Fixed and random-effect values align with Table 2; the oral transit chain remains a reconstruction because executable transit equations are absent from the main article."
+    },
+    {
+      "id": "amox_rambaud",
+      "result": "DOCUMENTED_ADAPTATION_CONFIRMED",
+      "note": "The source NPAG model is nonparametric; the log-normal OMEGA prior is an explicit mapbayr approximation."
+    },
+    {
+      "id": "cefazoline_cheng",
+      "result": "DOCUMENTED_ADAPTATION_CONFIRMED",
+      "note": "The final unbound-concentration equations, including the published Q exponent 0.78, are retained. Published occasion variability is omitted."
+    },
+    {
+      "id": "cefepime_jonckheere",
+      "result": "ARTICLE_ALIGNED",
+      "note": "Structure, dialysis branch, fixed effects and log-normal variance conversion align with the publication."
+    },
+    {
+      "id": "dapto_dvorchik_IV_adults",
+      "result": "ARTICLE_ALIGNED",
+      "note": "The two-compartment equations, dialysis, sex and infection effects and LC-MS/MS residual error align with the publication."
+    },
+    {
+      "id": "dapto_garreau",
+      "result": "DOCUMENTED_ADAPTATION_CONFIRMED",
+      "note": "Published fixed effects and between-subject variability are retained; inter-occasion variability on CL and V1 is omitted."
+    },
+    {
+      "id": "genta_franck",
+      "result": "DOCUMENTED_ADAPTATION_CONFIRMED",
+      "note": "The publication is ambiguous about lean versus total body weight for V; the engine's total-weight choice is documented."
+    },
+    {
+      "id": "genta_gomes",
+      "result": "DOCUMENTED_ADAPTATION_CONFIRMED",
+      "note": "The article does not provide the exact corrected lean-body-mass and Cockcroft-Gault variants; the implemented choices are documented."
+    },
+    {
+      "id": "genta_hodiamont",
+      "result": "DOCUMENTED_ADAPTATION_CONFIRMED",
+      "note": "Cockcroft-Gault substitution, albumin bounds and unreported Q/V2 allometric assumptions are documented engine adaptations."
+    },
+    {
+      "id": "genta_rosario_clcr",
+      "result": "DOCUMENTED_ADAPTATION_CONFIRMED",
+      "note": "Clinical formulas are reconstructed from available covariates; unreported covariance and V1 variability are not invented."
+    },
+    {
+      "id": "genta_rosario_clinical",
+      "result": "DOCUMENTED_ADAPTATION_CONFIRMED",
+      "note": "Clinical formulas are reconstructed from available covariates; unreported covariance and V1 variability are not invented."
+    },
+    {
+      "id": "levo_canoui",
+      "result": "ARTICLE_ALIGNED",
+      "note": "One-compartment oral structure, renal and age covariates, variability and residual error align with the article."
+    },
+    {
+      "id": "levo_gergs",
+      "result": "DOCUMENTED_ADAPTATION_CONFIRMED",
+      "note": "The irreversible bone compartment is omitted for repeated-dose plasma simulation, and unpublished residual terms are marked pragmatic."
+    },
+    {
+      "id": "linez_buerger",
+      "result": "DOCUMENTED_ADAPTATION_CONFIRMED",
+      "note": "The publication reports an individual PK analysis; its use as a population prior is an explicit simulation-only adaptation."
+    },
+    {
+      "id": "linez_sasaki",
+      "result": "DOCUMENTED_ADAPTATION_CONFIRMED",
+      "note": "Oral bioavailability and the female Cockcroft-Gault factor are engine assumptions; the published platelet PD component is out of scope."
+    },
+    {
+      "id": "rifampicine_chang",
+      "result": "SOURCE_AMBIGUITY_DOCUMENTED",
+      "note": "The printed BMI effect on CL lacks an operator before 6.22; the retained historical interpretation is explicitly flagged."
+    },
+    {
+      "id": "rifampicine_jing",
+      "result": "ARTICLE_ALIGNED",
+      "note": "One-compartment oral structure and reported fixed, random and residual parameters align with the article."
+    },
+    {
+      "id": "rifampicine_marsot",
+      "result": "SOURCE_AMBIGUITY_DOCUMENTED",
+      "note": "The final additive estimate 2.256 mg/L is implemented as an SD and squared for mrgsolve. The article also mentions log-transformed data despite its concentration-scale equation."
+    },
+    {
+      "id": "vanco_goti",
+      "result": "ARTICLE_ALIGNED",
+      "note": "Structure and covariates align with the article. CL OMEGA is converted consistently from the published 39.8% CV using log(1 + CV^2)."
+    },
+    {
+      "id": "vanco_pkjust",
+      "result": "ARTICLE_ALIGNED",
+      "note": "The Revilla equations, measured 24-hour creatinine clearance and additive residual SD align with the article."
+    },
+    {
+      "id": "vanco_roberts",
+      "result": "ARTICLE_ALIGNED",
+      "note": "The continuous-infusion structure, measured 24-hour creatinine clearance and published parameter values align with the article."
+    }
+  ],
+  "awaitingFullText": [
+    "amiodarone_pollak_ddi",
+    "amox_fournier",
+    "cefazoline_lanoiselee",
+    "cefazoline_schmitz",
+    "cefepime_an",
+    "cefepime_seo",
+    "ciclosporine_press_ddi",
+    "cobicistat_mathias_ddi",
+    "diltiazem_hermann_ddi",
+    "erythromycine_mather_ddi",
+    "everolimus_moes_ddi",
+    "everolimus_terheine_ddi",
+    "fluconazole_debruyne_ddi",
+    "isavuconazole_desai_ddi",
+    "isavuconazole_groll_ddi",
+    "posaconazole_dolton_ddi",
+    "rifampicine_jeremiah",
+    "rifampicine_loos_ddi",
+    "ritonavir_kappelhoff_ddi",
+    "sirolimus_djebli_ddi",
+    "tacrolimus_kamp_envarsus_ddi",
+    "tacrolimus_woillard_ddi",
+    "voriconazole_vandenborn_ddi"
+  ]
+}

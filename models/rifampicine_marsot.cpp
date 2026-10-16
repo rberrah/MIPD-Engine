@@ -1,3 +1,8 @@
+[PROB]
+Rifampicin PopPK model (Marsot et al., 2017; doi:10.1111/bcp.13178).
+The published final model uses additive residual error. The reported 2.256 mg/L
+estimate is implemented as an SD, hence a 5.089536 variance in mrgsolve.
+
 [SET] end=24, delta=0.1
 
 
@@ -27,8 +32,8 @@ FUS : 0 : Fusidic Acid Co-medication (0 = Pas d acide fusidique, 1 = Co-administ
 
 
 [SIGMA]
-0.0001
-2.256 // σadd (mg/L) σ, variance of εij
+0        // no proportional residual error in the final model
+5.089536 // additive variance: published SD 2.256 mg/L squared
 
 
 
