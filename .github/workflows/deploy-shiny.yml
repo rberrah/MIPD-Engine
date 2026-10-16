@@ -26,6 +26,8 @@ jobs:
       SHINYAPPS_TOKEN: ${{ secrets.SHINYAPPS_TOKEN }}
       SHINYAPPS_SECRET: ${{ secrets.SHINYAPPS_SECRET }}
     steps:
+      - name: Refuse production deployment from a non-main revision
+        run: test "$GITHUB_REF" = "refs/heads/main"
       - uses: actions/checkout@v5
       - uses: r-lib/actions/setup-r@v2
         with:
@@ -42,6 +44,8 @@ jobs:
         run: Rscript tests/model_reference_cases.R
       - name: Test session cleanup
         run: Rscript tests/privacy_nonretention_test.R
+      - name: Verify public release fingerprint enforces runtime policy
+        run: Rscript tests/deployment_profile_test.R && python3 tests/check_live_deployment_test.py
       - name: Reject unsupported Pmetrics deployment on Shinyapps
         if: inputs.include_pmetrics
         run: |
@@ -63,3 +67,5 @@ jobs:
           ALLOW_CUSTOM_MODELS: "false"
           ENABLE_PMETRICS: "false"
         run: Rscript scripts/deploy_shiny.R --deploy
+      - name: Validate actual public Shiny release is current and safe
+        run: python3 scripts/check_live_deployment.py --expected-sha "$GITHUB_SHA" --attempts 10 --timeout 40
