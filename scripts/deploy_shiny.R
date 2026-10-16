@@ -23,5 +23,9 @@ stopifnot(all(required %in% deps$Package))
 if (!with_pmetrics) stopifnot(!"Pmetrics" %in% deps$Package)
 if ("--deploy" %in% args) {
   Sys.setenv(ALLOW_CUSTOM_MODELS = "false")
-  rsconnect::deployApp(appDir = root, appFiles = files, appName = "MIPD_Engine", launch.browser = FALSE)
+  account <- Sys.getenv("SHINYAPPS_ACCOUNT")
+  if (!nzchar(account)) stop("SHINYAPPS_ACCOUNT is required for deployment.")
+  rsconnect::deployApp(appDir = root, appFiles = files,
+    appName = "MIPD_Engine", account = account, server = "shinyapps.io",
+    launch.browser = FALSE)
 }
