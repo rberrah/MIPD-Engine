@@ -30,3 +30,15 @@ The separate [`models/pdf-inventory.json`](../models/pdf-inventory.json) account
 Equation-level checking is still limited for eight sources whose full text or executable model specification was not available during this pass: Pollak amiodarone, Mathias cobicistat, Hermann diltiazem, Moes everolimus, Debruyne fluconazole, Groll isavuconazole, Loos rifampicin and Djebli sirolimus. These entries are simulation-only except where a separate full-text-verified model is used, and every unverified assumption is stated in code and metadata.
 
 The generated [`docs/tdm-model-traceability.md`](tdm-model-traceability.md) lists the finding, evidence level, implementation parameters, covariates, random effects and engine limitations for each model.
+
+## Subsequent science boundary check (2026-10-16)
+
+The independently implemented Goti 2018 2-compartment IV bolus equations
+match 3 within-domain synthetic scenarios, but the published secondary
+reconstruction (Antibiotics 2023;12:301, Table 2) includes a CrCl upper cap
+of 150 mL/min and a serum-creatinine floor of 1 mg/dL for age >65 years.
+These are missing in the frozen `models/vanco_goti.cpp` implementation. The
+source-fidelity UI rating for `vanco_goti` is conservatively downgraded to
+`not verified` until the exact primary article clauses and related
+random-effects/MAP implications can be independently reviewed. Model, prior,
+ML binary, and baseline provenance are unchanged.
