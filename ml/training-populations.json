@@ -1,0 +1,309 @@
+{
+  "version": 1,
+  "policy": "Published ranges are sampled when documented; otherwise the model reference value is retained.",
+  "models": {
+    "amik_burdet": {
+      "source": "Burdet et al., 2015, source cohort",
+      "covariates": {
+        "WT": { "type": "uniform", "min": 45, "max": 126, "evidence": "range" }
+      }
+    },
+    "amox_carlier": {
+      "source": "doi:10.1093/jac/dkt240, Table 3",
+      "covariates": {
+        "CRCL": { "type": "uniform", "min": 50, "max": 157, "evidence": "reported IQR" }
+      }
+    },
+    "amox_fournier": {
+      "source": "doi:10.1128/AAC.00505-18, Table 1",
+      "covariates": {
+        "AGE": { "type": "uniform", "min": 16, "max": 93, "evidence": "reported range" },
+        "WT": { "type": "uniform", "min": 60, "max": 132, "evidence": "reported range" },
+        "SEX": { "type": "bernoulli", "probability": 0.238, "evidence": "5/21 female" },
+        "CREAT": { "type": "cockcroft_creatinine", "crclMin": 65, "crclMax": 150, "maleFactor": 1.23, "femaleFactor": 1.0455, "evidence": "reported creatinine-clearance IQR; serum creatinine reconstructed with the model's Cockcroft-Gault equation" }
+      }
+    },
+    "amox_mellon": {
+      "source": "Mellon et al., 2020, Table 1",
+      "covariates": {
+        "WT": { "type": "uniform", "min": 88, "max": 151.5, "evidence": "range" },
+        "AGE": { "type": "uniform", "min": 22.9, "max": 62.9, "evidence": "range" },
+        "SEX": { "type": "bernoulli", "probability": 0.852, "evidence": "23/27 female" }
+      }
+    },
+    "amox_rambaud": {
+      "source": "doi:10.1093/jac/dkaa232, Table 1, model-development cohort",
+      "covariates": {
+        "CREAT": { "type": "uniform", "min": 73, "max": 115.5, "evidence": "reported IQR" },
+        "SEX": { "type": "bernoulli", "probability": 0.206, "evidence": "20.6 percent female" },
+        "BLACK": { "type": "fixed", "value": 0, "evidence": "ethnicity distribution was not reported" },
+        "AGE": { "type": "uniform", "min": 62, "max": 80.5, "evidence": "reported IQR" },
+        "BSA": { "type": "uniform", "min": 1.78, "max": 2.01, "evidence": "reported IQR" }
+      }
+    },
+    "cefazoline_cheng": {
+      "source": "Cheng et al., 2025, Table 2",
+      "covariates": {
+        "WT": { "type": "uniform", "min": 4, "max": 17, "evidence": "reported IQR" },
+        "CREAT": { "type": "uniform", "min": 30, "max": 48, "evidence": "reported IQR" },
+        "PERIOD": { "type": "bernoulli", "probability": 0.5, "evidence": "modeled intra/postoperative periods" },
+        "HT": { "type": "schwartz_height", "egfrMin": 53.4, "egfrMax": 98.4, "evidence": "eGFR IQR and sampled creatinine" }
+      }
+    },
+    "cefazoline_lanoiselee": {
+      "source": "Lanoiselee et al., 2021, source cohort",
+      "covariates": {
+        "AGE": { "type": "uniform", "min": 24, "max": 91, "evidence": "range" }
+      }
+    },
+    "cefazoline_schmitz": {
+      "source": "doi:10.1128/AAC.00082-15, source pediatric cohort",
+      "covariates": {
+        "WT": { "type": "uniform", "min": 25, "max": 85, "evidence": "study eligibility range" },
+        "AGE": { "type": "uniform", "min": 10, "max": 12, "evidence": "study inclusion range" },
+        "CLCR": { "type": "fixed", "value": 90, "evidence": "normal renal function was assumed and little simulated variability was reported" }
+      }
+    },
+    "cefepime_an": {
+      "source": "doi:10.1093/jac/dkad106, Table 1",
+      "covariates": {
+        "AGE": { "type": "uniform", "min": 52, "max": 72, "evidence": "reported IQR" },
+        "WT": { "type": "uniform", "min": 70, "max": 110, "evidence": "reported total-body-weight IQR" },
+        "HT": { "type": "fixed", "value": 170, "evidence": "height distribution was not reported" },
+        "CREAT": { "type": "cockcroft_creatinine", "crclMin": 32, "crclMax": 86, "weightMode": "lean_body_weight", "maleFactor": 1.23, "femaleFactor": 1.0455, "evidence": "reported lean-body-weight Cockcroft-Gault IQR; serum creatinine reconstructed with the model equation" },
+        "SEX": { "type": "bernoulli", "probability": 0.42, "evidence": "54/130 female" },
+        "CRRT": { "type": "bernoulli", "probability": 0.0923, "evidence": "12/130 subjects on CRRT" }
+      }
+    },
+    "cefepime_jonckheere": {
+      "source": "doi:10.1093/jac/dkw171, Table 2",
+      "covariates": {
+        "CRCL": { "type": "uniform", "min": 31, "max": 123, "evidence": "reported Cockcroft-Gault IQR in non-IHD subjects" },
+        "IHD": { "type": "bernoulli", "probability": 0.2, "evidence": "4/20 subjects on intermittent hemodialysis" }
+      }
+    },
+    "cefepime_seo": {
+      "source": "doi:10.3390/antibiotics12040659, Table 1",
+      "covariates": {
+        "AGE": { "type": "uniform", "min": 62, "max": 76, "evidence": "reported IQR" },
+        "WT": { "type": "uniform", "min": 54.4, "max": 65, "evidence": "reported IQR" },
+        "CREAT": { "type": "uniform", "min": 46.852, "max": 99.008, "evidence": "0.53-1.12 mg/dL reported IQR converted to micromol/L" },
+        "SEX": { "type": "bernoulli", "probability": 0.429, "evidence": "9/21 female" }
+      }
+    },
+    "ciclosporine_press_ddi": {
+      "source": "doi:10.1007/s00228-010-0810-9, source cohort",
+      "covariates": {
+        "WT": { "type": "uniform", "min": 49, "max": 140, "evidence": "reported range" },
+        "CYP": { "type": "fixed", "value": 0, "evidence": "CYP3A5 genotype was not retained in the published final model" }
+      }
+    },
+    "dapto_dvorchik_IV_adults": {
+      "source": "doi:10.1128/AAC.48.8.2799-2807.2004, Table 2",
+      "covariates": {
+        "WT": { "type": "uniform", "min": 48.2, "max": 152.8, "evidence": "range" },
+        "AGE": { "type": "uniform", "min": 18, "max": 93, "evidence": "range" },
+        "TEMP": { "type": "uniform", "min": 36.1, "max": 40.1, "evidence": "range" },
+        "SEX": { "type": "bernoulli", "probability": 0.41, "evidence": "116/282 female" },
+        "DIAL": { "type": "bernoulli", "probability": 0.07, "evidence": "21/282 on dialysis" },
+        "INFECT": { "type": "bernoulli", "probability": 0.46, "evidence": "129/282 phase 2/3 subjects" },
+        "CREAT": { "type": "cockcroft_creatinine", "crclMin": 14, "crclMax": 150, "evidence": "non-dialysis creatinine-clearance range" }
+      }
+    },
+    "dapto_garreau": {
+      "source": "doi:10.1093/jac/dkab006, Table 1",
+      "covariates": {
+        "CLCR": { "type": "uniform", "min": 69, "max": 141, "evidence": "reported IQR" },
+        "AGE": { "type": "normal", "mean": 60.5, "sd": 16, "min": 18, "evidence": "reported mean and SD; adult inclusion" },
+        "WT": { "type": "normal", "mean": 79.2, "sd": 20.2, "min": 30, "evidence": "reported mean and SD" },
+        "SEX": { "type": "bernoulli", "probability": 0.421, "evidence": "77/183 female" },
+        "RIF": { "type": "bernoulli", "probability": 0.142, "evidence": "26/183 co-treated" }
+      }
+    },
+    "everolimus_moes_ddi": {
+      "source": "doi:10.2165/11599710-000000000-00000, source cohort",
+      "covariates": {
+        "IBW": { "type": "uniform", "min": 52, "max": 83.1, "evidence": "reported range" },
+        "WT": { "type": "uniform", "min": 52, "max": 128.8, "evidence": "reported marginal range; WT is not retained in the structural equations" }
+      }
+    },
+    "everolimus_terheine_ddi": {
+      "source": "doi:10.1111/bcp.13591, Table 1",
+      "covariates": {
+        "WT": { "type": "uniform", "min": 45, "max": 110.3, "evidence": "reported range" },
+        "BH": { "type": "uniform", "min": 152, "max": 194, "evidence": "reported range" },
+        "SEX": { "type": "bernoulli", "probability": 0.46, "evidence": "46 percent male in the combined cohort" },
+        "HT": { "type": "uniform", "min": 28, "max": 50, "evidence": "reported range converted to percent" },
+        "PREDNI": { "type": "fixed", "value": 0, "evidence": "high-dose prednisolone prevalence was not reported" }
+      }
+    },
+    "genta_franck": {
+      "source": "Franck et al., 2020, source cohort",
+      "covariates": {
+        "WT": { "type": "uniform", "min": 50, "max": 95.5, "evidence": "range" },
+        "DIAL": { "type": "fixed", "value": 1, "evidence": "all subjects on chronic hemodialysis" },
+        "IHD": { "type": "bernoulli", "probability": 0.5, "evidence": "within-session state" }
+      }
+    },
+    "genta_gomes": {
+      "source": "Gomes et al., source cohort",
+      "covariates": {
+        "WT": { "type": "uniform", "min": 46, "max": 121, "evidence": "range" },
+        "AGE": { "type": "uniform", "min": 32, "max": 92, "evidence": "range" }
+      }
+    },
+    "genta_hodiamont": {
+      "source": "Hodiamont et al., 2017, source cohort",
+      "covariates": {
+        "WT": { "type": "uniform", "min": 42, "max": 116, "evidence": "range" },
+        "HT": { "type": "uniform", "min": 154, "max": 195, "evidence": "range" },
+        "AGE": { "type": "uniform", "min": 20, "max": 78, "evidence": "range" },
+        "ALB": { "type": "uniform", "min": 10, "max": 36, "evidence": "range" },
+        "CVVH": { "type": "bernoulli", "probability": 0.114, "evidence": "5/44 subjects" },
+        "FLAG": { "type": "fixed", "value": 1, "evidence": "measured creatinine-clearance cohort" }
+      }
+    },
+    "genta_rosario_clcr": {
+      "source": "Rosario et al., source cohorts",
+      "covariates": {
+        "WT": { "type": "uniform", "min": 38, "max": 117, "evidence": "range" },
+        "HT": { "type": "uniform", "min": 146, "max": 188, "evidence": "range" },
+        "AGE": { "type": "uniform", "min": 14, "max": 81, "evidence": "range" },
+        "CREAT": { "type": "uniform", "min": 26, "max": 258, "evidence": "range" },
+        "ALB": { "type": "uniform", "min": 17, "max": 53, "evidence": "range" }
+      }
+    },
+    "genta_rosario_clinical": {
+      "source": "Rosario et al., source cohorts",
+      "covariates": {
+        "WT": { "type": "uniform", "min": 38, "max": 117, "evidence": "range" },
+        "HT": { "type": "uniform", "min": 146, "max": 188, "evidence": "range" },
+        "AGE": { "type": "uniform", "min": 14, "max": 81, "evidence": "range" },
+        "CREAT": { "type": "uniform", "min": 26, "max": 258, "evidence": "range" },
+        "ALB": { "type": "uniform", "min": 17, "max": 53, "evidence": "range" }
+      }
+    },
+    "isavuconazole_desai_ddi": {
+      "source": "doi:10.1128/AAC.02819-15, pooled source population",
+      "covariates": {
+        "BMI": { "type": "uniform", "min": 13.89, "max": 41.18, "evidence": "reported range" }
+      }
+    },
+    "isavuconazole_groll_ddi": {
+      "source": "doi:10.1002/cpdd.284, DDI study cohorts",
+      "covariates": {
+        "WT": { "type": "normal", "mean": 75.3, "sd": 14.5, "min": 45, "evidence": "reported cohort means and SDs, truncated at the study inclusion minimum" }
+      }
+    },
+    "levo_canoui": {
+      "source": "Canoui et al., 2022, source cohort",
+      "covariates": {
+        "CLCR": { "type": "uniform", "min": 19.2, "max": 300, "evidence": "range" },
+        "AGE": { "type": "uniform", "min": 16, "max": 90, "evidence": "range" }
+      }
+    },
+    "levo_gergs": {
+      "source": "doi:10.1002/cpdd.418, source cohort",
+      "covariates": {
+        "WT": { "type": "fixed", "value": 70, "evidence": "body-weight distribution was not reported" }
+      }
+    },
+    "linez_buerger": {
+      "source": "Buerger et al., source cohort",
+      "covariates": {
+        "WT": { "type": "uniform", "min": 55, "max": 133, "evidence": "range" },
+        "AGE": { "type": "uniform", "min": 51, "max": 74, "evidence": "range" },
+        "SEX": { "type": "bernoulli", "probability": 0.25, "evidence": "3/12 female" }
+      }
+    },
+    "linez_sasaki": {
+      "source": "Sasaki et al., 2011, Table 1",
+      "covariates": {
+        "WT": { "type": "uniform", "min": 38.4, "max": 100, "evidence": "range" },
+        "AGE": { "type": "uniform", "min": 32, "max": 92, "evidence": "range" },
+        "CREAT": { "type": "uniform", "min": 17.68, "max": 374.82, "evidence": "0.20-4.24 mg/dL converted to micromol/L" }
+      }
+    },
+    "rifampicine_chang": {
+      "source": "Chang et al., 2015, Table 1",
+      "covariates": {
+        "WT": { "type": "normal", "mean": 53.96, "sd": 8.563, "min": 30, "evidence": "reported mean and SD" },
+        "HT": { "type": "bmi_height", "bmiMean": 20.14, "bmiSd": 2.992, "bmiMin": 10, "evidence": "height reconstructed from reported BMI and weight distributions" },
+        "DM": { "type": "bernoulli", "probability": 0.389, "evidence": "21/54 with diabetes" }
+      }
+    },
+    "rifampicine_jeremiah": {
+      "source": "doi:10.1128/AAC.02307-13, source cohort",
+      "covariates": {
+        "WT": { "type": "fixed", "value": 55, "evidence": "marginal body-weight range was not reported" },
+        "HT": { "type": "fixed", "value": 165, "evidence": "height distribution was not reported" },
+        "SEX": { "type": "fixed", "value": 0, "evidence": "sex is required only to derive FFM and no joint anthropometric distribution was reported" }
+      }
+    },
+    "rifampicine_jing": {
+      "source": "doi:10.1002/jcph.643, Table 1",
+      "covariates": {
+        "WT": { "type": "uniform", "min": 42, "max": 76, "evidence": "reported range; WT is not retained in the structural equations" }
+      }
+    },
+    "rifampicine_marsot": {
+      "source": "doi:10.1111/bcp.13178, Table 1",
+      "covariates": {
+        "FUS": { "type": "bernoulli", "probability": 0.161, "evidence": "10/62 co-treated with fusidic acid" }
+      }
+    },
+    "sirolimus_djebli_ddi": {
+      "source": "doi:10.2165/00003088-200645110-00007, source cohort",
+      "covariates": {
+        "CYP": { "type": "fixed", "value": 0, "evidence": "source genotype prevalence was not available in the checked material" },
+        "WT": { "type": "fixed", "value": 70, "evidence": "WT is not retained in the published structural equations" }
+      }
+    },
+    "tacrolimus_kamp_envarsus_ddi": {
+      "source": "doi:10.3390/pharmaceutics16010017, source cohort",
+      "covariates": {
+        "CYP": { "type": "bernoulli", "probability": 0.235, "evidence": "8/34 CYP3A5 expressors" }
+      }
+    },
+    "tacrolimus_woillard_ddi": {
+      "source": "doi:10.1111/j.1365-2125.2010.03837.x, Table 1",
+      "covariates": {
+        "HT": { "type": "uniform", "min": 20.9, "max": 46.6, "evidence": "pooled reported range" },
+        "ST": { "type": "bernoulli", "probability": 0.438, "evidence": "32/73 patients received Prograf" },
+        "CYP": { "type": "bernoulli", "probability": 0.0822, "evidence": "6/73 CYP3A5 expressors" }
+      }
+    },
+    "vanco_goti": {
+      "source": "doi:10.1097/FTD.0000000000000490, Table 1",
+      "covariates": {
+        "AGE": { "type": "uniform", "min": 17, "max": 101, "evidence": "reported range" },
+        "WT": { "type": "uniform", "min": 33, "max": 255, "evidence": "reported range" },
+        "CREAT": { "type": "cockcroft_creatinine", "crclMin": 4, "crclMax": 150, "valueMin": 17.68, "valueMax": 1467.44, "evidence": "reported creatinine-clearance and serum-creatinine ranges, reconstructed with the model's Cockcroft-Gault equation" },
+        "SEX": { "type": "bernoulli", "probability": 0.465, "evidence": "843/1812 female" },
+        "DIAL": { "type": "bernoulli", "probability": 0.185, "evidence": "336/1812 on hemodialysis" }
+      }
+    },
+    "vanco_pkjust": {
+      "source": "doi:10.1111/j.1365-2125.2010.03679.x, Table 2",
+      "covariates": {
+        "AGE": { "type": "uniform", "min": 18, "max": 85, "evidence": "reported range" },
+        "CRCL": { "type": "uniform", "min": 10, "max": 328, "evidence": "measured 24-hour creatinine-clearance range" },
+        "CREAT": { "type": "uniform", "min": 53.04, "max": 442, "evidence": "0.6-5.0 mg/dL reported range converted to micromol/L" },
+        "WT": { "type": "uniform", "min": 45, "max": 150, "evidence": "reported range" }
+      }
+    },
+    "vanco_roberts": {
+      "source": "Roberts et al., 2011, Table 1",
+      "covariates": {
+        "CRCL": { "type": "lognormal", "mean": 90.7, "sd": 60.4, "evidence": "reported arithmetic mean and SD; moment-matched lognormal assumption for a positive covariate" },
+        "WT": { "type": "normal", "mean": 74.8, "sd": 15.8, "min": 30, "evidence": "reported mean and SD" }
+      }
+    },
+    "voriconazole_vandenborn_ddi": {
+      "source": "doi:10.1016/j.ijantimicag.2023.106750, source cohort",
+      "covariates": {
+        "CRP": { "type": "fixed", "value": 50, "evidence": "the exact source-population range was not available in the checked material" }
+      }
+    }
+  }
+}

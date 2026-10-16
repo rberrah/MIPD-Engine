@@ -1,0 +1,79 @@
+{
+  "version": 1,
+  "profiles": {
+    "amik": {
+      "IV_INTERMITTENT": { "amounts": [500, 750, 1000, 1250, 1500, 2000], "intervals": [24], "infusions": [0.5, 1], "aucUnit": "mg.h/L" }
+    },
+    "amiodarone": {
+      "ORAL": { "amounts": [100, 200, 300, 400], "intervals": [24], "aucUnit": "mg.h/L" }
+    },
+    "amox": {
+      "IV_INTERMITTENT": { "amounts": [500, 1000, 1500, 2000], "intervals": [4, 6, 8, 12], "infusions": [0.5, 1, 2, 4], "aucUnit": "mg.h/L" },
+      "IV_CONTINUOUS": { "amounts": [4000, 6000, 8000, 10000, 12000], "intervals": [24], "aucUnit": "mg.h/L" },
+      "ORAL": { "amounts": [500, 750, 1000, 1500, 2000], "intervals": [8, 12], "aucUnit": "mg.h/L" }
+    },
+    "cefazoline": {
+      "IV_INTERMITTENT": { "amounts": [125, 250, 500, 1000, 1500, 2000], "intervals": [6, 8, 12, 24], "infusions": [0.5, 1, 2], "aucUnit": "mg.h/L" }
+    },
+    "cefepime": {
+      "IV_INTERMITTENT": { "amounts": [500, 1000, 1500, 2000], "intervals": [8, 12, 24], "infusions": [0.5, 1, 2, 4], "aucUnit": "mg.h/L" }
+    },
+    "ciclosporine": {
+      "ORAL": { "amounts": [25, 50, 75, 100, 150, 200, 300], "intervals": [12, 24], "aucUnit": "ng.h/mL" }
+    },
+    "cobicistat": {
+      "ORAL": { "amounts": [100, 150, 200], "intervals": [24], "aucUnit": "mg.h/L" }
+    },
+    "dapto": {
+      "IV_INTERMITTENT": { "amounts": [250, 350, 500, 750, 1000], "intervals": [24, 48], "infusions": [0.5, 1], "aucUnit": "mg.h/L" }
+    },
+    "diltiazem": {
+      "ORAL": { "amounts": [90, 120, 180, 240, 300, 360], "intervals": [12, 24], "aucUnit": "mg.h/L" }
+    },
+    "erythromycine": {
+      "ORAL": { "amounts": [250, 500, 750, 1000], "intervals": [6, 8, 12], "aucUnit": "mg.h/L" }
+    },
+    "everolimus": {
+      "ORAL": { "amounts": [0.25, 0.5, 0.75, 1, 1.5, 2, 3, 5], "intervals": [12, 24], "aucUnit": "ng.h/mL" }
+    },
+    "fluconazole": {
+      "ORAL": { "amounts": [100, 200, 400, 600, 800], "intervals": [24], "aucUnit": "mg.h/L" }
+    },
+    "genta": {
+      "IV_INTERMITTENT": { "amounts": [40, 80, 120, 160, 240, 320, 400, 500, 600], "intervals": [8, 12, 24, 36, 48], "infusions": [0.5, 1], "aucUnit": "mg.h/L" }
+    },
+    "isavuconazole": {
+      "ORAL": { "amounts": [100, 200, 400], "intervals": [8, 12, 24], "aucUnit": "mg.h/L" }
+    },
+    "levo": {
+      "IV_INTERMITTENT": { "amounts": [250, 500, 750], "intervals": [12, 24, 48], "infusions": [0.5, 1, 2], "aucUnit": "mg.h/L" },
+      "ORAL": { "amounts": [250, 500, 750], "intervals": [12, 24, 48], "aucUnit": "mg.h/L" }
+    },
+    "linez": {
+      "IV_INTERMITTENT": { "amounts": [300, 600, 900, 1200], "intervals": [8, 12, 24], "infusions": [0.5, 1, 2], "aucUnit": "mg.h/L" },
+      "ORAL": { "amounts": [300, 600, 900, 1200], "intervals": [8, 12, 24], "aucUnit": "mg.h/L" }
+    },
+    "posaconazole": {
+      "ORAL": { "amounts": [100, 200, 300, 400], "intervals": [12, 24], "aucUnit": "mg.h/L" }
+    },
+    "rifampicine": {
+      "ORAL": { "amounts": [300, 450, 600, 900, 1200], "intervals": [12, 24], "aucUnit": "mg.h/L" }
+    },
+    "ritonavir": {
+      "ORAL": { "amounts": [100, 200, 400, 600], "intervals": [12, 24], "aucUnit": "mg.h/L" }
+    },
+    "sirolimus": {
+      "ORAL": { "amounts": [0.5, 1, 1.5, 2, 3, 4, 5], "intervals": [24], "aucUnit": "ng.h/mL" }
+    },
+    "tacrolimus": {
+      "ORAL": { "amounts": [0.5, 1, 2, 3, 4, 6, 8, 10], "intervals": [12, 24], "aucUnit": "ng.h/mL" }
+    },
+    "vanco": {
+      "IV_INTERMITTENT": { "amounts": [500, 750, 1000, 1250, 1500, 2000], "intervals": [8, 12, 24], "infusions": [1, 2, 4], "aucUnit": "mg.h/L" },
+      "IV_CONTINUOUS": { "amounts": [1000, 1500, 2000, 2500, 3000, 3500, 4000], "intervals": [24], "aucUnit": "mg.h/L" }
+    },
+    "voriconazole": {
+      "ORAL": { "amounts": [100, 150, 200, 300, 400], "intervals": [12, 24], "aucUnit": "mg.h/L" }
+    }
+  }
+}
