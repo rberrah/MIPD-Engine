@@ -25,7 +25,9 @@ if ("--deploy" %in% args) {
   Sys.setenv(ALLOW_CUSTOM_MODELS = "false")
   account <- Sys.getenv("SHINYAPPS_ACCOUNT")
   if (!nzchar(account)) stop("SHINYAPPS_ACCOUNT is required for deployment.")
+  if (!identical(account, "tdmhub"))
+    stop("Refusing deployment to unexpected Shinyapps account: ", account)
   rsconnect::deployApp(appDir = root, appFiles = files,
-    appName = "MIPD_Engine", account = account, server = "shinyapps.io",
-    launch.browser = FALSE)
+    appId = "17776160", appName = "MIPD_Engine", account = account,
+    server = "shinyapps.io", launch.browser = FALSE)
 }
