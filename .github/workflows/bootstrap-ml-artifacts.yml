@@ -1,0 +1,40 @@
+name: Bootstrap frozen ML artifacts
+
+on:
+  push:
+    branches: [artifact-bootstrap]
+
+permissions:
+  contents: write
+
+jobs:
+  copy-frozen-artifacts:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - name: Copy exact RDS artifacts from frozen PMx source
+        shell: bash
+        run: |
+          set -euo pipefail
+          SOURCE_SHA="2f97f109c3f4af257776a595f6546c9cd5f2321d"
+          git clone --filter=blob:none --no-checkout https://github.com/rberrah/rberrah.github.io.git /tmp/pmx-source
+          git -C /tmp/pmx-source fetch --depth 1 origin "$SOURCE_SHA"
+          git -C /tmp/pmx-source checkout --detach "$SOURCE_SHA"
+          mkdir -p ml/artifacts
+          cp -a /tmp/pmx-source/tdm-engine/ml/artifacts/. ml/artifacts/
+          count="$(find ml/artifacts -maxdepth 1 -type f -name '*.rds' | wc -l)"
+          test "$count" -eq 92
+          echo "Copied $count frozen RDS artifacts from $SOURCE_SHA"
+      - name: Commit exact binary baseline
+        shell: bash
+        run: |
+          set -euo pipefail
+          git add ml/artifacts
+          git diff --cached --quiet && exit 0
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "Import frozen PMx ML artifact binaries"
+          git push origin HEAD:artifact-bootstrap
