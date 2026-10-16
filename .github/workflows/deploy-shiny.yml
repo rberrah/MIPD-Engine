@@ -1,0 +1,69 @@
+name: Deploy standalone MIPD Engine to Shinyapps
+
+on:
+  workflow_dispatch:
+    inputs:
+      include_pmetrics:
+        description: "Include Pmetrics backend (not supported by current Shinyapps runtime)"
+        required: true
+        default: false
+        type: boolean
+
+permissions:
+  contents: read
+
+concurrency:
+  group: mipd-production
+  cancel-in-progress: false
+
+jobs:
+  qualify-and-deploy:
+    runs-on: ubuntu-latest
+    environment: production
+    timeout-minutes: 45
+    env:
+      CORE_CRAN_SNAPSHOT: "https://packagemanager.posit.co/cran/__linux__/noble/2026-10-16"
+      SHINYAPPS_ACCOUNT: ${{ secrets.SHINYAPPS_ACCOUNT }}
+      SHINYAPPS_TOKEN: ${{ secrets.SHINYAPPS_TOKEN }}
+      SHINYAPPS_SECRET: ${{ secrets.SHINYAPPS_SECRET }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: r-lib/actions/setup-r@v2
+        with:
+          r-version: "4.6.1"
+          use-public-rspm: false
+      - name: Install pinned public runtime and rsconnect
+        run: >
+          Rscript -e 'options(repos=c(CRAN=Sys.getenv("CORE_CRAN_SNAPSHOT")));
+          install.packages(c(
+          "shiny","bslib","mrgsolve","mapbayr","dplyr","ggplot2","DT","jsonlite",
+          "htmltools","deSolve","minpack.lm","xgboost","DALEX","digest","xml2","httr","rsconnect"))'
+      - name: Verify exact core runtime
+        run: Rscript scripts/check_runtime.R core
+      - name: Compile and validate all 46 models
+        run: Rscript tests/validate_library.R
+      - name: Run deterministic model references
+        run: Rscript tests/model_reference_cases.R
+      - name: Test session cleanup
+        run: Rscript tests/privacy_nonretention_test.R
+      - name: Reject unsupported Pmetrics deployment on Shinyapps
+        if: inputs.include_pmetrics
+        run: |
+          echo "::error::Pmetrics 3.2.6 is validated in CI but current Shinyapps runtime is not the supported deployment target for it."
+          exit 1
+      - name: Validate public deployment manifest
+        env:
+          ALLOW_CUSTOM_MODELS: "false"
+          ENABLE_PMETRICS: "false"
+        run: Rscript scripts/deploy_shiny.R
+      - name: Configure Shinyapps account
+        run: |
+          test -n "$SHINYAPPS_ACCOUNT"
+          test -n "$SHINYAPPS_TOKEN"
+          test -n "$SHINYAPPS_SECRET"
+          Rscript -e 'rsconnect::setAccountInfo(name=Sys.getenv("SHINYAPPS_ACCOUNT"), token=Sys.getenv("SHINYAPPS_TOKEN"), secret=Sys.getenv("SHINYAPPS_SECRET"))'
+      - name: Deploy qualified public profile
+        env:
+          ALLOW_CUSTOM_MODELS: "false"
+          ENABLE_PMETRICS: "false"
+        run: Rscript scripts/deploy_shiny.R --deploy
