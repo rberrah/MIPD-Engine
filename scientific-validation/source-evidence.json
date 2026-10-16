@@ -82,7 +82,7 @@
       "level": "PARTIAL_SOURCE_EQUATIONS",
       "primaryDoi": "10.1097/FTD.0000000000000490",
       "primaryUrl": "https://pubmed.ncbi.nlm.nih.gov/29470227/",
-      "sourceLocation": "Goti et al. (2018), final fixed-effect 2-compartment model; parameter equations independently corroborated in Antibotics 2023;12:301, Table 2, doi:10.3390/antibiotics12020301",
+      "sourceLocation": "Goti et al. (2018), final fixed-effect 2-compartment model; parameter equations independently corroborated in Antibiotics 2023;12:301, Table 2, doi:10.3390/antibiotics12020301",
       "population": "Hospitalized adults with and without intermittent hemodialysis",
       "sourceValues": {
         "CL_L_per_h_at_CRCL120": 4.5,
