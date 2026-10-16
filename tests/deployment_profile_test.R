@@ -56,7 +56,7 @@ git("init", "--quiet")
 writeLines("clean baseline", file.path(git_repo, "fixture.txt"))
 git("add", "fixture.txt")
 git("-c", "user.email=mipd-test@example.invalid",
-    "-c", "user.name=MIPDTest", "commit", "--quiet", "-m", "Fixture baseline")
+    "-c", "user.name=MIPDTest", "commit", "--quiet", "-m", "Fixture-baseline")
 stopifnot(isTRUE(assert_clean_mipd_release_checkout(git_repo)))
 writeLines("uncommitted change", file.path(git_repo, "fixture.txt"))
 stopifnot(inherits(tryCatch(
