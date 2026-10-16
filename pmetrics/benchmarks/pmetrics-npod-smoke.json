@@ -1,0 +1,88 @@
+{
+  "status": "available",
+  "pmetrics_version": "3.2.6",
+  "generated_on": "2026-10-11",
+  "note": "Experimental smoke comparison only; algorithms use different searches and this is not a superiority benchmark.",
+  "runs": [
+    {
+      "algorithm": "NPAG",
+      "seed": 23,
+      "elapsed_seconds": 3.36,
+      "final_objective": 7.8342,
+      "support_points": 10,
+      "mean_clearance": 5.344,
+      "weights_sum": 1,
+      "finite_positive_weights": true,
+      "final_numeric_fields": {
+        "nsub": 24,
+        "gridpts": 30,
+        "popCor": [
+          [1]
+        ],
+        "popCov": [
+          [9.2791]
+        ]
+      }
+    },
+    {
+      "algorithm": "NPAG",
+      "seed": 71,
+      "elapsed_seconds": 2.69,
+      "final_objective": 7.8342,
+      "support_points": 15,
+      "mean_clearance": 5.3439,
+      "weights_sum": 1,
+      "finite_positive_weights": true,
+      "final_numeric_fields": {
+        "nsub": 24,
+        "gridpts": 30,
+        "popCor": [
+          [1]
+        ],
+        "popCov": [
+          [9.3336]
+        ]
+      }
+    },
+    {
+      "algorithm": "NPOD",
+      "seed": 23,
+      "elapsed_seconds": 2.33,
+      "final_objective": 7.836,
+      "support_points": 9,
+      "mean_clearance": 5.344,
+      "weights_sum": 1,
+      "finite_positive_weights": true,
+      "final_numeric_fields": {
+        "nsub": 24,
+        "gridpts": 30,
+        "popCor": [
+          [1]
+        ],
+        "popCov": [
+          [9.2577]
+        ]
+      }
+    },
+    {
+      "algorithm": "NPOD",
+      "seed": 71,
+      "elapsed_seconds": 2.53,
+      "final_objective": 7.8751,
+      "support_points": 7,
+      "mean_clearance": 5.3448,
+      "weights_sum": 1,
+      "finite_positive_weights": true,
+      "final_numeric_fields": {
+        "nsub": 24,
+        "gridpts": 30,
+        "popCor": [
+          [1]
+        ],
+        "popCov": [
+          [9.2657]
+        ]
+      }
+    }
+  ]
+}
