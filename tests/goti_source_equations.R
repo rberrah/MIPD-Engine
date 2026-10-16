@@ -1,4 +1,4 @@
-# Goti 2018 independent fixed-effect oral? No: IV two-compartment vancomycin checks.
+# Goti 2018 independent fixed-effect IV two-compartment vancomycin checks.
 # Source: Goti et al. Ther Drug Monit 2018;40:212-221.
 # DOI: 10.1097/FTD.0000000000000490
 # Published final effects independently cross-checked in
