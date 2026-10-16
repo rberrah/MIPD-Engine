@@ -40,4 +40,11 @@ ALLOW_CUSTOM_MODELS=false ENABLE_PMETRICS=false \
 Rscript scripts/deploy_shiny.R --deploy
 ```
 
-The intended public app name remains `MIPD_Engine`, preserving the existing Shinyapps URL when the same account is used.
+The production target is deliberately fixed to the existing application:
+
+- account: `tdmhub`;
+- app name: `MIPD_Engine`;
+- appId: `17776160`;
+- public URL: `https://tdmhub.shinyapps.io/MIPD_Engine/`.
+
+The deployment script refuses a different account and supplies the existing appId explicitly, preventing an accidental parallel application from being created during repository cut-over.
