@@ -1,0 +1,12 @@
+.Rhistory
+.RData
+.Ruserdata
+.Rproj.user/
+renv/library/
+renv/staging/
+.Renviron
+*.log
+*.tmp
+tmp/
+cache/
+test-results/
