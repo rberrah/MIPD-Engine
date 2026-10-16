@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-import hashlib, json, pathlib, sys
+import json, pathlib, subprocess, sys
 
 root = pathlib.Path(__file__).resolve().parents[1]
 manifest = json.loads((root / "migration" / "source-manifest.json").read_text(encoding="utf-8"))
@@ -10,8 +10,11 @@ for item in manifest["copied"]:
     if not path.is_file():
         failures.append(f"missing: {item['target']}")
         continue
-    data = path.read_bytes()
-    digest = hashlib.sha1(b"blob " + str(len(data)).encode() + b"\0" + data).hexdigest()
+    digest = subprocess.check_output(
+        ["git", "hash-object", f"--path={item['target']}", item["target"]],
+        cwd=root,
+        text=True,
+    ).strip()
     if digest != item["gitBlob"]:
         failures.append(f"hash mismatch: {item['target']} expected {item['gitBlob']} got {digest}")
 
