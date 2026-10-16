@@ -26,3 +26,27 @@ enforce_mipd_deployment_profile <- function(root) {
   Sys.setenv(ALLOW_CUSTOM_MODELS = "false", ENABLE_PMETRICS = "false")
   invisible(TRUE)
 }
+
+# The SHA embedded in a production release must describe ALL shipped tracked
+# content. An uncommitted local edit would make a truthful commit fingerprint
+# impossible. GitHub Actions checkouts are clean; manual local deployment must
+# satisfy the same rule. Untracked files are not included in the rsconnect
+# manifest, which is built exclusively from git ls-files.
+assert_clean_mipd_release_checkout <- function(root) {
+  original_dir <- getwd()
+  on.exit(setwd(original_dir), add = TRUE)
+  setwd(root)
+  status <- suppressWarnings(system2(
+    "git", c("status", "--porcelain", "--untracked-files=no"),
+    stdout = TRUE, stderr = TRUE
+  ))
+  exit_status <- attr(status, "status")
+  if (!is.null(exit_status) && exit_status != 0L) {
+    stop("Cannot check the Git state before publishing a release.")
+  }
+  if (length(status)) {
+    stop("Cannot publish an immutable Git SHA with modified tracked files: ",
+         paste(status, collapse = "; "))
+  }
+  invisible(TRUE)
+}
