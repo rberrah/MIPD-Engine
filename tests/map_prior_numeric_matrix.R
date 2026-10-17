@@ -50,7 +50,7 @@ for (id in records$id) tryCatch({
       "PARTIAL_SOURCE_EQUATIONS" else "NOT_INDEPENDENTLY_REPRODUCED",
     omegaDimension=om$dim,omegaMinEigenvalue=om$minEigenvalue,
     sigmaDimension=sm$dim,sigmaMinEigenvalue=sm$minEigenvalue,
-    syntheticConcentrations=round(exposure,signif=10),
+    syntheticConcentrations=signif(exposure,digits=10),
     softwareContract="PASS",externalClinicalValidation=FALSE)
 },error=function(e){issues<<-c(issues,paste(id,conditionMessage(e),sep=": "))})
 report <- list(schema="mipd-map-prior-numeric-matrix.v1",
