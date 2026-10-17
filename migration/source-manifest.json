@@ -3,7 +3,7 @@
   "sourceRepository": "rberrah/rberrah.github.io",
   "sourceCommit": "2f97f109c3f4af257776a595f6546c9cd5f2321d",
   "extractionDate": "2026-10-16",
-  "copiedCount": 172,
+  "copiedCount": 170,
   "pendingCount": 0,
   "copied": [
     {
@@ -775,12 +775,6 @@
       "size": 4463
     },
     {
-      "source": "tdm-engine/R/ddi_builder.R",
-      "target": "R/ddi_builder.R",
-      "gitBlob": "d5a2c553bee8dc77a73a0756b48510300fe3a2df",
-      "size": 9953
-    },
-    {
       "source": "tdm-engine/R/ddi_engine.R",
       "target": "R/ddi_engine.R",
       "gitBlob": "5f015d7253c2c1494a195e0c90e992d5970f9bdf",
@@ -911,12 +905,6 @@
       "target": "tests/covariates_native_test.R",
       "gitBlob": "3906027985d293727066284f9bb7072303253d35",
       "size": 1023
-    },
-    {
-      "source": "tdm-engine/tests/ddi_builder_test.R",
-      "target": "tests/ddi_builder_test.R",
-      "gitBlob": "c97f41dc24da54737cfd00e493383c4cd1859837",
-      "size": 4292
     },
     {
       "source": "tdm-engine/tests/ddi_engine_test.R",
@@ -1383,7 +1371,21 @@
       "gitBlob": "dfa2a47af896c92222834180632a0e28954f4ccf",
       "size": 27864,
       "reason": "bibliographic-doi-provenance-correction-no-numeric-model-change"
+    },
+    {
+      "source": "tdm-engine/R/ddi_builder.R",
+      "target": "R/ddi_builder.R",
+      "gitBlob": "d5a2c553bee8dc77a73a0756b48510300fe3a2df",
+      "size": 9953,
+      "reason": "public-generated-ddi-compilation-security-boundary"
+    },
+    {
+      "source": "tdm-engine/tests/ddi_builder_test.R",
+      "target": "tests/ddi_builder_test.R",
+      "gitBlob": "c97f41dc24da54737cfd00e493383c4cd1859837",
+      "size": 4292,
+      "reason": "public-generated-ddi-compilation-security-regression"
     }
   ],
-  "adaptedCount": 49
+  "adaptedCount": 51
 }
