@@ -17,9 +17,10 @@ stopifnot(setequal(partial,c("vanco_roberts","vanco_pkjust","vanco_goti")))
 issues <- character()
 rows <- list()
 for (id in records$id) tryCatch({
-  model <- mrgsolve::zero_re(compile_model(model_id=id))
-  omega <- as.matrix(mrgsolve::omat(model))
-  sigma <- as.matrix(mrgsolve::smat(model))
+  source_model <- compile_model(model_id=id)
+  omega <- as.matrix(mrgsolve::omat(source_model))
+  sigma <- as.matrix(mrgsolve::smat(source_model))
+  model <- mrgsolve::zero_re(source_model)
   assert_covariance <- function(mat,name) {
     if (length(mat)==0 || nrow(mat)==0 || nrow(mat)!=ncol(mat) ||
         any(!is.finite(mat)) || max(abs(mat-t(mat)))>1e-6)
