@@ -1,6 +1,6 @@
 # Model source review
 
-Review date: 2026-10-16.
+Review date: 2026-10-17.
 
 This is an author-led comparison of every executable library model with its primary publication at the evidence level recorded in [`models/source-review.json`](../models/source-review.json). The historical `_ddi` suffix only records the model's origin in DDI Manager; it does not remove the model from the scientific audit. This review is not an independent reproduction of the original analyses.
 
@@ -31,14 +31,13 @@ Equation-level checking is still limited for eight sources whose full text or ex
 
 The generated [`docs/tdm-model-traceability.md`](tdm-model-traceability.md) lists the finding, evidence level, implementation parameters, covariates, random effects and engine limitations for each model.
 
-## Subsequent science boundary check (2026-10-16)
+## Goti renal-boundary resolution (2026-10-17)
 
-The independently implemented Goti 2018 2-compartment IV bolus equations
-match 3 within-domain synthetic scenarios, but the published secondary
-reconstruction (Antibiotics 2023;12:301, Table 2) includes a CrCl upper cap
-of 150 mL/min and a serum-creatinine floor of 1 mg/dL for age >65 years.
-These are missing in the frozen `models/vanco_goti.cpp` implementation. The
-source-fidelity UI rating for `vanco_goti` is conservatively downgraded to
-`not verified` until the exact primary article clauses and related
-random-effects/MAP implications can be independently reviewed. Model, prior,
-ML binary, and baseline provenance are unchanged.
+The local primary article was re-reviewed. Its Methods specify a CrCl upper
+cap of 150 mL/min and a serum-creatinine floor of 1 mg/dL for age >60 years.
+Both rules, the SI Cockcroft-Gault coefficients and the exact Table 2
+log-normal IIV conversions are now encoded in `models/vanco_goti.cpp`.
+Eight independent source-equation cases cover the thresholds, concentrations
+and AUC; a separate three-ETA synthetic oracle checks MAP optimization against
+base R. The fidelity status is now `aligned`, while full source reproduction,
+time-varying dialysis and external validation remain explicitly unclaimed.

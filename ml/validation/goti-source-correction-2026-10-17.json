@@ -1,0 +1,40 @@
+{
+  "modelId": "vanco_goti",
+  "date": "2026-10-17",
+  "reason": "Retraining required after primary-source correction of Cockcroft-Gault preprocessing and exact IIV variances.",
+  "data": "Synthetic profiles only; no patient-level data were read or written.",
+  "protocol": {
+    "sampling": "Steady-state C0 plus one concentration one hour after infusion end",
+    "target": "AUC24",
+    "nDevelopment": 1000,
+    "nTraining": 750,
+    "nUntouchedHoldout": 250,
+    "nAlternatePopPk": 500,
+    "alternatePopPk": "vanco_pkjust",
+    "seedBefore": 20260906,
+    "seedAfter": 20261017
+  },
+  "provenance": {
+    "modelSha256Before": "c8e2a6daba5ec941eec1a6201ed128b92a5bcc52f40b52b51c63a2d11003908d",
+    "modelSha256After": "1b8f8b5965bfa06d4aa40936b4641a411af643ef087ab2d2b7cb2370a8871f48",
+    "artifactSha256After": "6dfb8365027cf7be3571c18b3f6b423feba175037a84d1e6bdd9a073a1f94c7f",
+    "dalexBackgroundSha256After": "eca0b7b0699ee1e7ab7afa87ef8f98bef63e711d67efa6e310c0c3f3f66a1b65"
+  },
+  "comparison": {
+    "before": {
+      "repeatedCv": { "relativeRmsePct": 28.3573, "relativeBiasPct": -1.7322, "within20Pct": 68.8 },
+      "untouchedHoldout": { "relativeRmsePct": 30.4301, "relativeBiasPct": 1.8277, "within20Pct": 74.4 },
+      "c0OnlyUntouchedHoldout": { "relativeRmsePct": 36.699, "relativeBiasPct": 1.8277, "within20Pct": 56.8 },
+      "alternatePopPk": { "relativeRmsePct": 179.799, "relativeBiasPct": 115.4384, "within20Pct": 16.8 }
+    },
+    "after": {
+      "repeatedCv": { "relativeRmsePct": 22.2929, "relativeBiasPct": -1.3714, "within20Pct": 76.8 },
+      "untouchedHoldout": { "relativeRmsePct": 19.6028, "relativeBiasPct": 0.5596, "within20Pct": 73.2 },
+      "c0OnlyUntouchedHoldout": { "relativeRmsePct": 24.7398, "relativeBiasPct": 1.8592, "within20Pct": 63.2 },
+      "alternatePopPk": { "relativeRmsePct": 203.7623, "relativeBiasPct": 134.2292, "within20Pct": 12.8 }
+    }
+  },
+  "releaseLevel": "experimental",
+  "researchGatesPassed": false,
+  "interpretation": "Internal synthetic performance improved, but preregistered research gates and alternate-PopPK transportability failed. The artifact is not externally validated and must not drive the MAP-BE recommendation."
+}

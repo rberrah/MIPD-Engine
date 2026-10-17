@@ -4742,7 +4742,7 @@
     {
       "id": "vanco_goti",
       "sourceFile": "vanco_goti.cpp",
-      "sourceSha256": "c8e2a6daba5ec941eec1a6201ed128b92a5bcc52f40b52b51c63a2d11003908d",
+      "sourceSha256": "1b8f8b5965bfa06d4aa40936b4641a411af643ef087ab2d2b7cb2370a8871f48",
       "primarySource": {
         "citation": "Goti V et al. Ther Drug Monit. 2018;40:212-221.",
         "doi": "10.1097/FTD.0000000000000490",
@@ -4751,8 +4751,8 @@
           "status": "full-text-reviewed",
           "evidence": "LOCAL_PRIMARY_FULL_TEXT",
           "date": "2026-10-16",
-          "result": "SOURCE_AMBIGUITY_DOCUMENTED",
-          "note": "The reported Goti CL/V1/Q/V2 formulas agree within conventional covariate ranges (independent analytical tests). However a 2023 published reconstruction (Antibiotics 12:301, Table 2, doi:10.3390/antibiotics12020301) describes capping calculated CrCl at 150 mL/min and a serum-creatinine floor at 1 mg/dL for patients older than 65. Neither rule is in the current mrgsolve implementation. Primary-article re-review is needed; source fidelity of the boundary branches is NOT verified. MAP prior remains experimental; original C++/ML artifacts unchanged."
+          "result": "ARTICLE_ALIGNED",
+          "note": "Primary-article Methods and Table 2 were re-reviewed locally. The implementation now uses the published serum-creatinine floor of 1 mg/dL when age is >60 years, caps calculated Cockcroft-Gault CrCl at 150 mL/min, and retains the published CL/V1/Q/V2, dialysis, IIV and residual-error values. Independent synthetic source-equation and MAP-oracle tests include both renal boundaries. This is not external validation; DIAL remains a static study-status covariate."
         }
       },
       "population": {
@@ -4823,7 +4823,27 @@
           "Cockcroft-Gault",
           "creatinine",
           "clearance",
-          "(mL/min)"
+          "(mL/min)",
+          "CRCL_RAW",
+          ":",
+          "Cockcroft-Gault",
+          "clearance",
+          "before",
+          "the",
+          "published",
+          "150",
+          "mL/min",
+          "cap",
+          "CREAT_USED",
+          ":",
+          "Serum",
+          "creatinine",
+          "after",
+          "the",
+          "published",
+          "elderly-patient",
+          "floor",
+          "(micromol/L)"
         ]
       },
       "parameters": [
@@ -4851,7 +4871,7 @@
           3
         ],
         "omega": [
-          "@annotated @diagonal\nETA_CL : 0.147043196 : Between-subject variance on CL (published CV 39.8%)\nETA_V1 : 0.510 : Between-subject variance on V1\nETA_V2 : 0.280 : Between-subject variance on V2"
+          "@annotated @diagonal\nETA_CL : 0.147043196 : Between-subject variance on CL (published CV 39.8%)\nETA_V1 : 0.510339105 : Between-subject variance on V1 (published CV 81.6%)\nETA_V2 : 0.282197811 : Between-subject variance on V2 (published CV 57.1%)"
         ]
       },
       "residualError": {
@@ -4863,7 +4883,7 @@
           "@annotated @diagonal\nPROP : 0.051529 : Proportional residual variance (CV 22.7%)\nADD  : 11.56    : Additive residual variance (SD 3.4 mg/L)"
         ]
       },
-      "pmxAdaptations": "No PMx adaptation documented.",
+      "pmxAdaptations": "Les règles publiées sont appliquées : créatininémie portée à 1 mg/dL (88,4 micromol/L) si âge >60 ans, puis ClCr de Cockcroft-Gault plafonnée à 150 mL/min. DIAL représente le statut d'hémodialyse de l'étude, pas une clairance de dialyse variant dans le temps. Tests source et MAP sur patients synthétiques uniquement ; aucune validation externe.",
       "implementationStatus": "ARTICLE",
       "softwareContractStatus": "SOFTWARE_TESTED",
       "numericalCheckStatus": "deterministic-software-regression",
@@ -4872,7 +4892,7 @@
         "eligible": true,
         "status": "Prior MAP fondé sur l'article"
       },
-      "limitations": "Numerical validity ranges and independent reproduction remain to be documented."
+      "limitations": "Les règles publiées sont appliquées : créatininémie portée à 1 mg/dL (88,4 micromol/L) si âge >60 ans, puis ClCr de Cockcroft-Gault plafonnée à 150 mL/min. DIAL représente le statut d'hémodialyse de l'étude, pas une clairance de dialyse variant dans le temps. Tests source et MAP sur patients synthétiques uniquement ; aucune validation externe."
     },
     {
       "id": "vanco_pkjust",

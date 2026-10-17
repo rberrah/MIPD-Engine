@@ -16,10 +16,10 @@ stopifnot(all(vapply(MODEL_CATALOG$id, function(id) {
   if (status != "aligned") nzchar(model_card_detail(id)) else TRUE
 }, logical(1))))
 all_status <- vapply(MODEL_CATALOG$id, model_card_status, character(1))
-stopifnot(sum(all_status == "aligned") == 10L)
+stopifnot(sum(all_status == "aligned") == 11L)
 stopifnot(sum(all_status == "adapted") == 25L)
-stopifnot(model_card_status("vanco_goti") == "not verified")
-stopifnot(sum(all_status == "not verified") == 11L)
+stopifnot(model_card_status("vanco_goti") == "aligned")
+stopifnot(sum(all_status == "not verified") == 10L)
 
 for (i in seq_len(nrow(MODEL_CATALOG))) {
   row <- MODEL_CATALOG[i, , drop = FALSE]

@@ -19,28 +19,29 @@ Baseline (2026-10-16): 46 shipped models pass compilation/contract tests;
 vancomycin models, 6 synthetic scenarios in
 tests/source_equation_reproduction.R. Independent analytical R closed-form
 solutions are compared with mrgsolve predictions. Published CL/V, covariates,
-units and C(t) are tested. OMEGA/SIGMA, Bayesian fitting, external patients
-and clinical dosing are NOT validated. A third model, Goti (2018), has a separate independent analytical
-IV two-compartment test with 3 in-domain synthetic scenarios in
-tests/goti_source_equations.R. This test explicitly reports two renal-boundary
-science gaps. Thus 3/46 PARTIAL_SOURCE_EQUATIONS; 0/46
+units and C(t) are tested. A third model, Goti (2018), has a separate
+independent analytical IV two-compartment test with 8 synthetic scenarios in
+tests/goti_source_equations.R. It covers the primary-source age >60
+serum-creatinine floor, CrCl cap, fixed parameters, OMEGA/SIGMA, C(t) and AUC.
+Thus 3/46 PARTIAL_SOURCE_EQUATIONS; 0/46
 FULL_SOURCE_REPRODUCTION; 43 pending. These counts must not be
-misrepresented as 2 completely validated models.
+misrepresented as completely validated models.
 
-### MAP prior and posterior numerical qualification — Roberts and Revilla
+### MAP prior and posterior numerical qualification - Roberts, Revilla and Goti
 
-`tests/independent_map_prior_oracles.R` independently calculates one-compartment
-concentrations, Gaussian diagonal prior penalties and mixed/additive residual
-likelihoods, then solves a two-ETA MAP optimization with base R. It compares
-that optimum with `mapbayr` for one synthetic profile per model, checks
-`OMEGA`/`SIGMA` against the two primary publications and explicitly prints
+`tests/independent_map_prior_oracles.R` independently calculates concentrations,
+Gaussian diagonal prior penalties and mixed/additive residual likelihoods.
+It solves two-ETA one-compartment objectives for Roberts and Revilla, and a
+three-ETA two-compartment objective for Goti, with base R. It compares each
+optimum with `mapbayr` for one synthetic profile per model and checks
+`OMEGA`/`SIGMA` against the three primary publications and explicitly prints
 the small differences between reported CV-derived log-variances and historical
-stored variances. CI acceptance is bounded and reproducible.
+stored variances where applicable. The Goti case invokes both renal
+preprocessing rules. CI acceptance is bounded and reproducible.
 
 This qualifies the **software MAP optimization contract for those synthetic
 input scenarios**, not the clinical predictive properties of the original
-articles or individual posteriors fitted on the study cohorts. The original
-`models/*.cpp`, model cards, and 92 ML binaries are unchanged. Coverage
+articles or individual posteriors fitted on the study cohorts. Coverage
 remains **3/46 partial**, **0/46 full** and **0 external validations**.
 
 The source-to-model evidence records are in
@@ -55,7 +56,7 @@ reproduction fail CI.
 ### P0 — Independent source reproduction of 13 MAP priors
 
 Queue:
-1. Vancomycin: vanco_roberts, vanco_pkjust, vanco_goti
+1. Vancomycin: vanco_roberts, vanco_pkjust, vanco_goti (initial synthetic MAP oracles complete)
 2. Beta lactams: amox_carlier, cefazoline_lanoiselee, cefepime_an,
    cefepime_jonckheere, cefepime_seo
 3. Remaining: dapto_dvorchik_IV_adults, levo_canoui,
@@ -103,8 +104,8 @@ remain in G1 (#6); real external patient validation remains in G3 (#8).
 
 ### P1 — Review 35 models without confirmed source alignment
 
-These comprise 25 models with documented adaptations and 11 that remain
-not verified at the source-fidelity level (including Goti's renal boundary branches). The original publication may lack executable code or describe components
+These comprise 25 models with documented adaptations and 10 that remain
+not verified at the source-fidelity level. The original publication may lack executable code or describe components
 not supported by the current engine (IOV, correlations, transit, NPAG
 nonparametric priors, DDI simplifications). Correct mismatches where source
 permits. Otherwise provide named, dated discrepancy and retain a
@@ -132,18 +133,28 @@ should consume model metadata and scientific verdicts from MIPD Engine,
 never maintain its own duplicate clinical-science claims. Public deployment
 remains for research and education; no autonomous clinical dosing.
 
-## Goti model renal-boundary discrepancy
+## Goti model renal-boundary resolution
 
-Goti's typical two-compartment coefficients and dialysis-status factors
-can be reconstructed independently from the literature. However Table 2 in
-[Antibiotics (2023) 12:301](https://doi.org/10.3390/antibiotics12020301)
-reports bounding Cockcroft–Gault CrCl at 150 mL/min and setting serum
-creatinine to at least 1 mg/dL in patients >65 years. These two rules are
-**not** present in `models/vanco_goti.cpp`; the exact primary-article clauses
-and behavior at equality need a second reviewer check. The existing model
-and its frozen ML artifacts are retained unchanged pending a separate
-science/retraining PR. The UI status is conservatively `not verified` for
-source fidelity; numerical checks within the unaffected domain are *partial*.
+The primary article was re-reviewed locally. Its Methods specify bounding
+Cockcroft-Gault CrCl at 150 mL/min and setting serum creatinine to 1 mg/dL
+when it is lower than 1 mg/dL in patients **older than 60 years**. This
+primary threshold supersedes the >65 wording in the 2023 secondary
+reconstruction. `models/vanco_goti.cpp` now implements both rules, uses the
+SI Cockcroft-Gault coefficients and encodes the Table 2 IIV values as exact
+log-normal variances. Eight independent source-equation cases and one
+independent three-ETA MAP case cover the boundaries. The source-fidelity badge
+is `aligned`; this remains partial source reproduction, not external validation.
+
+The dependent Goti XGBoost and DALEX artifacts were retrained from 1,000
+synthetic profiles after the source correction. On the untouched internal
+holdout, C0 plus one-hour post-infusion rRMSE was 19.60% with 73.2% within
++/-20%. Transport to synthetic profiles generated by Revilla was poor
+(rRMSE 203.76%, bias 134.23%), so the artifact remains `experimental` and is
+not used for the MAP-BE recommendation. The paired benchmark on 300 untouched
+Goti profiles also favored MAP over XGBoost (rRMSE 4.31% versus 4.97% with two
+samples). Machine-readable provenance and before/after metrics are stored in
+`ml/validation/goti-source-correction-2026-10-17.json` and
+`ml/validation/goti-paired-source-correction-2026-10-17.json`.
 
 ## Existing independent analytical references
 
@@ -160,6 +171,6 @@ source fidelity; numerical checks within the unaffected domain are *partial*.
 ### Exit gate for initial PR
 
 46 audit rows, precisely 3 partial source-equation records, exactly 0 full
-source reproductions, and 9 in-domain independent numerical scenarios passing CI.
-Two Goti boundary discrepancies are documented but not counted as passes.
-The pre-existing 8 regressions and model origin/hashes must not change.
+source reproductions, and 14 independent source-equation scenarios passing CI.
+The Goti model hash and dependent ML provenance must change together; other
+model origins and hashes remain unchanged.

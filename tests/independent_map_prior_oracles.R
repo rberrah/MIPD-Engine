@@ -1,6 +1,7 @@
-# Independent MAP objective oracle — Roberts 2011 and Revilla 2010.
+# Independent MAP objective oracles - Roberts 2011, Revilla 2010 and Goti 2018.
 # Sources: doi:10.1128/AAC.01708-10 (Table 2);
-#          doi:10.1111/j.1365-2125.2010.03679.x (Table 4).
+#          doi:10.1111/j.1365-2125.2010.03679.x (Table 4);
+#          doi:10.1097/FTD.0000000000000490 (Methods and Table 2).
 #
 # Test data are SYNTHETIC. Reference C(t), random-effect prior and Gaussian
 # observation likelihood are written here independently from the model C++
@@ -131,3 +132,85 @@ for (case in cases) {
       objective(eta_map)-objective(external$par)))
 }
 cat("Independent Roberts/Revilla IIV, SIGMA and two-dimensional MAP test: PASS on synthetic cases.\n")
+
+# Independent three-dimensional Goti oracle. This synthetic case invokes both
+# source renal preprocessing rules: creatinine floor for age >60 and CrCl cap.
+goti <- list(
+  id="vanco_goti", dose=1000, obs_times=c(0.5,2,8,24),
+  cov=list(AGE=61,WT=140,CREAT=50,SEX=0,DIAL=0),
+  source_omega=log1p(c(0.398,0.816,0.571)^2),
+  source_sigma=c(0.227^2,3.4^2),
+  true_eta=c(0.12,-0.08,0.10), noise=c(0.16,-0.22,0.11,-0.14)
+)
+
+goti_analytic <- function(case,eta,times) {
+  p <- case$cov
+  creat_used <- if (p$AGE>60 && p$CREAT<88.4) 88.4 else p$CREAT
+  sex_factor <- if (p$SEX>=0.5) 1.04 else 1.23
+  crcl <- min(150,sex_factor*p$WT*(140-p$AGE)/creat_used)
+  dialysis <- as.integer(p$DIAL>=0.5)
+  cl <- 4.5*(crcl/120)^0.8*0.7^dialysis*exp(eta[[1]])
+  v1 <- 58.4*(p$WT/70)*0.5^dialysis*exp(eta[[2]])
+  v2 <- 38.4*exp(eta[[3]])
+  q <- 6.5
+  k10 <- cl/v1
+  k12 <- q/v1
+  k21 <- q/v2
+  root <- sqrt((k10+k12+k21)^2-4*k10*k21)
+  alpha <- ((k10+k12+k21)+root)/2
+  beta <- ((k10+k12+k21)-root)/2
+  as.numeric(case$dose/v1*(
+    (alpha-k21)/(alpha-beta)*exp(-alpha*times)+
+    (k21-beta)/(alpha-beta)*exp(-beta*times)
+  ))
+}
+
+goti_model <- compile_model(model_id=goti$id)
+goti_omega <- diag(as.matrix(mrgsolve::omat(goti_model)))
+goti_sigma <- diag(as.matrix(mrgsolve::smat(goti_model)))
+near(goti_omega,goti$source_omega,1e-9,"vanco_goti OMEGA against paper CV values")
+near(goti_sigma,goti$source_sigma,1e-9,"vanco_goti SIGMA against paper values")
+
+goti_observed <- goti_analytic(goti,goti$true_eta,goti$obs_times)+goti$noise
+stopifnot(all(goti_observed>0))
+goti_model <- do.call(mrgsolve::param,c(list(goti_model),goti$cov))
+goti_cmt <- match(model_administration_cmt(model_record(goti$id),"IV"),goti_model@cmtL)
+stopifnot(length(goti_cmt)==1L,!is.na(goti_cmt))
+goti_n <- length(goti_observed)
+goti_data <- data.frame(
+  ID=rep(1L,goti_n+1L),
+  time=c(0,goti$obs_times),
+  evid=c(1L,rep(0L,goti_n)),
+  amt=c(goti$dose,rep(0,goti_n)),
+  cmt=rep(goti_cmt,goti_n+1L),
+  rate=rep(0,goti_n+1L),
+  DV=c(NA_real_,goti_observed),
+  mdv=c(1L,rep(0L,goti_n))
+)
+goti_objective <- function(eta) {
+  pred <- goti_analytic(goti,eta,goti$obs_times)
+  variance <- goti_sigma[[1]]*pred^2+goti_sigma[[2]]
+  sum(log(variance)+(goti_observed-pred)^2/variance)+sum(eta^2/goti_omega)
+}
+goti_external <- stats::optim(c(0,0,0),goti_objective,method="BFGS",
+                              control=list(reltol=1e-12,maxit=3000))
+stopifnot(goti_external$convergence==0,all(is.finite(goti_external$par)))
+for (start in list(c(-0.2,0.2,-0.1),c(0.25,-0.15,0.2))) {
+  rerun <- stats::optim(start,goti_objective,method="BFGS",
+                        control=list(reltol=1e-12,maxit=3000))
+  stopifnot(rerun$convergence==0)
+  near(rerun$par,goti_external$par,0.0005,"vanco_goti independent optimizer stability")
+}
+goti_fit <- mapbayr::mapbayest(x=goti_model,data=goti_data,
+                               hessian=stats::optimHess,verbose=FALSE,
+                               progress=FALSE)
+goti_eta_map <- as.numeric(mapbayr::get_eta(goti_fit))
+stopifnot(length(goti_eta_map)==3L,all(is.finite(goti_eta_map)))
+near(goti_eta_map,goti_external$par,0.045,"vanco_goti MAP ETAs versus independent optimizer")
+stopifnot(goti_objective(goti_eta_map)<=goti_objective(goti_external$par)+0.04)
+stopifnot(goti_objective(goti_eta_map)<goti_objective(c(0,0,0)))
+cat(sprintf("Independent synthetic MAP PASS vanco_goti: eta=(%.5f,%.5f,%.5f); reference=(%.5f,%.5f,%.5f); OFV difference=%.6g\n",
+    goti_eta_map[[1]],goti_eta_map[[2]],goti_eta_map[[3]],
+    goti_external$par[[1]],goti_external$par[[2]],goti_external$par[[3]],
+    goti_objective(goti_eta_map)-goti_objective(goti_external$par)))
+cat("Independent Goti IIV, SIGMA and three-dimensional MAP test: PASS on a synthetic renal-boundary case.\n")

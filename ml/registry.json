@@ -1,6 +1,6 @@
 {
   "version": 3,
-  "benchmarkDate": "2026-10-16",
+  "benchmarkDate": "2026-10-17",
   "samplingDesign": {
     "primary": {
       "minimumObservations": 2,
@@ -3957,11 +3957,19 @@
         "developmentModelSha256": {
           "cefepime_seo": "e371dd0ebee48aa34fb434680cb8e74e2fdeee503375005f88499b8fdbe4f7e4"
         },
-        "unseenValidationGenerators": ["cefepime_an", "cefepime_jonckheere"],
+        "unseenValidationGenerators": [
+          "cefepime_an",
+          "cefepime_jonckheere"
+        ],
         "regimenConfiguration": "ml/training-regimens.json",
         "populationConfiguration": "ml/training-populations.json",
         "sourcePopulation": "doi:10.3947/ic.2022.0087, Table 1",
-        "variedCovariates": ["AGE", "WT", "CREAT", "SEX"],
+        "variedCovariates": [
+          "AGE",
+          "WT",
+          "CREAT",
+          "SEX"
+        ],
         "referenceCovariates": [],
         "target": "log(individual AUC24 / population AUC24)",
         "acceptedAucRatio": {
@@ -14369,13 +14377,13 @@
         "residualError": "Model SIGMA retained for sparse concentrations; OMEGA supplied through idata."
       },
       "baseModelId": "vanco_goti",
-      "baseModelSha256": "c8e2a6daba5ec941eec1a6201ed128b92a5bcc52f40b52b51c63a2d11003908d",
+      "baseModelSha256": "1b8f8b5965bfa06d4aa40936b4641a411af643ef087ab2d2b7cb2370a8871f48",
       "artifactPath": "artifacts/vanco_goti-intermittent-c0-post-auc24-xgb-v4.rds",
-      "artifactSha256": "33a25a771148e6b7f28bf2ccc91127b713967f194e8e884d3bba4f38f1500e90",
+      "artifactSha256": "6dfb8365027cf7be3571c18b3f6b423feba175037a84d1e6bdd9a073a1f94c7f",
       "explanation": {
         "type": "dalex_break_down",
         "backgroundPath": "artifacts/vanco_goti-intermittent-c0-post-auc24-xgb-v4-dalex-background.rds",
-        "backgroundSha256": "1d0f554881580bbf45839986349a3b200c71c2f41fd2778a7a02949af27943de",
+        "backgroundSha256": "eca0b7b0699ee1e7ab7afa87ef8f98bef63e711d67efa6e310c0c3f3f66a1b65",
         "sampleSize": 200,
         "synthetic": true
       },
@@ -14489,19 +14497,13 @@
         "doi": "10.1016/j.phrs.2021.105578",
         "developmentGenerators": "vanco_goti",
         "developmentModelSha256": {
-          "vanco_goti": "c8e2a6daba5ec941eec1a6201ed128b92a5bcc52f40b52b51c63a2d11003908d"
+          "vanco_goti": "1b8f8b5965bfa06d4aa40936b4641a411af643ef087ab2d2b7cb2370a8871f48"
         },
         "unseenValidationGenerators": "vanco_pkjust",
         "regimenConfiguration": "ml/training-regimens.json",
         "populationConfiguration": "ml/training-populations.json",
         "sourcePopulation": "doi:10.1097/FTD.0000000000000490, Table 1",
-        "variedCovariates": [
-          "AGE",
-          "WT",
-          "CREAT",
-          "SEX",
-          "DIAL"
-        ],
+        "variedCovariates": ["AGE", "WT", "CREAT", "SEX", "DIAL"],
         "referenceCovariates": [],
         "target": "log(individual AUC24 / population AUC24)",
         "acceptedAucRatio": {
@@ -14511,7 +14513,7 @@
         "realPatientValidation": "Pending"
       },
       "training": {
-        "seed": 20260906,
+        "seed": 20261017,
         "nVirtualDevelopment": 1000,
         "nTraining": 750,
         "nUntouchedHoldout": 250,
@@ -14537,22 +14539,22 @@
       },
       "trainingDomain": {
         "auc24": {
-          "min": 66.3526,
-          "max": 13684.2794
+          "min": 71.666,
+          "max": 20510.2351
         },
-        "concentrationMax": 554.9385,
+        "concentrationMax": 831.1476,
         "features": {
           "AGE": {
-            "min": 17.1032,
-            "max": 100.9973
+            "min": 17.1357,
+            "max": 100.6993
           },
           "WT": {
-            "min": 33.7125,
-            "max": 254.931
+            "min": 34.0517,
+            "max": 254.6768
           },
           "CREAT": {
-            "min": 20.0957,
-            "max": 1414.3292
+            "min": 19.862,
+            "max": 1459.8928
           },
           "SEX": {
             "min": 0,
@@ -14563,8 +14565,8 @@
             "max": 1
           },
           "POP_AUC24": {
-            "min": 96.6436,
-            "max": 9429.4088
+            "min": 94.1253,
+            "max": 11465.656
           },
           "DOSE": {
             "min": 500,
@@ -14580,7 +14582,7 @@
           },
           "PREV_CONC": {
             "min": 0.001,
-            "max": 477.017
+            "max": 766.5975
           },
           "PREV_TIME": {
             "min": 8,
@@ -14588,31 +14590,31 @@
           },
           "LAST_CONC": {
             "min": 0.001,
-            "max": 554.9385
+            "max": 831.1476
           },
           "LAST_TIME": {
             "min": 2,
             "max": 5
           },
           "PREV_POP_CONC": {
-            "min": 1.9644,
-            "max": 384.1164
+            "min": 2.034,
+            "max": 468.1154
           },
           "LAST_POP_CONC": {
-            "min": 5.0321,
-            "max": 396.4087
+            "min": 5.3156,
+            "max": 481.5103
           },
           "PREV_CONC_RATIO": {
             "min": 0.0001,
-            "max": 4.2184
+            "max": 3.5216
           },
           "LAST_CONC_RATIO": {
             "min": 0.0001,
-            "max": 2.9971
+            "max": 3.03
           },
           "CONC_DIFF": {
-            "min": -97.725,
-            "max": 337.0771
+            "min": -129.7888,
+            "max": 206.9715
           },
           "TIME_DIFF": {
             "min": 2,
@@ -14629,46 +14631,46 @@
         },
         "repeatedCv": {
           "passed": false,
-          "relativeRmsePct": 28.3573,
-          "relativeBiasPct": -1.7322,
-          "within20Pct": 68.8
+          "relativeRmsePct": 22.2929,
+          "relativeBiasPct": -1.3714,
+          "within20Pct": 76.8
         },
         "untouchedHoldout": {
           "passed": false,
-          "relativeRmsePct": 30.4301,
-          "relativeBiasPct": 1.8277,
-          "within20Pct": 74.4
+          "relativeRmsePct": 19.6028,
+          "relativeBiasPct": 0.5596,
+          "within20Pct": 73.2
         },
         "alternatePopPk": {
           "passed": false,
-          "relativeRmsePct": 179.799,
-          "relativeBiasPct": 115.4384,
-          "within20Pct": 16.8
+          "relativeRmsePct": 203.7623,
+          "relativeBiasPct": 134.2292,
+          "within20Pct": 12.8
         },
         "populationBaseline": {
           "repeatedCv": {
             "passed": false,
-            "relativeRmsePct": 56.6224,
-            "relativeBiasPct": -4.9625,
-            "within20Pct": 39.2
+            "relativeRmsePct": 61.5294,
+            "relativeBiasPct": -8.2563,
+            "within20Pct": 42
           },
           "untouchedHoldout": {
             "passed": false,
-            "relativeRmsePct": 60.3713,
-            "relativeBiasPct": -5.0685,
-            "within20Pct": 44.4
+            "relativeRmsePct": 44.7854,
+            "relativeBiasPct": -3.214,
+            "within20Pct": 42.4
           },
           "alternatePopPk": {
             "passed": false,
-            "relativeRmsePct": 448.5835,
-            "relativeBiasPct": 307.7377,
-            "within20Pct": 5.8
+            "relativeRmsePct": 482.7241,
+            "relativeBiasPct": 331.6346,
+            "within20Pct": 4.4
           }
         },
         "comparison": {
-          "repeatedCvRelativeRmseGainPct": 49.9185,
-          "untouchedHoldoutRelativeRmseGainPct": 49.5952,
-          "alternatePopPkRelativeRmseGainPct": 59.9185
+          "repeatedCvRelativeRmseGainPct": 63.7687,
+          "untouchedHoldoutRelativeRmseGainPct": 56.2294,
+          "alternatePopPkRelativeRmseGainPct": 57.7891
         },
         "samplingStrategies": {
           "c0Only": {
@@ -14682,21 +14684,21 @@
             },
             "repeatedCv": {
               "passed": false,
-              "relativeRmsePct": 39.7282,
-              "relativeBiasPct": -2.8347,
-              "within20Pct": 59.2
+              "relativeRmsePct": 29.2768,
+              "relativeBiasPct": -2.136,
+              "within20Pct": 68.2
             },
             "untouchedHoldout": {
               "passed": false,
-              "relativeRmsePct": 36.699,
-              "relativeBiasPct": 1.8277,
-              "within20Pct": 56.8
+              "relativeRmsePct": 24.7398,
+              "relativeBiasPct": 1.8592,
+              "within20Pct": 63.2
             },
             "alternatePopPk": {
               "passed": false,
-              "relativeRmsePct": 238.4341,
-              "relativeBiasPct": 154.9288,
-              "within20Pct": 10.4
+              "relativeRmsePct": 237.8283,
+              "relativeBiasPct": 162.7,
+              "within20Pct": 7.2
             }
           },
           "c0PlusOneHourPostInfusion": {
@@ -14710,21 +14712,21 @@
             },
             "repeatedCv": {
               "passed": false,
-              "relativeRmsePct": 28.3573,
-              "relativeBiasPct": -1.7322,
-              "within20Pct": 68.8
+              "relativeRmsePct": 22.2929,
+              "relativeBiasPct": -1.3714,
+              "within20Pct": 76.8
             },
             "untouchedHoldout": {
               "passed": false,
-              "relativeRmsePct": 30.4301,
-              "relativeBiasPct": 1.8277,
-              "within20Pct": 74.4
+              "relativeRmsePct": 19.6028,
+              "relativeBiasPct": 0.5596,
+              "within20Pct": 73.2
             },
             "alternatePopPk": {
               "passed": false,
-              "relativeRmsePct": 179.799,
-              "relativeBiasPct": 115.4384,
-              "within20Pct": 16.8
+              "relativeRmsePct": 203.7623,
+              "relativeBiasPct": 134.2292,
+              "within20Pct": 12.8
             }
           }
         },

@@ -3,7 +3,7 @@
   "sourceRepository": "rberrah/rberrah.github.io",
   "sourceCommit": "2f97f109c3f4af257776a595f6546c9cd5f2321d",
   "extractionDate": "2026-10-16",
-  "copiedCount": 174,
+  "copiedCount": 172,
   "pendingCount": 0,
   "copied": [
     {
@@ -535,12 +535,6 @@
       "size": 11236
     },
     {
-      "source": "tdm-engine/ml/validation/paired-auc-benchmark.json",
-      "target": "ml/validation/paired-auc-benchmark.json",
-      "gitBlob": "0eeda3b53dd9e269db3308d3603d0d6ab17c7bcc",
-      "size": 194325
-    },
-    {
       "source": "tdm-engine/models/amik_burdet.cpp",
       "target": "models/amik_burdet.cpp",
       "gitBlob": "2e8373a6ffd6bc46715d3e1e0595b04484b44d75",
@@ -973,12 +967,6 @@
       "size": 2786
     },
     {
-      "source": "tdm-engine/tests/model_reference_cases.R",
-      "target": "tests/model_reference_cases.R",
-      "gitBlob": "1560b2ea12235d9b9e500cba59d93f32b617045c",
-      "size": 3019
-    },
-    {
       "source": "tdm-engine/tests/onco_server_test.R",
       "target": "tests/onco_server_test.R",
       "gitBlob": "2cba1f4390b5ad2e7a9936d1ce82486202e3218d",
@@ -1053,6 +1041,20 @@
   ],
   "pending": [],
   "adapted": [
+    {
+      "source": "tdm-engine/ml/validation/paired-auc-benchmark.json",
+      "target": "ml/validation/paired-auc-benchmark.json",
+      "gitBlob": "0eeda3b53dd9e269db3308d3603d0d6ab17c7bcc",
+      "size": 194325,
+      "reason": "goti-primary-source-correction-paired-map-ml-rebenchmark"
+    },
+    {
+      "source": "tdm-engine/tests/model_reference_cases.R",
+      "target": "tests/model_reference_cases.R",
+      "gitBlob": "1560b2ea12235d9b9e500cba59d93f32b617045c",
+      "size": 3019,
+      "reason": "goti-primary-source-correction-deterministic-regression-update"
+    },
     {
       "source": "tdm-engine/benchmarks/pmetrics_known_truth.R",
       "target": "benchmarks/pmetrics_known_truth.R",
@@ -1383,5 +1385,5 @@
       "reason": "bibliographic-doi-provenance-correction-no-numeric-model-change"
     }
   ],
-  "adaptedCount": 47
+  "adaptedCount": 49
 }

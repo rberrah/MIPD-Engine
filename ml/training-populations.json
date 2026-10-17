@@ -277,7 +277,7 @@
       "covariates": {
         "AGE": { "type": "uniform", "min": 17, "max": 101, "evidence": "reported range" },
         "WT": { "type": "uniform", "min": 33, "max": 255, "evidence": "reported range" },
-        "CREAT": { "type": "cockcroft_creatinine", "crclMin": 4, "crclMax": 150, "valueMin": 17.68, "valueMax": 1467.44, "evidence": "reported creatinine-clearance and serum-creatinine ranges, reconstructed with the model's Cockcroft-Gault equation" },
+        "CREAT": { "type": "cockcroft_creatinine", "crclMin": 4, "crclMax": 150, "valueMin": 17.68, "valueMax": 1467.44, "maleFactor": 1.23, "femaleFactor": 1.04, "evidence": "reported creatinine-clearance and serum-creatinine ranges, reconstructed with the source-aligned SI Cockcroft-Gault equation; the model subsequently applies the published age >60 creatinine floor and CrCl cap" },
         "SEX": { "type": "bernoulli", "probability": 0.465, "evidence": "843/1812 female" },
         "DIAL": { "type": "bernoulli", "probability": 0.185, "evidence": "336/1812 on hemodialysis" }
       }

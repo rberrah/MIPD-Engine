@@ -1,0 +1,160 @@
+{
+  "version": 1,
+  "benchmarkDate": "2026-10-17",
+  "smoke": false,
+  "software": {
+    "R": "R version 4.4.1 (2024-06-14 ucrt)",
+    "mrgsolve": "1.7.2",
+    "mapbayr": "0.10.2",
+    "xgboost": "3.2.1.1"
+  },
+  "methodology": {
+    "target": "AUC24",
+    "comparator": "MAP-BE fitted to the same observed concentrations",
+    "trainingFraction": 0.75,
+    "tuningFolds": 10,
+    "cohortSize": "9000 simulated profiles for Woillard when --n=9000 and 3000 per other model/mode; central 90% retained; paired evaluation uses 1098 Woillard or 300 other untouched holdout patients",
+    "learningTarget": "Direct AUC24, squared-error loss; no population AUC predictor or ratio target",
+    "c0": "Pre-dose trough at steady state; sampled at tau-epsilon in the equivalent preceding cycle",
+    "c1": "Tinf+1 h for intermittent infusion; 1 h for oral, bolus and continuous infusion",
+    "continuous": "Ongoing constant-rate infusion at steady state, sampled at t=0 and t=1 h",
+    "truth": "Trapezoidal integration of the noise-free individual curve, 0-24 h, step 0.1 h",
+    "inclusion": "Central 90% of simulated true AUC24 retained per model and administration mode (5th to 95th percentiles), before the 75/25 split",
+    "residual": "Published SIGMA structure retained, with each residual standard deviation multiplied by 0.10 for both sparse-observation simulation and MAP-BE",
+    "woillardRegimen": "Woillard ST is aligned with regimen: ST=1 for Prograf q12h and ST=0 for Advagraf q24h",
+    "tuning": "Ten-fold CV on training patients; two-sample grid max_depth={1,2,4}, eta={0.0261,0.05}, min_child_weight=40, mtry=min(7,p), up to 1000 rounds with 30-round early stopping",
+    "metric": "e=(estimate-truth)/truth; bias=100*mean(e); rRMSE=100*sqrt(mean(e^2)); within20=100*count(abs(e)<=0.2)/N",
+    "failures": "Bias/RMSE use finite positive estimates; failures count as outside +/-20%. Paired metrics restrict both methods to the same successful patients.",
+    "limitations": "Not a replication of Woillard 2021: C0 or C0+C1 instead of C0+C3, AUC24 instead of AUC0-12, generic central-AUC filtering instead of tacrolimus-specific rules, ten-fold residual-SD reduction instead of the article's exact residual values, broader regimens and different covariate sampling. The complete article search grid is not published; this grid includes its reported two-sample optimum. Benchmark predictors are not the currently deployed Shiny predictors."
+  },
+  "results": [
+    {
+      "modelId": "vanco_goti",
+      "drug": "Vancomycine",
+      "administrationMode": "intermittent",
+      "baseModelSha256": "1b8f8b5965bfa06d4aa40936b4641a411af643ef087ab2d2b7cb2370a8871f48",
+      "nSimulated": 3000,
+      "nIncluded": 2700,
+      "nExcluded": 300,
+      "aucInclusionBounds": {
+        "lower": 170.152196476,
+        "upper": 3689.783639162
+      },
+      "nTraining": 2025,
+      "nHoldoutPool": 675,
+      "nHoldout": 300,
+      "seed": 20289805,
+      "mapUnavailableReason": null,
+      "strategies": {
+        "c0Only": {
+          "map": {
+            "n": 300,
+            "nEstimated": 300,
+            "nFailed": 0,
+            "relativeBiasPct": 0.574931837,
+            "relativeRmsePct": 9.016288278,
+            "within20Pct": 96
+          },
+          "ml": {
+            "n": 300,
+            "nEstimated": 300,
+            "nFailed": 0,
+            "relativeBiasPct": 1.557832628,
+            "relativeRmsePct": 10.724959554,
+            "within20Pct": 95
+          },
+          "paired": {
+            "n": 300,
+            "map": {
+              "n": 300,
+              "nEstimated": 300,
+              "nFailed": 0,
+              "relativeBiasPct": 0.574931837,
+              "relativeRmsePct": 9.016288278,
+              "within20Pct": 96
+            },
+            "ml": {
+              "n": 300,
+              "nEstimated": 300,
+              "nFailed": 0,
+              "relativeBiasPct": 1.557832628,
+              "relativeRmsePct": 10.724959554,
+              "within20Pct": 95
+            }
+          },
+          "tuning": {
+            "params": {
+              "objective": "reg:squarederror",
+              "eval_metric": "rmse",
+              "nthread": 1,
+              "max_depth": 4,
+              "eta": 0.0261,
+              "min_child_weight": 40,
+              "subsample": 1,
+              "colsample_bynode": 0.7,
+              "base_score": 1040.42820302,
+              "seed": 20289808
+            },
+            "rounds": 360,
+            "rmse": 80.121647636
+          },
+          "features": ["AGE", "WT", "CREAT", "SEX", "DIAL", "DOSE", "INTERVAL", "INFUSION", "PREV_CONC", "PREV_TIME"]
+        },
+        "c0PlusOneHourPostInfusion": {
+          "map": {
+            "n": 300,
+            "nEstimated": 300,
+            "nFailed": 0,
+            "relativeBiasPct": 0.03897769,
+            "relativeRmsePct": 4.307383665,
+            "within20Pct": 99.666666667
+          },
+          "ml": {
+            "n": 300,
+            "nEstimated": 300,
+            "nFailed": 0,
+            "relativeBiasPct": 0.086339822,
+            "relativeRmsePct": 4.972634657,
+            "within20Pct": 98.666666667
+          },
+          "paired": {
+            "n": 300,
+            "map": {
+              "n": 300,
+              "nEstimated": 300,
+              "nFailed": 0,
+              "relativeBiasPct": 0.03897769,
+              "relativeRmsePct": 4.307383665,
+              "within20Pct": 99.666666667
+            },
+            "ml": {
+              "n": 300,
+              "nEstimated": 300,
+              "nFailed": 0,
+              "relativeBiasPct": 0.086339822,
+              "relativeRmsePct": 4.972634657,
+              "within20Pct": 98.666666667
+            }
+          },
+          "tuning": {
+            "params": {
+              "objective": "reg:squarederror",
+              "eval_metric": "rmse",
+              "nthread": 1,
+              "max_depth": 4,
+              "eta": 0.0261,
+              "min_child_weight": 40,
+              "subsample": 1,
+              "colsample_bynode": 0.5,
+              "base_score": 1040.42820302,
+              "seed": 20289808
+            },
+            "rounds": 515,
+            "rmse": 41.241668503
+          },
+          "features": ["AGE", "WT", "CREAT", "SEX", "DIAL", "DOSE", "INTERVAL", "INFUSION", "PREV_CONC", "PREV_TIME", "LAST_CONC", "LAST_TIME", "CONC_DIFF", "TIME_DIFF"]
+        }
+      }
+    }
+  ]
+}
