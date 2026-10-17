@@ -4,28 +4,41 @@
 
 The engine, 46-model library, provenance, tests, Pmetrics fixtures and full frozen experimental ML artifact set were copied from PMx commit `2f97f109c3f4af257776a595f6546c9cd5f2321d`. Origin parity is machine-checked by Git blob hashes. PMx Explain has since removed the executable `tdm-engine/` mirror, while retaining the `static/tdm/` browser model snapshot and pinning the external source to immutable SHA `83a3026df7c0881d2725333a90d81ef2ed218f90`; PMx remains a separately maintained consumer.
 
-## Phase 2 — standalone qualification — IN PROGRESS
+## Phase 2 — standalone public deployment — COMPLETE; scientific qualification ongoing
 
-Completed in standalone CI:
+The **independent public app is deployed and accepted at immutable MIPD SHA
+`fec16cbdf8e33ed6c791226ccf236761333f8de8`**, Shinyapps bundle
+`12702795`, existing app ID `17776160`. The original target
+`https://tdmhub.shinyapps.io/MIPD_Engine/` was kept, production arbitrary
+C++ and Pmetrics were disabled, and public HTTP, FR/EN websocket,
+two-session, synthetic PK, MAP and DDI acceptance passed. Prior bundle
+`12702610` remains available for rollback. See
+[release handoff](docs/pmx-sync-report-2026-10-17.md).
 
-- compile/contract validation of all 46 models;
-- 8 deterministic software-regression reference profiles;
-- core MAP/privacy/Lego/DDI/PD/oncology/infectiology tests that own their fixtures;
-- Pmetrics 3.2.6 patient-level backend on R 4.6.1;
-- 92 ML artifact origin hashes;
-- deterministic catalogue regeneration with no drift;
-- R 4.6.1, dated CRAN snapshot, complete public `renv.lock` and exact direct-package runtime contract.
+This release was performed through **authenticated local rsconnect**, not
+GitHub Actions: the GitHub `production` secrets are still missing. The
+earlier Actions attempt failed before deploying. A new code or documentation
+commit on `main` **does not** imply the live version changed.
 
-Still required before PMx cut-over:
+Standalone CI additionally covers 46/46 model compilation/contracts,
+8 frozen deterministic software-reference profiles, three *partial*
+independent primary-source equation suites, MAP/physical invariants, safe
+Lego/DDI, local session cleanup, Pmetrics 3.2.6 on its compatible CI host,
+DOI provenance and release manifest. It does **not** prove independent
+complete primary-model reproduction, provider-side nonretention, external
+patient validation or medical safety.
 
-- real standalone production deployment of `main` through the protected Shinyapps GitHub Actions workflow (production secrets required);
-- public SHA fingerprint verified against the code really running at `tdmhub.shinyapps.io/MIPD_Engine/`;
-- live two-browser session isolation smoke and separate hosting-provider non-retention audit;
-- update the pinned PMx immutable SHA and 46-model browser snapshot/source-fidelity UI **only after** this exact deployed SHA passes PMx cross-repository consumer checks;
-- optional offline package mirror.
+Outstanding operational/research work, **not a reason to revert the
+accepted public release**:
+- Configure the three GitHub Shinyapps secrets in `production` to enable
+  future workflow-based releases;
+- independently audit host logs/backup/retention;
+- continue independent primary-source/MAP review and external validation;
+- requalify 12 intentionally blocked, stale-hash ML artifacts;
+- synchronize the independently versioned PMx consumer after its own CI.
 
 ## Phase 3 — PMx source-pin/live release alignment
-PMx has already removed the executable R/Shiny `tdm-engine/` mirror and consumes an immutable standalone SHA. Its 46-model static snapshot is a browser UI resource, not a second executable model library. The remaining work is to replace the stale immutable pin with an exactly deployed, independently tested MIPD commit, explicitly refresh source-fidelity badges (including Goti's `not verified` status), validate interface transfers and privacy, and preserve a reversible rollback to the last known working SHA. Do not delete the browser snapshot unless an equivalent versioned consumer mechanism exists.
+PMx has already removed the executable R/Shiny `tdm-engine/` mirror and consumes an immutable standalone SHA. Its 46-model static snapshot is a browser UI resource, not a second executable model library. The remaining work is to replace the stale immutable pin with an exactly deployed, independently tested MIPD commit, explicitly refresh source-fidelity badges (Goti is now `ARTICLE_ALIGNED` at the public SHA after primary renal-boundary corrections, still **not** clinically validated), validate interface transfers and privacy, and preserve a reversible rollback to the last known working SHA. Do not delete the browser snapshot unless an equivalent versioned consumer mechanism exists.
 
 ## PMx browser snapshot drift observed on 2026-10-17
 
@@ -44,18 +57,22 @@ isavuconazole_desai_ddi, isavuconazole_groll_ddi,
 posaconazole_dolton_ddi, rifampicine_loos_ddi, rifampicine_marsot,
 ritonavir_kappelhoff_ddi, tacrolimus_kamp_envarsus_ddi, vanco_goti.
 
-The PMx snapshot also derives `aligned/adapted/not verified` badges from its
-older static metadata; the standalone review downgraded `vanco_goti` to
-`not verified`. PMx's next integration PR must explicitly update all 18
-different browser-source files, regenerate the catalogue, and reconcile
-badges/Details from MIPD source review, retaining all 46 active models.
+The PMx snapshot derives `aligned/adapted/not verified` badges from older
+static metadata. The newly deployed MIPD source re-reviewed and corrected
+`vanco_goti` (CrCl cap and age >60 creatinine floor), now recording
+`ARTICLE_ALIGNED` on *author-led article review*, with synthetic numerical
+source/MAP checks but **zero external validations**. The next separate PMx
+integration PR must update all 18 changed browser C++ files, regenerate the
+catalogue, import Goti's current source-review/Details, and surface the 12
+blocked stale-hash ML artifacts while retaining all 46 active models.
 A green PMx CI against old `83a3026` does not qualify the newer MIPD SHA.
 
-## Evidence baseline
-- 46/46 software tested
-- 8/46 deterministic software-regression profiles
-- 0/46 marked independently source-reproduced
-- 13/46 currently eligible for the experimental MAP workflow
+## Current evidence counts (source-level maturity)
+- 46/46 software tested and 8/46 frozen deterministic reference profiles;
+- 3/46 **partial** independent source-equation checks; 0/46 complete primary-model reproductions;
+- 11 article-aligned, 33 documented adaptations and 2 source ambiguities in the raw review; source-fidelity UI separately treats missing full text as `not verified`;
+- 13/46 experimental MAP priors; 0/46 externally clinically validated;
+- 12 older ML artifacts unusable due to changed model-source SHA; the Goti ML was retrained but fails its preregistered internal performance thresholds.
 
 
 ## Test ownership
