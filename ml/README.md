@@ -1,5 +1,55 @@
 # Entrainement PopPK + XGBoost de l'AUC24
 
+## Statut réel des artefacts Shiny — version publique `fec16cb` (17/10/2026)
+
+Ces trois niveaux **ne sont pas interchangeables** :
+
+1. **Compatibilité d'exécution** : empreinte `baseModelSha256` conforme au C++,
+   identité de molécule/voie et domaine d'administration compatible. Un artefact
+   techniquement compatible peut être appliqué **uniquement si l'utilisateur
+   active explicitement le ML expérimental** ; ce n'est pas une qualification
+   de sa performance.
+2. **Performance interne de recherche** : validation croisée et test indépendant
+   de réglage (`untouchedHoldout`) passent les seuils enregistrés dans
+   `ml/registry.json`. Le programme vérifie le résultat séparément
+   (`ml_artifact_eligibility()$research`). Les évaluations restent effectuées
+   avec des données simulées par les modèles PopPK et ne prouvent ni
+   transportabilité ni exactitude sur des patients externes.
+3. **Validation clinique externe** : aucune n'est actuellement disponible
+   pour ces artefacts. Le programme ne doit jamais annoncer leur usage
+   clinique validé.
+
+Au SHA public `fec16cbdf8e33ed6c791226ccf236761333f8de8` :
+
+- **46** prédicteurs historiques sont répertoriés dans le manifeste (et 92
+  fichiers RDS en incluant les fonds DALEX).
+- **12** modèles ML sont techniquement compatibles et éligibles à l'application
+  TDM, mais **seuls 3** passent simultanément la validation croisée et le
+  holdout (`cefepime_seo`, `dapto_dvorchik_IV_adults`,
+  `tacrolimus_woillard_ddi`). Cette information ne leur donne pas le statut
+  de validation clinique.
+- **9** autres artefacts sont techniquement compatibles/éligibles mais sous
+  au moins un seuil de performance interne; ils restent expérimentaux avec
+  avertissement et ne doivent pas être décrits comme *research-qualified*.
+- **12** artefacts historiques ont un `baseModelSha256` périmé après
+  correction scientifique et restent **désactivés par incompatibilité de
+  provenance**. Ne pas modifier leurs empreintes sans réentraînement.
+- **Goti** a été réentraîné après correction de la fonction rénale, avec
+  source SHA compatible, mais sa **RMSE relative holdout est 19,60 %** (seuil
+  15 %) et sa couverture **P20 est 73,2 %** (seuil 80 %).
+  Son bloc `validation$untouchedHoldout$passed` est donc `false`, comme le
+  bloc CV. Le test de transportabilité vers un autre modèle PopPK échoue
+  également. Le MAP et la simulation ne doivent pas être présentés comme
+  validés cliniquement sur cette base.
+
+Source de vérité : `ml/registry.json`,
+`ml/catalog-summary.generated.json` et `R/ml_engine.R` au **SHA
+publié**, pas à un nouveau commit documentaire de `main`. Les indicateurs
+`hashMatches`, `availableInTdm`, `validation.*.passed` et
+`realPatient.status` doivent être affichés et interprétés séparément.
+Le rapport de transfert PMx est dans
+[`docs/pmx-sync-report-2026-10-17.md`](../docs/pmx-sync-report-2026-10-17.md).
+
 Ce dossier ne contient aucune donnee patient. Le pipeline entraine un predicteur XGBoost distinct pour chaque couple modele mrgsolve / mode d'administration a partir de profils entierement simules. Il adapte a l'ensemble de la bibliotheque le principe valide pour le tacrolimus par Woillard et al. (doi:10.1016/j.phrs.2021.105578), sans extrapoler cette validation clinique aux autres molecules.
 
 ## Benchmark apparie MAP-BE / XGBoost
