@@ -26,7 +26,7 @@ for (id in records$id) tryCatch({
         any(!is.finite(mat)) || max(abs(mat-t(mat)))>1e-6)
       stop(name," must be a finite symmetric matrix")
     eig <- eigen((mat+t(mat))/2,symmetric=TRUE,only.values=TRUE)$values
-    if (min(eig)<-1e-7) stop(name," has a negative eigenvalue")
+    if (min(eig) < -1e-7) stop(name," has a negative eigenvalue")
     if (name=="OMEGA" && max(eig)<=0) stop("MAP prior must have nonzero variability")
     list(dim=nrow(mat),minEigenvalue=min(eig))
   }
