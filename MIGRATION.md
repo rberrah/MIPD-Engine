@@ -38,7 +38,7 @@ be qualified here before a PMx consumer pin can advance.
 
 ## Current standalone qualification
 
-At `main@b7895d0`:
+At the qualified code baseline `b7895d0`:
 
 - 46/46 model files compile and satisfy software contracts;
 - frozen numerical software baselines cover all 46 models across 98 supported
@@ -50,9 +50,10 @@ At `main@b7895d0`:
 - 0/46 are claimed as externally clinically validated;
 - DOI and model/ML provenance gates are active.
 
-The five commits between the public source SHA `fec16cb` and
-`main@b7895d0` modify governance, documentation and qualification assets only;
-they do not change the deployed runtime or model sources.
+The five code/qualification commits between the public source SHA `fec16cb`
+and baseline `b7895d0` modify governance, documentation and qualification
+assets only; they do not change the deployed runtime or model sources. Later
+documentation-only commits do not alter that comparison.
 
 ## Remaining work — non-blocking for repository separation
 
