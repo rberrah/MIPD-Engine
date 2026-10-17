@@ -1,7 +1,8 @@
 # All 46 models: numerical integrator stability and physical shape checks.
-# This is NOT source-paper reproduction and is NOT a frozen numerical
-# reference profile. The output is an auditable CANDIDATE fixture report to
-# review independently before any reference value is promoted.
+# This test additionally checks a FROZEN 46-MODEL SOFTWARE REGRESSION
+# reference derived from the qualified, deployed 2026-10-17 MIPD source SHA.
+# Its AUC, sampled peak and 24h concentration are synthetic outputs of the
+# model code, NOT independent primary-paper or clinical validation.
 suppressPackageStartupMessages({library(mrgsolve); library(jsonlite)})
 args <- commandArgs(FALSE)
 script <- sub("^--file=", "", grep("^--file=", args, value=TRUE)[[1]])
@@ -10,6 +11,16 @@ source(file.path(APP_ROOT, "R", "model_library.R"), local=TRUE)
 
 stopifnot(nrow(MODEL_CATALOG) == 46L, !anyDuplicated(MODEL_CATALOG$id))
 times <- c(0.25, 0.6, 1.3, 2, 4, 8, 12, 24, 48)
+baseline <- jsonlite::fromJSON(
+  file.path(APP_ROOT,"tests","fixtures","all_model_software_baselines_v1.json"),
+  simplifyVector=FALSE
+)
+stopifnot(
+  identical(baseline$schema,"mipd-46-model-software-reference.v1"),
+  identical(baseline$sourceSha,"fec16cbdf8e33ed6c791226ccf236761333f8de8"),
+  isTRUE(all.equal(unlist(baseline$timesHours),times)),
+  length(baseline$metrics)==49L
+)
 cases <- list()
 errors <- character()
 for (id in MODEL_CATALOG$id) {
@@ -47,6 +58,23 @@ for (id in MODEL_CATALOG$id) {
           stop("solver discrepancy exceeds 1.5% relative + 1e-6 absolute")
         auc <- sum(diff(times)*(head(a,-1)+tail(a,-1))/2)
         stopifnot(is.finite(auc),auc>0)
+        # Three independent summary dimensions per synthetic dose:
+        # AUC0.25-48, sampled peak, and 24h concentration. Two doses per
+        # route/mode give six FROZEN values. This catches source-code drift
+        # that positive/finite shape invariants alone would not detect.
+        group <- paste(id,route,mode,sep="/")
+        expected <- unlist(baseline$metrics[[group]],use.names=FALSE)
+        if (length(expected)!=6L || any(!is.finite(expected))) {
+          stop("Missing or invalid frozen 46-model baseline for ",group)
+        }
+        index <- c(scenario,scenario+2L,scenario+4L)
+        observed <- c(auc,max(a),a[[8L]])
+        allowed <- 1e-6+0.002*abs(expected[index])
+        if (any(!is.finite(observed)) || any(abs(observed-expected[index])>allowed)) {
+          stop(sprintf("FROZEN SOFTWARE REGRESSION DRIFT %s: observed AUC/peak/C24=(%.9g, %.9g, %.9g); frozen=(%.9g, %.9g, %.9g)",
+            key,observed[[1]],observed[[2]],observed[[3]],
+            expected[index][[1]],expected[index][[2]],expected[index][[3]]))
+        }
         cases[[length(cases)+1L]] <- list(
           modelId=id,route=route,administrationMode=mode,scenario=scenario,
           syntheticDose=dose,syntheticInfusionRate=rate,
@@ -60,9 +88,17 @@ for (id in MODEL_CATALOG$id) {
     }
   }
 }
+actual_groups <- unique(vapply(cases,function(entry)
+  paste(entry$modelId,entry$route,entry$administrationMode,sep="/"),character(1)))
+if (!setequal(actual_groups,names(baseline$metrics)))
+  errors <- c(errors,"Frozen regression route/model keys differ from all 46 current models")
 report <- list(
+  frozenSoftwareBaseline="tests/fixtures/all_model_software_baselines_v1.json",
+  frozenSourceSha=baseline$sourceSha,
+  frozenRegressionGroups=length(actual_groups),
+  frozenSoftwareRegressions=length(cases),
   schema="mipd-all-model-numerical-invariants.v1",
-  scope="Two synthetic dosing scenarios per administration mode, two solver tolerances; NOT source reproduction, clinical validation or a reviewed frozen oracle",
+  scope="Two synthetic scenarios/mode: frozen software-baseline AUC/peak/C24 + two solver tolerances; NOT an independently published-source oracle and NOT external clinical validation",
   activeModels=nrow(MODEL_CATALOG),
   testedModels=length(unique(vapply(cases,`[[`,character(1),"modelId"))),
   caseCount=length(cases),failures=errors,cases=cases
@@ -70,9 +106,9 @@ report <- list(
 report_file <- file.path(APP_ROOT,"scientific-validation","all-model-invariants.generated.json")
 jsonlite::write_json(report,report_file,pretty=TRUE,auto_unbox=TRUE,digits=10)
 if (length(errors) || report$testedModels != 46L || length(cases) < 92L)
-  stop("All-model numerical qualification incomplete: ",
+  stop("All-model numerical/frozen regression qualification incomplete: ",
        paste(head(errors,20),collapse=" | "),
        "; tested=",report$testedModels,", cases=",length(cases))
-cat("All 46 model numerical invariant checks passed across ",length(cases),
-    " synthetic dosing scenarios. Unreviewed candidate trajectories stored in ",
+cat("All 46 frozen SOFTWARE reference and numerical invariant checks passed across ",length(cases),
+    " synthetic dosing scenarios. Additional candidate trajectories stored in ",
     report_file,".\n",sep="")
