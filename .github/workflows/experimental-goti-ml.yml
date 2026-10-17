@@ -1,0 +1,47 @@
+name: Experimental Goti ML requalification
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - ".github/workflows/experimental-goti-ml.yml"
+      - "ml/train_models_xgboost.R"
+      - "models/vanco_goti.cpp"
+      - "ml/training-populations.json"
+      - "ml/training-regimens.json"
+
+permissions:
+  contents: read
+
+jobs:
+  synthetic-candidate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v5
+      - uses: r-lib/actions/setup-r@v2
+        with:
+          r-version: "4.6.1"
+          use-public-rspm: false
+      - uses: r-lib/actions/setup-renv@v2
+        with:
+          cache-version: 1
+      - name: Verify frozen scientific training environment
+        run: Rscript scripts/check_runtime.R core
+      - name: Independently evaluate a Goti candidate without modifying published artifacts
+        run: |
+          Rscript ml/train_models_xgboost.R \
+            --base=vanco_goti \
+            --n=1600 \
+            --seed=20261017 \
+            --workers=2 \
+            --report=scientific-validation/goti-ml-candidate.generated.csv
+      - name: Refuse silent mutation of existing model and ML artifact evidence
+        run: git diff --exit-code -- models ml/registry.json ml/artifacts
+      - name: Upload candidate holdout and repeated CV results only
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: goti-ml-candidate-no-publish
+          path: scientific-validation/goti-ml-candidate.generated.csv
+          if-no-files-found: ignore

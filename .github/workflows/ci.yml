@@ -27,6 +27,15 @@ jobs:
         run: python3 -m py_compile scripts/check_live_deployment.py scripts/check_live_sessions.py
       - name: Check model and ML DOI provenance consistency
         run: python scripts/check_doi_consistency.py
+      - name: Audit all 46 synthetic ML artifact evidence records
+        run: python3 scripts/audit_ml_evidence.py
+      - name: Upload machine-readable ML evidence matrix
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: mipd-ml-evidence
+          path: scientific-validation/ml-evidence.generated.json
+          if-no-files-found: ignore
       - name: Regenerate standalone model catalogue
         run: node scripts/generate_model_catalog.mjs
       - name: Regenerate model traceability
@@ -64,6 +73,19 @@ jobs:
         run: Rscript tests/validate_library.R
       - name: Run deterministic model references
         run: Rscript tests/model_reference_cases.R
+      - name: Check synthetic dosing and numerical solver invariants for all 46 models
+        run: Rscript tests/all_model_numeric_invariants.R
+      - name: Check 13 experimental MAP priors have valid covariance and synthetic profiles
+        run: Rscript tests/map_prior_numeric_matrix.R
+      - name: Upload independent all-model numerical evidence candidate reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: mipd-all-model-numeric-matrix
+          path: |
+            scientific-validation/all-model-invariants.generated.json
+            scientific-validation/map-prior-matrix.generated.json
+          if-no-files-found: ignore
       - name: Audit model-level scientific evidence register
         run: python3 scripts/audit_scientific_evidence.py
       - name: Run independent primary-source equation oracles
@@ -91,7 +113,7 @@ jobs:
           set -euo pipefail
           for test in tests/*.R; do
             case "$(basename "$test")" in
-              validate_library.R|model_reference_cases.R|source_equation_reproduction.R|goti_source_equations.R|independent_map_prior_oracles.R|amox_carlier_analytical_invariants.R|deployment_profile_test.R|safe_lego_test.R|privacy_nonretention_test.R|pmetrics_backend_test.R|advanced_lego_test.R|lego_external_exports.R|lego_mlxtran_exports.R|lego_native_exports.R|covariates_native_test.R|input_labs_test.R|teaching_lab_test.R|workshop_pk_test.R)
+              validate_library.R|model_reference_cases.R|all_model_numeric_invariants.R|map_prior_numeric_matrix.R|source_equation_reproduction.R|goti_source_equations.R|independent_map_prior_oracles.R|amox_carlier_analytical_invariants.R|deployment_profile_test.R|safe_lego_test.R|privacy_nonretention_test.R|pmetrics_backend_test.R|advanced_lego_test.R|lego_external_exports.R|lego_mlxtran_exports.R|lego_native_exports.R|covariates_native_test.R|input_labs_test.R|teaching_lab_test.R|workshop_pk_test.R)
                 continue
                 ;;
             esac
