@@ -90,31 +90,48 @@ workflow. An upload that succeeded but fails either test is **not a validated
 public release**. A previously available public bundle with no
 `deployment-release.json` cannot be identified as the new standalone release.
 
-### Current public release evidence
+### Current public release evidence — 2026-10-17
 
-The public application was deployed from a clean local `main` checkout on
-2026-10-17 after the complete standalone qualification workflow passed:
+**Current public release:** MIPD Engine commit
+`fec16cbdf8e33ed6c791226ccf236761333f8de8`, immutable tag
+`public-2026-10-17-fec16cb`, Shinyapps bundle **12702795**, task
+`1758931558`, image `15803034`, existing app ID `17776160`.
+The authoritative receipt and test evidence are in
+[PMx sync/release handoff](pmx-sync-report-2026-10-17.md), which is explicitly
+versioned to the **deployed** SHA. A local authenticated deployment was
+performed after successful standalone qualification. This was **not** a
+successful GitHub Actions deployment run.
 
-- source SHA: `f954b53204335b0b4ee6f30999f4a3e88c968115`;
-- qualification run: [GitHub Actions 39021387658](https://github.com/rberrah/MIPD-Engine/actions/runs/39021387658);
-- Shinyapps bundle `12702610`, task `1758914627`, image `15802838`;
-- target: existing app ID `17776160` at
-  `https://tdmhub.shinyapps.io/MIPD_Engine/`;
-- immutable fingerprint check: HTTP 200, exact SHA, 46 models,
-  `ALLOW_CUSTOM_MODELS=false`, `ENABLE_PMETRICS=false`;
-- browser check: distinct FR/EN websocket sessions, with the second session
-  remaining connected after the first closed.
+The recorded post-release acceptance passed HTTP 200, exact SHA at
+`/deployment-release.json`, 46 bilingual model cards, distinct FR/EN
+websocket-connected sessions, synthetic PK, MAP and DDI simulation,
+prohibition of arbitrary custom C++, and disabled Pmetrics. The generated
+DDI comparison reported AUC24 283.0 vs 560.0 (ratio 1.98). These are
+software checks with synthetic inputs, **not** external clinical validation.
+We do not independently attest to Shinyapps provider logs, backups or data
+retention.
 
-The first browser probe encountered a transient non-200 response while the
-Shinyapps instance was cold. A direct HTTP request then returned 200 and the
-repeated browser probe passed. The probe now retries this bounded startup
-condition but still fails after three unsuccessful responses.
+**Rollback:** prior public bundle `12702610` (source SHA
+`f954b53204335b0b4ee6f30999f4a3e88c968115`) is retained.
+Do not remove it without a replacement rollback plan.
 
-This was a credentialed local deployment, **not** a GitHub Actions deployment
-run. The `production` environment still needs the three documented Shinyapps
-secrets before automated deployment can be claimed. The previously recorded
-bundle `12698610` remains the rollback reference in the Shinyapps deployment
-history. Provider-side logs, backups and retention were not inspected.
+**Do not confuse `main` with production.** Subsequent commit
+`9645ff4c8d743a350730f31f9aaab0605f4943e5` records documentation
+and did **not** change the deployed app. Additional documentation commits
+also do not advance the public fingerprint. All read-only live verification
+against this release must specify
+`--expected-sha fec16cbdf8e33ed6c791226ccf236761333f8de8` or the
+equivalent full SHA workflow input; omitting it compares against newer `main`
+and can produce a false *stale deployment* alert.
+
+**Automation not yet configured:** the first manual Actions deployment
+failed on the step `Configure Shinyapps account` because GitHub
+`production` credentials were not available. Subsequent deployment was
+completed using an authenticated **local** rsconnect session. This does
+not create GitHub secrets. A future **GitHub Actions** deployment requires
+the operator to configure `SHINYAPPS_ACCOUNT`, `SHINYAPPS_TOKEN` and
+`SHINYAPPS_SECRET` as repository or `production` environment secrets.
+No token value should be included in Git or a report.
 
 ### Required operator action
 
@@ -127,9 +144,12 @@ repository or the `production` environment: `SHINYAPPS_ACCOUNT=tdmhub`,
 `SHINYAPPS_TOKEN`, `SHINYAPPS_SECRET`. Never paste the token or secret
 into an issue, PR, log or chat.
 
-A complete acceptance report must identify the GitHub Actions deployment
-run, deployment commit and fingerprint equality; absence of a run or marker
-means **not deployed/verified**, regardless of a green standalone CI.
+A complete acceptance report must identify the **deployment method**
+(GitHub Actions or authenticated local rsconnect), source SHA, Shinyapps
+bundle/task, public fingerprint equality and live browser test evidence.
+A GitHub Actions run is required to claim **Actions-based** publication,
+but is not required for a verified **local** deployment. Green CI alone
+never proves a running release.
 
 ### Independent read-only re-verification and release artifact
 
@@ -158,16 +178,23 @@ and qualified before publishing. Untracked files are excluded from the
 
 ### PMx Explain compatibility gate
 
-On 2026-10-16, PMx Explain removed its executable `tdm-engine/` mirror and
-uses `integration/mipd-release.json` pin
-`83a3026df7c0881d2725333a90d81ef2ed218f90`. Its
-`static/tdm/models/` remains a 46-model *browser snapshot*, not a second
-engine. This pin is older than the current independent scientific-qualification
-commits. PMx must **not** advance its immutable consumer pin or remove the
-browser snapshot before deployment is proved by exact SHA, its model
-snapshot/contract pass against the new SHA, and the new scientific status
-of `vanco_goti` is propagated to UI. Changes to PMx must be handled by the
-separate PMx owner/agent in a reversible, separately tested PR.
+PMx Explain removed the executable `tdm-engine/` mirror and retains
+`static/tdm/models/` as a browser-facing, versioned source snapshot.
+At the latest inspected committed PMx revision on 2026-10-17,
+`integration/mipd-release.json` still pins old MIPD SHA
+`83a3026df7c0881d2725333a90d81ef2ed218f90`. There are **18 C++ source
+differences** between that pin and the qualified public MIPD SHA `fec16cb`.
+The Goti model is now `ARTICLE_ALIGNED` after independent synthetic renal
+boundary tests (not externally validated), and **12 other ML artifacts**
+are intentionally blocked because their training source hashes no longer
+match. PMx must take C++ models, catalog, localized source-review fields,
+traceability and ML availability **from the same published SHA**.
+The full handoff is [docs/pmx-sync-report-2026-10-17.md](pmx-sync-report-2026-10-17.md).
+
+Advance the PMx immutable pin only via a separate reversible PR after all
+46 model source/hash parity tests and browser/Lego/TDM/DDI/PD consumer
+contracts succeed. The PMx owner must reconcile uncommitted work before
+replacing snapshots. No PMx source files should be changed from this repo.
 
 ### Evidence still outstanding
 

@@ -8,6 +8,23 @@ This repository was initialized from the validated PMx source at:
 - source commit: `2f97f109c3f4af257776a595f6546c9cd5f2321d`
 - extraction started: 2026-10-16
 
+## Public release and consumers
+
+The standalone Shiny app was **deployed and accepted** on 2026-10-17:
+[https://tdmhub.shinyapps.io/MIPD_Engine/](https://tdmhub.shinyapps.io/MIPD_Engine/).
+
+- **Deployed source SHA:** `fec16cbdf8e33ed6c791226ccf236761333f8de8` (tag `public-2026-10-17-fec16cb`).
+- **Shinyapps:** `tdmhub/MIPD_Engine`, existing app ID `17776160`, bundle `12702795`; rollback bundle `12702610`.
+- **Public restrictions:** no arbitrary custom C++ and no Pmetrics on the current host.
+- **Status:** software/public smoke acceptance passed; full article-model reproduction and external clinical validation **not claimed**.
+- **Deployment method:** authenticated local rsconnect. GitHub `production` environment secrets remain unconfigured, so automated Shinyapps deployment is **not** established.
+- **PMx Explain:** separate consumer, still requires a reversible, versioned sync from its historic source pin. Do not infer PMx synchronization from MIPD deployment.
+
+See the [deployment evidence](docs/DEPLOYMENT.md),
+[release-to-PMx handoff](docs/pmx-sync-report-2026-10-17.md)
+and [scientific qualification](docs/scientific-qualification.md).
+A later documentation commit on `main` does **not** advance the deployed source SHA.
+
 ## Scope
 
 The repository is intended to contain:
@@ -21,7 +38,7 @@ The repository is intended to contain:
 - software-regression and source-reproduction tests;
 - experimental simulation-trained ML artifacts, clearly separated from clinically validated methods.
 
-PMx Explain remains the educational portal and consumer of the deployed engine. The extraction must preserve the current public PMx URLs and contracts until an independently deployable release of this repository has been verified.
+PMx Explain remains the separately managed educational portal. Its consumer pin and public model snapshot require explicit synchronization and independent CI validation, even after successful standalone Shinyapps publication.
 
 ## Evidence levels
 
@@ -43,7 +60,7 @@ Public deployments must keep arbitrary uploaded C++ disabled. Patient-shaped inp
 
 ## Migration status
 
-The frozen scientific engine and model-library baseline has been copied without removing the active PMx consumer. The standalone repository now contains the 46-model library, all 92 frozen experimental ML RDS artifacts, model provenance, Pmetrics fixtures and the engine test suite. Removal from PMx remains gated on an independently verified deployment and cross-repository compatibility checks.
+The standalone repository contains the 46-model library, 92 experimental ML/DALEX RDS artifacts, model provenance, Pmetrics fixtures and the engine tests. PMx no longer contains an executable engine mirror, but retains an older browser-only snapshot. Its 46-model source pin must be updated in a **separate** qualified PMx PR. Twelve historical ML artifacts are intentionally hash-blocked following model fixes, and the retrained Goti predictor remains below internal research-performance thresholds.
 
 See `MIGRATION.md` and `ORIGIN.md`.
 
@@ -52,9 +69,9 @@ The current article-to-code review coverage is recorded in [`docs/model-source-r
 
 ## Standalone qualification status
 
-The extraction is intentionally staged. PMx Explain remains the active consumer until this repository is independently deployable.
+The standalone public deployment is complete; PMx consumer synchronization and independent scientific qualification remain separate, incomplete workstreams.
 
-Current migration branch qualification:
+Current standalone GitHub qualification:
 
 - origin/hash parity for frozen source files;
 - deterministic regeneration of the 46-model catalogue;
@@ -65,7 +82,7 @@ Current migration branch qualification:
 
 Tests that require fixtures produced by PMx Explain remain cross-repository integration contracts and are not reclassified as standalone tests.
 
-The simulation-trained XGBoost layer is experimental. Its 92 binary RDS artifacts are now migrated bit-for-bit from the frozen source and remain explicitly distinct from source-reproduced or externally validated model evidence.
+The simulation-trained XGBoost layer remains experimental. Historical artifact snapshots are preserved; the Goti XGBoost/DALEX files were retrained after the primary-source renal-boundary correction. A matching model hash means compatibility, **not** that CV, holdout, cross-model transportability or external-patient performance thresholds have passed. Research-level results must be read individually from the ML registry.
 
 ### Reproducible runtime
 
