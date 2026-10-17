@@ -112,7 +112,11 @@ jobs:
           use-public-rspm: true
       - name: Install pinned Pmetrics runtime
         run: |
-          Rscript -e 'rv <- paste(R.version$major, strsplit(R.version$minor, "\\.")[[1]][1], sep = "."); binary_repo <- function(universe) sprintf("https://%s.r-universe.dev/bin/linux/resolute-%s/%s", universe, R.version$arch, rv); options(repos = c(LAPKB = binary_repo("lapkb"), CRAN = binary_repo("cran"))); install.packages(c("Pmetrics","mrgsolve","mapbayr","jsonlite")); stopifnot(as.character(packageVersion("Pmetrics")) == Sys.getenv("PMETRICS_VERSION"))'
+          for attempt in 1 2 3; do
+            Rscript -e 'rv <- paste(R.version$major, strsplit(R.version$minor, "\\.")[[1]][1], sep = "."); binary_repo <- function(universe) sprintf("https://%s.r-universe.dev/bin/linux/resolute-%s/%s", universe, R.version$arch, rv); options(repos = c(LAPKB = binary_repo("lapkb"), CRAN = binary_repo("cran"))); install.packages(c("Pmetrics","mrgsolve","mapbayr","jsonlite")); stopifnot(as.character(packageVersion("Pmetrics")) == Sys.getenv("PMETRICS_VERSION"))' && break
+            test "$attempt" -eq 3 && exit 1
+            sleep 15
+          done
       - name: Verify exact Pmetrics runtime contract
         run: Rscript scripts/check_runtime.R pmetrics
       - name: Test Pmetrics patient-level backend
