@@ -1,5 +1,25 @@
 # Migration plan
 
+## 2026-10-17 follow-up — consumer separation and numerical coverage
+
+The PMx consumer contract now pins the **actually deployed** public MIPD SHA
+`fec16cbdf8e33ed6c791226ccf236761333f8de8`, independently checked in
+PMx CI. PMx [PR #170](https://github.com/rberrah/rberrah.github.io/pull/170)
+removes its tracked 46-model browser C++ mirror and imports the necessary
+read-only teaching snapshot **at build time** from that immutable SHA.
+This PR must pass PMx CI and be merged before the mirror's removal can be
+called complete. PMx does not carry R/Shiny engine code.
+
+MIPD `main` has subsequently added independent 46-model **software
+regression** baselines: 49 model/route/mode groups and 98 synthetic dose
+cases, with solver stability checks. These are frozen outputs of the public
+MIPD source, not independent article-reference or clinical validation.
+The public Shiny deployment is **still** `fec16cb`; later MIPD `main`
+commits do not imply a new Shiny release.
+
+The dated drift audit later in this document is a **historical snapshot
+before PMx release alignment**, not the current PMx consumer pin.
+
 ## Phase 1 — frozen baseline — COMPLETE
 
 The engine, 46-model library, provenance, tests, Pmetrics fixtures and full frozen experimental ML artifact set were copied from PMx commit `2f97f109c3f4af257776a595f6546c9cd5f2321d`. Origin parity is machine-checked by Git blob hashes. PMx Explain has since removed the executable `tdm-engine/` mirror, while retaining the `static/tdm/` browser model snapshot and pinning the external source to immutable SHA `83a3026df7c0881d2725333a90d81ef2ed218f90`; PMx remains a separately maintained consumer.
@@ -35,7 +55,7 @@ accepted public release**:
 - independently audit host logs/backup/retention;
 - continue independent primary-source/MAP review and external validation;
 - requalify 12 intentionally blocked, stale-hash ML artifacts;
-- synchronize the independently versioned PMx consumer after its own CI.
+- finish qualifying and merging PMx's build-time-only browser snapshot import, preserving its own CI and rollback.
 
 ## Phase 3 — PMx source-pin/live release alignment
 PMx has already removed the executable R/Shiny `tdm-engine/` mirror and consumes an immutable standalone SHA. Its 46-model static snapshot is a browser UI resource, not a second executable model library. The remaining work is to replace the stale immutable pin with an exactly deployed, independently tested MIPD commit, explicitly refresh source-fidelity badges (Goti is now `ARTICLE_ALIGNED` at the public SHA after primary renal-boundary corrections, still **not** clinically validated), validate interface transfers and privacy, and preserve a reversible rollback to the last known working SHA. Do not delete the browser snapshot unless an equivalent versioned consumer mechanism exists.
@@ -68,7 +88,7 @@ blocked stale-hash ML artifacts while retaining all 46 active models.
 A green PMx CI against old `83a3026` does not qualify the newer MIPD SHA.
 
 ## Current evidence counts (source-level maturity)
-- 46/46 software tested and 8/46 frozen deterministic reference profiles;
+- 46/46 software tested with 46-model frozen numerical baselines (49 model/route/mode groups, 98 synthetic dose cases), plus the eight historical reference profiles;
 - 3/46 **partial** independent source-equation checks; 0/46 complete primary-model reproductions;
 - 11 article-aligned, 33 documented adaptations and 2 source ambiguities in the raw review; source-fidelity UI separately treats missing full text as `not verified`;
 - 13/46 experimental MAP priors; 0/46 externally clinically validated;

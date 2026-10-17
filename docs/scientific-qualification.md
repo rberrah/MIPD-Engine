@@ -1,7 +1,7 @@
 # Scientific qualification: MIPD-Engine
 
 Baseline (2026-10-16): 46 shipped models pass compilation/contract tests;
-8 deterministic software regression profiles; 13 experimental MAP priors;
+8 original deterministic software regression profiles (now supplemented by 46-model frozen software baselines, 98 synthetic dose cases); 13 experimental MAP priors;
 0 full independent source reproductions and 0 external validations claimed.
 
 ## Evidence levels (not interchangeable)
@@ -75,7 +75,9 @@ separate tests. Reproduce MAP posterior parameters and predictive exposure
 using an independent solver/reference code. An independent reviewer must
 approve source agreement before the model is promoted to FULL.
 
-### P1 — 46-model numeric regression, without falsely claiming source parity
+### P1 — 46-model numeric regression — software baseline COMPLETE; source parity NOT claimed
+
+On 2026-10-17, `tests/all_model_numeric_invariants.R` began checking frozen AUC, sampled peak and C24 outputs in 49 model/route/mode groups (98 synthetic dose cases), alongside positivity and numerical-tolerance invariants. Baseline source is the deployed `fec16cb` SHA and is stored at `tests/fixtures/all_model_software_baselines_v1.json`. All 46 models are covered. **These fixtures derive from the implementation under test:** they detect subsequent numerical drift but do not independently reproduce the source publications. Source-equation coverage remains 3 partial and 0 complete models.
 
 Extend frozen deterministic software-regression cases from 8 to all 46,
 with route, infusion mode, dose, synthetic covariates and two distinct

@@ -48,7 +48,7 @@ At the extraction baseline:
 
 - 46 models are catalogued;
 - 46/46 are software tested;
-- 8/46 have deterministic software-regression reference profiles;
+- 8/46 had initial deterministic reference profiles at extraction; on 2026-10-17, this was extended to frozen software baselines covering **46/46 models, 49 model/route/mode groups and 98 synthetic dosing cases** (source SHA `fec16cb...`), with separate solver-stability checks;
 - 0/46 are currently marked as independently source-reproduced;
 - 13/46 are explicitly eligible for the current experimental MAP workflow.
 
@@ -60,7 +60,7 @@ Public deployments must keep arbitrary uploaded C++ disabled. Patient-shaped inp
 
 ## Migration status
 
-The standalone repository contains the 46-model library, 92 experimental ML/DALEX RDS artifacts, model provenance, Pmetrics fixtures and the engine tests. PMx no longer contains an executable engine mirror, but retains an older browser-only snapshot. Its 46-model source pin must be updated in a **separate** qualified PMx PR. Twelve historical ML artifacts are intentionally hash-blocked following model fixes, and the retrained Goti predictor remains below internal research-performance thresholds.
+The standalone repository contains the 46-model library, 92 experimental ML/DALEX RDS artifacts, model provenance, Pmetrics fixtures and the engine tests. PMx no longer contains an executable engine mirror and has already updated its immutable consumer pin to `fec16cb`. The remaining repository-cleanup PR replaces its checked-in browser-only model snapshot with files generated from that pinned MIPD release at build time. Twelve historical ML artifacts are intentionally hash-blocked following model fixes, and the retrained Goti predictor remains below internal research-performance thresholds.
 
 See `MIGRATION.md` and `ORIGIN.md`.
 
@@ -69,14 +69,14 @@ The current article-to-code review coverage is recorded in [`docs/model-source-r
 
 ## Standalone qualification status
 
-The standalone public deployment is complete; PMx consumer synchronization and independent scientific qualification remain separate, incomplete workstreams.
+The standalone public deployment is complete. PMx has independently pinned the deployed `fec16cb` release and checks its model/ML contracts in CI. Removal of PMx's version-controlled browser mirror is being qualified in [PMx PR #170](https://github.com/rberrah/rberrah.github.io/pull/170). Full independent primary-source reproduction and external patient validation remain separate, incomplete scientific workstreams.
 
 Current standalone GitHub qualification:
 
 - origin/hash parity for frozen source files;
 - deterministic regeneration of the 46-model catalogue;
 - compilation/contract validation of all 46 models;
-- 8 deterministic software-regression reference profiles;
+- frozen deterministic software-regression baselines for all **46 models / 98 synthetic cases**, in addition to the eight earlier reference profiles (these prove non-drift, not publication fidelity);
 - safe Lego import contract and session cleanup;
 - Pmetrics 3.2.6 patient-level backend on a compatible runner.
 
