@@ -50,7 +50,7 @@ for (id in MODEL_CATALOG$id) {
         cases[[length(cases)+1L]] <- list(
           modelId=id,route=route,administrationMode=mode,scenario=scenario,
           syntheticDose=dose,syntheticInfusionRate=rate,
-          concentrations=round(a,signif=10),
+          concentrations=signif(a,digits=10),
           times=times,auc_0_25_to_48=auc,
           maxSolverNormalizedError=relative_solver_discrepancy,
           status="NUMERIC_INVARIANT_PASS")
