@@ -1,0 +1,12 @@
+# Changes to scientific source models, frozen ML artifacts, infrastructure
+# policy and deployment require maintainer review.
+* @rberrah
+/models/ @rberrah
+/ml/ @rberrah
+/R/ @rberrah
+/pmetrics/ @rberrah
+/runtime/ @rberrah
+/renv.lock @rberrah
+/.github/workflows/ @rberrah
+/scripts/deploy_shiny.R @rberrah
+/docs/DEPLOYMENT.md @rberrah
