@@ -40,7 +40,7 @@ jobs:
         run: git diff --exit-code -- models ml/registry.json ml/artifacts
       - name: Upload candidate holdout and repeated CV results only
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: goti-ml-candidate-no-publish
           path: scientific-validation/goti-ml-candidate.generated.csv

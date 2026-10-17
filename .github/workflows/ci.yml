@@ -31,7 +31,7 @@ jobs:
         run: python3 scripts/audit_ml_evidence.py
       - name: Upload machine-readable ML evidence matrix
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: mipd-ml-evidence
           path: scientific-validation/ml-evidence.generated.json
@@ -79,7 +79,7 @@ jobs:
         run: Rscript tests/map_prior_numeric_matrix.R
       - name: Upload independent all-model numerical evidence candidate reports
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: mipd-all-model-numeric-matrix
           path: |
@@ -98,7 +98,7 @@ jobs:
         run: Rscript tests/amox_carlier_analytical_invariants.R
       - name: Upload 46-model scientific evidence report
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: mipd-scientific-coverage
           path: scientific-validation/coverage.generated.json
