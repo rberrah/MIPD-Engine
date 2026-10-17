@@ -37,12 +37,12 @@ versioned consumer contract and independently checks the 46-model catalogue,
 metadata, source-review information and ML availability. MIPD changes must be
 qualified here first; PMx may then update only its consumer contract.
 
-The current `main` qualification commit is
-`b7895d0aaeb54dd847ef39aa171444f6c60cb449`. It is five commits ahead of the
-public source SHA, but those commits only add governance, documentation and
-qualification assets; the executable runtime and model source files are
-unchanged from `fec16cb`. Therefore the public deployment remains correctly
-identified by `fec16cb`.
+The frozen code/qualification baseline before this documentation-only freeze
+update is `b7895d0aaeb54dd847ef39aa171444f6c60cb449`. It is five commits ahead of
+the public source SHA; those five commits add governance, documentation and
+qualification assets only. The executable runtime and model source files are
+unchanged from `fec16cb`, so the public deployment remains correctly identified
+by `fec16cb`.
 
 See [deployment evidence](docs/DEPLOYMENT.md),
 [PMx consumer handoff](docs/pmx-sync-report-2026-10-17.md) and
@@ -69,7 +69,7 @@ Current standalone qualification distinguishes software testing, frozen
 software regression, partial independent source reproduction and external
 validation.
 
-At `main@b7895d0`:
+At the qualified code baseline `b7895d0`:
 
 - 46/46 models compile and satisfy their software contracts;
 - 46/46 models are covered by frozen synthetic numerical software baselines
