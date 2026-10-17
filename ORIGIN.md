@@ -6,6 +6,14 @@
 - Extraction date: 2026-10-16
 - Migration branch: `migration/pmx-engine-baseline-20261016`
 
-The original PMx copy remains authoritative during migration. This repository must demonstrate standalone parity before PMx removes any engine or model-library file.
+Since 2026-10-17, **MIPD-Engine is the authoritative repository** for the
+executable MIPD application, the 46-model PopPK library, model metadata,
+scientific qualification, Pmetrics support and experimental ML registry.
 
-Migration does not increase a model's scientific evidence level.
+PMx Explain is a separately maintained educational consumer. Its integration
+contract pins the independently deployed MIPD source SHA and must not become a
+second scientific model source.
+
+Extraction and migration do not increase a model's scientific evidence level.
+Software regression, partial primary-source reproduction and external clinical
+validation remain distinct evidence levels.
