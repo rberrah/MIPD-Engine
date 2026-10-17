@@ -34,13 +34,14 @@ ddi_paste_ui <- function(side, t) {
 
 ddi_custom_context <- function(code, side, soloc, cache, allow_custom = FALSE) {
   if (!is.character(code) || length(code) != 1 || !nzchar(trimws(code)) || nchar(code, type = "bytes") > 200000) stop("Supply a complete mrgsolve model (maximum 200 kB).")
-  model <- compile_model(custom_code = code, allow_custom = allow_custom, custom_soloc = soloc, custom_cache = cache)
+  compiled_code <- if (isTRUE(allow_custom)) code else safe_lego_model_code(code = code)
+  model <- compile_model(custom_code = compiled_code, allow_custom = TRUE, custom_soloc = soloc, custom_cache = cache)
   model <- mrgsolve::zero_re(model)
   if (!length(model@cmtL)) stop("The PK model must have at least one compartment.")
   if (!any(model_capture_names(model) %in% c("DV", "CP", "CONC", "CONC_PLASMA", "CONCENTRATION"))) stop("Capture a concentration named DV, CP or CONC in the PK model.")
   adm <- tagged_compartment(model, "ADM")
   list(id = paste0("custom_", side), label = paste("Custom PK", side), drug = "Custom", source = "custom",
-    code = code, model = model, route = "Custom", adm_cmt = if (is.finite(adm)) adm else 1L, split_lego = is_split_lego_model(model),
+    code = compiled_code, model = model, route = "Custom", adm_cmt = if (is.finite(adm)) adm else 1L, split_lego = is_split_lego_model(model),
     covariate_names = parse_covariates(code)$name, citation = "User-supplied model", doi = "")
 }
 
@@ -105,6 +106,14 @@ ddi_model_code <- function(context, config) {
       paste0("// kdeg=", config$kdeg, " /h; kinact=", config$kinact, " /h")),
     lines, "$PARAM", paste(c(paste0("DDI_CP=0, DDI_ACTIVE=0, DDI_ACTIVITY=1, DDI_HILL=", config$hill,
       ", DDI_FACTOR=", config$factor, ", DDI_STRENGTH=", config$strength, ", DDI_C50=", config$c50), fraction_parameters), collapse = ", ")), collapse = "\n")
+}
+
+ddi_compile_assembly <- function(context, config, soloc, cache) {
+  code <- ddi_model_code(context, config)
+  # The only bypass of the public Lego gate: code is generated above from a
+  # library model or from the sanitized Lego code stored by ddi_custom_context().
+  compile_model(custom_code = code, allow_custom = TRUE, custom_soloc = soloc, custom_cache = cache)
+  code
 }
 
 ddi_export_script <- function(config, affected, driver) {

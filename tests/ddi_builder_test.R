@@ -52,6 +52,21 @@ affected_library <- ddi_library_context("tacrolimus_woillard_ddi")
 config$target <- "TVCL_TAC"
 compiled <- mrgsolve::mcode("ddi_library", ddi_model_code(affected_library, config), soloc = tempdir(), quiet = TRUE)
 stopifnot("DDI_BASE_TVCL_TAC" %in% model_param_names(compiled))
+assembly_dir <- tempfile("ddi-public-assembly-")
+dir.create(assembly_dir)
+assembly_code <- ddi_compile_assembly(affected_library, config, assembly_dir, new.env(parent = emptyenv()))
+stopifnot(grepl("DDI_BASE_TVCL_TAC", assembly_code, fixed = TRUE))
+
+lego_spec <- list(
+  version = 1,
+  nodes = list(list(id = 1, kind = "central", name = "central", dose = 100, vol = 30)),
+  edges = list(list(from = 1, to = "OUT", k = 0.2)),
+  covariates = list()
+)
+safe_lego <- lego_model_code(lego_spec)
+tainted_lego <- paste(safe_lego, "$GLOBAL", "#error USER_CODE_MUST_NOT_SURVIVE", sep = "\n")
+public_lego <- ddi_custom_context(tainted_lego, 1, assembly_dir, new.env(parent = emptyenv()), FALSE)
+stopifnot(!grepl("USER_CODE_MUST_NOT_SURVIVE", public_lego$code, fixed = TRUE))
 invalid <- config; invalid$affected$infusion <- 1
 stopifnot(inherits(try(ddi_simulate(invalid, affected_library, driver), silent = TRUE), "try-error"))
 config$target <- "CL"

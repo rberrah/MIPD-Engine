@@ -3910,9 +3910,7 @@ server <- function(input, output, session) {
     ddi_assembly(NULL)
     contexts <- withProgress(message = tx("Assemblage", "Assembly"), value = 0.2, list(ddi_context_for(1L), ddi_context_for(2L)))
     config <- ddi_config_from_inputs()
-    code <- ddi_model_code(contexts[[1]], config)
-    # Compile the generated model before offering a C++ download.
-    compile_model(custom_code = code, allow_custom = ALLOW_CUSTOM_MODELS, custom_soloc = session_model_dir, custom_cache = session_model_cache)
+    code <- ddi_compile_assembly(contexts[[1]], config, session_model_dir, session_model_cache)
     ddi_assembly(list(code = code, script = ddi_export_script(config, contexts[[1]], contexts[[2]])))
     bslib::nav_select("ddi_tabs", "model", session = session)
   }, error = function(error) showNotification(conditionMessage(error), type = "error", duration = 10)))
