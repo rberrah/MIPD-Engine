@@ -31,8 +31,8 @@ PERIPH : Peripheral compartment (mg)
 
 $OMEGA @annotated @diagonal
 ETA_CL : 0.147043196 : Between-subject variance on CL (published CV 39.8%)
-ETA_V1 : 0.510 : Between-subject variance on V1
-ETA_V2 : 0.280 : Between-subject variance on V2
+ETA_V1 : 0.510339105 : Between-subject variance on V1 (published CV 81.6%)
+ETA_V2 : 0.282197811 : Between-subject variance on V2 (published CV 57.1%)
 
 $SIGMA @annotated @diagonal
 PROP : 0.051529 : Proportional residual variance (CV 22.7%)
@@ -42,8 +42,10 @@ $MAIN
 double age_safe = (AGE > 0.0 && AGE < 140.0) ? AGE : 50.0;
 double wt_safe = (WT > 0.0) ? WT : REF_WT;
 double creat_safe = (CREAT > 0.0) ? CREAT : 80.0;
-double sex_coefficient = (SEX >= 0.5) ? 1.04 : 1.25;
-double CRCL = sex_coefficient * wt_safe * (140.0 - age_safe) / creat_safe;
+double CREAT_USED = (age_safe > 60.0 && creat_safe < 88.4) ? 88.4 : creat_safe;
+double sex_coefficient = (SEX >= 0.5) ? 1.04 : 1.23;
+double CRCL_RAW = sex_coefficient * wt_safe * (140.0 - age_safe) / CREAT_USED;
+double CRCL = (CRCL_RAW > 150.0) ? 150.0 : CRCL_RAW;
 if (CRCL < 0.1) CRCL = 0.1;
 double dialysis = (DIAL >= 0.5) ? 1.0 : 0.0;
 
@@ -69,3 +71,5 @@ V1   : Individual central volume (L)
 V2   : Individual peripheral volume (L)
 Q    : Intercompartmental clearance (L/h)
 CRCL : Cockcroft-Gault creatinine clearance (mL/min)
+CRCL_RAW : Cockcroft-Gault clearance before the published 150 mL/min cap
+CREAT_USED : Serum creatinine after the published elderly-patient floor (micromol/L)

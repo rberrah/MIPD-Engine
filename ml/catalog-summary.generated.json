@@ -1,6 +1,6 @@
 {
   "version": 3,
-  "benchmarkDate": "2026-10-16",
+  "benchmarkDate": "2026-10-17",
   "samplingDesign": {
     "primary": {
       "minimumObservations": 2,
@@ -5524,46 +5524,46 @@
         },
         "repeatedCv": {
           "passed": false,
-          "relativeRmsePct": 28.3573,
-          "relativeBiasPct": -1.7322,
-          "within20Pct": 68.8
+          "relativeRmsePct": 22.2929,
+          "relativeBiasPct": -1.3714,
+          "within20Pct": 76.8
         },
         "untouchedHoldout": {
           "passed": false,
-          "relativeRmsePct": 30.4301,
-          "relativeBiasPct": 1.8277,
-          "within20Pct": 74.4
+          "relativeRmsePct": 19.6028,
+          "relativeBiasPct": 0.5596,
+          "within20Pct": 73.2
         },
         "alternatePopPk": {
           "passed": false,
-          "relativeRmsePct": 179.799,
-          "relativeBiasPct": 115.4384,
-          "within20Pct": 16.8
+          "relativeRmsePct": 203.7623,
+          "relativeBiasPct": 134.2292,
+          "within20Pct": 12.8
         },
         "populationBaseline": {
           "repeatedCv": {
             "passed": false,
-            "relativeRmsePct": 56.6224,
-            "relativeBiasPct": -4.9625,
-            "within20Pct": 39.2
+            "relativeRmsePct": 61.5294,
+            "relativeBiasPct": -8.2563,
+            "within20Pct": 42
           },
           "untouchedHoldout": {
             "passed": false,
-            "relativeRmsePct": 60.3713,
-            "relativeBiasPct": -5.0685,
-            "within20Pct": 44.4
+            "relativeRmsePct": 44.7854,
+            "relativeBiasPct": -3.214,
+            "within20Pct": 42.4
           },
           "alternatePopPk": {
             "passed": false,
-            "relativeRmsePct": 448.5835,
-            "relativeBiasPct": 307.7377,
-            "within20Pct": 5.8
+            "relativeRmsePct": 482.7241,
+            "relativeBiasPct": 331.6346,
+            "within20Pct": 4.4
           }
         },
         "comparison": {
-          "repeatedCvRelativeRmseGainPct": 49.9185,
-          "untouchedHoldoutRelativeRmseGainPct": 49.5952,
-          "alternatePopPkRelativeRmseGainPct": 59.9185
+          "repeatedCvRelativeRmseGainPct": 63.7687,
+          "untouchedHoldoutRelativeRmseGainPct": 56.2294,
+          "alternatePopPkRelativeRmseGainPct": 57.7891
         },
         "samplingStrategies": {
           "c0Only": {
@@ -5577,21 +5577,21 @@
             },
             "repeatedCv": {
               "passed": false,
-              "relativeRmsePct": 39.7282,
-              "relativeBiasPct": -2.8347,
-              "within20Pct": 59.2
+              "relativeRmsePct": 29.2768,
+              "relativeBiasPct": -2.136,
+              "within20Pct": 68.2
             },
             "untouchedHoldout": {
               "passed": false,
-              "relativeRmsePct": 36.699,
-              "relativeBiasPct": 1.8277,
-              "within20Pct": 56.8
+              "relativeRmsePct": 24.7398,
+              "relativeBiasPct": 1.8592,
+              "within20Pct": 63.2
             },
             "alternatePopPk": {
               "passed": false,
-              "relativeRmsePct": 238.4341,
-              "relativeBiasPct": 154.9288,
-              "within20Pct": 10.4
+              "relativeRmsePct": 237.8283,
+              "relativeBiasPct": 162.7,
+              "within20Pct": 7.2
             }
           },
           "c0PlusOneHourPostInfusion": {
@@ -5605,21 +5605,21 @@
             },
             "repeatedCv": {
               "passed": false,
-              "relativeRmsePct": 28.3573,
-              "relativeBiasPct": -1.7322,
-              "within20Pct": 68.8
+              "relativeRmsePct": 22.2929,
+              "relativeBiasPct": -1.3714,
+              "within20Pct": 76.8
             },
             "untouchedHoldout": {
               "passed": false,
-              "relativeRmsePct": 30.4301,
-              "relativeBiasPct": 1.8277,
-              "within20Pct": 74.4
+              "relativeRmsePct": 19.6028,
+              "relativeBiasPct": 0.5596,
+              "within20Pct": 73.2
             },
             "alternatePopPk": {
               "passed": false,
-              "relativeRmsePct": 179.799,
-              "relativeBiasPct": 115.4384,
-              "within20Pct": 16.8
+              "relativeRmsePct": 203.7623,
+              "relativeBiasPct": 134.2292,
+              "within20Pct": 12.8
             }
           }
         },
@@ -5928,7 +5928,6 @@
         "nHoldoutPool": 675,
         "nHoldout": 300,
         "seed": 20292211,
-        "mapUnavailableReason": null,
         "strategies": {
           "c0Only": {
             "map": {
@@ -6077,7 +6076,6 @@
         "nHoldoutPool": 675,
         "nHoldout": 300,
         "seed": 20293274,
-        "mapUnavailableReason": null,
         "strategies": {
           "c0Only": {
             "map": {
@@ -6224,7 +6222,6 @@
         "nHoldoutPool": 675,
         "nHoldout": 300,
         "seed": 20294696,
-        "mapUnavailableReason": null,
         "strategies": {
           "c0Only": {
             "map": {
@@ -6373,7 +6370,6 @@
         "nHoldoutPool": 675,
         "nHoldout": 300,
         "seed": 20297544,
-        "mapUnavailableReason": null,
         "strategies": {
           "c0Only": {
             "map": {
@@ -6528,7 +6524,6 @@
         "nHoldoutPool": 675,
         "nHoldout": 300,
         "seed": 20292293,
-        "mapUnavailableReason": null,
         "strategies": {
           "c0Only": {
             "map": {
@@ -6685,7 +6680,6 @@
         "nHoldoutPool": 675,
         "nHoldout": 300,
         "seed": 20272932,
-        "mapUnavailableReason": null,
         "strategies": {
           "c0Only": {
             "map": {
@@ -6842,7 +6836,6 @@
         "nHoldoutPool": 675,
         "nHoldout": 300,
         "seed": 20290606,
-        "mapUnavailableReason": null,
         "strategies": {
           "c0Only": {
             "map": {
@@ -6999,7 +6992,6 @@
         "nHoldoutPool": 675,
         "nHoldout": 300,
         "seed": 20305507,
-        "mapUnavailableReason": null,
         "strategies": {
           "c0Only": {
             "map": {
@@ -7154,7 +7146,6 @@
         "nHoldoutPool": 675,
         "nHoldout": 300,
         "seed": 20321833,
-        "mapUnavailableReason": null,
         "strategies": {
           "c0Only": {
             "map": {
@@ -7311,7 +7302,6 @@
         "nHoldoutPool": 675,
         "nHoldout": 300,
         "seed": 20312329,
-        "mapUnavailableReason": null,
         "strategies": {
           "c0Only": {
             "map": {
@@ -7464,7 +7454,6 @@
         "nHoldoutPool": 675,
         "nHoldout": 300,
         "seed": 20291980,
-        "mapUnavailableReason": null,
         "strategies": {
           "c0Only": {
             "map": {
@@ -7623,7 +7612,6 @@
         "nHoldoutPool": 675,
         "nHoldout": 300,
         "seed": 20314922,
-        "mapUnavailableReason": null,
         "strategies": {
           "c0Only": {
             "map": {
@@ -7774,7 +7762,6 @@
         "nHoldoutPool": 675,
         "nHoldout": 300,
         "seed": 20294627,
-        "mapUnavailableReason": null,
         "strategies": {
           "c0Only": {
             "map": {
@@ -7929,7 +7916,6 @@
         "nHoldoutPool": 675,
         "nHoldout": 300,
         "seed": 20296451,
-        "mapUnavailableReason": null,
         "strategies": {
           "c0Only": {
             "map": {
@@ -8080,7 +8066,6 @@
         "nHoldoutPool": 675,
         "nHoldout": 300,
         "seed": 20295967,
-        "mapUnavailableReason": null,
         "strategies": {
           "c0Only": {
             "map": {
@@ -8227,7 +8212,6 @@
         "nHoldoutPool": 675,
         "nHoldout": 300,
         "seed": 20332286,
-        "mapUnavailableReason": null,
         "strategies": {
           "c0Only": {
             "map": {
@@ -8388,7 +8372,6 @@
         "nHoldoutPool": 675,
         "nHoldout": 300,
         "seed": 20297319,
-        "mapUnavailableReason": null,
         "strategies": {
           "c0Only": {
             "map": {
@@ -8545,7 +8528,6 @@
         "nHoldoutPool": 675,
         "nHoldout": 300,
         "seed": 20293344,
-        "mapUnavailableReason": null,
         "strategies": {
           "c0Only": {
             "map": {
@@ -8692,7 +8674,6 @@
         "nHoldoutPool": 675,
         "nHoldout": 300,
         "seed": 20301774,
-        "mapUnavailableReason": null,
         "strategies": {
           "c0Only": {
             "map": {
@@ -8839,7 +8820,6 @@
         "nHoldoutPool": 675,
         "nHoldout": 300,
         "seed": 20288647,
-        "mapUnavailableReason": null,
         "strategies": {
           "c0Only": {
             "map": {
@@ -8990,7 +8970,6 @@
         "nHoldoutPool": 675,
         "nHoldout": 300,
         "seed": 20298906,
-        "mapUnavailableReason": null,
         "strategies": {
           "c0Only": {
             "map": {
@@ -9147,7 +9126,6 @@
         "nHoldoutPool": 675,
         "nHoldout": 300,
         "seed": 20301888,
-        "mapUnavailableReason": null,
         "strategies": {
           "c0Only": {
             "map": {
@@ -9294,7 +9272,6 @@
         "nHoldoutPool": 675,
         "nHoldout": 300,
         "seed": 20294533,
-        "mapUnavailableReason": null,
         "strategies": {
           "c0Only": {
             "map": {
@@ -9454,8 +9431,6 @@
               "n": 300,
               "nEstimated": 0,
               "nFailed": 300,
-              "relativeBiasPct": null,
-              "relativeRmsePct": null,
               "within20Pct": 0
             },
             "ml": {
@@ -9471,18 +9446,12 @@
               "map": {
                 "n": 0,
                 "nEstimated": 0,
-                "nFailed": 0,
-                "relativeBiasPct": null,
-                "relativeRmsePct": null,
-                "within20Pct": "NaN"
+                "nFailed": 0
               },
               "ml": {
                 "n": 0,
                 "nEstimated": 0,
-                "nFailed": 0,
-                "relativeBiasPct": null,
-                "relativeRmsePct": null,
-                "within20Pct": "NaN"
+                "nFailed": 0
               }
             },
             "tuning": {
@@ -9519,8 +9488,6 @@
               "n": 300,
               "nEstimated": 0,
               "nFailed": 300,
-              "relativeBiasPct": null,
-              "relativeRmsePct": null,
               "within20Pct": 0
             },
             "ml": {
@@ -9536,18 +9503,12 @@
               "map": {
                 "n": 0,
                 "nEstimated": 0,
-                "nFailed": 0,
-                "relativeBiasPct": null,
-                "relativeRmsePct": null,
-                "within20Pct": "NaN"
+                "nFailed": 0
               },
               "ml": {
                 "n": 0,
                 "nEstimated": 0,
-                "nFailed": 0,
-                "relativeBiasPct": null,
-                "relativeRmsePct": null,
-                "within20Pct": "NaN"
+                "nFailed": 0
               }
             },
             "tuning": {
@@ -9604,7 +9565,6 @@
         "nHoldoutPool": 675,
         "nHoldout": 300,
         "seed": 20302927,
-        "mapUnavailableReason": null,
         "strategies": {
           "c0Only": {
             "map": {
@@ -9774,8 +9734,6 @@
               "n": 300,
               "nEstimated": 0,
               "nFailed": 300,
-              "relativeBiasPct": null,
-              "relativeRmsePct": null,
               "within20Pct": 0
             },
             "ml": {
@@ -9791,18 +9749,12 @@
               "map": {
                 "n": 0,
                 "nEstimated": 0,
-                "nFailed": 0,
-                "relativeBiasPct": null,
-                "relativeRmsePct": null,
-                "within20Pct": "NaN"
+                "nFailed": 0
               },
               "ml": {
                 "n": 0,
                 "nEstimated": 0,
-                "nFailed": 0,
-                "relativeBiasPct": null,
-                "relativeRmsePct": null,
-                "within20Pct": "NaN"
+                "nFailed": 0
               }
             },
             "tuning": {
@@ -9840,8 +9792,6 @@
               "n": 300,
               "nEstimated": 0,
               "nFailed": 300,
-              "relativeBiasPct": null,
-              "relativeRmsePct": null,
               "within20Pct": 0
             },
             "ml": {
@@ -9857,18 +9807,12 @@
               "map": {
                 "n": 0,
                 "nEstimated": 0,
-                "nFailed": 0,
-                "relativeBiasPct": null,
-                "relativeRmsePct": null,
-                "within20Pct": "NaN"
+                "nFailed": 0
               },
               "ml": {
                 "n": 0,
                 "nEstimated": 0,
-                "nFailed": 0,
-                "relativeBiasPct": null,
-                "relativeRmsePct": null,
-                "within20Pct": "NaN"
+                "nFailed": 0
               }
             },
             "tuning": {
@@ -9933,8 +9877,6 @@
               "n": 300,
               "nEstimated": 0,
               "nFailed": 300,
-              "relativeBiasPct": null,
-              "relativeRmsePct": null,
               "within20Pct": 0
             },
             "ml": {
@@ -9950,18 +9892,12 @@
               "map": {
                 "n": 0,
                 "nEstimated": 0,
-                "nFailed": 0,
-                "relativeBiasPct": null,
-                "relativeRmsePct": null,
-                "within20Pct": "NaN"
+                "nFailed": 0
               },
               "ml": {
                 "n": 0,
                 "nEstimated": 0,
-                "nFailed": 0,
-                "relativeBiasPct": null,
-                "relativeRmsePct": null,
-                "within20Pct": "NaN"
+                "nFailed": 0
               }
             },
             "tuning": {
@@ -9999,8 +9935,6 @@
               "n": 300,
               "nEstimated": 0,
               "nFailed": 300,
-              "relativeBiasPct": null,
-              "relativeRmsePct": null,
               "within20Pct": 0
             },
             "ml": {
@@ -10016,18 +9950,12 @@
               "map": {
                 "n": 0,
                 "nEstimated": 0,
-                "nFailed": 0,
-                "relativeBiasPct": null,
-                "relativeRmsePct": null,
-                "within20Pct": "NaN"
+                "nFailed": 0
               },
               "ml": {
                 "n": 0,
                 "nEstimated": 0,
-                "nFailed": 0,
-                "relativeBiasPct": null,
-                "relativeRmsePct": null,
-                "within20Pct": "NaN"
+                "nFailed": 0
               }
             },
             "tuning": {
@@ -10085,7 +10013,6 @@
         "nHoldoutPool": 675,
         "nHoldout": 300,
         "seed": 20298590,
-        "mapUnavailableReason": null,
         "strategies": {
           "c0Only": {
             "map": {
@@ -10234,7 +10161,6 @@
         "nHoldoutPool": 675,
         "nHoldout": 300,
         "seed": 20299030,
-        "mapUnavailableReason": null,
         "strategies": {
           "c0Only": {
             "map": {
@@ -10383,7 +10309,6 @@
         "nHoldoutPool": 675,
         "nHoldout": 300,
         "seed": 20272872,
-        "mapUnavailableReason": null,
         "strategies": {
           "c0Only": {
             "map": {
@@ -10534,7 +10459,6 @@
         "nHoldoutPool": 675,
         "nHoldout": 300,
         "seed": 20289836,
-        "mapUnavailableReason": null,
         "strategies": {
           "c0Only": {
             "map": {
@@ -10683,7 +10607,6 @@
         "nHoldoutPool": 675,
         "nHoldout": 300,
         "seed": 20297371,
-        "mapUnavailableReason": null,
         "strategies": {
           "c0Only": {
             "map": {
@@ -10838,7 +10761,6 @@
         "nHoldoutPool": 675,
         "nHoldout": 300,
         "seed": 20294662,
-        "mapUnavailableReason": null,
         "strategies": {
           "c0Only": {
             "map": {
@@ -10993,7 +10915,6 @@
         "nHoldoutPool": 675,
         "nHoldout": 300,
         "seed": 20274414,
-        "mapUnavailableReason": null,
         "strategies": {
           "c0Only": {
             "map": {
@@ -11148,7 +11069,6 @@
         "nHoldoutPool": 675,
         "nHoldout": 300,
         "seed": 20299061,
-        "mapUnavailableReason": null,
         "strategies": {
           "c0Only": {
             "map": {
@@ -11295,7 +11215,6 @@
         "nHoldoutPool": 675,
         "nHoldout": 300,
         "seed": 20283661,
-        "mapUnavailableReason": null,
         "strategies": {
           "c0Only": {
             "map": {
@@ -11448,7 +11367,6 @@
         "nHoldoutPool": 675,
         "nHoldout": 300,
         "seed": 20290777,
-        "mapUnavailableReason": null,
         "strategies": {
           "c0Only": {
             "map": {
@@ -11601,7 +11519,6 @@
         "nHoldoutPool": 675,
         "nHoldout": 300,
         "seed": 20281751,
-        "mapUnavailableReason": null,
         "strategies": {
           "c0Only": {
             "map": {
@@ -11750,7 +11667,6 @@
         "nHoldoutPool": 675,
         "nHoldout": 300,
         "seed": 20290871,
-        "mapUnavailableReason": null,
         "strategies": {
           "c0Only": {
             "map": {
@@ -11897,7 +11813,6 @@
         "nHoldoutPool": 675,
         "nHoldout": 300,
         "seed": 20286599,
-        "mapUnavailableReason": null,
         "strategies": {
           "c0Only": {
             "map": {
@@ -12046,7 +11961,6 @@
         "nHoldoutPool": 675,
         "nHoldout": 300,
         "seed": 20301580,
-        "mapUnavailableReason": null,
         "strategies": {
           "c0Only": {
             "map": {
@@ -12193,7 +12107,6 @@
         "nHoldoutPool": 675,
         "nHoldout": 300,
         "seed": 20290672,
-        "mapUnavailableReason": null,
         "strategies": {
           "c0Only": {
             "map": {
@@ -12344,7 +12257,6 @@
         "nHoldoutPool": 675,
         "nHoldout": 300,
         "seed": 20314972,
-        "mapUnavailableReason": null,
         "strategies": {
           "c0Only": {
             "map": {
@@ -12493,7 +12405,6 @@
         "nHoldoutPool": 2025,
         "nHoldout": 1098,
         "seed": 20299002,
-        "mapUnavailableReason": null,
         "strategies": {
           "c0Only": {
             "map": {
@@ -12634,36 +12545,35 @@
         "modelId": "vanco_goti",
         "drug": "Vancomycine",
         "administrationMode": "intermittent",
-        "baseModelSha256": "224882c821ae81f8aadf91f95460974bfc945e1303ba9dbd26c391a05d8dc83d",
+        "baseModelSha256": "1b8f8b5965bfa06d4aa40936b4641a411af643ef087ab2d2b7cb2370a8871f48",
         "nSimulated": 3000,
         "nIncluded": 2700,
         "nExcluded": 300,
         "aucInclusionBounds": {
-          "lower": 156.875084982,
-          "upper": 3651.781934123
+          "lower": 170.152196476,
+          "upper": 3689.783639162
         },
         "nTraining": 2025,
         "nHoldoutPool": 675,
         "nHoldout": 300,
         "seed": 20289805,
-        "mapUnavailableReason": null,
         "strategies": {
           "c0Only": {
             "map": {
               "n": 300,
               "nEstimated": 300,
               "nFailed": 0,
-              "relativeBiasPct": -0.887836499,
-              "relativeRmsePct": 9.78583824,
-              "within20Pct": 94
+              "relativeBiasPct": 0.574931837,
+              "relativeRmsePct": 9.016288278,
+              "within20Pct": 96
             },
             "ml": {
               "n": 300,
               "nEstimated": 300,
               "nFailed": 0,
-              "relativeBiasPct": 0.876364356,
-              "relativeRmsePct": 11.471257526,
-              "within20Pct": 92
+              "relativeBiasPct": 1.557832628,
+              "relativeRmsePct": 10.724959554,
+              "within20Pct": 95
             },
             "paired": {
               "n": 300,
@@ -12671,17 +12581,17 @@
                 "n": 300,
                 "nEstimated": 300,
                 "nFailed": 0,
-                "relativeBiasPct": -0.887836499,
-                "relativeRmsePct": 9.78583824,
-                "within20Pct": 94
+                "relativeBiasPct": 0.574931837,
+                "relativeRmsePct": 9.016288278,
+                "within20Pct": 96
               },
               "ml": {
                 "n": 300,
                 "nEstimated": 300,
                 "nFailed": 0,
-                "relativeBiasPct": 0.876364356,
-                "relativeRmsePct": 11.471257526,
-                "within20Pct": 92
+                "relativeBiasPct": 1.557832628,
+                "relativeRmsePct": 10.724959554,
+                "within20Pct": 95
               }
             },
             "tuning": {
@@ -12690,15 +12600,15 @@
                 "eval_metric": "rmse",
                 "nthread": 1,
                 "max_depth": 4,
-                "eta": 0.05,
+                "eta": 0.0261,
                 "min_child_weight": 40,
                 "subsample": 1,
                 "colsample_bynode": 0.7,
-                "base_score": 969.799061851,
+                "base_score": 1040.42820302,
                 "seed": 20289808
               },
-              "rounds": 241,
-              "rmse": 77.475432055
+              "rounds": 360,
+              "rmse": 80.121647636
             },
             "features": [
               "AGE",
@@ -12718,16 +12628,16 @@
               "n": 300,
               "nEstimated": 300,
               "nFailed": 0,
-              "relativeBiasPct": 0.041029089,
-              "relativeRmsePct": 3.528580708,
-              "within20Pct": 99.333333333
+              "relativeBiasPct": 0.03897769,
+              "relativeRmsePct": 4.307383665,
+              "within20Pct": 99.666666667
             },
             "ml": {
               "n": 300,
               "nEstimated": 300,
               "nFailed": 0,
-              "relativeBiasPct": 0.657059582,
-              "relativeRmsePct": 5.257193709,
+              "relativeBiasPct": 0.086339822,
+              "relativeRmsePct": 4.972634657,
               "within20Pct": 98.666666667
             },
             "paired": {
@@ -12736,16 +12646,16 @@
                 "n": 300,
                 "nEstimated": 300,
                 "nFailed": 0,
-                "relativeBiasPct": 0.041029089,
-                "relativeRmsePct": 3.528580708,
-                "within20Pct": 99.333333333
+                "relativeBiasPct": 0.03897769,
+                "relativeRmsePct": 4.307383665,
+                "within20Pct": 99.666666667
               },
               "ml": {
                 "n": 300,
                 "nEstimated": 300,
                 "nFailed": 0,
-                "relativeBiasPct": 0.657059582,
-                "relativeRmsePct": 5.257193709,
+                "relativeBiasPct": 0.086339822,
+                "relativeRmsePct": 4.972634657,
                 "within20Pct": 98.666666667
               }
             },
@@ -12759,11 +12669,11 @@
                 "min_child_weight": 40,
                 "subsample": 1,
                 "colsample_bynode": 0.5,
-                "base_score": 969.799061851,
+                "base_score": 1040.42820302,
                 "seed": 20289808
               },
-              "rounds": 568,
-              "rmse": 40.512813393
+              "rounds": 515,
+              "rmse": 41.241668503
             },
             "features": [
               "AGE",
@@ -12783,9 +12693,11 @@
             ]
           }
         },
+        "refreshedOn": "2026-10-17",
+        "refreshReason": "Primary-source Goti renal preprocessing and IIV correction",
         "model": "Goti",
         "analysisEligible": true,
-        "hashMatches": false
+        "hashMatches": true
       },
       {
         "modelId": "vanco_pkjust",
@@ -12803,7 +12715,6 @@
         "nHoldoutPool": 675,
         "nHoldout": 300,
         "seed": 20294991,
-        "mapUnavailableReason": null,
         "strategies": {
           "c0Only": {
             "map": {
@@ -12958,7 +12869,6 @@
         "nHoldoutPool": 675,
         "nHoldout": 300,
         "seed": 20291013,
-        "mapUnavailableReason": null,
         "strategies": {
           "c0Only": {
             "map": {
@@ -13113,7 +13023,6 @@
         "nHoldoutPool": 675,
         "nHoldout": 300,
         "seed": 20293401,
-        "mapUnavailableReason": null,
         "strategies": {
           "c0Only": {
             "map": {
@@ -13264,7 +13173,6 @@
         "nHoldoutPool": 675,
         "nHoldout": 300,
         "seed": 20311035,
-        "mapUnavailableReason": null,
         "strategies": {
           "c0Only": {
             "map": {

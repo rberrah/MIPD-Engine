@@ -70,7 +70,7 @@ jobs:
         run: Rscript tests/source_equation_reproduction.R
       - name: Test Goti 2018 analytical two-compartment oracle and renal boundaries
         run: Rscript tests/goti_source_equations.R
-      - name: Compare Roberts and Revilla MAP priors against independent analytic optimization
+      - name: Compare Roberts, Revilla and Goti MAP priors against independent optimization
         run: Rscript tests/independent_map_prior_oracles.R
       - name: Verify Carlier amoxicillin analytical two-compartment and exposure invariants
         run: Rscript tests/amox_carlier_analytical_invariants.R

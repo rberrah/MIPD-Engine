@@ -3235,6 +3235,7 @@
       ],
       "modelType": "PopPK publié",
       "sourceStatus": "verified",
+      "note": "Les règles publiées sont appliquées : créatininémie portée à 1 mg/dL (88,4 micromol/L) si âge >60 ans, puis ClCr de Cockcroft-Gault plafonnée à 150 mL/min. DIAL représente le statut d'hémodialyse de l'étude, pas une clairance de dialyse variant dans le temps. Tests source et MAP sur patients synthétiques uniquement ; aucune validation externe.",
       "verificationStatus": "SOFTWARE_TESTED",
       "validationStatus": "NONE",
       "contextOfUse": "TEACHING_RESEARCH",

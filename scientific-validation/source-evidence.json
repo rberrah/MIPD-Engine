@@ -88,7 +88,7 @@
       "level": "PARTIAL_SOURCE_EQUATIONS",
       "primaryDoi": "10.1097/FTD.0000000000000490",
       "primaryUrl": "https://pubmed.ncbi.nlm.nih.gov/29470227/",
-      "sourceLocation": "Goti et al. (2018), final fixed-effect 2-compartment model; parameter equations independently corroborated in Antibiotics 2023;12:301, Table 2, doi:10.3390/antibiotics12020301",
+      "sourceLocation": "Goti et al. (2018), Methods page 8 (Cockcroft-Gault preprocessing) and Table 2 page 27 (final 2-compartment model)",
       "population": "Hospitalized adults with and without intermittent hemodialysis",
       "sourceValues": {
         "CL_L_per_h_at_CRCL120": 4.5,
@@ -98,30 +98,42 @@
         "V1_weight_reference_kg": 70,
         "V1_dialysis_factor": 0.5,
         "Q_L_per_h": 6.5,
-        "V2_L": 38.4
+        "V2_L": 38.4,
+        "serum_creatinine_floor_mg_per_dL": 1,
+        "serum_creatinine_floor_age_rule": ">60 years",
+        "CRCL_upper_cap_mL_per_min": 150,
+        "IIV_CV_percent_CL_V1_V2": [39.8, 81.6, 57.1],
+        "residual_proportional_CV_percent": 22.7,
+        "residual_additive_SD_mg_per_L": 3.4
       },
-      "mathematicalOracle": "Two-compartment independent analytical IV bolus biexponential: k10=CL/V1; k12=Q/V1; k21=Q/V2; alpha,beta are roots of the disposition characteristic polynomial; C(t)=D/V1*((alpha-k21)/(alpha-beta)*exp(-alpha*t)+(k21-beta)/(alpha-beta)*exp(-beta*t)). Published CL and V1 renal, weight and dialysis equations are independently evaluated. Only within-domain CRCL<150 mL/min and no low-creatinine elderly floor conditions are tested.",
+      "mathematicalOracle": "Independent source implementation applies the age >60 serum-creatinine floor and 150 mL/min CrCl cap, then evaluates the published CL and V1 equations. The analytical IV-bolus solution uses k10=CL/V1, k12=Q/V1, k21=Q/V2 and the two disposition roots. AUC is independently checked from both biexponential coefficients and dose/CL. A separate three-ETA posterior objective is optimized independently and compared with mapbayr.",
       "testPath": "tests/goti_source_equations.R",
       "scenarios": [
         "male 50 years, weight 70 kg, creatinine 80 umol/L, without hemodialysis",
         "female 55 years, weight 85 kg, creatinine 125 umol/L, with hemodialysis",
-        "older male 70 years, weight 75 kg, creatinine 110 umol/L, without hemodialysis"
+        "older male 70 years, weight 75 kg, creatinine 110 umol/L, without hemodialysis",
+        "age 60 versus 61 years around the strict creatinine-floor age threshold",
+        "creatinine exactly 1 mg/dL in a patient older than 60 years",
+        "augmented renal clearance above and exactly at the 150 mL/min cap",
+        "three-ETA synthetic MAP case invoking both renal preprocessing rules"
       ],
       "verifiedScope": [
-        "published typical CL, V1, V2 and Q with dialysis-status effects in tested domain",
-        "Cockcroft-Gault sex/weight/age/creatinine units within tested range",
-        "independently calculated two-compartment bolus IV concentration-time solution"
+        "published typical CL, V1, V2 and Q with static dialysis-status effects",
+        "Cockcroft-Gault sex/weight/age/creatinine units, strict age threshold, serum-creatinine floor and CrCl cap",
+        "published diagonal IIV CV values and combined residual-error values",
+        "independently calculated two-compartment bolus IV concentration-time solution and AUC",
+        "synthetic three-dimensional MAP objective versus an independent optimizer"
       ],
       "exclusions": [
-        "renal CRCL 150 mL/min upper cap and serum creatinine 1 mg/dL floor for selected elderly patients: documented discrepancy against published secondary reproduction; primary-source confirmation and code reconciliation pending",
         "time-varying dialysis mass clearance",
-        "OMEGA and SIGMA distributional fit",
-        "MAP posterior fitting",
+        "reproduction of source individual data or original empirical Bayes estimates",
         "external-patient predictive performance",
         "clinical decision validation"
       ],
-      "reviewedOn": "2026-10-16",
-      "supplementarySource": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9952184/"
+      "reviewedOn": "2026-10-17",
+      "supplementarySource": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9952184/",
+      "mapOracleTestPath": "tests/independent_map_prior_oracles.R",
+      "testedMapScope": "Independent optimization of the published diagonal Gaussian prior and combined observation variance against mapbayr on one synthetic renal-boundary patient; not a reproduction of source EBEs"
     }
   ]
 }

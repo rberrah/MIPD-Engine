@@ -310,10 +310,10 @@
     },
     {
       "id": "vanco_goti",
-      "result": "SOURCE_AMBIGUITY_DOCUMENTED",
+      "result": "ARTICLE_ALIGNED",
       "evidence": "LOCAL_PRIMARY_FULL_TEXT",
       "fullTextReviewed": true,
-      "note": "The reported Goti CL/V1/Q/V2 formulas agree within conventional covariate ranges (independent analytical tests). However a 2023 published reconstruction (Antibiotics 12:301, Table 2, doi:10.3390/antibiotics12020301) describes capping calculated CrCl at 150 mL/min and a serum-creatinine floor at 1 mg/dL for patients older than 65. Neither rule is in the current mrgsolve implementation. Primary-article re-review is needed; source fidelity of the boundary branches is NOT verified. MAP prior remains experimental; original C++/ML artifacts unchanged."
+      "note": "Primary-article Methods and Table 2 were re-reviewed locally. The implementation now uses the published serum-creatinine floor of 1 mg/dL when age is >60 years, caps calculated Cockcroft-Gault CrCl at 150 mL/min, and retains the published CL/V1/Q/V2, dialysis, IIV and residual-error values. Independent synthetic source-equation and MAP-oracle tests include both renal boundaries. This is not external validation; DIAL remains a static study-status covariate."
     },
     {
       "id": "vanco_pkjust",

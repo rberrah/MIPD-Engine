@@ -212,7 +212,7 @@ source_checks <- list(
   isavuconazole_desai_ddi = c("ASIAN > 0.5 ? 1.51 : TVCL", "PATIENT > 0.5 ? TVV2 : 260.0", "RA_IND"),
   tacrolimus_kamp_envarsus_ddi = c("IIV_V1 : 0.23 0.609", "pow(WT / WTREF, ALLOCL)", "LAG * MIX_LAGGED_ABS"),
   tacrolimus_woillard_ddi = c("double CL_IND =", "double CL_TAC_DDI = CL_IND", "+ CL_OTH"),
-  vanco_goti = c("ETA_CL : 0.147043196", "published CV 39.8%"),
+  vanco_goti = c("ETA_CL : 0.147043196", "ETA_V1 : 0.510339105", "ETA_V2 : 0.282197811", "age_safe > 60.0", "CRCL_RAW > 150.0", "published CV 39.8%"),
   vanco_pkjust = c("PROP : 0", "ADD  : 17.8929", "CRCL  : 74.7")
 )
 for (model_id in names(source_checks)) {
