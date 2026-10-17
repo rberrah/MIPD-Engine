@@ -13,13 +13,23 @@ PUBLIC = "https://tdmhub.shinyapps.io/MIPD_Engine/"
 
 
 def connected(page, base, lang):
-    response = page.goto(
-        base.rstrip("/") + "/?lang=" + lang,
-        wait_until="domcontentloaded",
-        timeout=120000
-    )
-    if response is None or response.status != 200:
-        raise AssertionError("Public Shiny page returned no HTTP 200 response")
+    last_status = "no response"
+    for attempt in range(3):
+        response = page.goto(
+            base.rstrip("/") + "/?lang=" + lang,
+            wait_until="domcontentloaded",
+            timeout=120000
+        )
+        if response is not None and response.status == 200:
+            break
+        last_status = response.status if response is not None else "no response"
+        if attempt < 2:
+            page.wait_for_timeout(5000)
+    else:
+        raise AssertionError(
+            f"Public Shiny page returned no HTTP 200 response after 3 attempts "
+            f"(last status: {last_status})"
+        )
     page.wait_for_function(
         """() => Boolean(window.Shiny?.shinyapp?.config?.sessionId &&
                          window.Shiny.shinyapp.$socket?.readyState === 1)""",

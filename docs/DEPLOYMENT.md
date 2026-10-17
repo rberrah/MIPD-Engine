@@ -90,6 +90,32 @@ workflow. An upload that succeeded but fails either test is **not a validated
 public release**. A previously available public bundle with no
 `deployment-release.json` cannot be identified as the new standalone release.
 
+### Current public release evidence
+
+The public application was deployed from a clean local `main` checkout on
+2026-10-17 after the complete standalone qualification workflow passed:
+
+- source SHA: `f954b53204335b0b4ee6f30999f4a3e88c968115`;
+- qualification run: [GitHub Actions 39021387658](https://github.com/rberrah/MIPD-Engine/actions/runs/39021387658);
+- Shinyapps bundle `12702610`, task `1758914627`, image `15802838`;
+- target: existing app ID `17776160` at
+  `https://tdmhub.shinyapps.io/MIPD_Engine/`;
+- immutable fingerprint check: HTTP 200, exact SHA, 46 models,
+  `ALLOW_CUSTOM_MODELS=false`, `ENABLE_PMETRICS=false`;
+- browser check: distinct FR/EN websocket sessions, with the second session
+  remaining connected after the first closed.
+
+The first browser probe encountered a transient non-200 response while the
+Shinyapps instance was cold. A direct HTTP request then returned 200 and the
+repeated browser probe passed. The probe now retries this bounded startup
+condition but still fails after three unsuccessful responses.
+
+This was a credentialed local deployment, **not** a GitHub Actions deployment
+run. The `production` environment still needs the three documented Shinyapps
+secrets before automated deployment can be claimed. The previously recorded
+bundle `12698610` remains the rollback reference in the Shinyapps deployment
+history. Provider-side logs, backups and retention were not inspected.
+
 ### Required operator action
 
 The current GitHub app connection does not provide a workflow-dispatch

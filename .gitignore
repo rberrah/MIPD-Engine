@@ -10,3 +10,5 @@ renv/staging/
 tmp/
 cache/
 test-results/
+rsconnect/
+__pycache__/
