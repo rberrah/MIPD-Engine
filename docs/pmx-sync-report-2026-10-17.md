@@ -120,6 +120,27 @@ Do not update those hashes without retraining: that would falsely relabel stale
 artifacts. PMx Explain should display current availability from the generated ML
 catalog, not infer it from the presence of an `.rds` file.
 
+### ML scientific-readiness distinction (additional audit)
+
+Do **not** interpret `availableInTdm=true` in
+`ml/catalog-summary.generated.json` as a passed internal research
+validation. The public `fec16cb` manifest has **12 technically available**
+ML predictors, but only **3** meet both repeated-CV and untouched-holdout
+thresholds: `cefepime_seo`, `dapto_dvorchik_IV_adults` and
+`tacrolimus_woillard_ddi`. The remaining **9** can only be described as
+*experimental and below the recorded performance thresholds*, not as
+fully qualified predictors.
+
+In particular, the retrained Goti XGBoost artifact now has a matching source
+SHA, but its untouched-holdout relative RMSE is **19.6028%** (threshold
+15%), P20 **73.2%** (threshold 80%), and
+`validation.untouchedHoldout.passed=false`. Its alternate-PopPK
+transportability test also fails. PMx must display model source alignment,
+ML source compatibility, internal-prediction performance and external
+clinical validation as **different fields**; never use an
+`ARTICLE_ALIGNED` badge as a proxy for predictive ML validation.
+Every model currently has `validationStatus=NONE` for clinical validation.
+
 ## Required PMx Explain import and checks
 
 1. Resolve the existing uncommitted PMx synchronization work, then pin
@@ -133,7 +154,9 @@ catalog, not infer it from the presence of an `.rds` file.
 5. Verify that Goti's source status and renal-boundary note propagate to every
    PMx model view without being promoted to external validation.
 6. Verify that the 12 stale ML artifacts above are shown as unavailable rather
-   than silently enabled.
+   than silently enabled. Separate *available/compatible* from *passed internal
+   ML thresholds*: only 3/12 available models pass CV and holdout; Goti remains
+   below threshold despite matching model hashes.
 7. Run PMx transfer-contract tests for Simulation, Lego, TDM, DDI and PD,
    including explicit unit and unsupported-field reporting.
 8. Run browser checks for the public MIPD link, release fingerprint, FR/EN model
