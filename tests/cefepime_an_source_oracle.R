@@ -109,7 +109,13 @@ for(case in cases) {
   check(result$clcr_calc,rep(crcl_lbw,length(times)),paste(case$label,"CLCR conversion"),rtol=1e-9)
   check(result$on_crrt,rep(case$CRRT,length(times)),paste(case$label,"CRRT switch"),rtol=0)
   check(result$CP,oracle,paste(case$label,"independent two-compartment C(t)"))
-  check(case$dose/cl,case$dose/cl,paste(case$label,"AUC identity"))
+  # Independent physical check: the analytical concentration integrates to
+  # the IV mass-balance identity AUC(0-infinity) = dose / total clearance.
+  # Split at infusion completion to avoid a quadrature kink.
+  kernel <- function(x) infusion_analytic(x,case$dose,case$duration,cl,vc,vp,q)
+  auc <- stats::integrate(kernel,0,case$duration,rel.tol=1e-8)$value +
+    stats::integrate(kernel,case$duration,Inf,rel.tol=1e-8)$value
+  check(auc,case$dose/cl,paste(case$label,"independent AUC mass balance"),rtol=1e-5)
   cat("AN 2023 SOURCE-STRUCTURE PASS: ",case$label,"\n",sep="")
 }
 cat(sprintf("An 2023 source fixed-effects and two-compartment infusion oracle: %d synthetic scenarios PASS (not original full-model reproduction).\n",length(cases)))
