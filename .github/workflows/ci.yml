@@ -13,10 +13,10 @@ jobs:
   origin-parity:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
         with:
           fetch-depth: 0
-      - uses: actions/setup-python@v6
+      - uses: actions/setup-python@v7
         with:
           python-version: "3.13"
       - name: Verify frozen PMx origin hashes
@@ -31,7 +31,7 @@ jobs:
         run: python3 scripts/audit_ml_evidence.py
       - name: Upload machine-readable ML evidence matrix
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: mipd-ml-evidence
           path: scientific-validation/ml-evidence.generated.json
@@ -47,7 +47,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 35
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
       - uses: r-lib/actions/setup-r@v2
         with:
           r-version: "4.6.1"
@@ -79,7 +79,7 @@ jobs:
         run: Rscript tests/map_prior_numeric_matrix.R
       - name: Upload independent all-model numerical evidence candidate reports
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: mipd-all-model-numeric-matrix
           path: |
@@ -98,7 +98,7 @@ jobs:
         run: Rscript tests/amox_carlier_analytical_invariants.R
       - name: Upload 46-model scientific evidence report
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: mipd-scientific-coverage
           path: scientific-validation/coverage.generated.json
@@ -127,7 +127,7 @@ jobs:
     env:
       PMETRICS_VERSION: "3.2.6"
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
       - uses: r-lib/actions/setup-r@v2
         with:
           r-version: "4.6.1"
