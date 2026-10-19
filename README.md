@@ -37,16 +37,18 @@ versioned consumer contract and independently checks the 46-model catalogue,
 metadata, source-review information and ML availability. MIPD changes must be
 qualified here first; PMx may then update only its consumer contract.
 
-The frozen code/qualification baseline before this documentation-only freeze
-update is `b7895d0aaeb54dd847ef39aa171444f6c60cb449`. It is five commits ahead of
-the public source SHA; those five commits add governance, documentation and
-qualification assets only. The executable runtime and model source files are
-unchanged from `fec16cb`, so the public deployment remains correctly identified
-by `fec16cb`.
+The frozen code/qualification baseline immediately before this final freeze
+PR is `428d38f65244680e8bc6335afd125469e804d805`. It is eight commits ahead of
+the public source SHA; those commits add governance, documentation and
+qualification assets only. The executable runtime, model sources and
+`renv.lock` are unchanged from `fec16cb`, so the public deployment remains
+correctly identified by `fec16cb` and does not require a documentation-only
+redeployment.
 
 See [deployment evidence](docs/DEPLOYMENT.md),
-[PMx consumer handoff](docs/pmx-sync-report-2026-10-17.md) and
-[scientific qualification](docs/scientific-qualification.md).
+[PMx consumer handoff](docs/pmx-sync-report-2026-10-17.md),
+[scientific qualification](docs/scientific-qualification.md) and the
+[final frozen baseline](docs/FROZEN_BASELINE_20261019.md).
 
 ## Scope
 
@@ -69,7 +71,7 @@ Current standalone qualification distinguishes software testing, frozen
 software regression, partial independent source reproduction and external
 validation.
 
-At the qualified code baseline `b7895d0`:
+At the qualified code baseline `428d38f`:
 
 - 46/46 models compile and satisfy their software contracts;
 - 46/46 models are covered by frozen synthetic numerical software baselines
@@ -128,8 +130,10 @@ Scientific source fidelity is tracked separately from regression testing.
 Independently transcribed equations currently cover vancomycin models Roberts
 (2011), Revilla (2010) and Goti (2018), across synthetic analytical scenarios.
 Goti also includes renal preprocessing, exposure and an independent synthetic
-MAP oracle. Partial equation reproduction is not full model reproduction,
-external validation or proof of clinical utility.
+MAP oracle. A separate cefepime An analytical source-oracle candidate is retained
+with its unresolved lean-body-weight convention explicitly documented and is not
+promoted to full source reproduction. Partial equation reproduction is not full
+model reproduction, external validation or proof of clinical utility.
 
 See [scientific qualification](docs/scientific-qualification.md) and
 [scientific evidence records](scientific-validation/source-evidence.json).
