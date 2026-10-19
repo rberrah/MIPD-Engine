@@ -38,7 +38,7 @@ be qualified here before a PMx consumer pin can advance.
 
 ## Current standalone qualification
 
-At the qualified code baseline `b7895d0`:
+At the qualified code baseline `428d38f`:
 
 - 46/46 model files compile and satisfy software contracts;
 - frozen numerical software baselines cover all 46 models across 98 supported
@@ -50,12 +50,13 @@ At the qualified code baseline `b7895d0`:
 - 0/46 are claimed as externally clinically validated;
 - DOI and model/ML provenance gates are active.
 
-The five code/qualification commits between the public source SHA `fec16cb`
-and baseline `b7895d0` modify governance, documentation and qualification
-assets only; they do not change the deployed runtime or model sources. Later
-documentation-only commits do not alter that comparison.
+The eight commits between the public source SHA `fec16cb` and qualified
+baseline `428d38f` modify governance, documentation and qualification assets
+only; they do not change `app.R`, `R/`, `models/`, `runtime/` or `renv.lock`.
+The public Shiny bundle therefore remains an exact runtime/model deployment of
+the frozen software even though repository-level qualification continued.
 
-## Remaining work — non-blocking for repository separation
+## Deferred research/operations — non-blocking after freeze
 
 The following work remains research or operational hardening rather than a
 reason to restore a monorepo:
