@@ -1,0 +1,95 @@
+name: Repository branch hygiene
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/branch-hygiene.yml'
+
+permissions:
+  contents: write
+  pull-requests: read
+
+jobs:
+  prune:
+    name: prune-stale-branches
+    runs-on: ubuntu-latest
+    steps:
+      - name: Delete obsolete unprotected branches
+        uses: actions/github-script@v8
+        with:
+          script: |
+            const owner = context.repo.owner;
+            const repo = context.repo.repo;
+            const { data: repository } = await github.rest.repos.get({ owner, repo });
+            const defaultBranch = repository.default_branch;
+            const explicitKeep = new Set([]);
+
+            const branches = await github.paginate(
+              github.rest.repos.listBranches,
+              { owner, repo, per_page: 100 }
+            );
+
+            const openPulls = await github.paginate(
+              github.rest.pulls.list,
+              { owner, repo, state: 'open', per_page: 100 }
+            );
+            const openHeads = new Set(
+              openPulls
+                .filter(pr => pr.head.repo?.full_name === `${owner}/${repo}`)
+                .map(pr => pr.head.ref)
+            );
+
+            const kept = [];
+            const deleted = [];
+            const failed = [];
+
+            for (const branch of branches) {
+              if (
+                branch.name === defaultBranch ||
+                branch.protected ||
+                explicitKeep.has(branch.name) ||
+                openHeads.has(branch.name)
+              ) {
+                kept.push(branch.name);
+                continue;
+              }
+              try {
+                await github.rest.git.deleteRef({
+                  owner,
+                  repo,
+                  ref: `heads/${branch.name}`
+                });
+                deleted.push(branch.name);
+              } catch (error) {
+                failed.push({
+                  branch: branch.name,
+                  status: error.status ?? null,
+                  message: error.message
+                });
+              }
+            }
+
+            core.summary
+              .addHeading('Repository branch hygiene')
+              .addRaw(`Deleted: **${deleted.length}** branch(es)\n\n`)
+              .addRaw(`Kept: **${kept.length}** branch(es)\n\n`);
+
+            if (kept.length) {
+              core.summary.addDetails('Kept branches', kept.map(x => `- ${x}`).join('\n'));
+            }
+            if (deleted.length) {
+              core.summary.addDetails('Deleted branches', deleted.map(x => `- ${x}`).join('\n'));
+            }
+            if (failed.length) {
+              core.summary.addDetails(
+                'Failed deletions',
+                failed.map(x => `- ${x.branch}: ${x.status ?? ''} ${x.message}`).join('\n')
+              );
+            }
+            await core.summary.write();
+
+            if (failed.length) {
+              core.setFailed(`Failed to delete ${failed.length} branch(es).`);
+            }
