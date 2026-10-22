@@ -1,3 +1,4 @@
+# CI retrigger after transient setup-r runner stall
 name: Repository branch hygiene
 
 on:
