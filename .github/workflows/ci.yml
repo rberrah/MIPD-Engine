@@ -10,6 +10,14 @@ permissions:
   contents: read
 
 jobs:
+  tdm-preview:
+    name: Draft STP preview (non-runtime)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - name: Validate drug crosswalk and 46 model recommendations offline
+        run: node tests/tdm_guide_adapter_preview.test.mjs
+
   origin-parity:
     runs-on: ubuntu-latest
     steps:
@@ -36,8 +44,6 @@ jobs:
           name: mipd-ml-evidence
           path: scientific-validation/ml-evidence.generated.json
           if-no-files-found: ignore
-      - name: Verify draft TDM Guide recommendation coverage (46 models, no runtime binding)
-        run: node tests/tdm_guide_adapter_preview.test.mjs
       - name: Regenerate standalone model catalogue
         run: node scripts/generate_model_catalog.mjs
       - name: Regenerate model traceability
