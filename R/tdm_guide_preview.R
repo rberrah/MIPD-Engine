@@ -65,6 +65,36 @@ TDM_GUIDE_PREVIEW_BY_MODEL <- if (tdm_guide_preview_available()) {
   tdm_guide_preview_load(tdm_guide_preview_path(), MODEL_CATALOG)
 } else NULL
 
+# Navigation is bibliographic only: this link carries a reviewed drug identifier and
+# the interface language, never the model selection, observations or a dose.
+# PMx handles ?drug= via its TDM Guide route (PR #235).
+tdm_guide_drug_href <- function(model_id, english = FALSE) {
+  if (is.null(TDM_GUIDE_PREVIEW_BY_MODEL)) return(NULL)
+  record <- TDM_GUIDE_PREVIEW_BY_MODEL[[as.character(model_id %||% "")]]
+  if (is.null(record) ||
+      identical(record$recommendation$status, "not_indexed_in_guide")) return(NULL)
+  drug_id <- as.character(record$tdmDrugId %||% "")
+  if (length(drug_id) != 1L || is.na(drug_id) ||
+      !grepl("^[a-z][a-z0-9_-]*$", drug_id)) return(NULL)
+  paste0("https://rberrah.github.io/pharmacometrie/cibles-tdm/?drug=",
+    utils::URLencode(drug_id, reserved = TRUE),
+    "&lang=", if (isTRUE(english)) "en" else "fr")
+}
+
+tdm_guide_drug_link <- function(model_id, english = FALSE) {
+  href <- tdm_guide_drug_href(model_id, english)
+  if (is.null(href)) return(NULL)
+  shiny::tags$p(
+    class = "tdm-guide-drug-link",
+    shiny::tags$a(
+      if (english) "View this drug's TDM targets and sources in PMx Explain"
+      else "Consulter les cibles STP et leurs sources dans PMx Explain",
+      href = href, target = "_blank", rel = "noopener noreferrer",
+      `data-testid` = "mipd-tdm-guide-drug-link"
+    )
+  )
+}
+
 # Readable labels for the identity dimensions the guide currently leaves unstructured.
 TDM_GUIDE_DIMENSION_LABELS <- list(
   analyteId = c("analyte", "analyte"),
@@ -228,6 +258,7 @@ tdm_guide_preview_model_card <- function(model_id, english = FALSE) {
     if (!is.null(population)) shiny::tags$p(class = "tdm-guide-model-population",
       shiny::tags$strong(translate("Population du modèle : ", "Model population: ")), population),
     warning_banner,
+    tdm_guide_drug_link(model_id, english),
     shiny::tags$details(
       shiny::tags$summary(translate("Références, contexte et limites d’applicabilité",
         "References, context and applicability limits")),
