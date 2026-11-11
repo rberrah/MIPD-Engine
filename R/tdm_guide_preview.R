@@ -1,6 +1,12 @@
-# Experimental STP documentation only. This module is NOT active unless local opt-in
-# ENABLE_TDM_GUIDE_PREVIEW=true and an explicit snapshot file are provided.
+# STP documentation read from a versioned artifact committed in this repository,
+# generated from an immutable PMx TDM Guide commit and checked for drift in CI.
+# Active by default; ENABLE_TDM_GUIDE_PREVIEW=false switches it off, and
+# TDM_GUIDE_PREVIEW_JSON points at another local file for experiments.
 # It does not read observations, derive doses, or modify the model target fields.
+if (!exists("APP_ROOT", inherits = TRUE)) {
+  APP_ROOT <- normalizePath(getwd(), winslash = "/", mustWork = TRUE)
+}
+TDM_GUIDE_PREVIEW_FILE <- file.path(APP_ROOT, "integration", "tdm-guide-recommendations.v1.json")
 
 # A preview file may only ever ask for human review. Any file claiming that a
 # reference is applicable to a model is rejected.
@@ -47,11 +53,16 @@ tdm_guide_preview_load <- function(path, catalog) {
 }
 
 tdm_guide_preview_available <- function() {
-  identical(tolower(trimws(Sys.getenv("ENABLE_TDM_GUIDE_PREVIEW", "false"))), "true")
+  !identical(tolower(trimws(Sys.getenv("ENABLE_TDM_GUIDE_PREVIEW", "true"))), "false")
 }
-# Only explicit local opt-in can load a file. The public deployment remains off.
+tdm_guide_preview_path <- function() {
+  override <- trimws(Sys.getenv("TDM_GUIDE_PREVIEW_JSON", ""))
+  if (nzchar(override)) override else TDM_GUIDE_PREVIEW_FILE
+}
+# Loaded from the committed artifact. Still fails closed: a corrupt or tampered file
+# stops the app rather than displaying references it could not validate.
 TDM_GUIDE_PREVIEW_BY_MODEL <- if (tdm_guide_preview_available()) {
-  tdm_guide_preview_load(Sys.getenv("TDM_GUIDE_PREVIEW_JSON", ""), MODEL_CATALOG)
+  tdm_guide_preview_load(tdm_guide_preview_path(), MODEL_CATALOG)
 } else NULL
 
 # Readable labels for the identity dimensions the guide currently leaves unstructured.

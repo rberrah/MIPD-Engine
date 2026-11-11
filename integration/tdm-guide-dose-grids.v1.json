@@ -1,0 +1,73 @@
+{
+  "schema": "mipd.tdm.dose-grids.v1",
+  "scope": "exploratory_simulation_grids_declared_by_mipd",
+  "signoff": "PENDING_PHARMACOLOGIST_REVIEW",
+  "intent": "The TDM Guide publishes no posology at all (its export asserts containsDosingAdvice: false), so a dose grid can never come from it. These grids are declared by MIPD from the product labels, bound the simulation search space only, and are NOT a dosing recommendation. Each entry needs an independent pharmacologist sign-off before it is relied upon.",
+  "doseUnit": "mg per administration",
+  "grids": {
+    "tacrolimus::ORAL": {
+      "dose_min": 0.5,
+      "dose_max": 24,
+      "dose_step": 0.5,
+      "intervals": [12, 24],
+      "infusion": 0,
+      "basisFr": "Bornes couvrant la dose initiale du RCP (0,20–0,30 mg/kg/j en deux prises, soit environ 7–11 mg par prise pour 70 kg) et les doses d'entretien plus faibles. L'intervalle de 24 h couvre les formes à libération prolongée en une prise quotidienne ; le maximum de 24 mg correspond à 0,30 mg/kg/j pour 80 kg en une prise. Pas de 0,5 mg aligné sur la plus petite gélule.",
+      "basisEn": "Bounds covering the label initial dose (0.20-0.30 mg/kg/day in two divided doses, about 7-11 mg per dose at 70 kg) and the lower maintenance doses. The 24 h interval covers once-daily prolonged-release products; the 24 mg maximum corresponds to 0.30 mg/kg/day at 80 kg given once daily. The 0.5 mg step matches the smallest capsule.",
+      "source": {
+        "label": "Prograf hard capsules, SmPC section 4.2, UK electronic medicines compendium",
+        "url": "https://www.medicines.org.uk/emc/product/7488/smpc",
+        "statement": "oral therapy should commence at 0.20 - 0.30 mg/kg/day administered as two divided doses",
+        "strengths": "0.5 mg, 1 mg, 5 mg capsules"
+      },
+      "signoff": "PENDING"
+    },
+    "ciclosporine::ORAL": {
+      "dose_min": 25,
+      "dose_max": 700,
+      "dose_step": 25,
+      "intervals": [12],
+      "infusion": 0,
+      "basisFr": "Bornes couvrant la dose initiale du RCP (10–15 mg/kg/j en deux prises, soit environ 350–525 mg par prise pour 70 kg, jusqu'à environ 675 mg pour 90 kg) et l'entretien d'environ 2–6 mg/kg/j en deux prises. Pas de 25 mg aligné sur les gélules disponibles.",
+      "basisEn": "Bounds covering the label initial dose (10-15 mg/kg/day in two divided doses, about 350-525 mg per dose at 70 kg and up to about 675 mg at 90 kg) and maintenance of about 2-6 mg/kg/day in two divided doses. The 25 mg step matches the available capsules.",
+      "source": {
+        "label": "Neoral soft gelatin capsules, SmPC section 4.2, UK electronic medicines compendium",
+        "url": "https://www.medicines.org.uk/emc/product/1034/smpc",
+        "statement": "at a dose of 10 to 15 mg/kg given in 2 divided doses; reduced according to blood levels until a recommended maintenance dose of about 2 to 6 mg/kg given in 2 divided doses is reached",
+        "strengths": "10 mg, 25 mg, 50 mg, 100 mg capsules"
+      },
+      "signoff": "PENDING"
+    },
+    "everolimus::ORAL": {
+      "dose_min": 0.25,
+      "dose_max": 1.5,
+      "dose_step": 0.25,
+      "intervals": [12],
+      "infusion": 0,
+      "basisFr": "Bornes restreintes aux schémas nommés par le RCP : 0,75 mg deux fois par jour avec la ciclosporine (rein, coeur) et 1,0 mg deux fois par jour avec le tacrolimus (foie). Le RCP indique que le schéma à posologie plus élevée n'est pas recommandé : la grille ne monte donc pas au-delà de 1,5 mg par prise. Pas de 0,25 mg aligné sur le plus petit comprimé.",
+      "basisEn": "Bounds restricted to the regimens the label names: 0.75 mg twice daily with ciclosporin (kidney, heart) and 1.0 mg twice daily with tacrolimus (liver). The label states the higher-dosage regimen is not recommended, so the grid does not go beyond 1.5 mg per dose. The 0.25 mg step matches the smallest tablet.",
+      "source": {
+        "label": "Certican tablets, SmPC section 4.2, UK electronic medicines compendium",
+        "url": "https://www.medicines.org.uk/emc/product/1920/smpc",
+        "statement": "An initial dose regimen of 0.75 mg twice daily in co-administration with ciclosporin is recommended; The dose of 1.0 mg twice daily in co-administration with tacrolimus is recommended for the hepatic transplant population",
+        "strengths": "0.25 mg, 0.75 mg tablets"
+      },
+      "signoff": "PENDING"
+    },
+    "sirolimus::ORAL": {
+      "dose_min": 0.5,
+      "dose_max": 10,
+      "dose_step": 0.5,
+      "intervals": [24],
+      "infusion": 0,
+      "basisFr": "Bornes couvrant la dose de charge unique de 6 mg du RCP, la dose d'entretien de 2 mg une fois par jour et la titration ultérieure sur la concentration résiduelle. Administration en une prise quotidienne. Pas de 0,5 mg aligné sur le plus petit comprimé.",
+      "basisEn": "Bounds covering the label 6 mg single loading dose, the 2 mg once-daily maintenance dose and the subsequent titration on trough concentration. Given once daily. The 0.5 mg step matches the smallest tablet.",
+      "source": {
+        "label": "Rapamune coated tablets, SmPC section 4.2, UK electronic medicines compendium",
+        "url": "https://www.medicines.org.uk/emc/product/10399/smpc",
+        "statement": "The usual dose regimen is a 6 mg single oral loading dose, administered as soon as possible after transplantation, followed by 2 mg once daily until results of therapeutic monitoring of the medicinal product are available",
+        "strengths": "0.5 mg, 1 mg, 2 mg, 5 mg tablets"
+      },
+      "signoff": "PENDING"
+    }
+  }
+}

@@ -17,6 +17,8 @@ jobs:
       - uses: actions/checkout@v7
       - name: Validate drug crosswalk and 46 model recommendations offline
         run: node tests/tdm_guide_adapter_preview.test.mjs
+      - name: Validate MIPD dose grids and preset eligibility offline
+        run: node tests/tdm_guide_presets.test.mjs
 
   tdm-preview-integrated:
     name: Draft STP integration against pinned PMx catalogue (no runtime)
@@ -52,6 +54,21 @@ jobs:
         run: node .pmx-tdm-source-preview/scripts/export_tdm_model_references.mjs --output /tmp/pmx-tdm-guide-preview.json
       - name: Build all MIPD model recommendations from the versioned real snapshot
         run: node scripts/preview_tdm_guide_recommendations.mjs --snapshot /tmp/pmx-tdm-guide-preview.json --output /tmp/mipd-tdm-recommendations-preview.json
+      # The app now reads committed artifacts, so they must match the pinned guide exactly.
+      - name: Reject drift in the committed STP recommendation artifact
+        run: |
+          node scripts/preview_tdm_guide_recommendations.mjs --snapshot /tmp/pmx-tdm-guide-preview.json --output /tmp/rebuilt-recommendations.json
+          node --input-type=module -e "
+            import fs from 'node:fs'; import assert from 'node:assert/strict';
+            const a=JSON.parse(fs.readFileSync('integration/tdm-guide-recommendations.v1.json','utf8'));
+            const b=JSON.parse(fs.readFileSync('/tmp/rebuilt-recommendations.json','utf8'));
+            assert.equal(a.sha256,b.sha256,'Committed STP artifact is stale: regenerate it from the pinned PMx commit');
+            console.log('Committed STP artifact matches the pinned guide.');
+          "
+      - name: Reject drift in the committed clinical preset artifact
+        run: node scripts/build_tdm_guide_presets.mjs --snapshot /tmp/pmx-tdm-guide-preview.json --output integration/tdm-guide-clinical-presets.v1.json --check
+      - name: Verify preset artifact against the real guide and the curated presets
+        run: node tests/tdm_guide_presets.test.mjs /tmp/pmx-tdm-guide-preview.json
       - name: Require 46 explicit, non-clinical recommendations without patient data
         run: |
           node --input-type=module -e "

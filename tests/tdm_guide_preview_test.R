@@ -4,10 +4,25 @@ APP_ROOT <- root
 `%||%` <- function(x,y) if(is.null(x)||!length(x)) y else x
 catalog <- jsonlite::fromJSON(file.path(root,"models","catalog.json"))$models
 MODEL_CATALOG <- catalog
+# Active by default, from the committed artifact: all 46 models get a card.
 Sys.unsetenv("ENABLE_TDM_GUIDE_PREVIEW")
+Sys.unsetenv("TDM_GUIDE_PREVIEW_JSON")
 source(file.path(root,"R","tdm_guide_preview.R"),local=FALSE)
-stopifnot(is.null(TDM_GUIDE_PREVIEW_BY_MODEL))
-stopifnot(is.null(tdm_guide_preview_model_card(catalog$id[[1]], english=FALSE)))
+stopifnot(!is.null(TDM_GUIDE_PREVIEW_BY_MODEL))
+stopifnot(length(TDM_GUIDE_PREVIEW_BY_MODEL) == nrow(catalog))
+stopifnot(!is.null(tdm_guide_preview_model_card(catalog$id[[1]], english=FALSE)))
+# An explicit opt-out still disables it for a deployment that does not want it.
+Sys.setenv(ENABLE_TDM_GUIDE_PREVIEW="false")
+stopifnot(!tdm_guide_preview_available())
+local({
+  env <- new.env(parent = globalenv())
+  env$APP_ROOT <- root; env$MODEL_CATALOG <- catalog
+  env$`%||%` <- `%||%`
+  sys.source(file.path(root,"R","tdm_guide_preview.R"), envir = env)
+  stopifnot(is.null(env$TDM_GUIDE_PREVIEW_BY_MODEL))
+  stopifnot(is.null(env$tdm_guide_preview_model_card(catalog$id[[1]], english=FALSE)))
+})
+Sys.unsetenv("ENABLE_TDM_GUIDE_PREVIEW")
 testmodels <- lapply(seq_len(nrow(catalog)), function(i) {
   list(modelId=catalog$id[[i]],recommendation=list(
     interpretationAllowed=FALSE,automaticDoseAdjustmentAllowed=FALSE,
@@ -58,7 +73,7 @@ unsafe <- fixture
 unsafe$models <- unsafe$models[-1]
 jsonlite::write_json(unsafe,tmp,auto_unbox=TRUE,null="null")
 stopifnot(inherits(try(tdm_guide_preview_load(tmp,catalog),silent=TRUE),"try-error"))
-cat("Experimental Shiny STP panels: 46/46 models, disabled by default, safe read-only display.\n")
+cat("Shiny STP panels: 46/46 models from the committed artifact, active by default, opt-out honoured.\n")
 
 # --- Applicability warnings must reach the panel, and none may claim applicability ---
 # The undecidable dimensions declared by the adapter are shown, not dropped.

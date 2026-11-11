@@ -15,6 +15,22 @@
   },
   "troughMetricMarkers": ["C₀", "C0", "Cmin", "Cmin,ss", "Ctrough", "Résiduelle"],
   "continuousInfusionModes": ["IV_CONTINUOUS"],
+  "appMetricEquivalence": {
+    "comment": "A guide metric may feed a target preset only when it denotes the SAME quantity as one of the app's optimisation metrics (AUC24, Cmin, Cmax, TimeAbove, CminCmax). Anything absent from this map is deliberately excluded rather than converted.",
+    "equivalent": {
+      "C₀": "Cmin",
+      "C0": "Cmin",
+      "Cmin": "Cmin",
+      "Cmax": "Cmax",
+      "AUC₂₄": "AUC24",
+      "AUC24": "AUC24"
+    },
+    "deliberatelyExcluded": {
+      "AUC₀–₁₂": "An AUC over a 12 h interval is not the AUC over 24 h the app optimises; converting it would assume two identical intervals and strict dose proportionality.",
+      "C₂h": "A 2 h post-dose concentration is neither a trough nor a true Cmax; the app has no C2 metric.",
+      "C₂h (pic approximatif)": "An approximate peak surrogate; not the app's Cmax."
+    }
+  },
   "undecidableIdentityDimensions": {
     "comment": "Dimensions the guide currently leaves unstructured for most references. They are reported as undecidable, never as a match. Populating analyteId / analyteBasis / matrixId / formulationId / assayMethod / samplingTime in the TDM Guide is what would turn these into real gates.",
     "fields": ["analyteId", "analyteBasis", "matrixId", "formulationId", "assayMethod", "samplingTime"]

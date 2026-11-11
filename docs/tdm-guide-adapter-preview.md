@@ -39,6 +39,37 @@ Sur le snapshot réel, **8 références** sont signalées incompatibles (cible F
 
 État des métadonnées du guide à ce jour : `assayMethod` 0/141, `formulationId` 1/141, `analyteId`/`matrixId`/`samplingTime` 10/141, et **131/141 références sans aucune des six dimensions**. C'est la limite principale : tant que ces champs ne sont pas publiés par le guide, la distinction tacrolimus IR vs Envarsus reste **non vérifiable par machine** et demeure une relecture humaine.
 
+## Préréglages cliniques dans « Cible et grille de doses »
+
+Deux artefacts versionnés sont committés et lus directement par l'application, sans fichier local ni variable d'environnement :
+
+| Fichier | Contenu | Généré par |
+| --- | --- | --- |
+| `integration/tdm-guide-recommendations.v1.json` | les 46 fiches STP affichées sous chaque carte de modèle | `scripts/preview_tdm_guide_recommendations.mjs` |
+| `integration/tdm-guide-clinical-presets.v1.json` | les cibles publiées utilisables comme préréglage (9 clés `drugKey::mode`, 16 cibles) | `scripts/build_tdm_guide_presets.mjs` |
+| `integration/tdm-guide-dose-grids.v1.json` | les grilles de doses **déclarées par MIPD**, sourcées RCP, `signoff: PENDING` | écrit à la main, relu en CI |
+
+La CI régénère les deux artefacts depuis le commit PMx épinglé et **refuse toute dérive**.
+
+### Ce qui peut devenir un préréglage
+
+Une référence du guide n'alimente le panneau que si **toutes** ces conditions sont vraies, sinon elle reste de la documentation dans la fiche STP :
+
+1. sa métrique désigne **la même grandeur** qu'une métrique de l'application (`appMetricEquivalence`). `AUC₀–₁₂` et `C₂h` sont **exclus explicitement** : une AUC sur 12 h n'est pas l'AUC sur 24 h optimisée par l'application, et une C2 n'est ni une résiduelle ni une Cmax ;
+2. c'est un intervalle à deux bornes exploitables ;
+3. aucune incompatibilité structurelle de contexte avec ce modèle (la cible FDA greffe hépatique du tacrolimus est donc **absente** des préréglages des modèles rénaux).
+
+### Règle d'application
+
+- **Plusieurs cibles qualifiées** (tacrolimus 3, ciclosporine 3, évérolimus 3, sirolimus 2) : le panneau affiche la liste, `autoApply` est faux et **rien n'est écrit** avant que le lecteur ne choisisse et ne clique.
+- **Une seule cible qualifiée** (vancomycine ×2 voies, linézolide ×2 voies, voriconazole) : `autoApply` est vrai. Ces cinq clés possèdent **déjà** un préréglage curaté dans `R/clinical_presets.R` ; l'artefact n'introduit donc **aucune écriture automatique nouvelle**, et un test le vérifie.
+- Le préréglage curaté MIPD **garde la priorité**. Un désaccord est affiché, jamais résolu en silence : le voriconazole en est le cas réel, guide 2–6 mg/L contre préréglage MIPD 1–5,5 mg/L (Ashbee 2014).
+- Les grilles de doses ne viennent **jamais** du guide, qui ne publie aucune posologie. Elles sont déclarées par MIPD depuis les RCP (Prograf, Neoral, Certican, Rapamune), bornent seulement l'espace de recherche et attendent une relecture pharmacologique indépendante (`signoff: PENDING` partout).
+
+### Désactivation
+
+Les fiches STP sont actives par défaut. `ENABLE_TDM_GUIDE_PREVIEW=false` les désactive entièrement ; `TDM_GUIDE_PREVIEW_JSON` permet de pointer un autre fichier local pour expérimenter.
+
 ## Passage ultérieur à une interface Shiny
 
 Un composant **lecture seule** placé sur la fiche du modèle affichera « Indice STP conseillé / prélèvement / sources / limites du modèle ». L'utilisateur pourra ensuite préciser indication, formulation, schéma, âge, statut greffe, méthode, analyte, fraction libre et CMI. Le filtre de références restera **fail-closed** tant que toutes les dimensions nécessaires ne sont pas validées. Ne pas transformer une C0 en AUC sans méthode qualifiée.
