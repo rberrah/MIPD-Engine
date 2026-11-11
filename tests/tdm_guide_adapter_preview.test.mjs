@@ -128,3 +128,26 @@ assert.ok(out.models.every(m=>typeof m.recommendation.structuralMismatchCount===
 assert.equal(out.models.find(m=>m.modelId==='cefepime_an').recommendation
   .administrationModeWarningCount,1,'Mode warning must be countable for the read-only panel');
 console.log('MIPD applicability gates: organ, administration mode and undecidable dimensions reported; none grants applicability.');
+
+// --- Gate robustness: no false trough, no prototype lookup ---
+const continuousOnly={populationTags:['Adulte'],administrationModes:['IV_CONTINUOUS']};
+const troughFlag=(metric)=>assessCandidateApplicability({target:ref({metric,indication:'infection'}),
+  model:continuousOnly,tdmDrugId:'vancomycin',rules}).mismatches
+  .some(m=>m.code==='trough_reference_under_continuous_infusion_only_model');
+// An AUC written in ASCII contains the substring "C0" but is not a trough.
+assert.equal(troughFlag('AUC0-24'),false,'AUC0-24 must not be read as a C0 trough');
+assert.equal(troughFlag('AUC0-12'),false);
+assert.equal(troughFlag('AUC₀–₂₄'),false);
+// Real troughs, including the unbound form, are still detected.
+assert.equal(troughFlag('C₀'),true);
+assert.equal(troughFlag('C0'),true);
+assert.equal(troughFlag('Cmin,ss'),true);
+assert.equal(troughFlag('fCmin'),true);
+// An unexpected indication code must not reach Object.prototype.
+for (const hostile of ['constructor','__proto__','toString']) {
+  const result=assessCandidateApplicability(
+    {target:ref({indication:hostile}),model:kidneyModel,tdmDrugId:'tac',rules});
+  assert.deepEqual(result.mismatches,[],'indication '+hostile+' must not be gated');
+  assert.equal(result.verdict,'requires_human_context_review');
+}
+console.log('MIPD gate robustness: trough matching anchored, indication lookup own-property only.');

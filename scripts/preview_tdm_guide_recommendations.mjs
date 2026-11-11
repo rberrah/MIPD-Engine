@@ -61,6 +61,12 @@ export function checkApplicabilityRules(rules) {
  * marks a reference as applicable, never picks a value and never touches a dose.
  * Anything the declared metadata cannot settle is reported as undecidable, not as a match.
  */
+const escapeRegExp=(value)=>value.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
+// A trough marker must open the metric, optionally behind a free/unbound prefix.
+// A loose substring test would read "AUC0-24" as a C0 trough, so it is not used.
+const isTroughMetric=(metric,markers)=>typeof metric==='string' &&
+  markers.some((marker)=>new RegExp('^[fu]?'+escapeRegExp(marker)).test(metric.trim()));
+
 export function assessCandidateApplicability({target,model,tdmDrugId,rules}) {
   const mismatches=[],undecidable=[];
   const organRule=rules.organTransplantIndications;
@@ -68,7 +74,10 @@ export function assessCandidateApplicability({target,model,tdmDrugId,rules}) {
   const tags=Array.isArray(model.populationTags)?model.populationTags:[];
   const modes=Array.isArray(model.administrationModes)?model.administrationModes:[];
   // 1. Grafted organ declared by the reference vs grafted organ declared by the model.
-  if(organRule.appliesToTdmDrugIds.includes(tdmDrugId) && organTags[target.indication]) {
+  // hasOwn keeps an unexpected indication code from reaching Object.prototype.
+  if(organRule.appliesToTdmDrugIds.includes(tdmDrugId) &&
+    typeof target.indication==='string' && Object.hasOwn(organTags,target.indication) &&
+    Array.isArray(organTags[target.indication])) {
     const wanted=organTags[target.indication];
     const declared=Object.entries(organTags)
       .filter(([,list])=>list.some((tag)=>tags.includes(tag))).map(([organ])=>organ);
@@ -81,8 +90,7 @@ export function assessCandidateApplicability({target,model,tdmDrugId,rules}) {
     }
   }
   // 2. A trough cannot be read on a model that only supports continuous infusion.
-  const isTrough=rules.troughMetricMarkers.some((marker)=>
-    typeof target.metric==='string' && target.metric.includes(marker));
+  const isTrough=isTroughMetric(target.metric,rules.troughMetricMarkers);
   if(isTrough && modes.length && modes.every((mode)=>rules.continuousInfusionModes.includes(mode)))
     mismatches.push({
       dimension:'administration_mode',code:'trough_reference_under_continuous_infusion_only_model',
