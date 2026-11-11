@@ -819,9 +819,11 @@ app_ui <- function(request) {
                 )
               ),
               fluidRow(
-                column(4, numericInput("dose_min", "Dose min", DEFAULT_TARGET_PRESET$dose_min %||% 250, min = 0, step = 50)),
-                column(4, numericInput("dose_max", "Dose max", DEFAULT_TARGET_PRESET$dose_max %||% 2000, min = 0, step = 50)),
-                column(4, numericInput("dose_step", "Pas", DEFAULT_TARGET_PRESET$dose_step %||% 250, min = 1, step = 50))
+                # No step constraint and no 1 mg floor: immunosuppressant grids use
+                # 0.25 and 0.5 mg increments, which a step of 50 and min of 1 reject.
+                column(4, numericInput("dose_min", "Dose min", DEFAULT_TARGET_PRESET$dose_min %||% 250, min = 0, step = NA)),
+                column(4, numericInput("dose_max", "Dose max", DEFAULT_TARGET_PRESET$dose_max %||% 2000, min = 0, step = NA)),
+                column(4, numericInput("dose_step", "Pas", DEFAULT_TARGET_PRESET$dose_step %||% 250, min = 0, step = NA))
               ),
               checkboxGroupInput(
                 "candidate_intervals",
@@ -3172,8 +3174,15 @@ server <- function(input, output, session) {
         tags$strong(tx("Grille de doses déclarée par MIPD : ", "Dose grid declared by MIPD: ")),
         paste0(format(grid$dose_min), "–", format(grid$dose_max), " mg, pas ",
           format(grid$dose_step), " mg, ", paste(unlist(grid$intervals), collapse = "/"), " h. "),
-        tx("Le TDM Guide ne publie aucune posologie ; cette grille borne seulement la recherche et attend une relecture pharmacologique indépendante.",
-          "The TDM Guide publishes no posology; this grid only bounds the search and is awaiting an independent pharmacologist review."),
+        tx("Le TDM Guide ne publie aucune posologie : cette grille est déclarée par MIPD d'après le RCP et ne borne que l'espace de recherche.",
+          "The TDM Guide publishes no posology: this grid is declared by MIPD from the product label and only bounds the search space."),
+        # An unvalidated search space must never be written silently.
+        if (!isTRUE(entry$doseGridApplicable)) tags$div(tags$strong(tx(
+          "⚠ Non appliquée : en attente de relecture pharmacologique. Le bouton n'applique que la cible ; la grille de doses reste inchangée.",
+          "⚠ Not applied: awaiting pharmacologist review. The button applies the target only; the dose grid is left unchanged."))),
+        if (length(grid$excludesFormulations)) tags$div(tx(
+          "Formulations hors périmètre de cette grille : ", "Formulations outside this grid: "),
+          paste(unlist(grid$excludesFormulations), collapse = ", "), "."),
         if (grepl("^https://", grid$source$url %||% "")) tags$a(
           grid$source$label %||% grid$source$url, href = grid$source$url,
           target = "_blank", rel = "noopener noreferrer")
@@ -3194,18 +3203,24 @@ server <- function(input, output, session) {
     updateSelectInput(session, "target_metric", selected = candidate$target_metric)
     updateNumericInput(session, "target_low", value = candidate$target_low)
     updateNumericInput(session, "target_high", value = candidate$target_high)
+    # Only a signed-off grid may change the dose search space. A PENDING grid is
+    # displayed with its label source but never written, so an unvalidated posology
+    # cannot reach dose_min, dose_max, dose_step or the tested intervals.
     grid <- tdm_guide_preset_entry(record, mode)$doseGrid
-    if (!is.null(grid)) {
+    if (tdm_guide_preset_grid_applicable(record, mode)) {
       updateNumericInput(session, "dose_min", value = grid$dose_min)
       updateNumericInput(session, "dose_max", value = grid$dose_max)
       updateNumericInput(session, "dose_step", value = grid$dose_step)
       update_candidate_intervals(unlist(grid$intervals))
       updateNumericInput(session, "future_infusion", value = grid$infusion)
     }
+    missing <- unlist(candidate$undecidable %||% list())
     showNotification(tx(
-      "Cible bibliographique appliquée. Vérifier l'indication, la formulation, l'analyte et la méthode de dosage avant toute interprétation.",
-      "Bibliographic target applied. Check indication, formulation, analyte and assay before any interpretation."
-    ), type = "message")
+      paste0("Cible bibliographique appliquée, à titre exploratoire. La grille de doses n'a pas été modifiée. Dimensions non publiées par le guide et donc à vérifier avant toute interprétation : ",
+        if (length(missing)) paste(missing, collapse = ", ") else "aucune", "."),
+      paste0("Bibliographic target applied, for exploration. The dose grid was left unchanged. Dimensions the guide does not publish, to be checked before any interpretation: ",
+        if (length(missing)) paste(missing, collapse = ", ") else "none", ".")
+    ), type = "warning", duration = 12)
   }, ignoreInit = TRUE)
 
   output$ml_comparison_plot <- renderPlot({

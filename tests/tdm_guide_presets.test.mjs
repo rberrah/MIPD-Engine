@@ -2,7 +2,8 @@
 // the committed file and against the exclusions that keep unusable references out.
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
-import { buildClinicalPresets, checkDoseGrids, presetEligibility, PRESET_SCHEMA }
+import { buildClinicalPresets, checkDoseGrids, presetEligibility, PRESET_SCHEMA,
+  DOSE_GRID_SIGNOFFS, doseGridIsApplicable }
   from '../scripts/build_tdm_guide_presets.mjs';
 
 const read = async (file) => JSON.parse(await readFile(new URL(file, import.meta.url), 'utf8'));
@@ -23,14 +24,36 @@ for (const [key, grid] of Object.entries(grids.grids)) {
   assert.ok(grid.source.statement.length > 20, key + ' must quote its label');
   assert.ok(grid.basisFr && grid.basisEn, key + ' must justify its bounds');
 }
-// A grid that claims sign-off, or loses its source, disables the whole layer.
-assert.equal(checkDoseGrids({ ...grids,
-  grids: { ...grids.grids, 'tacrolimus::ORAL': { ...grids.grids['tacrolimus::ORAL'], signoff: 'APPROVED' } } }), false);
+// A grid that loses its source or its bounds disables the whole layer.
 assert.equal(checkDoseGrids({ ...grids,
   grids: { ...grids.grids, 'tacrolimus::ORAL': { ...grids.grids['tacrolimus::ORAL'], source: { url: 'http://x' } } } }), false);
 assert.equal(checkDoseGrids({ ...grids,
   grids: { ...grids.grids, 'tacrolimus::ORAL': { ...grids.grids['tacrolimus::ORAL'], dose_max: 0.1 } } }), false);
 assert.equal(checkDoseGrids({ ...grids, schema: 'wrong' }), false);
+// An unknown sign-off value, or a policy that does not gate on APPROVED, is refused.
+assert.equal(checkDoseGrids({ ...grids,
+  grids: { ...grids.grids, 'tacrolimus::ORAL': { ...grids.grids['tacrolimus::ORAL'], signoff: 'SORT_OF' } } }), false);
+assert.equal(checkDoseGrids({ ...grids, applicationPolicy: undefined }), false);
+assert.equal(checkDoseGrids({ ...grids,
+  applicationPolicy: { ...grids.applicationPolicy, appliedWhenSignoffIs: 'PENDING' } }), false);
+assert.equal(grids.applicationPolicy.appliedWhenSignoffIs, 'APPROVED');
+assert.deepEqual(DOSE_GRID_SIGNOFFS, ['PENDING', 'APPROVED']);
+// Only a signed-off grid is applicable; an unsigned one is displayed, never written.
+assert.equal(doseGridIsApplicable(grids.grids['tacrolimus::ORAL']), false);
+assert.equal(doseGridIsApplicable({ ...grids.grids['tacrolimus::ORAL'], signoff: 'APPROVED' }), true);
+assert.equal(doseGridIsApplicable(null), false);
+
+// --- The two label constraints that bound these grids, verified against the SmPCs ---
+// Rapamune forbids making up a dose from multiples of the 0.5 mg tablet, which is not
+// fully bioequivalent to the other strengths on Cmax, so the step must not be 0.5 mg.
+assert.equal(grids.grids['sirolimus::ORAL'].dose_step, 1);
+assert.ok(/0\.5 mg tablets should not be used as a substitute/
+  .test(grids.grids['sirolimus::ORAL'].source.statement));
+// Prograf's 0.20-0.30 mg/kg/day is a twice-daily immediate-release regimen: a 24 h
+// interval would silently cover Advagraf and Envarsus, which are dosed differently.
+assert.deepEqual(grids.grids['tacrolimus::ORAL'].intervals, [12]);
+assert.ok(grids.grids['tacrolimus::ORAL'].excludesFormulations.length > 0);
+assert.ok(Array.isArray(grids.knownLimitations) && grids.knownLimitations.length >= 2);
 
 // --- Eligibility: a reference the app cannot represent is excluded, never converted ---
 const base = { relation: 'range', min: 5, max: 10, applicability: { mismatches: [] } };
@@ -123,3 +146,31 @@ assert.throws(() => buildClinicalPresets({ catalogue: cat, crosswalk: map,
 
 console.log('TDM preset artifact: ' + keys.length + ' keys, ' + all.length +
   ' published targets, auto-applied only where a single reference qualifies and a curated preset already exists.');
+
+// --- An unvalidated dose grid must never be applicable ---
+import { createHash } from 'node:crypto';
+// The committed artifact must match its own digest: a hand edit is caught even if
+// the sha256 field was updated to match the tampered body.
+const { sha256: declaredSha, ...committedBody } = committed;
+assert.equal(createHash('sha256').update(JSON.stringify(committedBody)).digest('hex'),
+  declaredSha, 'Committed preset artifact does not match its own sha256');
+// Every declared grid is still pending, so none of them may reach the dose inputs.
+for (const [key, entry] of Object.entries(built.presets)) {
+  assert.equal(entry.doseGridApplicable, entry.doseGrid?.signoff === 'APPROVED', key);
+  assert.equal(entry.doseGridApplicable, false, key + ' must not be applicable while pending');
+}
+assert.equal(Object.values(built.presets).some((entry) => entry.doseGridApplicable), false,
+  'No dose grid may be applicable before an explicit pharmacologist sign-off');
+// Signing one off is what makes it applicable, and nothing else changes.
+const signedOff = buildClinicalPresets({ catalogue: cat, crosswalk: map, rules, snapshot,
+  doseGrids: { ...grids, grids: { ...grids.grids,
+    'tacrolimus::ORAL': { ...grids.grids['tacrolimus::ORAL'], signoff: 'APPROVED' } } } });
+assert.equal(signedOff.presets['tacrolimus::ORAL'].doseGridApplicable, true);
+assert.equal(signedOff.presets['ciclosporine::ORAL'].doseGridApplicable, false);
+assert.deepEqual(signedOff.presets['tacrolimus::ORAL'].candidates,
+  built.presets['tacrolimus::ORAL'].candidates, 'Sign-off must not change the targets');
+// The corrected grids are what the artifact carries.
+assert.equal(built.presets['sirolimus::ORAL'].doseGrid.dose_step, 1);
+assert.deepEqual(built.presets['tacrolimus::ORAL'].doseGrid.intervals, [12]);
+assert.equal(built.presets['tacrolimus::ORAL'].doseGrid.dose_max, 14);
+console.log('Dose grids: all PENDING and non-applicable, sign-off is the only switch, label constraints enforced.');

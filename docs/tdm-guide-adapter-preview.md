@@ -64,7 +64,20 @@ Une référence du guide n'alimente le panneau que si **toutes** ces conditions 
 - **Plusieurs cibles qualifiées** (tacrolimus 3, ciclosporine 3, évérolimus 3, sirolimus 2) : le panneau affiche la liste, `autoApply` est faux et **rien n'est écrit** avant que le lecteur ne choisisse et ne clique.
 - **Une seule cible qualifiée** (vancomycine ×2 voies, linézolide ×2 voies, voriconazole) : `autoApply` est vrai. Ces cinq clés possèdent **déjà** un préréglage curaté dans `R/clinical_presets.R` ; l'artefact n'introduit donc **aucune écriture automatique nouvelle**, et un test le vérifie.
 - Le préréglage curaté MIPD **garde la priorité**. Un désaccord est affiché, jamais résolu en silence : le voriconazole en est le cas réel, guide 2–6 mg/L contre préréglage MIPD 1–5,5 mg/L (Ashbee 2014).
-- Les grilles de doses ne viennent **jamais** du guide, qui ne publie aucune posologie. Elles sont déclarées par MIPD depuis les RCP (Prograf, Neoral, Certican, Rapamune), bornent seulement l'espace de recherche et attendent une relecture pharmacologique indépendante (`signoff: PENDING` partout).
+- Les grilles de doses ne viennent **jamais** du guide, qui ne publie aucune posologie. Elles sont déclarées par MIPD depuis les RCP (Prograf, Neoral, Certican, Rapamune) et bornent seulement l'espace de recherche.
+
+### Une grille non validée n'est jamais écrite
+
+`signoff: PENDING` sur les quatre grilles, et **aucune n'est appliquée** : le bouton n'écrit que la métrique et les bornes de la cible publiée. `dose_min`, `dose_max`, `dose_step`, les intervalles testés et la durée de perfusion restent inchangés. La grille est affichée avec sa source et la mention « non appliquée ». Seul le passage à `signoff: APPROVED` autorise son écriture ; c'est le seul interrupteur, il est déclaré dans `applicationPolicy` et vérifié des deux côtés (Node et R).
+
+### Contraintes d'étiquetage représentées
+
+Deux bornes ont été corrigées après relecture du RCP, parce qu'une grille plausible n'est pas une grille licite :
+
+- **Sirolimus : pas de 1 mg, pas 0,5 mg.** Le RCP Rapamune interdit d'utiliser des multiples du comprimé de 0,5 mg en remplacement des autres dosages, ce comprimé n'étant pas pleinement bioéquivalent aux 1, 2 et 5 mg sur la Cmax. Un pas de 0,5 mg aurait supposé exactement cette substitution. Le RCP ajoute que les concentrations obtenues par chromatographie et par immunoessai **ne sont pas interchangeables**, ce qui rend l'absence de `assayMethod` dans le guide d'autant plus décisive.
+- **Tacrolimus : intervalle 12 h uniquement.** La posologie de 0,20–0,30 mg/kg/j citée est celle de Prograf à libération immédiate **en deux prises**. L'intervalle de 24 h a été retiré : Advagraf et Envarsus sont des formes à libération prolongée en une prise, dosées différemment, et le catalogue de modèles ne déclare pas la formulation. Le champ `excludesFormulations` le dit, et l'interface l'affiche.
+
+Limite assumée et documentée dans `knownLimitations` : les grilles sont indexées par molécule et voie, **pas** par formulation ni par protocole de transplantation, et le poids n'est pas un paramètre. Une grille par formulation demanderait que le catalogue MIPD déclare la formulation de chaque modèle.
 
 ### Désactivation
 

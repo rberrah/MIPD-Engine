@@ -9,6 +9,8 @@ if (!exists("APP_ROOT", inherits = TRUE)) {
 
 TDM_GUIDE_PRESET_FILE <- file.path(APP_ROOT, "integration", "tdm-guide-clinical-presets.v1.json")
 TDM_GUIDE_PRESET_METRICS <- c("AUC24", "Cmin", "Cmax")
+# A dose grid is a posology statement: only a signed-off grid may reach the inputs.
+TDM_GUIDE_GRID_SIGNOFFS <- c("PENDING", "APPROVED")
 
 # Fail closed: anything unexpected disables the guide layer instead of guessing.
 tdm_guide_presets_load <- function(path = TDM_GUIDE_PRESET_FILE) {
@@ -39,12 +41,14 @@ tdm_guide_presets_load <- function(path = TDM_GUIDE_PRESET_FILE) {
     }
     grid <- entry$doseGrid
     if (!is.null(grid)) {
-      if (!identical(grid$signoff, "PENDING") ||
+      if (!(as.character(grid$signoff %||% "") %in% TDM_GUIDE_GRID_SIGNOFFS) ||
           !is.numeric(grid$dose_min) || !is.numeric(grid$dose_max) ||
           !is.numeric(grid$dose_step) || grid$dose_max <= grid$dose_min ||
           grid$dose_step <= 0 || !length(grid$intervals) ||
           !grepl("^https://", as.character(grid$source$url %||% ""))) return(NULL)
-    }
+      # The applicable flag must agree with the signoff it claims to summarise.
+      if (!identical(entry$doseGridApplicable, identical(grid$signoff, "APPROVED"))) return(NULL)
+    } else if (!identical(entry$doseGridApplicable, FALSE)) return(NULL)
   }
   object
 }
@@ -59,6 +63,13 @@ tdm_guide_preset_key <- function(record, mode) {
 tdm_guide_preset_entry <- function(record, mode) {
   if (is.null(TDM_GUIDE_PRESETS)) return(NULL)
   TDM_GUIDE_PRESETS$presets[[tdm_guide_preset_key(record, mode)]]
+}
+
+#' TRUE only when a signed-off grid exists for this model and route.
+#' While the grid is PENDING it is displayed but never written to the inputs.
+tdm_guide_preset_grid_applicable <- function(record, mode) {
+  entry <- tdm_guide_preset_entry(record, mode)
+  isTRUE(entry$doseGridApplicable)
 }
 
 tdm_guide_preset_candidate <- function(record, mode, id) {

@@ -12,9 +12,15 @@ const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 export const PRESET_SCHEMA = 'mipd.tdm.clinical-presets.v1';
 const sha256 = (value) => createHash('sha256').update(JSON.stringify(value)).digest('hex');
 
+// A grid may only ever be written into the simulation fields once it is signed off.
+export const DOSE_GRID_SIGNOFFS = Object.freeze(['PENDING', 'APPROVED']);
+export const doseGridIsApplicable = (grid) => grid?.signoff === 'APPROVED';
+
 export function checkDoseGrids(grids) {
   if (grids?.schema !== 'mipd.tdm.dose-grids.v1' || !grids.grids ||
     typeof grids.grids !== 'object') return false;
+  if (!Array.isArray(grids.applicationPolicy?.allowedSignoffValues) ||
+    grids.applicationPolicy.appliedWhenSignoffIs !== 'APPROVED') return false;
   return Object.values(grids.grids).every((grid) =>
     Number.isFinite(grid.dose_min) && Number.isFinite(grid.dose_max) &&
     Number.isFinite(grid.dose_step) && grid.dose_min > 0 &&
@@ -22,10 +28,10 @@ export function checkDoseGrids(grids) {
     Array.isArray(grid.intervals) && grid.intervals.length &&
     grid.intervals.every((h) => Number.isFinite(h) && h > 0) &&
     Number.isFinite(grid.infusion) && grid.infusion >= 0 &&
-    // A grid is a posology statement: it must name its label and stay unsigned until reviewed.
+    // A grid is a posology statement: it must quote the label it comes from.
     typeof grid.source?.url === 'string' && grid.source.url.startsWith('https://') &&
     typeof grid.source?.statement === 'string' && grid.source.statement.length > 0 &&
-    grid.signoff === 'PENDING');
+    DOSE_GRID_SIGNOFFS.includes(grid.signoff));
 }
 
 /**
@@ -61,9 +67,12 @@ export function buildClinicalPresets({ catalogue, snapshot, crosswalk, rules, do
     if (!entry) continue;
     for (const mode of Array.isArray(model.administrationModes) ? model.administrationModes : []) {
       const key = `${model.drugKey}::${mode}`;
+      const declaredGrid = Object.hasOwn(doseGrids.grids, key) ? doseGrids.grids[key] : null;
       if (!presets[key]) presets[key] = {
         drugKey: model.drugKey, mode, tdmDrugId,
-        doseGrid: doseGrids.grids[key] ?? null,
+        doseGrid: declaredGrid,
+        // Stated explicitly so the panel never has to infer it from the signoff string.
+        doseGridApplicable: doseGridIsApplicable(declaredGrid),
         candidates: []
       };
       const bucket = presets[key];
@@ -143,9 +152,16 @@ if (process.argv[1]?.endsWith('build_tdm_guide_presets.mjs')) {
   if (process.argv.includes('--check')) {
     if (!target) throw new Error('--check needs --output <committed artifact>');
     const committed = JSON.parse(await readFile(target, 'utf8'));
-    if (committed.sha256 !== result.sha256)
-      throw new Error('Committed preset artifact is stale: regenerate ' + target);
-    process.stdout.write('Clinical preset artifact matches the pinned guide snapshot.\n');
+    // The declared digest alone would accept a body edited together with its own
+    // sha256 field, so re-hash the committed body and compare the objects in full.
+    const { sha256: declared, ...body } = committed;
+    if (sha256(body) !== declared)
+      throw new Error('Committed preset artifact does not match its own sha256: ' + target +
+        ' was edited by hand');
+    const { deepStrictEqual } = await import('node:assert');
+    deepStrictEqual(committed, result,
+      'Committed preset artifact is stale: regenerate ' + target);
+    process.stdout.write('Clinical preset artifact is self-consistent and matches the pinned guide snapshot.\n');
   } else if (target) {
     if (!target.endsWith('.json')) throw new Error('Output filename must end with .json');
     await writeFile(target, JSON.stringify(result, null, 2) + '\n', 'utf8');

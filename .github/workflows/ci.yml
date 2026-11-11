@@ -60,10 +60,17 @@ jobs:
           node scripts/preview_tdm_guide_recommendations.mjs --snapshot /tmp/pmx-tdm-guide-preview.json --output /tmp/rebuilt-recommendations.json
           node --input-type=module -e "
             import fs from 'node:fs'; import assert from 'node:assert/strict';
+            import {createHash} from 'node:crypto';
             const a=JSON.parse(fs.readFileSync('integration/tdm-guide-recommendations.v1.json','utf8'));
             const b=JSON.parse(fs.readFileSync('/tmp/rebuilt-recommendations.json','utf8'));
-            assert.equal(a.sha256,b.sha256,'Committed STP artifact is stale: regenerate it from the pinned PMx commit');
-            console.log('Committed STP artifact matches the pinned guide.');
+            // Comparing the declared digests alone would accept a body edited together
+            // with its own sha256 field, so the committed body is re-hashed and the two
+            // objects are compared in full.
+            const {sha256:declared,...body}=a;
+            assert.equal(createHash('sha256').update(JSON.stringify(body)).digest('hex'),declared,
+              'Committed STP artifact does not match its own sha256: it was edited by hand');
+            assert.deepEqual(a,b,'Committed STP artifact is stale: regenerate it from the pinned PMx commit');
+            console.log('Committed STP artifact is self-consistent and matches the pinned guide.');
           "
       - name: Reject drift in the committed clinical preset artifact
         run: node scripts/build_tdm_guide_presets.mjs --snapshot /tmp/pmx-tdm-guide-preview.json --output integration/tdm-guide-clinical-presets.v1.json --check

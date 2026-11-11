@@ -22,6 +22,14 @@ stopifnot(!is.null(tac_entry), length(tac_entry$candidates) == 3L,
   identical(tac_entry$autoApply, FALSE))
 stopifnot(length(tdm_guide_preset_choices(tac, "ORAL")) == 3L)
 stopifnot(!is.null(tac_entry$doseGrid), identical(tac_entry$doseGrid$signoff, "PENDING"))
+# A pending grid is displayed but must never be applicable.
+stopifnot(identical(tac_entry$doseGridApplicable, FALSE))
+stopifnot(!tdm_guide_preset_grid_applicable(tac, "ORAL"))
+for (key in names(TDM_GUIDE_PRESETS$presets))
+  stopifnot(!isTRUE(TDM_GUIDE_PRESETS$presets[[key]]$doseGridApplicable))
+# The corrected label-bound grids: 1 mg sirolimus step, tacrolimus twice daily only.
+stopifnot(TDM_GUIDE_PRESETS$presets[["sirolimus::ORAL"]]$doseGrid$dose_step == 1)
+stopifnot(unlist(TDM_GUIDE_PRESETS$presets[["tacrolimus::ORAL"]]$doseGrid$intervals) == 12)
 # The liver-transplant reference is never offered on a kidney model.
 stopifnot(!("tac-liver-everolimus-fda" %in%
   vapply(tac_entry$candidates, function(x) as.character(x$id), character(1))))
@@ -86,10 +94,16 @@ reject(function(x) {
 reject(function(x) {
   x$presets[["tacrolimus::ORAL"]]$candidates[[1]]$url <- "http://insecure"; x }, "insecure source")
 reject(function(x) { x$presets[["tacrolimus::ORAL"]]$doseGrid$signoff <- "APPROVED"; x },
-  "dose grid claiming sign-off")
+  "applicability flag disagreeing with an APPROVED signoff")
+reject(function(x) { x$presets[["tacrolimus::ORAL"]]$doseGridApplicable <- TRUE; x },
+  "grid claiming to be applicable while PENDING")
+reject(function(x) { x$presets[["tacrolimus::ORAL"]]$doseGrid$signoff <- "SORT_OF"; x },
+  "unknown signoff value")
+reject(function(x) { x$presets[["vanco::IV_INTERMITTENT"]]$doseGridApplicable <- TRUE; x },
+  "applicable flag without any grid")
 reject(function(x) { x$presets[["tacrolimus::ORAL"]]$doseGrid$dose_step <- 0; x },
   "dose grid with a zero step")
 # A missing file simply disables the layer instead of failing the app.
 stopifnot(is.null(tdm_guide_presets_load(file.path(tempdir(), "absent.json"))))
 
-cat("TDM guide presets: 9 keys, choice required for 4 immunosuppressants, curated MIPD presets keep precedence, 13 tampering modes rejected.\n")
+cat("TDM guide presets: 9 keys, choice required for 4 immunosuppressants, curated MIPD presets keep precedence, 16 tampering modes rejected.\n")
