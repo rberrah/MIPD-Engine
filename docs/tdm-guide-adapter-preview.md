@@ -70,3 +70,48 @@ Si un objet existe dans le clone MIPD, son test initial s'applique. Sinon le tes
 le même fichier dans un checkout de ce commit source exact et vérifie **l'égalité stricte
 de son SHA Git**. Le test échoue si la source manque, si un octet diffère, ou si une entrée
 n'est pas vérifiable. Aucun original n'est remplacé, ni statut scientifique modifié.
+
+
+## Procédure de test local sous Windows (PowerShell)
+
+Conserver **les deux dépôts dans deux dossiers voisins**. Les PR sont `draft` et ne sont jamais fusionnées dans `main`.
+
+**PMx Explain, terminal 1 :**
+
+```powershell
+git fetch origin pull/235/head:tdm-preview-local
+git switch tdm-preview-local
+npm ci
+$env:BASE_PATH="/pharmacometrie"
+npm run dev
+```
+
+Ouvrir `http://localhost:5173/pharmacometrie/cibles-tdm/?lang=fr`.
+Rechercher « tacrolimus » puis cliquer sur **Voir les modèles MIPD (2)**.
+La page `/pharmacometrie/tdm/?drug=tacrolimus&lang=fr#modeles` doit montrer
+deux modèles. Vancomycine : trois modèles. Lithium : aucun lien.
+Les modèles non MAP sont toujours visibles dans la bibliothèque, mais non exécutables en MAP.
+
+**MIPD Engine, terminal 2 :**
+
+```powershell
+git fetch origin pull/39/head:mipd-tdm-preview-local
+git switch mipd-tdm-preview-local
+node tests/tdm_guide_adapter_preview.test.mjs
+cd ../rberrah.github.io
+node scripts/export_tdm_model_references.mjs --output ../pmx-tdm-refs.preview.json
+cd ../MIPD-Engine
+node scripts/preview_tdm_guide_recommendations.mjs --snapshot ../pmx-tdm-refs.preview.json --output ../mipd-tdm.preview.json
+$env:ENABLE_TDM_GUIDE_PREVIEW="true"
+$env:TDM_GUIDE_PREVIEW_JSON=(Resolve-Path "../mipd-tdm.preview.json").Path
+Rscript run_local.R
+```
+
+Ouvrir `http://127.0.0.1:3838/` : le bloc STP bibliographique apparaît sous
+les cartes du catalogue et le modèle actif, **sans changer aucune cible ni dose**.
+Préinstaller les dépendances R du dépôt. Adapter les chemins si les dépôts ne sont
+pas voisins. Avec la variable `ENABLE_TDM_GUIDE_PREVIEW` absente, Shiny reste inchangé.
+
+Tests complémentaires : PMx `npm run check` puis
+`npx playwright test tests/e2e/tdm-targets.spec.js --config playwright.pmx.config.js` ;
+MIPD `Rscript tests/tdm_guide_preview_test.R`.
