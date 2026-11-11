@@ -71,7 +71,14 @@ jobs:
       - uses: actions/setup-python@v7
         with:
           python-version: "3.13"
-      - name: Verify frozen PMx origin hashes
+      - name: Checkout immutable PMx extraction origin (fallback for pruned source blobs)
+        uses: actions/checkout@v7
+        with:
+          repository: rberrah/rberrah.github.io
+          ref: 2f97f109c3f4af257776a595f6546c9cd5f2321d
+          path: .origin-source
+          persist-credentials: false
+      - name: Verify frozen PMx origin hashes and pinned origin fallback
         run: python scripts/verify_origin_manifest.py
       - name: Check public-release probe rejects stale and unsafe versions
         run: python3 tests/check_live_deployment_test.py

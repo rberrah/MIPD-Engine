@@ -57,3 +57,16 @@ d'interprétation clinique actifs. Le panneau **ne modifie jamais les sliders de
 
 Tests R de présentation et de rejet de snapshots non sécurisés : `Rscript tests/tdm_guide_preview_test.R`.
 Validation de cohérence, de SHA et de 46 modèles : tests Node de la PR #39.
+
+## Contrôle de provenance historique renforcé
+
+La CI source standalone vérifiait la présence locale d'objets Git historiques pour 51 fichiers
+adaptés. Après nettoyage d'anciennes branches, sept objets sont devenus indisponibles dans le clone
+MIPD **bien que leur contenu corresponde toujours, SHA Git identique, au commit PMx original
+`2f97f109c3f4af257776a595f6546c9cd5f2321d`**.
+
+La vérification conserve les empreintes immuables `migration/source-manifest.json`.
+Si un objet existe dans le clone MIPD, son test initial s'applique. Sinon le test recherche
+le même fichier dans un checkout de ce commit source exact et vérifie **l'égalité stricte
+de son SHA Git**. Le test échoue si la source manque, si un octet diffère, ou si une entrée
+n'est pas vérifiable. Aucun original n'est remplacé, ni statut scientifique modifié.
