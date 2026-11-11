@@ -23,10 +23,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
+      # Immutable PMx commit, deliberately pinned so this draft is reproducible and
+      # a PMx edit can never silently change MIPD's view of the guide.
+      # MAINTENANCE: every new commit on the PMx branch feat/tdm-mipd-reference-export-preview-*
+      # requires bumping this SHA by hand, otherwise this job keeps validating an older
+      # guide than the one PMx actually serves. Bump it in the same PR that reviews the
+      # PMx change, and re-read the mismatch counts asserted below.
       - uses: actions/checkout@v7
         with:
           repository: rberrah/rberrah.github.io
-          ref: 8b9ddaaa9bdcce519c2ee5312e7e0f42194c87c4
+          ref: bde2d59be7b49c1c8b3a11a1e3769ecf8eed0c01
           path: .pmx-tdm-source-preview
       - uses: actions/setup-node@v7
         with:
