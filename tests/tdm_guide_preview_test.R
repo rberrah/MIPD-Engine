@@ -33,6 +33,21 @@ stopifnot(grepl("Aucune cible chiffrée",html,fixed=TRUE))
 stopifnot(!grepl("automaticDoseAdjustmentAllowed",html,fixed=TRUE))
 stopifnot(grepl("TDM guidance",as.character(htmltools::renderTags(
   tdm_guide_preview_model_card(catalog$id[[1]],english=TRUE))$html),fixed=TRUE))
+with_range <- fixture
+with_range$models[[1]]$recommendation$numericalReferenceCandidates <- list(list(
+  id="test-synthetic",metric="Cmax",unit="mg/L",relation="range",min=10,max=15,
+  indicationFr="Essai",indicationEn="Study",contextFr="Contexte spécifique",
+  contextEn="Specific context",
+  source=list(url="https://example.org/source"),
+  modelApplicabilityVerified=FALSE,automaticDoseAdjustmentAllowed=FALSE
+))
+jsonlite::write_json(with_range,tmp,auto_unbox=TRUE,null="null")
+TDM_GUIDE_PREVIEW_BY_MODEL <- tdm_guide_preview_load(tmp,catalog)
+html_range <- as.character(htmltools::renderTags(
+  tdm_guide_preview_model_card(catalog$id[[1]],english=FALSE))$html)
+stopifnot(grepl("10–15 mg/L",html_range,fixed=TRUE))
+stopifnot(grepl("Contexte spécifique",html_range,fixed=TRUE))
+stopifnot(grepl("non applicable automatiquement",html_range,fixed=TRUE))
 unsafe <- fixture
 unsafe$models[[1]]$recommendation$interpretationAllowed <- TRUE
 jsonlite::write_json(unsafe,tmp,auto_unbox=TRUE,null="null")
