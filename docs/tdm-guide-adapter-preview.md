@@ -34,3 +34,26 @@ Quand des modèles supplémentaires de Limoges seront ajoutés, CI échouera si 
 `node tests/tdm_guide_adapter_preview.test.mjs` vérifie 46/46 modèles, 23 clés, 13 MAP, cinq fiches non indexées, cohérence statut/voie, absence de posologie, checksum de provenance et fail-closed à l'ajout d'une nouvelle molécule.
 
 **Conception exclusivement**. Aucun code d'app Shiny modifié, aucun couplage runtime et aucun lien vers un résultat de patient.
+
+## Prototype visuel R/Shiny en local (opt-in, non déployé)
+
+L'interface Shiny dispose maintenant d'un panneau déroulant **lecture seule** par modèle, y compris les
+modèles de simulation du catalogue, si et seulement si les variables suivantes sont définies
+en session locale avant `shiny::runApp()` :
+
+```bash
+# Dans PMx Explain (branche de la PR #235) :
+node scripts/export_tdm_model_references.mjs --output /tmp/pmx-tdm-guide-preview.json
+# Dans MIPD Engine (branche de la PR #39) :
+node scripts/preview_tdm_guide_recommendations.mjs --snapshot /tmp/pmx-tdm-guide-preview.json --output /tmp/mipd-tdm-preview.json
+ENABLE_TDM_GUIDE_PREVIEW=true TDM_GUIDE_PREVIEW_JSON=/tmp/mipd-tdm-preview.json Rscript run_local.R
+```
+
+Par défaut `ENABLE_TDM_GUIDE_PREVIEW=false` : aucun chargement du snapshot, aucun changement
+visible pour les utilisateurs. Le panneau montre indice PK/PD, prélèvement, références candidates
+(sources et contexte), objectifs conditionnels ; aucune plage n'est déclarée applicable au patient.
+Le module refuse les fichiers incomplets, patients, références non verrouillées ou avec drapeaux
+d'interprétation clinique actifs. Le panneau **ne modifie jamais les sliders de cible ou de dose**.
+
+Tests R de présentation et de rejet de snapshots non sécurisés : `Rscript tests/tdm_guide_preview_test.R`.
+Validation de cohérence, de SHA et de 46 modèles : tests Node de la PR #39.

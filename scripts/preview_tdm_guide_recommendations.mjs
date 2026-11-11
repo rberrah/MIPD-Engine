@@ -58,6 +58,10 @@ export function buildModelTdmPreview({catalogue,snapshot,crosswalk}) {
     const targetCandidates=(entry?.targets||[]).map((target)=>({
       id:target.id,metric:target.metric,unit:target.unit,
       indication:target.indication,indicationFr:target.indicationFr,indicationEn:target.indicationEn,
+      contextFr:target.contextFr,contextEn:target.contextEn,
+      analyteId:target.analyteId,analyteBasis:target.analyteBasis,
+      matrixId:target.matrixId,matrixFr:target.matrixFr,matrixEn:target.matrixEn,
+      formulationId:target.formulationId,samplingTime:target.samplingTime,
       relation:target.relation,min:target.min,max:target.max,
       analyticalIdentityMissing:target.missingAnalyticalIdentity||[],
       source:target.source,status:'bibliographic_candidate_requires_context_review',

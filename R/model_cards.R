@@ -62,7 +62,9 @@ model_catalog_card <- function(record, english = FALSE) {
       class = "pk-model-card-details",
       shiny::tags$summary(label("Détails", "Details")),
       shiny::p(detail)
-    )
+    ),
+    if (exists("tdm_guide_preview_model_card", mode="function", inherits=TRUE))
+      tdm_guide_preview_model_card(id,english=english)
   )
 }
 
