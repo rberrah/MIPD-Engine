@@ -58,11 +58,26 @@ tdm_guide_preview_model_card <- function(model_id, english = FALSE) {
   pd <- r$pharmacodynamicCandidates %||% list()
   monitoring <- r$monitoringContext
   make_ref <- function(item) {
+    # Numeric values remain bibliographic candidates, never patient-specific bounds.
+    vmin <- item$min %||% NULL
+    vmax <- item$max %||% NULL
+    relation <- item$relation %||% "range"
+    formatted_value <- if (!is.numeric(vmin) || length(vmin)!=1L || !is.finite(vmin)) "" else {
+      lower <- as.character(vmin)
+      if (identical(relation,"range") && is.numeric(vmax) && length(vmax)==1L && is.finite(vmax))
+        paste0(lower,"–",as.character(vmax))
+      else if (identical(relation,"above")) paste0("≥",lower)
+      else if (identical(relation,"at_most")) paste0("≤",lower)
+      else if (relation %in% c("target","approx")) paste0("≈",lower)
+      else lower
+    }
+    if (nzchar(formatted_value)) formatted_value <- paste(formatted_value,item$unit %||% "")
     label <- paste0(item$metric %||% "", " · ",
       if (english) item$indicationEn %||% "" else item$indicationFr %||% "")
     context <- if (english) item$contextEn %||% "" else item$contextFr %||% ""
     shiny::tags$li(
       shiny::strong(label),
+      if (nzchar(formatted_value)) shiny::tags$span(paste0(" · ", formatted_value)),
       if (nzchar(context)) shiny::tags$span(paste0(" — ", context)),
       shiny::tags$span(translate(
         " · plage bibliographique candidate (non applicable automatiquement)",
