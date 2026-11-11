@@ -34,7 +34,7 @@ jobs:
       - uses: actions/checkout@v7
         with:
           repository: rberrah/rberrah.github.io
-          ref: 213cbe8985913072cdf872457fceeaba43e1188e
+          ref: c62cc660b0847cf776be1a7c18102ad1244c3248
           path: .pmx-tdm-source-preview
       - uses: actions/setup-node@v7
         with:
