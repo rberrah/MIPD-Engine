@@ -18,6 +18,39 @@ jobs:
       - name: Validate drug crosswalk and 46 model recommendations offline
         run: node tests/tdm_guide_adapter_preview.test.mjs
 
+  tdm-preview-integrated:
+    name: Draft STP integration against pinned PMx catalogue (no runtime)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/checkout@v7
+        with:
+          repository: rberrah/rberrah.github.io
+          ref: 335f178f5d16ea60fc500e9dc3d8457e4e0c97d9
+          path: .pmx-tdm-source-preview
+      - uses: actions/setup-node@v7
+        with:
+          node-version: "22"
+      - name: Export the real PMx bibliographic guide as a local immutable snapshot
+        run: node .pmx-tdm-source-preview/scripts/export_tdm_model_references.mjs --output /tmp/pmx-tdm-guide-preview.json
+      - name: Build all MIPD model recommendations from the versioned real snapshot
+        run: node scripts/preview_tdm_guide_recommendations.mjs --snapshot /tmp/pmx-tdm-guide-preview.json --output /tmp/mipd-tdm-recommendations-preview.json
+      - name: Require 46 explicit, non-clinical recommendations without patient data
+        run: |
+          node --input-type=module -e "
+            import fs from 'node:fs'; import assert from 'node:assert/strict';
+            const s=JSON.parse(fs.readFileSync('/tmp/pmx-tdm-guide-preview.json','utf8'));
+            const p=JSON.parse(fs.readFileSync('/tmp/mipd-tdm-recommendations-preview.json','utf8'));
+            assert.equal(s.drugs.length,154);
+            assert.equal(s.drugs.flatMap(d=>d.targets).length,141);
+            assert.equal(p.models.length,46);
+            assert.equal(p.models.filter(m=>m.recommendation.status==='not_indexed_in_guide').length,5);
+            assert.ok(p.models.every(m=>m.recommendation.interpretationAllowed===false));
+            assert.ok(p.models.every(m=>m.recommendation.automaticDoseAdjustmentAllowed===false));
+            assert.equal(p.sourceSnapshotSha256,s.sha256);
+            console.log('Real snapshot linked to 46 model preview cards. No runtime activation.');
+          "
+
   origin-parity:
     runs-on: ubuntu-latest
     steps:
