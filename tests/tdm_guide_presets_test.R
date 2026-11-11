@@ -22,11 +22,25 @@ stopifnot(!is.null(tac_entry), length(tac_entry$candidates) == 3L,
   identical(tac_entry$autoApply, FALSE))
 stopifnot(length(tdm_guide_preset_choices(tac, "ORAL")) == 3L)
 stopifnot(!is.null(tac_entry$doseGrid), identical(tac_entry$doseGrid$signoff, "PENDING"))
-# A pending grid is displayed but must never be applicable.
-stopifnot(identical(tac_entry$doseGridApplicable, FALSE))
+# A pending grid is displayed but must never be applicable, and lists no model.
+stopifnot(identical(tac_entry$doseGridSignedOff, FALSE))
+stopifnot(length(tac_entry$doseGridApplicableModelIds) == 0L)
 stopifnot(!tdm_guide_preset_grid_applicable(tac, "ORAL"))
+stopifnot(identical(tdm_guide_preset_grid_block(tac, "ORAL"), "grid_awaiting_signoff"))
 for (key in names(TDM_GUIDE_PRESETS$presets))
-  stopifnot(!isTRUE(TDM_GUIDE_PRESETS$presets[[key]]$doseGridApplicable))
+  stopifnot(length(TDM_GUIDE_PRESETS$presets[[key]]$doseGridApplicableModelIds) == 0L)
+# Neither tacrolimus model is applicable, nor is any other model.
+stopifnot(!tdm_guide_preset_grid_applicable(model_record("tacrolimus_kamp_envarsus_ddi"), "ORAL"))
+stopifnot(!tdm_guide_preset_grid_applicable(model_record("sirolimus_djebli_ddi"), "ORAL"))
+# Sirolimus targets stay listed and documented but cannot be applied.
+siro <- tdm_guide_preset_entry(model_record("sirolimus_djebli_ddi"), "ORAL")
+stopifnot(length(siro$candidates) == 2L)
+stopifnot(all(vapply(siro$candidates, tdm_guide_preset_candidate_blocked, logical(1))))
+stopifnot(all(vapply(siro$candidates, function(x) nzchar(x$applicationBlockedCode), logical(1))))
+stopifnot(all(vapply(siro$candidates, function(x) is.numeric(x$target_low), logical(1))))
+# Vancomycin is not method-gated.
+stopifnot(!any(vapply(tdm_guide_preset_entry(model_record("vanco_goti"), "IV_INTERMITTENT")$candidates,
+  tdm_guide_preset_candidate_blocked, logical(1))))
 # The corrected label-bound grids: 1 mg sirolimus step, tacrolimus twice daily only.
 stopifnot(TDM_GUIDE_PRESETS$presets[["sirolimus::ORAL"]]$doseGrid$dose_step == 1)
 stopifnot(unlist(TDM_GUIDE_PRESETS$presets[["tacrolimus::ORAL"]]$doseGrid$intervals) == 12)
@@ -95,15 +109,24 @@ reject(function(x) {
   x$presets[["tacrolimus::ORAL"]]$candidates[[1]]$url <- "http://insecure"; x }, "insecure source")
 reject(function(x) { x$presets[["tacrolimus::ORAL"]]$doseGrid$signoff <- "APPROVED"; x },
   "applicability flag disagreeing with an APPROVED signoff")
-reject(function(x) { x$presets[["tacrolimus::ORAL"]]$doseGridApplicable <- TRUE; x },
-  "grid claiming to be applicable while PENDING")
+reject(function(x) { x$presets[["tacrolimus::ORAL"]]$doseGridSignedOff <- TRUE; x },
+  "signedOff flag disagreeing with a PENDING signoff")
+reject(function(x) {
+  x$presets[["tacrolimus::ORAL"]]$doseGridApplicableModelIds <- list("tacrolimus_woillard_ddi"); x },
+  "applicable model listed while the grid is PENDING")
+reject(function(x) {
+  x$presets[["sirolimus::ORAL"]]$candidates[[1]]$applicationBlockedCode <- ""; x },
+  "blocked candidate without a reason")
+reject(function(x) {
+  x$presets[["sirolimus::ORAL"]]$candidates[[1]]$applicationBlocked <- "yes"; x },
+  "non-logical applicationBlocked")
 reject(function(x) { x$presets[["tacrolimus::ORAL"]]$doseGrid$signoff <- "SORT_OF"; x },
   "unknown signoff value")
-reject(function(x) { x$presets[["vanco::IV_INTERMITTENT"]]$doseGridApplicable <- TRUE; x },
-  "applicable flag without any grid")
+reject(function(x) { x$presets[["vanco::IV_INTERMITTENT"]]$doseGridSignedOff <- TRUE; x },
+  "signed-off flag without any grid")
 reject(function(x) { x$presets[["tacrolimus::ORAL"]]$doseGrid$dose_step <- 0; x },
   "dose grid with a zero step")
 # A missing file simply disables the layer instead of failing the app.
 stopifnot(is.null(tdm_guide_presets_load(file.path(tempdir(), "absent.json"))))
 
-cat("TDM guide presets: 9 keys, choice required for 4 immunosuppressants, curated MIPD presets keep precedence, 16 tampering modes rejected.\n")
+cat("TDM guide presets: 9 keys, choice required for 4 immunosuppressants, curated MIPD presets keep precedence, 19 tampering modes rejected.\n")

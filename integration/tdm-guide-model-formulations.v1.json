@@ -1,0 +1,57 @@
+{
+  "schema": "mipd.tdm.model-formulations.v1",
+  "scope": "formulation_declared_per_model_for_dose_grid_gating_only",
+  "signoff": "PENDING_PHARMACOLOGIST_REVIEW",
+  "intent": "A dose grid is bound to the formulation of the label it was derived from. The model catalogue carries no formulation field, so it is declared here, strictly from the population statement each model publishes. Used only to REFUSE a dose grid whose label basis does not cover a model's formulation. It never changes a model, a prior or a target.",
+  "policy": {
+    "comment": "A grid that declares requiresFormulationIds is applicable to a model only if that model's declared formulation id is in the allowlist. A model whose source does not name a product, or names several with different dosing intervals, is NOT a match: an undeclared or ambiguous formulation blocks the grid rather than defaulting to the common case.",
+    "undeclaredFormulationBlocksGrid": true
+  },
+  "formulationIds": {
+    "tacrolimus-immediate-release": "Immediate-release tacrolimus, twice daily (Prograf)",
+    "tacrolimus-prolonged-release-envarsus": "Prolonged-release LCP-tacrolimus, once daily (Envarsus)",
+    "tacrolimus-immediate-or-prolonged-release": "Source pools immediate-release and once-daily prolonged-release products",
+    "ciclosporine-neoral-microemulsion": "Ciclosporin microemulsion (Neoral), not interchangeable with the older oily formulation",
+    "everolimus-certican-transplant": "Everolimus transplant presentation (Certican), 0.25 and 0.75 mg tablets",
+    "sirolimus-rapamune-tablet": "Sirolimus coated tablets (Rapamune), as distinct from the oral solution",
+    "not-declared-by-source": "The model's published population does not name a product or formulation"
+  },
+  "models": {
+    "tacrolimus_kamp_envarsus_ddi": {
+      "formulationId": "tacrolimus-prolonged-release-envarsus",
+      "evidence": "Adultes transplantés rénaux âgés de 65 ans ou plus recevant tacrolimus Envarsus.",
+      "noteFr": "Envarsus est une forme à libération prolongée en une prise quotidienne : une grille établie sur un schéma en deux prises ne lui est pas applicable.",
+      "noteEn": "Envarsus is a once-daily prolonged-release product: a grid derived from a twice-daily regimen does not apply to it."
+    },
+    "tacrolimus_woillard_ddi": {
+      "formulationId": "tacrolimus-immediate-or-prolonged-release",
+      "evidence": "Adultes transplantés rénaux recevant Prograf ou Advagraf.",
+      "noteFr": "La population source mélange Prograf (libération immédiate, deux prises) et Advagraf (libération prolongée, une prise). La formulation n'est donc pas déterminée pour un patient donné et aucune grille liée à un intervalle ne peut être appliquée sans la préciser.",
+      "noteEn": "The source population pools Prograf (immediate release, twice daily) and Advagraf (prolonged release, once daily). Formulation is therefore undetermined for a given patient and no interval-bound grid can be applied without resolving it."
+    },
+    "ciclosporine_press_ddi": {
+      "formulationId": "not-declared-by-source",
+      "evidence": "Adultes au début de la période suivant une transplantation rénale.",
+      "noteFr": "La population ne nomme aucune spécialité. Les formes de ciclosporine ne sont pas interchangeables en biodisponibilité, et la grille déclarée repose sur le RCP Neoral.",
+      "noteEn": "The population names no product. Ciclosporin formulations are not interchangeable in bioavailability, and the declared grid rests on the Neoral label."
+    },
+    "everolimus_moes_ddi": {
+      "formulationId": "not-declared-by-source",
+      "evidence": "Adultes transplantés rénaux sous schéma sans inhibiteur de calcineurine.",
+      "noteFr": "La population ne nomme aucune spécialité ; la grille déclarée repose sur le RCP Certican en transplantation.",
+      "noteEn": "The population names no product; the declared grid rests on the Certican transplant label."
+    },
+    "everolimus_terheine_ddi": {
+      "formulationId": "not-declared-by-source",
+      "evidence": "Adultes: cancers métastatiques thyroïdiens ou mammaires et transplantés rénaux.",
+      "noteFr": "La population mélange oncologie et transplantation. En oncologie l'évérolimus est dosé à un ordre de grandeur supérieur (environ 10 mg/j) à celui de la transplantation (0,75 mg deux fois par jour) : la grille Certican ne couvre pas cette population.",
+      "noteEn": "The population pools oncology and transplantation. In oncology everolimus is dosed an order of magnitude higher (about 10 mg/day) than in transplantation (0.75 mg twice daily): the Certican grid does not cover that population."
+    },
+    "sirolimus_djebli_ddi": {
+      "formulationId": "not-declared-by-source",
+      "evidence": "Adultes transplantés rénaux sous sirolimus et mycophénolate, sans inhibiteur de calcineurine.",
+      "noteFr": "La population ne nomme ni la spécialité ni la forme (comprimé ou solution buvable), que le RCP Rapamune distingue.",
+      "noteEn": "The population names neither the product nor the dosage form (tablet or oral solution), which the Rapamune label distinguishes."
+    }
+  }
+}

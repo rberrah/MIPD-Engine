@@ -31,6 +31,14 @@
       "C₂h (pic approximatif)": "An approximate peak surrogate; not the app's Cmax."
     }
   },
+  "assayMethodRequiredForApplication": {
+    "comment": "Drugs whose published target range is only defined together with the assay that produced it. For these, a reference may be DISPLAYED without a declared assay method but must not be applied to the target fields, because the same number means different exposures on different methods. The guide currently publishes assayMethod for none of them, so these references stay documentation until it does.",
+    "tdmDrugIds": ["sirolimus"],
+    "rationale": {
+      "sirolimus": "The Rapamune label states that whole-blood concentrations are measured by both chromatographic and immunoassay methods and that the values obtained by these different methodologies are not interchangeable, with the target range to be adjusted to the assay used. The published 4-12 and 12-20 ng/mL ranges are chromatographic."
+    },
+    "plannedExtension": "tacrolimus, ciclosporine and everolimus target ranges are also method-dependent and are expected to join this list once the guide publishes assayMethod, so that the gate is driven by data rather than by an expanding hand-written list."
+  },
   "undecidableIdentityDimensions": {
     "comment": "Dimensions the guide currently leaves unstructured for most references. They are reported as undecidable, never as a match. Populating analyteId / analyteBasis / matrixId / formulationId / assayMethod / samplingTime in the TDM Guide is what would turn these into real gates.",
     "fields": ["analyteId", "analyteBasis", "matrixId", "formulationId", "assayMethod", "samplingTime"]

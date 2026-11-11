@@ -34,6 +34,50 @@ export function checkDoseGrids(grids) {
     DOSE_GRID_SIGNOFFS.includes(grid.signoff));
 }
 
+export function checkModelFormulations(formulations) {
+  if (formulations?.schema !== 'mipd.tdm.model-formulations.v1' ||
+    !formulations.models || typeof formulations.models !== 'object' ||
+    formulations.policy?.undeclaredFormulationBlocksGrid !== true) return false;
+  return Object.values(formulations.models).every((entry) =>
+    typeof entry.formulationId === 'string' && entry.formulationId.length > 0 &&
+    Object.hasOwn(formulations.formulationIds ?? {}, entry.formulationId) &&
+    typeof entry.evidence === 'string' && entry.evidence.length > 0);
+}
+
+/**
+ * A grid is bound to the formulation of the label it came from. Sign-off alone is
+ * not enough: the model's declared formulation must be in the grid's allowlist, and
+ * an undeclared or ambiguous formulation blocks it rather than defaulting to the
+ * common case.
+ */
+export function gridAppliesToModel({ grid, modelId, formulations }) {
+  if (!grid) return { compatible: false, reason: 'no_grid_declared' };
+  const required = grid.requiresFormulationIds;
+  if (!Array.isArray(required) || !required.length)
+    return { compatible: false, reason: 'grid_declares_no_formulation_scope' };
+  const declared = Object.hasOwn(formulations.models, modelId)
+    ? formulations.models[modelId] : null;
+  if (!declared) return { compatible: false, reason: 'model_formulation_not_declared' };
+  if (declared.formulationId === 'not-declared-by-source')
+    return { compatible: false, reason: 'model_source_names_no_formulation' };
+  if (!required.includes(declared.formulationId))
+    return { compatible: false, reason: 'model_formulation_outside_grid_scope',
+      modelFormulationId: declared.formulationId };
+  return { compatible: true, reason: null, modelFormulationId: declared.formulationId };
+}
+
+/**
+ * Whether a published reference may be written into the target fields at all.
+ * Separate from eligibility: the reference is listed either way, but a drug whose
+ * range is only meaningful with its assay cannot be applied without one.
+ */
+export function targetApplicationBlock({ tdmDrugId, undecidable, rules }) {
+  const required = rules.assayMethodRequiredForApplication?.tdmDrugIds ?? [];
+  if (required.includes(tdmDrugId) && (undecidable ?? []).includes('assayMethod'))
+    return { blocked: true, code: 'assay_method_not_published_for_a_method_dependent_drug' };
+  return { blocked: false, code: null };
+}
+
 /**
  * A guide reference may feed a preset only when every condition below holds.
  * Any failure leaves it as documentation in the STP card, never as a preset.
@@ -51,13 +95,14 @@ export function presetEligibility({ candidate, rules }) {
   return { eligible: reasons.length === 0, metric, reasons };
 }
 
-export function buildClinicalPresets({ catalogue, snapshot, crosswalk, rules, doseGrids }) {
+export function buildClinicalPresets({ catalogue, snapshot, crosswalk, rules, doseGrids, formulations }) {
   if (!Array.isArray(catalogue?.models) || !catalogue.models.length)
     throw new Error('Missing independent model catalog');
   if (!checkReferenceSnapshot(snapshot)) throw new Error('Invalid PMx snapshot or missing immutable SHA256');
   if (!validateCrosswalk(crosswalk, catalogue)) throw new Error('Model-drug crosswalk incomplete or stale');
   if (!checkApplicabilityRules(rules)) throw new Error('Applicability rules missing or stale');
-  if (!checkDoseGrids(doseGrids)) throw new Error('MIPD dose grids missing, malformed or already signed off');
+  if (!checkDoseGrids(doseGrids)) throw new Error('MIPD dose grids missing or malformed');
+  if (!checkModelFormulations(formulations)) throw new Error('Model formulation declarations missing or malformed');
 
   const guide = new Map(snapshot.drugs.map((drug) => [drug.id, drug]));
   const presets = {};
@@ -71,11 +116,22 @@ export function buildClinicalPresets({ catalogue, snapshot, crosswalk, rules, do
       if (!presets[key]) presets[key] = {
         drugKey: model.drugKey, mode, tdmDrugId,
         doseGrid: declaredGrid,
-        // Stated explicitly so the panel never has to infer it from the signoff string.
-        doseGridApplicable: doseGridIsApplicable(declaredGrid),
+        // Sign-off is only the first of two conditions; the second is per model.
+        doseGridSignedOff: doseGridIsApplicable(declaredGrid),
+        doseGridApplicableModelIds: [],
+        doseGridBlockedModels: {},
         candidates: []
       };
       const bucket = presets[key];
+      // Record, per model, whether this grid's formulation scope covers it.
+      const fit = gridAppliesToModel({ grid: declaredGrid, modelId: model.id, formulations });
+      if (fit.compatible && bucket.doseGridSignedOff) {
+        if (!bucket.doseGridApplicableModelIds.includes(model.id))
+          bucket.doseGridApplicableModelIds.push(model.id);
+      } else if (declaredGrid) {
+        bucket.doseGridBlockedModels[model.id] = bucket.doseGridSignedOff
+          ? fit.reason : 'grid_awaiting_signoff';
+      }
       for (const target of entry.targets) {
         // Gate against THIS model, so a context mismatch on any model keeps the
         // reference out of the shared preset list for that molecule and route.
@@ -84,6 +140,8 @@ export function buildClinicalPresets({ catalogue, snapshot, crosswalk, rules, do
           { candidate: { ...target, applicability }, rules });
         if (!eligible) continue;
         if (bucket.candidates.some((existing) => existing.id === target.id)) continue;
+        const block = targetApplicationBlock(
+          { tdmDrugId, undecidable: applicability.undecidable, rules });
         bucket.candidates.push({
           id: target.id,
           target_metric: metric,
@@ -98,6 +156,9 @@ export function buildClinicalPresets({ catalogue, snapshot, crosswalk, rules, do
           evidenceStatus: target.status ?? null,
           // Carried through so the panel can state what the guide does not publish.
           undecidable: applicability.undecidable,
+          // Listed and documented either way; applicable only when not blocked.
+          applicationBlocked: block.blocked,
+          applicationBlockedCode: block.code,
           modelApplicabilityVerified: false,
           automaticDoseAdjustmentAllowed: false
         });
@@ -129,16 +190,17 @@ export function buildClinicalPresets({ catalogue, snapshot, crosswalk, rules, do
 export async function loadClinicalPresets(snapshotFile) {
   if (!snapshotFile || !snapshotFile.endsWith('.json'))
     throw new Error('Explicit local JSON snapshot path required');
-  const [cat, map, gates, grids, snap] = await Promise.all([
+  const [cat, map, gates, grids, forms, snap] = await Promise.all([
     readFile(path.join(root, 'models/catalog.json'), 'utf8'),
     readFile(path.join(root, 'integration/tdm-guide-drug-crosswalk.preview.v1.json'), 'utf8'),
     readFile(path.join(root, 'integration/tdm-guide-applicability-rules.preview.v1.json'), 'utf8'),
     readFile(path.join(root, 'integration/tdm-guide-dose-grids.v1.json'), 'utf8'),
+    readFile(path.join(root, 'integration/tdm-guide-model-formulations.v1.json'), 'utf8'),
     readFile(snapshotFile, 'utf8')
   ]);
   return buildClinicalPresets({
     catalogue: JSON.parse(cat), crosswalk: JSON.parse(map), rules: JSON.parse(gates),
-    doseGrids: JSON.parse(grids), snapshot: JSON.parse(snap)
+    doseGrids: JSON.parse(grids), formulations: JSON.parse(forms), snapshot: JSON.parse(snap)
   });
 }
 

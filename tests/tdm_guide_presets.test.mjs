@@ -3,7 +3,8 @@
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import { buildClinicalPresets, checkDoseGrids, presetEligibility, PRESET_SCHEMA,
-  DOSE_GRID_SIGNOFFS, doseGridIsApplicable }
+  DOSE_GRID_SIGNOFFS, doseGridIsApplicable, checkModelFormulations, gridAppliesToModel,
+  targetApplicationBlock }
   from '../scripts/build_tdm_guide_presets.mjs';
 
 const read = async (file) => JSON.parse(await readFile(new URL(file, import.meta.url), 'utf8'));
@@ -11,6 +12,7 @@ const cat = await read('../models/catalog.json');
 const map = await read('../integration/tdm-guide-drug-crosswalk.preview.v1.json');
 const rules = await read('../integration/tdm-guide-applicability-rules.preview.v1.json');
 const grids = await read('../integration/tdm-guide-dose-grids.v1.json');
+const forms = await read('../integration/tdm-guide-model-formulations.v1.json');
 const committed = await read('../integration/tdm-guide-clinical-presets.v1.json');
 
 // --- MIPD-owned dose grids: a posology statement, so it must stay sourced and unsigned ---
@@ -83,7 +85,7 @@ if (!snapshotPath) {
   process.exit(0);
 }
 const snapshot = JSON.parse(await readFile(snapshotPath, 'utf8'));
-const built = buildClinicalPresets({ catalogue: cat, crosswalk: map, rules, doseGrids: grids, snapshot });
+const built = buildClinicalPresets({ catalogue: cat, crosswalk: map, rules, doseGrids: grids, formulations: forms, snapshot });
 assert.equal(built.schema, PRESET_SCHEMA);
 assert.equal(built.sha256, committed.sha256, 'Committed preset artifact is stale: regenerate it');
 assert.deepEqual(built, committed);
@@ -140,9 +142,9 @@ assert.ok(!keys.some((key) => /^(amox|cefepime|cefazoline)::/.test(key)));
 assert.throws(() => buildClinicalPresets({ catalogue: cat, crosswalk: map, rules,
   doseGrids: grids, snapshot: { ...snapshot, sha256: '0'.repeat(64) } }), /Invalid PMx snapshot/);
 assert.throws(() => buildClinicalPresets({ catalogue: cat, crosswalk: map, rules,
-  doseGrids: { ...grids, schema: 'wrong' }, snapshot }), /dose grids/);
+  doseGrids: { ...grids, schema: 'wrong' }, formulations: forms, snapshot }), /dose grids/);
 assert.throws(() => buildClinicalPresets({ catalogue: cat, crosswalk: map,
-  rules: { ...rules, schema: 'wrong' }, doseGrids: grids, snapshot }), /Applicability rules/);
+  rules: { ...rules, schema: 'wrong' }, doseGrids: grids, formulations: forms, snapshot }), /Applicability rules/);
 
 console.log('TDM preset artifact: ' + keys.length + ' keys, ' + all.length +
   ' published targets, auto-applied only where a single reference qualifies and a curated preset already exists.');
@@ -156,17 +158,22 @@ assert.equal(createHash('sha256').update(JSON.stringify(committedBody)).digest('
   declaredSha, 'Committed preset artifact does not match its own sha256');
 // Every declared grid is still pending, so none of them may reach the dose inputs.
 for (const [key, entry] of Object.entries(built.presets)) {
-  assert.equal(entry.doseGridApplicable, entry.doseGrid?.signoff === 'APPROVED', key);
-  assert.equal(entry.doseGridApplicable, false, key + ' must not be applicable while pending');
+  assert.equal(entry.doseGridSignedOff, entry.doseGrid?.signoff === 'APPROVED', key);
+  assert.deepEqual(entry.doseGridApplicableModelIds, [],
+    key + ' must have no applicable model while pending');
 }
-assert.equal(Object.values(built.presets).some((entry) => entry.doseGridApplicable), false,
-  'No dose grid may be applicable before an explicit pharmacologist sign-off');
 // Signing one off is what makes it applicable, and nothing else changes.
-const signedOff = buildClinicalPresets({ catalogue: cat, crosswalk: map, rules, snapshot,
+const signedOff = buildClinicalPresets({ catalogue: cat, crosswalk: map, rules, snapshot, formulations: forms,
   doseGrids: { ...grids, grids: { ...grids.grids,
     'tacrolimus::ORAL': { ...grids.grids['tacrolimus::ORAL'], signoff: 'APPROVED' } } } });
-assert.equal(signedOff.presets['tacrolimus::ORAL'].doseGridApplicable, true);
-assert.equal(signedOff.presets['ciclosporine::ORAL'].doseGridApplicable, false);
+assert.equal(signedOff.presets['tacrolimus::ORAL'].doseGridSignedOff, true);
+assert.equal(signedOff.presets['ciclosporine::ORAL'].doseGridSignedOff, false);
+// Sign-off alone must NOT make it reach a model whose formulation is out of scope.
+assert.deepEqual(signedOff.presets['tacrolimus::ORAL'].doseGridApplicableModelIds, [],
+  'An approved grid still must not reach Envarsus or a mixed-formulation model');
+assert.deepEqual(signedOff.presets['tacrolimus::ORAL'].doseGridBlockedModels, {
+  tacrolimus_kamp_envarsus_ddi: 'model_formulation_outside_grid_scope',
+  tacrolimus_woillard_ddi: 'model_formulation_outside_grid_scope' });
 assert.deepEqual(signedOff.presets['tacrolimus::ORAL'].candidates,
   built.presets['tacrolimus::ORAL'].candidates, 'Sign-off must not change the targets');
 // The corrected grids are what the artifact carries.
@@ -174,3 +181,75 @@ assert.equal(built.presets['sirolimus::ORAL'].doseGrid.dose_step, 1);
 assert.deepEqual(built.presets['tacrolimus::ORAL'].doseGrid.intervals, [12]);
 assert.equal(built.presets['tacrolimus::ORAL'].doseGrid.dose_max, 14);
 console.log('Dose grids: all PENDING and non-applicable, sign-off is the only switch, label constraints enforced.');
+
+// --- Formulation gate: sign-off is necessary but not sufficient ---
+assert.equal(checkModelFormulations(forms), true);
+assert.equal(checkModelFormulations({ ...forms, schema: 'wrong' }), false);
+assert.equal(checkModelFormulations({ ...forms,
+  policy: { undeclaredFormulationBlocksGrid: false } }), false);
+// A formulation id that is not in the documented dictionary is refused.
+assert.equal(checkModelFormulations({ ...forms, models: { ...forms.models,
+  sirolimus_djebli_ddi: { formulationId: 'invented', evidence: 'x' } } }), false);
+// Neither tacrolimus model is unambiguously immediate release, so neither matches.
+assert.equal(forms.models.tacrolimus_kamp_envarsus_ddi.formulationId,
+  'tacrolimus-prolonged-release-envarsus');
+assert.equal(forms.models.tacrolimus_woillard_ddi.formulationId,
+  'tacrolimus-immediate-or-prolonged-release');
+const tacGrid = grids.grids['tacrolimus::ORAL'];
+assert.equal(gridAppliesToModel({ grid: tacGrid, modelId: 'tacrolimus_kamp_envarsus_ddi',
+  formulations: forms }).reason, 'model_formulation_outside_grid_scope');
+assert.equal(gridAppliesToModel({ grid: tacGrid, modelId: 'tacrolimus_woillard_ddi',
+  formulations: forms }).reason, 'model_formulation_outside_grid_scope');
+// A model whose source names no product is blocked, not defaulted to the common case.
+assert.equal(gridAppliesToModel({ grid: grids.grids['sirolimus::ORAL'],
+  modelId: 'sirolimus_djebli_ddi', formulations: forms }).reason,
+  'model_source_names_no_formulation');
+// Unknown model, and a grid with no declared scope, are both refused.
+assert.equal(gridAppliesToModel({ grid: tacGrid, modelId: 'nope', formulations: forms }).reason,
+  'model_formulation_not_declared');
+assert.equal(gridAppliesToModel({ grid: { ...tacGrid, requiresFormulationIds: [] },
+  modelId: 'tacrolimus_woillard_ddi', formulations: forms }).reason,
+  'grid_declares_no_formulation_scope');
+assert.equal(gridAppliesToModel({ grid: null, modelId: 'x', formulations: forms }).reason,
+  'no_grid_declared');
+// Positive control: declaring a model as pure immediate release lets the grid through,
+// so the gate discriminates rather than refusing everything.
+const declaredIr = { ...forms, models: { ...forms.models,
+  tacrolimus_woillard_ddi: { ...forms.models.tacrolimus_woillard_ddi,
+    formulationId: 'tacrolimus-immediate-release' } } };
+assert.equal(gridAppliesToModel({ grid: tacGrid, modelId: 'tacrolimus_woillard_ddi',
+  formulations: declaredIr }).compatible, true);
+const approvedAndDeclared = buildClinicalPresets({ catalogue: cat, crosswalk: map, rules,
+  snapshot, formulations: declaredIr, doseGrids: { ...grids, grids: { ...grids.grids,
+    'tacrolimus::ORAL': { ...tacGrid, signoff: 'APPROVED' } } } });
+assert.deepEqual(approvedAndDeclared.presets['tacrolimus::ORAL'].doseGridApplicableModelIds,
+  ['tacrolimus_woillard_ddi']);
+assert.equal(approvedAndDeclared.presets['tacrolimus::ORAL']
+  .doseGridBlockedModels.tacrolimus_kamp_envarsus_ddi, 'model_formulation_outside_grid_scope');
+
+// --- Assay gate: a method-dependent range is documented but not applicable ---
+assert.deepEqual(rules.assayMethodRequiredForApplication.tdmDrugIds, ['sirolimus']);
+assert.ok(rules.assayMethodRequiredForApplication.rationale.sirolimus.length > 40);
+assert.equal(targetApplicationBlock({ tdmDrugId: 'sirolimus',
+  undecidable: ['assayMethod'], rules }).blocked, true);
+assert.equal(targetApplicationBlock({ tdmDrugId: 'sirolimus',
+  undecidable: ['assayMethod'], rules }).code,
+  'assay_method_not_published_for_a_method_dependent_drug');
+// Once the guide publishes the assay, the same reference becomes applicable.
+assert.equal(targetApplicationBlock({ tdmDrugId: 'sirolimus',
+  undecidable: ['formulationId'], rules }).blocked, false);
+// Drugs outside the declared list are not blocked by this rule.
+assert.equal(targetApplicationBlock({ tdmDrugId: 'vancomycin',
+  undecidable: ['assayMethod'], rules }).blocked, false);
+// On the real artifact exactly the two sirolimus references are blocked, and they
+// are still listed so the documentation keeps 4-12 and 12-20 ng/mL visible.
+const blocked = Object.entries(built.presets).flatMap(([key, entry]) =>
+  entry.candidates.filter((c) => c.applicationBlocked).map((c) => key + '/' + c.id));
+assert.deepEqual(blocked.sort(), ['sirolimus::ORAL/sirolimus-kidney-after-csa',
+  'sirolimus::ORAL/sirolimus-kidney-with-csa']);
+assert.equal(built.presets['sirolimus::ORAL'].candidates.length, 2);
+assert.ok(built.presets['sirolimus::ORAL'].candidates
+  .every((c) => c.applicationBlockedCode && c.target_low && c.target_high));
+assert.ok(built.presets['vanco::IV_INTERMITTENT'].candidates
+  .every((c) => c.applicationBlocked === false && c.applicationBlockedCode === null));
+console.log('Gates: formulation scope blocks an approved grid per model, assay dependence blocks sirolimus targets while keeping them documented.');

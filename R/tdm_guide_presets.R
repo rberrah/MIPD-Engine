@@ -46,9 +46,20 @@ tdm_guide_presets_load <- function(path = TDM_GUIDE_PRESET_FILE) {
           !is.numeric(grid$dose_step) || grid$dose_max <= grid$dose_min ||
           grid$dose_step <= 0 || !length(grid$intervals) ||
           !grepl("^https://", as.character(grid$source$url %||% ""))) return(NULL)
-      # The applicable flag must agree with the signoff it claims to summarise.
-      if (!identical(entry$doseGridApplicable, identical(grid$signoff, "APPROVED"))) return(NULL)
-    } else if (!identical(entry$doseGridApplicable, FALSE)) return(NULL)
+      # The signed-off flag must agree with the signoff it claims to summarise, and a
+      # grid that is not signed off may not list a single applicable model.
+      if (!identical(entry$doseGridSignedOff, identical(grid$signoff, "APPROVED"))) return(NULL)
+      if (!isTRUE(entry$doseGridSignedOff) &&
+          length(entry$doseGridApplicableModelIds %||% list())) return(NULL)
+    } else if (!identical(entry$doseGridSignedOff, FALSE) ||
+               length(entry$doseGridApplicableModelIds %||% list())) return(NULL)
+    for (candidate in entry$candidates) {
+      if (!is.logical(candidate$applicationBlocked) ||
+          length(candidate$applicationBlocked) != 1L) return(NULL)
+      # A blocked reference must say why, and an unblocked one must not pretend to.
+      if (isTRUE(candidate$applicationBlocked) &&
+          !nzchar(as.character(candidate$applicationBlockedCode %||% ""))) return(NULL)
+    }
   }
   object
 }
@@ -65,11 +76,29 @@ tdm_guide_preset_entry <- function(record, mode) {
   TDM_GUIDE_PRESETS$presets[[tdm_guide_preset_key(record, mode)]]
 }
 
-#' TRUE only when a signed-off grid exists for this model and route.
-#' While the grid is PENDING it is displayed but never written to the inputs.
+#' TRUE only when the grid is signed off AND its formulation scope covers THIS model.
+#' Both conditions are required: an approved grid still cannot reach a model whose
+#' formulation the source label does not cover (Envarsus on a twice-daily grid).
 tdm_guide_preset_grid_applicable <- function(record, mode) {
   entry <- tdm_guide_preset_entry(record, mode)
-  isTRUE(entry$doseGridApplicable)
+  if (is.null(entry) || !isTRUE(entry$doseGridSignedOff)) return(FALSE)
+  as.character(record$id[[1]] %||% "") %in%
+    vapply(entry$doseGridApplicableModelIds %||% list(), as.character, character(1))
+}
+
+#' Why a declared grid is not applicable to this model, or NULL when it is.
+tdm_guide_preset_grid_block <- function(record, mode) {
+  entry <- tdm_guide_preset_entry(record, mode)
+  if (is.null(entry) || is.null(entry$doseGrid)) return(NULL)
+  if (tdm_guide_preset_grid_applicable(record, mode)) return(NULL)
+  reason <- entry$doseGridBlockedModels[[as.character(record$id[[1]] %||% "")]]
+  as.character(reason %||% "grid_awaiting_signoff")
+}
+
+#' A published reference that cannot be applied because its range is only defined
+#' together with an assay the guide does not publish. It stays listed and documented.
+tdm_guide_preset_candidate_blocked <- function(candidate) {
+  isTRUE(candidate$applicationBlocked)
 }
 
 tdm_guide_preset_candidate <- function(record, mode, id) {

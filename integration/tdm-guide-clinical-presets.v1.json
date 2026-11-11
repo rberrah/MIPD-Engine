@@ -28,9 +28,16 @@
           "statement": "at a dose of 10 to 15 mg/kg given in 2 divided doses; reduced according to blood levels until a recommended maintenance dose of about 2 to 6 mg/kg given in 2 divided doses is reached",
           "strengths": "10 mg, 25 mg, 50 mg, 100 mg capsules"
         },
-        "signoff": "PENDING"
+        "signoff": "PENDING",
+        "requiresFormulationIds": [
+          "ciclosporine-neoral-microemulsion"
+        ]
       },
-      "doseGridApplicable": false,
+      "doseGridSignedOff": false,
+      "doseGridApplicableModelIds": [],
+      "doseGridBlockedModels": {
+        "ciclosporine_press_ddi": "grid_awaiting_signoff"
+      },
       "candidates": [
         {
           "id": "csa-kidney-c0-0",
@@ -54,6 +61,8 @@
             "assayMethod",
             "samplingTime"
           ],
+          "applicationBlocked": false,
+          "applicationBlockedCode": null,
           "modelApplicabilityVerified": false,
           "automaticDoseAdjustmentAllowed": false
         },
@@ -79,6 +88,8 @@
             "assayMethod",
             "samplingTime"
           ],
+          "applicationBlocked": false,
+          "applicationBlockedCode": null,
           "modelApplicabilityVerified": false,
           "automaticDoseAdjustmentAllowed": false
         },
@@ -104,6 +115,8 @@
             "assayMethod",
             "samplingTime"
           ],
+          "applicationBlocked": false,
+          "applicationBlockedCode": null,
           "modelApplicabilityVerified": false,
           "automaticDoseAdjustmentAllowed": false
         }
@@ -130,9 +143,17 @@
           "statement": "An initial dose regimen of 0.75 mg twice daily in co-administration with ciclosporin is recommended; The dose of 1.0 mg twice daily in co-administration with tacrolimus is recommended for the hepatic transplant population; Reduced doses rounded to the nearest tablet strength are tabulated below",
           "strengths": "0.25 mg, 0.75 mg tablets"
         },
-        "signoff": "PENDING"
+        "signoff": "PENDING",
+        "requiresFormulationIds": [
+          "everolimus-certican-transplant"
+        ]
       },
-      "doseGridApplicable": false,
+      "doseGridSignedOff": false,
+      "doseGridApplicableModelIds": [],
+      "doseGridBlockedModels": {
+        "everolimus_moes_ddi": "grid_awaiting_signoff",
+        "everolimus_terheine_ddi": "grid_awaiting_signoff"
+      },
       "candidates": [
         {
           "id": "everolimus-kidney-cni",
@@ -156,6 +177,8 @@
             "assayMethod",
             "samplingTime"
           ],
+          "applicationBlocked": false,
+          "applicationBlockedCode": null,
           "modelApplicabilityVerified": false,
           "automaticDoseAdjustmentAllowed": false
         },
@@ -181,6 +204,8 @@
             "assayMethod",
             "samplingTime"
           ],
+          "applicationBlocked": false,
+          "applicationBlockedCode": null,
           "modelApplicabilityVerified": false,
           "automaticDoseAdjustmentAllowed": false
         },
@@ -206,6 +231,8 @@
             "assayMethod",
             "samplingTime"
           ],
+          "applicationBlocked": false,
+          "applicationBlockedCode": null,
           "modelApplicabilityVerified": false,
           "automaticDoseAdjustmentAllowed": false
         }
@@ -217,7 +244,9 @@
       "mode": "IV_INTERMITTENT",
       "tdmDrugId": "linezolid",
       "doseGrid": null,
-      "doseGridApplicable": false,
+      "doseGridSignedOff": false,
+      "doseGridApplicableModelIds": [],
+      "doseGridBlockedModels": {},
       "candidates": [
         {
           "id": "linezolid-trough-consensus",
@@ -241,6 +270,8 @@
             "assayMethod",
             "samplingTime"
           ],
+          "applicationBlocked": false,
+          "applicationBlockedCode": null,
           "modelApplicabilityVerified": false,
           "automaticDoseAdjustmentAllowed": false
         }
@@ -252,7 +283,9 @@
       "mode": "ORAL",
       "tdmDrugId": "linezolid",
       "doseGrid": null,
-      "doseGridApplicable": false,
+      "doseGridSignedOff": false,
+      "doseGridApplicableModelIds": [],
+      "doseGridBlockedModels": {},
       "candidates": [
         {
           "id": "linezolid-trough-consensus",
@@ -276,6 +309,8 @@
             "assayMethod",
             "samplingTime"
           ],
+          "applicationBlocked": false,
+          "applicationBlockedCode": null,
           "modelApplicabilityVerified": false,
           "automaticDoseAdjustmentAllowed": false
         }
@@ -302,9 +337,16 @@
           "statement": "The usual dose regimen is a 6 mg single oral loading dose, administered as soon as possible after transplantation, followed by 2 mg once daily until results of therapeutic monitoring of the medicinal product are available; Multiples of 0.5 mg tablets should not be used as a substitute for the 1 mg tablet or for other strengths; The concentration values obtained by these different methodologies are not interchangeable",
           "strengths": "0.5 mg, 1 mg, 2 mg, 5 mg tablets"
         },
-        "signoff": "PENDING"
+        "signoff": "PENDING",
+        "requiresFormulationIds": [
+          "sirolimus-rapamune-tablet"
+        ]
       },
-      "doseGridApplicable": false,
+      "doseGridSignedOff": false,
+      "doseGridApplicableModelIds": [],
+      "doseGridBlockedModels": {
+        "sirolimus_djebli_ddi": "grid_awaiting_signoff"
+      },
       "candidates": [
         {
           "id": "sirolimus-kidney-after-csa",
@@ -328,6 +370,8 @@
             "assayMethod",
             "samplingTime"
           ],
+          "applicationBlocked": true,
+          "applicationBlockedCode": "assay_method_not_published_for_a_method_dependent_drug",
           "modelApplicabilityVerified": false,
           "automaticDoseAdjustmentAllowed": false
         },
@@ -353,6 +397,8 @@
             "assayMethod",
             "samplingTime"
           ],
+          "applicationBlocked": true,
+          "applicationBlockedCode": "assay_method_not_published_for_a_method_dependent_drug",
           "modelApplicabilityVerified": false,
           "automaticDoseAdjustmentAllowed": false
         }
@@ -382,9 +428,17 @@
         "excludesFormulations": [
           "tacrolimus prolonged release once daily (Advagraf, Envarsus)"
         ],
-        "signoff": "PENDING"
+        "signoff": "PENDING",
+        "requiresFormulationIds": [
+          "tacrolimus-immediate-release"
+        ]
       },
-      "doseGridApplicable": false,
+      "doseGridSignedOff": false,
+      "doseGridApplicableModelIds": [],
+      "doseGridBlockedModels": {
+        "tacrolimus_kamp_envarsus_ddi": "grid_awaiting_signoff",
+        "tacrolimus_woillard_ddi": "grid_awaiting_signoff"
+      },
       "candidates": [
         {
           "id": "tac-kidney-early",
@@ -408,6 +462,8 @@
             "assayMethod",
             "samplingTime"
           ],
+          "applicationBlocked": false,
+          "applicationBlockedCode": null,
           "modelApplicabilityVerified": false,
           "automaticDoseAdjustmentAllowed": false
         },
@@ -433,6 +489,8 @@
             "assayMethod",
             "samplingTime"
           ],
+          "applicationBlocked": false,
+          "applicationBlockedCode": null,
           "modelApplicabilityVerified": false,
           "automaticDoseAdjustmentAllowed": false
         },
@@ -458,6 +516,8 @@
             "assayMethod",
             "samplingTime"
           ],
+          "applicationBlocked": false,
+          "applicationBlockedCode": null,
           "modelApplicabilityVerified": false,
           "automaticDoseAdjustmentAllowed": false
         }
@@ -469,7 +529,9 @@
       "mode": "IV_INTERMITTENT",
       "tdmDrugId": "vancomycin",
       "doseGrid": null,
-      "doseGridApplicable": false,
+      "doseGridSignedOff": false,
+      "doseGridApplicableModelIds": [],
+      "doseGridBlockedModels": {},
       "candidates": [
         {
           "id": "vancomycin-mrsa",
@@ -493,6 +555,8 @@
             "assayMethod",
             "samplingTime"
           ],
+          "applicationBlocked": false,
+          "applicationBlockedCode": null,
           "modelApplicabilityVerified": false,
           "automaticDoseAdjustmentAllowed": false
         }
@@ -504,7 +568,9 @@
       "mode": "IV_CONTINUOUS",
       "tdmDrugId": "vancomycin",
       "doseGrid": null,
-      "doseGridApplicable": false,
+      "doseGridSignedOff": false,
+      "doseGridApplicableModelIds": [],
+      "doseGridBlockedModels": {},
       "candidates": [
         {
           "id": "vancomycin-mrsa",
@@ -528,6 +594,8 @@
             "assayMethod",
             "samplingTime"
           ],
+          "applicationBlocked": false,
+          "applicationBlockedCode": null,
           "modelApplicabilityVerified": false,
           "automaticDoseAdjustmentAllowed": false
         }
@@ -539,7 +607,9 @@
       "mode": "ORAL",
       "tdmDrugId": "voriconazole",
       "doseGrid": null,
-      "doseGridApplicable": false,
+      "doseGridSignedOff": false,
+      "doseGridApplicableModelIds": [],
+      "doseGridBlockedModels": {},
       "candidates": [
         {
           "id": "voriconazole-icu",
@@ -563,6 +633,8 @@
             "assayMethod",
             "samplingTime"
           ],
+          "applicationBlocked": false,
+          "applicationBlockedCode": null,
           "modelApplicabilityVerified": false,
           "automaticDoseAdjustmentAllowed": false
         }
@@ -570,5 +642,5 @@
       "autoApply": true
     }
   },
-  "sha256": "a7b076d359d000470ca00b4f13e3179a732258d960c13b2bb65f1308ec1895a5"
+  "sha256": "9aa418f0d8c4286faa3d660722c79b80f455f59ff6705b262fe1caad39857f18"
 }

@@ -66,6 +66,24 @@ Une référence du guide n'alimente le panneau que si **toutes** ces conditions 
 - Le préréglage curaté MIPD **garde la priorité**. Un désaccord est affiché, jamais résolu en silence : le voriconazole en est le cas réel, guide 2–6 mg/L contre préréglage MIPD 1–5,5 mg/L (Ashbee 2014).
 - Les grilles de doses ne viennent **jamais** du guide, qui ne publie aucune posologie. Elles sont déclarées par MIPD depuis les RCP (Prograf, Neoral, Certican, Rapamune) et bornent seulement l'espace de recherche.
 
+### Deux garde-fous d'application
+
+**1. Cible dépendante de la méthode de dosage.** `assayMethodRequiredForApplication` dans les règles liste les molécules dont l'intervalle publié n'a de sens qu'avec le dosage qui l'a produit. Le **sirolimus** y figure : le RCP Rapamune indique que les concentrations obtenues par chromatographie et par immunoessai **ne sont pas interchangeables** et que la cible doit être ajustée à la méthode employée. Le guide ne publiant pas `assayMethod`, les deux références sirolimus (4–12 et 12–20 ng/mL) restent **affichées et sourcées** mais **non applicables** : le bouton refuse et explique pourquoi. Le jour où le guide publie la méthode, la même référence devient applicable sans changer une ligne de code. Tacrolimus, ciclosporine et évérolimus rejoindront cette liste quand leur `assayMethod` sera publié.
+
+**2. Grille liée à une formulation.** `integration/tdm-guide-model-formulations.v1.json` déclare la formulation de chaque modèle concerné, strictement d'après sa population publiée, et chaque grille déclare le périmètre qu'elle couvre (`requiresFormulationIds`). Une grille n'est appliquée à un modèle que si la formulation déclarée de ce modèle figure dans ce périmètre. **La signature seule ne suffit pas.**
+
+Conséquence vérifiée par test : même si la grille tacrolimus passait à `APPROVED`, elle resterait **non applicable aux deux modèles tacrolimus existants** —
+
+| Modèle | Formulation déclarée | Verdict |
+| --- | --- | --- |
+| `tacrolimus_kamp_envarsus_ddi` | Envarsus, libération prolongée 1×/j | hors périmètre d'une grille en deux prises |
+| `tacrolimus_woillard_ddi` | « Prograf **ou** Advagraf » | formulation indéterminée, donc bloquée |
+| `ciclosporine_press_ddi`, `everolimus_*`, `sirolimus_djebli_ddi` | aucune spécialité nommée par la source | bloquées |
+
+`everolimus_terheine_ddi` mérite une mention : sa population mélange oncologie et transplantation, et l'évérolimus y est dosé à un ordre de grandeur supérieur (environ 10 mg/j contre 0,75 mg deux fois par jour). La grille Certican ne couvre pas cette population.
+
+Une formulation non déclarée ou ambiguë **bloque** la grille au lieu de retomber sur le cas le plus courant. Un test de contrôle positif vérifie qu'en déclarant un modèle comme libération immédiate pure, la grille approuvée lui devient bien applicable : le garde-fou discrimine, il ne refuse pas tout par principe.
+
 ### Une grille non validée n'est jamais écrite
 
 `signoff: PENDING` sur les quatre grilles, et **aucune n'est appliquée** : le bouton n'écrit que la métrique et les bornes de la cible publiée. `dose_min`, `dose_max`, `dose_step`, les intervalles testés et la durée de perfusion restent inchangés. La grille est affichée avec sa source et la mention « non appliquée ». Seul le passage à `signoff: APPROVED` autorise son écriture ; c'est le seul interrupteur, il est déclaré dans `applicationPolicy` et vérifié des deux côtés (Node et R).

@@ -3143,6 +3143,12 @@ server <- function(input, output, session) {
       )),
       radioButtons("tdm_guide_target_choice", NULL, choices = choices,
         selected = if (nzchar(selected_id)) selected_id else character(0)),
+      if (!is.null(selected) && tdm_guide_preset_candidate_blocked(selected)) div(
+        class = "custom-note",
+        tags$strong(tx(
+          "⚠ Cette référence ne peut pas être appliquée : son intervalle dépend de la méthode de dosage, que le guide ne publie pas. Elle reste consultable comme documentation.",
+          "⚠ This reference cannot be applied: its range depends on the assay method, which the guide does not publish. It stays available as documentation."))
+      ),
       if (!is.null(selected)) div(
         class = "custom-note",
         if (english) selected$scopeEn %||% "" else selected$scopeFr %||% "",
@@ -3176,10 +3182,14 @@ server <- function(input, output, session) {
           format(grid$dose_step), " mg, ", paste(unlist(grid$intervals), collapse = "/"), " h. "),
         tx("Le TDM Guide ne publie aucune posologie : cette grille est déclarée par MIPD d'après le RCP et ne borne que l'espace de recherche.",
           "The TDM Guide publishes no posology: this grid is declared by MIPD from the product label and only bounds the search space."),
-        # An unvalidated search space must never be written silently.
-        if (!isTRUE(entry$doseGridApplicable)) tags$div(tags$strong(tx(
-          "⚠ Non appliquée : en attente de relecture pharmacologique. Le bouton n'applique que la cible ; la grille de doses reste inchangée.",
-          "⚠ Not applied: awaiting pharmacologist review. The button applies the target only; the dose grid is left unchanged."))),
+        # An unvalidated or formulation-incompatible search space is never written.
+        if (!tdm_guide_preset_grid_applicable(record, mode)) tags$div(tags$strong(
+          if (identical(tdm_guide_preset_grid_block(record, mode), "grid_awaiting_signoff")) tx(
+            "⚠ Non appliquée : en attente de relecture pharmacologique. Le bouton n'applique que la cible ; la grille de doses reste inchangée.",
+            "⚠ Not applied: awaiting pharmacologist review. The button applies the target only; the dose grid is left unchanged.")
+          else tx(
+            "⚠ Non appliquée : la formulation de ce modèle n'est pas couverte par le RCP dont cette grille est issue. Le bouton n'applique que la cible.",
+            "⚠ Not applied: this model's formulation is not covered by the label this grid comes from. The button applies the target only."))),
         if (length(grid$excludesFormulations)) tags$div(tx(
           "Formulations hors périmètre de cette grille : ", "Formulations outside this grid: "),
           paste(unlist(grid$excludesFormulations), collapse = ", "), "."),
@@ -3198,6 +3208,15 @@ server <- function(input, output, session) {
     if (is.null(candidate)) {
       showNotification(tx("Sélectionner d'abord une cible publiée.",
         "Select a published target first."), type = "warning")
+      return()
+    }
+    # A range that is only defined together with its assay cannot be applied without
+    # one: the same number means different exposures on chromatography and immunoassay.
+    if (tdm_guide_preset_candidate_blocked(candidate)) {
+      showNotification(tx(
+        "Cible non applicable : cette molécule a des intervalles dépendants de la méthode de dosage, et le guide ne publie pas la méthode de cette référence. La valeur reste consultable dans la documentation.",
+        "Target not applicable: this drug has assay-dependent ranges and the guide does not publish the assay for this reference. The value stays available in the documentation."
+      ), type = "error", duration = 14)
       return()
     }
     updateSelectInput(session, "target_metric", selected = candidate$target_metric)
