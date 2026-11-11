@@ -26,11 +26,22 @@ jobs:
       - uses: actions/checkout@v7
         with:
           repository: rberrah/rberrah.github.io
-          ref: 5681a50a6d86baf8ee5e6cc8e088d1c22ef1c163
+          ref: a117081c3c85042ab8abbe13f4636cb053c0a7ca
           path: .pmx-tdm-source-preview
       - uses: actions/setup-node@v7
         with:
           node-version: "22"
+      - name: Validate exact drug-ID crosswalk parity across independent repos
+        run: |
+          node --input-type=module <<'EOF'
+          import assert from 'node:assert/strict';
+          import {readFile} from 'node:fs/promises';
+          import {mipdDrugToTdmId} from './.pmx-tdm-source-preview/src/lib/tdm/mipdDrugCrosswalk.preview.v1.js';
+          const canonical=JSON.parse(await readFile('integration/tdm-guide-drug-crosswalk.preview.v1.json','utf8'));
+          assert.deepEqual(mipdDrugToTdmId,canonical.keys,'PMx guide and MIPD canonical drug keys drifted');
+          assert.equal(Object.keys(mipdDrugToTdmId).length,23);
+          console.log('Cross-repo parity: 23 / 23 drug IDs match pinned MIPD source');
+          EOF
       - name: Export the real PMx bibliographic guide as a local immutable snapshot
         run: node .pmx-tdm-source-preview/scripts/export_tdm_model_references.mjs --output /tmp/pmx-tdm-guide-preview.json
       - name: Build all MIPD model recommendations from the versioned real snapshot
