@@ -59,7 +59,26 @@ jobs:
             assert.ok(p.models.every(m=>m.recommendation.interpretationAllowed===false));
             assert.ok(p.models.every(m=>m.recommendation.automaticDoseAdjustmentAllowed===false));
             assert.equal(p.sourceSnapshotSha256,s.sha256);
-            console.log('Real snapshot linked to 46 model preview cards. No runtime activation.');
+            const refs=p.models.flatMap(m=>m.recommendation.numericalReferenceCandidates);
+            // No gate may ever conclude that a published value applies to a model.
+            assert.ok(refs.every(c=>c.modelApplicabilityVerified===false&&
+              ['requires_human_context_review','structural_context_mismatch'].includes(c.applicability.verdict)));
+            // Real-data tripwire: a reference whose declared context contradicts the
+            // model must stay flagged. The FDA liver-transplant tacrolimus target is
+            // listed on kidney-transplant models and must never be shown unflagged.
+            const flagged=p.models.flatMap(m=>m.recommendation.numericalReferenceCandidates
+              .filter(c=>c.applicability.mismatches.length).map(c=>m.modelId+'/'+c.id));
+            assert.ok(flagged.includes('tacrolimus_woillard_ddi/tac-liver-everolimus-fda'),
+              'Liver-transplant tacrolimus reference must be flagged on a kidney model');
+            assert.ok(flagged.includes('tacrolimus_kamp_envarsus_ddi/tac-liver-everolimus-fda'));
+            assert.equal(flagged.length,8,'Structural context mismatches changed: re-review the gates');
+            assert.equal(p.models.filter(m=>m.recommendation.administrationModeWarningCount>0).length,10);
+            // Formulation stays undecidable until the guide publishes it, and must be said so.
+            assert.ok(p.models.find(m=>m.modelId==='tacrolimus_kamp_envarsus_ddi')
+              .recommendation.numericalReferenceCandidates
+              .every(c=>c.applicability.undecidable.includes('formulationId')));
+            console.log('Real snapshot linked to 46 model preview cards. '+flagged.length+
+              ' context mismatches flagged. No runtime activation.');
           "
 
   origin-parity:

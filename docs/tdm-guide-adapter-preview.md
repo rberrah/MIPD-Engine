@@ -23,6 +23,22 @@ Le catalogue MIPD a **46 modèles PK de 23 principes actifs**. La couverture exi
 
 Pour les molécules présentes dans le guide, plusieurs modèles requièrent des exclusions **propres à la population** : ciclosporine et formulations, tacrolimus IR vs Envarsus, amoxicilline adultes brûlés vs obèses vs endocardite, gentamicine dialyse vs autres, céfépime ICU/épuration, vancomycine continue vs intermittente. La cartographie par principe actif **n'implique pas** que chacune de ses cibles soit applicable à chacun de ses modèles.
 
+## Garde-fous structurels d'applicabilité
+
+`integration/tdm-guide-applicability-rules.preview.v1.json` déclare, de façon versionnée et relisible, les seules comparaisons que les métadonnées publiées permettent aujourd'hui. Une règle ne peut qu'**ajouter un avertissement** : elle ne déclare jamais une référence applicable, ne choisit aucune valeur et ne touche à aucune dose.
+
+| Dimension | Règle | Effet |
+| --- | --- | --- |
+| Organe greffé | Pour les immunosuppresseurs déclarés (`tac`, `cyclosporine`, `everolimus`, `sirolimus`, `mpa`), l'indication du guide est comparée aux `populationTags` du modèle | `organ_indication_mismatch` affiché sur la référence et compté dans la bannière |
+| Mode d'administration | Une référence de type résiduelle sur un modèle **exclusivement** en perfusion continue | `trough_reference_under_continuous_infusion_only_model` |
+| Identité analytique | `analyteId`, `analyteBasis`, `matrixId`, `formulationId`, `assayMethod`, `samplingTime` absents du guide | listés comme **non vérifiables**, jamais comme concordants |
+
+Le périmètre est volontairement restreint : d'autres molécules réutilisent les mêmes codes d'indication avec un autre sens (pour la digoxine, `heart` désigne l'insuffisance cardiaque et non une greffe). Un organe non déclaré par le modèle est traité comme *non vérifiable*, pas comme une incompatibilité.
+
+Sur le snapshot réel, **8 références** sont signalées incompatibles (cible FDA greffe hépatique présentée sur des modèles de greffe rénale pour le tacrolimus et l'évérolimus, cibles greffe cardiaque de l'évérolimus) et **10 modèles** portent un objectif PK/PD d'un autre mode d'administration. Ces nombres sont verrouillés en CI : toute variation impose une nouvelle relecture.
+
+État des métadonnées du guide à ce jour : `assayMethod` 0/141, `formulationId` 1/141, `analyteId`/`matrixId`/`samplingTime` 10/141, et **131/141 références sans aucune des six dimensions**. C'est la limite principale : tant que ces champs ne sont pas publiés par le guide, la distinction tacrolimus IR vs Envarsus reste **non vérifiable par machine** et demeure une relecture humaine.
+
 ## Passage ultérieur à une interface Shiny
 
 Un composant **lecture seule** placé sur la fiche du modèle affichera « Indice STP conseillé / prélèvement / sources / limites du modèle ». L'utilisateur pourra ensuite préciser indication, formulation, schéma, âge, statut greffe, méthode, analyte, fraction libre et CMI. Le filtre de références restera **fail-closed** tant que toutes les dimensions nécessaires ne sont pas validées. Ne pas transformer une C0 en AUC sans méthode qualifiée.

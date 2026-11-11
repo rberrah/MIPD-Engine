@@ -45,10 +45,63 @@ const pdModeWarning=(pd,modes)=>{
   if(pd.kind==='beta_trough' && !m.includes('IV_INTERMITTENT')) return 'different_administration_mode';
   return 'population_indication_and_assay_not_checked';
 };
-export function buildModelTdmPreview({catalogue,snapshot,crosswalk}) {
+
+export function checkApplicabilityRules(rules) {
+  const organ=rules?.organTransplantIndications;
+  return rules?.schema==='mipd.tdm.applicability-rules.preview.v1' &&
+    Array.isArray(organ?.appliesToTdmDrugIds) &&
+    !!organ?.organPopulationTags && typeof organ.organPopulationTags==='object' &&
+    Object.values(organ.organPopulationTags).every((tags)=>Array.isArray(tags)&&tags.length) &&
+    Array.isArray(rules.troughMetricMarkers) && Array.isArray(rules.continuousInfusionModes) &&
+    Array.isArray(rules.undecidableIdentityDimensions?.fields);
+}
+
+/**
+ * Structural, conservative context gates. A gate can only ADD a warning: it never
+ * marks a reference as applicable, never picks a value and never touches a dose.
+ * Anything the declared metadata cannot settle is reported as undecidable, not as a match.
+ */
+export function assessCandidateApplicability({target,model,tdmDrugId,rules}) {
+  const mismatches=[],undecidable=[];
+  const organRule=rules.organTransplantIndications;
+  const organTags=organRule.organPopulationTags;
+  const tags=Array.isArray(model.populationTags)?model.populationTags:[];
+  const modes=Array.isArray(model.administrationModes)?model.administrationModes:[];
+  // 1. Grafted organ declared by the reference vs grafted organ declared by the model.
+  if(organRule.appliesToTdmDrugIds.includes(tdmDrugId) && organTags[target.indication]) {
+    const wanted=organTags[target.indication];
+    const declared=Object.entries(organTags)
+      .filter(([,list])=>list.some((tag)=>tags.includes(tag))).map(([organ])=>organ);
+    if(!wanted.some((tag)=>tags.includes(tag))) {
+      if(declared.length) mismatches.push({
+        dimension:'transplanted_organ',code:'organ_indication_mismatch',
+        referenceContext:target.indication,modelContext:declared.join('+')
+      });
+      else undecidable.push('transplanted_organ_not_declared_by_model');
+    }
+  }
+  // 2. A trough cannot be read on a model that only supports continuous infusion.
+  const isTrough=rules.troughMetricMarkers.some((marker)=>
+    typeof target.metric==='string' && target.metric.includes(marker));
+  if(isTrough && modes.length && modes.every((mode)=>rules.continuousInfusionModes.includes(mode)))
+    mismatches.push({
+      dimension:'administration_mode',code:'trough_reference_under_continuous_infusion_only_model',
+      referenceContext:target.metric,modelContext:modes.join('+')
+    });
+  // 3. Dimensions the guide leaves unstructured stay explicitly undecidable.
+  for(const field of (target.missingAnalyticalIdentity||[]))
+    if(rules.undecidableIdentityDimensions.fields.includes(field)) undecidable.push(field);
+  return {
+    // Never 'applicable': only a human review of the measurement conditions can conclude.
+    verdict:mismatches.length?'structural_context_mismatch':'requires_human_context_review',
+    mismatches,undecidable
+  };
+}
+export function buildModelTdmPreview({catalogue,snapshot,crosswalk,rules}) {
   if(!Array.isArray(catalogue?.models)||!catalogue.models.length) throw new Error('Missing independent model catalog');
   if(!checkReferenceSnapshot(snapshot)) throw new Error('Invalid PMx snapshot or missing immutable SHA256');
   if(!validateCrosswalk(crosswalk,catalogue)) throw new Error('Model-drug crosswalk incomplete or stale');
+  if(!checkApplicabilityRules(rules)) throw new Error('Applicability rules missing or stale');
   const uniqueModels=new Set();
   const guide=new Map(snapshot.drugs.map((d)=>[d.id,d]));
   const models=catalogue.models.map((model)=>{
@@ -65,6 +118,8 @@ export function buildModelTdmPreview({catalogue,snapshot,crosswalk}) {
       relation:target.relation,min:target.min,max:target.max,
       analyticalIdentityMissing:target.missingAnalyticalIdentity||[],
       source:target.source,status:'bibliographic_candidate_requires_context_review',
+      // Structural gates: drug ID alone never establishes applicability.
+      applicability:assessCandidateApplicability({target,model,tdmDrugId:tdmId,rules}),
       // Clinical applicability is NEVER asserted by drug ID alone.
       modelApplicabilityVerified:false,automaticDoseAdjustmentAllowed:false
     }));
@@ -82,7 +137,8 @@ export function buildModelTdmPreview({catalogue,snapshot,crosswalk}) {
     return {
       modelId:model.id,modelDrugKey:model.drugKey,tdmDrugId:tdmId,
       modelName:model.model,drugName:model.drug,
-      population:model.population,populationTags:model.populationTags,
+      population:model.population,populationEn:model.populationEn??null,
+      populationTags:model.populationTags,
       routes:model.routes,administrationModes:model.administrationModes,
       simulationOnly:!model.analysisEligible,
       verificationStatus:model.verificationStatus,
@@ -94,6 +150,11 @@ export function buildModelTdmPreview({catalogue,snapshot,crosswalk}) {
         monitoringContext:entry?.society??null,
         numericalReferenceCandidates:targetCandidates,
         pharmacodynamicCandidates:pkpdCandidates,
+        // Counts let the read-only panel surface warnings before any number.
+        structuralMismatchCount:targetCandidates
+          .filter((c)=>c.applicability.mismatches.length).length,
+        administrationModeWarningCount:pkpdCandidates
+          .filter((c)=>c.status==='different_administration_mode').length,
         evidenceSourceVersion:snapshot.sha256,
         patientContextMatched:false,
         modelFormulationMatched:false,
@@ -118,12 +179,14 @@ export function buildModelTdmPreview({catalogue,snapshot,crosswalk}) {
 }
 export async function loadModelTdmPreview(snapshotFile) {
   if(!snapshotFile||!snapshotFile.endsWith('.json')) throw new Error('Explicit local JSON snapshot path required');
-  const [cat,map,snap]=await Promise.all([
+  const [cat,map,gates,snap]=await Promise.all([
     readFile(path.join(root,'models/catalog.json'),'utf8'),
     readFile(path.join(root,'integration/tdm-guide-drug-crosswalk.preview.v1.json'),'utf8'),
+    readFile(path.join(root,'integration/tdm-guide-applicability-rules.preview.v1.json'),'utf8'),
     readFile(snapshotFile,'utf8')
   ]);
-  return buildModelTdmPreview({catalogue:JSON.parse(cat),crosswalk:JSON.parse(map),snapshot:JSON.parse(snap)});
+  return buildModelTdmPreview({catalogue:JSON.parse(cat),crosswalk:JSON.parse(map),
+    rules:JSON.parse(gates),snapshot:JSON.parse(snap)});
 }
 if(process.argv[1]?.endsWith('preview_tdm_guide_recommendations.mjs')) {
   const a=process.argv.indexOf('--snapshot');
