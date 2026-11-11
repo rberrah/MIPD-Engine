@@ -27,11 +27,11 @@ jsonlite::write_json(fixture,tmp,auto_unbox=TRUE,null="null",pretty=TRUE)
 parsed <- tdm_guide_preview_load(tmp,catalog)
 stopifnot(length(parsed)==nrow(catalog))
 TDM_GUIDE_PREVIEW_BY_MODEL <- parsed
-html <- as.character(shiny::renderTags(tdm_guide_preview_model_card(catalog$id[[1]],english=FALSE))$html)
+html <- as.character(htmltools::renderTags(tdm_guide_preview_model_card(catalog$id[[1]],english=FALSE))$html)
 stopifnot(grepl("Recommandation STP",html,fixed=TRUE))
 stopifnot(grepl("Aucune cible chiffrée",html,fixed=TRUE))
 stopifnot(!grepl("automaticDoseAdjustmentAllowed",html,fixed=TRUE))
-stopifnot(grepl("TDM guidance",as.character(shiny::renderTags(
+stopifnot(grepl("TDM guidance",as.character(htmltools::renderTags(
   tdm_guide_preview_model_card(catalog$id[[1]],english=TRUE))$html),fixed=TRUE))
 unsafe <- fixture
 unsafe$models[[1]]$recommendation$interpretationAllowed <- TRUE
