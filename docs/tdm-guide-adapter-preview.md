@@ -2,6 +2,19 @@
 
 **NE PAS FUSIONNER, DÉPLOYER OU ACTIVER dans Shiny.** Cette PR se limite à un adaptateur purement local et à ses tests.
 
+## Accès direct au TDM Guide depuis Shiny
+
+Dans **Cible et grille de doses**, ainsi que sur chaque fiche de modèle, un lien
+ouvre la page PMx Explain directement filtrée sur la molécule sélectionnée :
+`https://rberrah.github.io/pharmacometrie/cibles-tdm/?drug=tac&lang=fr`
+pour le tacrolimus. L'URL contient uniquement l'identifiant canonique de la
+molécule et la langue, **jamais** de dose, de cible appliquée ni de donnée patient.
+Le lien est proposé même sans préréglage chiffré, mais pas pour les cinq molécules
+encore absentes du guide. Il dépend de la publication de PMx #235 et de ses PR
+parentes ; ne pas considérer la navigation filtrée comme disponible sur `main`
+avant cette publication. Aucune application de cible ou de grille n'est déclenchée
+par l'ouverture du lien.
+
 ## Deux sources autonomes
 
 1. PMx Explain / TDM Guide produit un snapshot `pmx.tdm.model-references.preview.v1` avec source SHA256, règles STP, plages scientifiques, objectifs PK/PD et provenance bibliographique. **Une molécule, plusieurs références possibles**.
