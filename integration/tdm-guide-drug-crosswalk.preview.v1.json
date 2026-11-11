@@ -1,0 +1,30 @@
+{
+  "schema": "mipd.tdm.drug-crosswalk.preview.v1",
+  "scope": "model_drugKey_to_canonical_tdm_guide_id",
+  "documentedStatus": "review_pending_not_a_clinical_mapping",
+  "keys": {
+    "amik": "amikacin",
+    "amiodarone": "amiodarone",
+    "amox": "amoxicillin",
+    "cefazoline": "cefazolin",
+    "cefepime": "cefepime",
+    "ciclosporine": "cyclosporine",
+    "cobicistat": "cobicistat",
+    "dapto": "daptomycin",
+    "diltiazem": "diltiazem",
+    "erythromycine": "erythromycin",
+    "everolimus": "everolimus",
+    "fluconazole": "fluconazole",
+    "genta": "gentamicin",
+    "isavuconazole": "isavuconazole",
+    "levo": "levofloxacin",
+    "linez": "linezolid",
+    "posaconazole": "posaconazole",
+    "rifampicine": "rifampicin",
+    "ritonavir": "ritonavir",
+    "sirolimus": "sirolimus",
+    "tacrolimus": "tac",
+    "vanco": "vancomycin",
+    "voriconazole": "voriconazole"
+  }
+}

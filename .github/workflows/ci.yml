@@ -36,6 +36,8 @@ jobs:
           name: mipd-ml-evidence
           path: scientific-validation/ml-evidence.generated.json
           if-no-files-found: ignore
+      - name: Verify draft TDM Guide recommendation coverage (46 models, no runtime binding)
+        run: node tests/tdm_guide_adapter_preview.test.mjs
       - name: Regenerate standalone model catalogue
         run: node scripts/generate_model_catalog.mjs
       - name: Regenerate model traceability
