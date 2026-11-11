@@ -11,6 +11,30 @@ source(file.path(root,"R","tdm_guide_preview.R"),local=FALSE)
 stopifnot(!is.null(TDM_GUIDE_PREVIEW_BY_MODEL))
 stopifnot(length(TDM_GUIDE_PREVIEW_BY_MODEL) == nrow(catalog))
 stopifnot(!is.null(tdm_guide_preview_model_card(catalog$id[[1]], english=FALSE)))
+
+# TDM links are deep links to a real guide entry, not model IDs or patient data.
+# They appear next to targets and on each model card, including contextual-PK/PD
+# molecules without a numeric preset.
+stopifnot(identical(tdm_guide_drug_href("tacrolimus_woillard_ddi"),
+  "https://rberrah.github.io/pharmacometrie/cibles-tdm/?drug=tac&lang=fr"))
+stopifnot(identical(tdm_guide_drug_href("tacrolimus_kamp_envarsus_ddi", english=TRUE),
+  "https://rberrah.github.io/pharmacometrie/cibles-tdm/?drug=tac&lang=en"))
+stopifnot(identical(tdm_guide_drug_href("amik_burdet"),
+  "https://rberrah.github.io/pharmacometrie/cibles-tdm/?drug=amikacin&lang=fr"))
+stopifnot(is.null(tdm_guide_drug_href("amiodarone_pollak_ddi")))
+stopifnot(is.null(tdm_guide_drug_href("nonexistent_model")))
+tac_link <- as.character(htmltools::renderTags(
+  tdm_guide_drug_link("tacrolimus_woillard_ddi"))$html)
+stopifnot(grepl("cibles-tdm/?drug=tac&amp;lang=fr", tac_link, fixed=TRUE))
+stopifnot(grepl("noopener noreferrer", tac_link, fixed=TRUE))
+stopifnot(grepl("mipd-tdm-guide-drug-link", tac_link, fixed=TRUE))
+stopifnot(grepl("tdm-guide-drug-link", as.character(htmltools::renderTags(
+  tdm_guide_preview_model_card("tacrolimus_woillard_ddi"))$html), fixed=TRUE))
+stopifnot(is.null(tdm_guide_drug_link("amiodarone_pollak_ddi")))
+app_source <- readLines(file.path(root, "app.R"), warn=FALSE)
+stopifnot(any(grepl('uiOutput("tdm_guide_drug_link_ui")', app_source, fixed=TRUE)))
+stopifnot(any(grepl('output$tdm_guide_drug_link_ui <- renderUI({', app_source, fixed=TRUE)))
+
 # An explicit opt-out still disables it for a deployment that does not want it.
 Sys.setenv(ENABLE_TDM_GUIDE_PREVIEW="false")
 stopifnot(!tdm_guide_preview_available())
@@ -21,6 +45,7 @@ local({
   sys.source(file.path(root,"R","tdm_guide_preview.R"), envir = env)
   stopifnot(is.null(env$TDM_GUIDE_PREVIEW_BY_MODEL))
   stopifnot(is.null(env$tdm_guide_preview_model_card(catalog$id[[1]], english=FALSE)))
+  stopifnot(is.null(env$tdm_guide_drug_href("tacrolimus_woillard_ddi")))
 })
 Sys.unsetenv("ENABLE_TDM_GUIDE_PREVIEW")
 testmodels <- lapply(seq_len(nrow(catalog)), function(i) {
