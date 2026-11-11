@@ -755,6 +755,7 @@ app_ui <- function(request) {
               "Cible et grille de doses",
               value = "target_settings",
               uiOutput("target_preset_ui"),
+              uiOutput("tdm_guide_drug_link_ui"),
               uiOutput("tdm_guide_preset_ui"),
               selectInput(
                 "target_metric",
@@ -3109,6 +3110,14 @@ server <- function(input, output, session) {
     )
   })
   shiny::outputOptions(output, "target_preset_ui", suspendWhenHidden = FALSE)
+
+  # A visible, molecule-specific TDM Guide link even when no numeric target
+  # is available for the current model or administration mode.
+  output$tdm_guide_drug_link_ui <- renderUI({
+    if (!identical(input$model_source %||% "library", "library")) return(NULL)
+    tdm_guide_drug_link(current_model_id(), english = identical(current_language(), "en"))
+  })
+  shiny::outputOptions(output, "tdm_guide_drug_link_ui", suspendWhenHidden = FALSE)
 
   # Published TDM Guide references for this molecule and route. Offered, never written
   # on their own: the reader selects one and clicks, which is the only way a published
