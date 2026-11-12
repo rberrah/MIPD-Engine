@@ -1,6 +1,6 @@
 # DRAFT — Recommandations STP automatiques par modèle MIPD (46/46)
 
-**NE PAS FUSIONNER, DÉPLOYER OU ACTIVER dans Shiny.** Cette PR se limite à un adaptateur purement local et à ses tests.
+**Intégration du code uniquement (opt-in, recherche/enseignement).** La fusion dans `main` n'autorise ni déploiement Shinyapps ni activation clinique. Les cibles et grilles restent non applicables sans validation explicite des conditions de population, méthode analytique et formulation.
 
 ## Accès direct au TDM Guide depuis Shiny
 
@@ -10,9 +10,10 @@ ouvre la page PMx Explain directement filtrée sur la molécule sélectionnée :
 pour le tacrolimus. L'URL contient uniquement l'identifiant canonique de la
 molécule et la langue, **jamais** de dose, de cible appliquée ni de donnée patient.
 Le lien est proposé même sans préréglage chiffré, mais pas pour les cinq molécules
-encore absentes du guide. Il dépend de la publication de PMx #235 et de ses PR
-parentes ; ne pas considérer la navigation filtrée comme disponible sur `main`
-avant cette publication. Aucune application de cible ou de grille n'est déclenchée
+encore absentes du guide. La source PMx est désormais issue de la PR #237 fusionnée sur `main`
+(commit `fc3fe8729f852033eeb5858b05e7a089de5071db`) ; ne considérer la navigation filtrée comme
+publique qu'après déploiement vérifié des Pages. Aucune application de cible
+ou de grille n'est déclenchée
 par l'ouverture du lien.
 
 ## Deux sources autonomes
@@ -133,7 +134,7 @@ modèles de simulation du catalogue, si et seulement si les variables suivantes 
 en session locale avant `shiny::runApp()` :
 
 ```bash
-# Dans PMx Explain (branche de la PR #235) :
+# Dans PMx Explain (main après fusion de la PR #237) :
 node scripts/export_tdm_model_references.mjs --output /tmp/pmx-tdm-guide-preview.json
 # Dans MIPD Engine (branche de la PR #39) :
 node scripts/preview_tdm_guide_recommendations.mjs --snapshot /tmp/pmx-tdm-guide-preview.json --output /tmp/mipd-tdm-preview.json

@@ -27,14 +27,13 @@ jobs:
       - uses: actions/checkout@v7
       # Immutable PMx commit, deliberately pinned so this draft is reproducible and
       # a PMx edit can never silently change MIPD's view of the guide.
-      # MAINTENANCE: every new commit on the PMx branch feat/tdm-mipd-reference-export-preview-*
-      # requires bumping this SHA by hand, otherwise this job keeps validating an older
-      # guide than the one PMx actually serves. Bump it in the same PR that reviews the
-      # PMx change, and re-read the mismatch counts asserted below.
+      # Pinned to the PMx Guide release merged as PMx #237 on main.
+      # Update only after a reviewed PMx merge, and re-check all drift gates.
+      # Do not track a moving branch or a draft-only commit here.
       - uses: actions/checkout@v7
         with:
           repository: rberrah/rberrah.github.io
-          ref: c62cc660b0847cf776be1a7c18102ad1244c3248
+          ref: fc3fe8729f852033eeb5858b05e7a089de5071db
           path: .pmx-tdm-source-preview
       - uses: actions/setup-node@v7
         with:
