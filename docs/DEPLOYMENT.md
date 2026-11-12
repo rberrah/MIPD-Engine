@@ -153,7 +153,7 @@ reference; do not use the failed `12813355` bundle as a rollback target.
 
 ### Historical public release evidence — 2026-10-17
 
-**Current public release:** MIPD Engine commit
+**Historical public release:** MIPD Engine commit
 `fec16cbdf8e33ed6c791226ccf236761333f8de8`, immutable tag
 `public-2026-10-17-fec16cb`, Shinyapps bundle **12702795**, task
 `1758931558`, image `15803034`, existing app ID `17776160`.
