@@ -1303,3 +1303,33 @@ h6 {
   .pk-model-card { padding: 14px; }
   .pk-model-card-heading { flex-wrap: wrap; }
 }
+
+/* Drug-specific TDM sidebar: show decisions first, documentation on request. */
+.tdm-compact-status.target-preset {
+  display: block;
+  padding: 7px 9px;
+  margin-bottom: 8px;
+}
+.tdm-compact-status > span { display: block; margin-top: 3px; }
+.tdm-drug-json-profile.target-preset {
+  gap: 5px;
+  margin-bottom: 8px;
+  padding: 7px 0;
+  background: transparent;
+  color: inherit;
+  border-left: 0;
+  border-top: 1px solid #d5dee3;
+  font-size: .8rem;
+}
+.tdm-compact-meta { margin: 2px 0; }
+.tdm-compact-sources { margin: 5px 0; }
+.tdm-compact-sources summary,
+.tdm-compact-status details summary { cursor: pointer; }
+.tdm-compact-sources p { margin: 5px 0; }
+.tdm-drug-exploratory-grid { margin-top: 5px; }
+.tdm-compact-guide { margin-bottom: 9px; }
+.tdm-compact-warning {
+  margin: 5px 0;
+  font-size: .8rem;
+  color: #845015;
+}
