@@ -424,7 +424,7 @@ dose_row_ui <- function(
       condition = sprintf("input.dose_ss_%d == true", index),
       div(class = "route-readonly", tags$strong("Steady state"), span("Temps imposé à t = 0 h (ss = 1)."))
     ),
-    numericInput(paste0("dose_amount_", index), "Dose (mg)", amount, min = 0, step = 50),
+    numericInput(paste0("dose_amount_", index), "Dose (mg)", amount, min = 0, step = NA),
     selectInput(
       paste0("dose_status_", index),
       "Statut",
@@ -1202,6 +1202,7 @@ server <- function(input, output, session) {
   pending_ddi_target <- reactiveVal(NULL)
   pending_ddi_routes <- reactiveVal(list())
   last_target_preset_key <- reactiveVal(NULL)
+  last_drug_key <- reactiveVal(as.character(model_record(DEFAULT_MODEL)$drugKey[[1]]))
   pending_import_covariates <- reactiveVal(NULL)
   pending_import_dose_covariates <- reactiveVal(NULL)
   pending_lego_covariates <- reactiveVal(NULL)
@@ -1399,7 +1400,9 @@ server <- function(input, output, session) {
   observeEvent(input$add_dose, {
     index <- dose_count() + 1L
     dose_count(index)
-    insert_dose_row(index, time = 48, amount = 1000, interval = 12, count = 4, infusion = 1, steady_state = FALSE)
+    # Copy an already-entered dose only; never suggest 1000 mg for a newly selected drug.
+    insert_dose_row(index, time = 48, amount = numeric_input_value("dose_amount_1"),
+      interval = 12, count = 4, infusion = 1, steady_state = FALSE)
   })
 
   observeEvent(input$remove_dose, {
@@ -1412,7 +1415,7 @@ server <- function(input, output, session) {
   observeEvent(input$add_observation, {
     index <- observation_count() + 1L
     observation_count(index)
-    insert_observation_row(index, time = 60, concentration = 15)
+    insert_observation_row(index, time = 60, concentration = NA_real_)
   })
 
   observeEvent(input$remove_observation, {
@@ -3028,6 +3031,28 @@ server <- function(input, output, session) {
     )
   })
 
+  # Values from a different drug must never remain in the dose/observation rows.
+  # The data are not converted across drugs because model units and dose scales differ.
+  observeEvent(current_model_id(), {
+    if (!identical(input$model_source %||% "library", "library")) return()
+    key <- as.character(model_record(current_model_id())$drugKey[[1]])
+    old <- last_drug_key()
+    if (!identical(old, key)) {
+      for (i in seq_len(dose_count())) {
+        updateNumericInput(session, paste0("dose_amount_", i), value = NA_real_)
+      }
+      for (i in seq_len(observation_count())) {
+        updateNumericInput(session, paste0("observation_concentration_", i), value = NA_real_)
+        updateNumericInput(session, paste0("observation_lloq_", i), value = NA_real_)
+      }
+      showNotification(tx(
+        "Nouvelle molécule : anciennes doses et concentrations effacées pour éviter une confusion d'unités.",
+        "New drug: previous doses and concentrations cleared to avoid mixing units."),
+        type = "message", duration = 8)
+    }
+    last_drug_key(key)
+  }, ignoreInit = TRUE)
+
   active_target_preset <- reactive({
     if (!identical(input$model_source %||% "library", "library")) return(NULL)
     record <- model_record(current_model_id())
@@ -3104,7 +3129,10 @@ server <- function(input, output, session) {
     english <- identical(current_language(), "en")
     index <- profile$monitoring
     sample_info <- profile$sampling
-    st <- suppressWarnings(as.numeric(input$observation_cov_ST_1 %||% NA_real_))
+    st_values <- vapply(seq_len(observation_count()), function(i)
+      suppressWarnings(as.numeric(input[[paste0("observation_cov_ST_", i)]] %||% NA_real_)), numeric(1))
+    st <- if (length(st_values) && all(is.finite(st_values)) &&
+              length(unique(st_values)) == 1L) st_values[[1]] else NA_real_
     product <- tdm_drug_profile_formulation(record, st)
     confirmed <- as.character(input$tdm_profile_formulation %||% "")
     label_for <- function(id) {
@@ -3127,6 +3155,10 @@ server <- function(input, output, session) {
       tags$p(
         tags$strong(tx("Unités du modèle : ", "Model units: ")),
         paste0(profile$concentrationUnit, tx(" ; dose en ", "; dose in "), profile$doseUnit)
+      ),
+      if (!is.null(sample_info)) tags$p(
+        tags$strong(tx("Prélèvement : ", "Sampling: ")),
+        if (english) sample_info$en %||% "" else sample_info$fr %||% ""
       ),
       if (!is.null(product)) tags$p(
         tags$strong(tx("Formulation du modèle : ", "Model formulation: ")),
@@ -3172,7 +3204,7 @@ server <- function(input, output, session) {
           "Educational use only: this search grid is pending pharmacologist sign-off and is not a recommended regimen."
         ))
       ),
-      if (is.null(grid)) tags$p(class = "custom-note", tx(
+      if (is.null(grid) && is.null(active_target_preset())) tags$p(class = "custom-note", tx(
         "Aucune grille de doses sourcée pour ce modèle et cette voie : renseigner une plage exploratoire manuellement.",
         "No source-backed dose grid for this model and route: enter an exploratory range manually."
       ))
@@ -3186,7 +3218,10 @@ server <- function(input, output, session) {
     mode <- current_administration_mode()
     grid <- tdm_drug_profile_search_grid(record, mode)
     confirmed <- as.character(input$tdm_profile_formulation %||% "")
-    st <- suppressWarnings(as.numeric(input$observation_cov_ST_1 %||% NA_real_))
+    st_values <- vapply(seq_len(observation_count()), function(i)
+      suppressWarnings(as.numeric(input[[paste0("observation_cov_ST_", i)]] %||% NA_real_)), numeric(1))
+    st <- if (length(st_values) && all(is.finite(st_values)) &&
+              length(unique(st_values)) == 1L) st_values[[1]] else NA_real_
     if (is.null(grid) ||
         !tdm_drug_profile_grid_eligible(record, mode, confirmed, st)) {
       showNotification(tx(
@@ -3236,6 +3271,12 @@ server <- function(input, output, session) {
       label = paste0(tx("Dose max", "Max dose"), " (", dose_unit, ")"))
     updateNumericInput(session, "dose_step",
       label = paste0(tx("Pas", "Step"), " (", dose_unit, ")"))
+    for (i in seq_len(observation_count())) {
+      updateNumericInput(session, paste0("observation_concentration_", i),
+        label = paste0(tx("Concentration", "Concentration"), " (", concentration, ")"))
+      updateNumericInput(session, paste0("observation_lloq_", i),
+        label = paste0("LLOQ (", concentration, ")"))
+    }
   })
 
   output$target_preset_ui <- renderUI({

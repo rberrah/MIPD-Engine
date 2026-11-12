@@ -7,7 +7,7 @@
 - `modelIds`, `concentrationUnit` et `doseUnit` (reconcilés avec `models/catalog.json`) ;
 - `monitoring`, `sourceReferences` et `conditionalPdObjectives` extraits du TDM Guide PMx fusionné ;
 - `guideTargetPresets` par mode, avec `target_metric`, `target_low`, `target_high`, `target_unit`, contexte, référence et lien ;
-- `simulationPresets` : les cinq anciens préréglages sourcés (vancomycine, linézolide, voriconazole) ne sont plus codés en dur dans R ;
+- `simulationPresets` : les cinq anciens préréglages sourcés (vancomycine, linézolide, voriconazole) sont chargés depuis JSON à l'exécution ; le fichier R historique est conservé inchangé pour la traçabilité ;
 - `guideTargetPresets[mode].doseGrid` : bornes `dose_min`, `dose_max`, `dose_step`, `intervals`, `infusion`, spécialité et RCP quand une grille a été recherchée ;
 - `guideHref` : navigation vers la molécule du TDM Guide, sans donnée patient.
 
@@ -17,7 +17,7 @@ Des champs restent volontairement vides pour les molécules dépourvues de réf�
 
 Le modèle choisi détermine le dossier JSON. L'app affiche l'indice PK/PD, les unités, les sources et les cibles contextualisées. Les cinq préréglages préexistants restent chargés automatiquement depuis JSON. Pour les autres molécules, les anciens champs **ne sont plus réutilisés** lors d'un changement de modèle ; il faut choisir explicitement une référence TDM ou saisir des bornes de simulation.
 
-Une grille issue d'un RCP est **documentaire tant que sa spécialité n'est pas confirmée**. Elle n'est injectée dans les doses proposées **que sur un clic explicite**, après contrôle de concordance modèle–formulation. Le statut scientifique reste `PENDING` et la simulation n'est pas une prescription. Les modèles dont la spécialité est incompatible sont bloqués.
+Une grille issue d'un RCP est **documentaire tant que sa spécialité n'est pas confirmée**. Les doses et concentrations saisies pour une molécule sont effacées lors du passage à une autre molécule (sans conversion silencieuse). Elle n'est injectée dans les doses proposées **que sur un clic explicite**, après contrôle de concordance modèle–formulation. Le statut scientifique reste `PENDING` et la simulation n'est pas une prescription. Les modèles dont la spécialité est incompatible sont bloqués.
 
 ### Tacrolimus
 
