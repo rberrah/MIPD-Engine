@@ -1,6 +1,6 @@
 # DRAFT — Recommandations STP automatiques par modèle MIPD (46/46)
 
-**Intégration du code uniquement (opt-in, recherche/enseignement).** La fusion dans `main` n'autorise ni déploiement Shinyapps ni activation clinique. Les cibles et grilles restent non applicables sans validation explicite des conditions de population, méthode analytique et formulation.
+**Intégration du code bibliographique (recherche/enseignement).** L'affichage des références versionnées est **actif par défaut** depuis l'artefact embarqué ; `ENABLE_TDM_GUIDE_PREVIEW=false` le désactive. La fusion dans `main` n'autorise ni déploiement Shinyapps ni utilisation clinique. Les références et grilles ne deviennent pas automatiquement applicables au patient : population, méthode analytique et formulation doivent rester qualifiées.
 
 ## Accès direct au TDM Guide depuis Shiny
 
@@ -125,13 +125,14 @@ Quand des modèles supplémentaires de Limoges seront ajoutés, CI échouera si 
 
 `node tests/tdm_guide_adapter_preview.test.mjs` vérifie 46/46 modèles, 23 clés, 13 MAP, cinq fiches non indexées, cohérence statut/voie, absence de posologie, checksum de provenance et fail-closed à l'ajout d'une nouvelle molécule.
 
-**Conception exclusivement**. Aucun code d'app Shiny modifié, aucun couplage runtime et aucun lien vers un résultat de patient.
+**Intégration documentaire uniquement**. Le code Shiny affiche les références du guide et un lien direct par molécule ; il ne transmet aucune donnée patient au site PMx et ne réalise aucun calcul posologique à partir des références.
 
-## Prototype visuel R/Shiny en local (opt-in, non déployé)
+## Affichage bibliographique R/Shiny (local, non déployé)
 
-L'interface Shiny dispose maintenant d'un panneau déroulant **lecture seule** par modèle, y compris les
-modèles de simulation du catalogue, si et seulement si les variables suivantes sont définies
-en session locale avant `shiny::runApp()` :
+L'interface Shiny affiche par défaut un panneau **lecture seule** par modèle, y compris les
+modèles de simulation du catalogue, depuis `integration/tdm-guide-recommendations.v1.json`.
+Les variables ci-dessous ne sont nécessaires que pour tester un artefact local **alternatif**
+avant `shiny::runApp()` :
 
 ```bash
 # Dans PMx Explain (main après fusion de la PR #237) :
@@ -141,8 +142,9 @@ node scripts/preview_tdm_guide_recommendations.mjs --snapshot /tmp/pmx-tdm-guide
 ENABLE_TDM_GUIDE_PREVIEW=true TDM_GUIDE_PREVIEW_JSON=/tmp/mipd-tdm-preview.json Rscript run_local.R
 ```
 
-Par défaut `ENABLE_TDM_GUIDE_PREVIEW=false` : aucun chargement du snapshot, aucun changement
-visible pour les utilisateurs. Le panneau montre indice PK/PD, prélèvement, références candidates
+Par défaut `ENABLE_TDM_GUIDE_PREVIEW` est considéré comme activé : le snapshot versionné
+est chargé et la documentation bibliographique est visible. Mettre explicitement
+`ENABLE_TDM_GUIDE_PREVIEW=false` pour désactiver ce bloc. Le panneau montre indice PK/PD, prélèvement, références candidates
 (sources et contexte), objectifs conditionnels ; aucune plage n'est déclarée applicable au patient.
 Le module refuse les fichiers incomplets, patients, références non verrouillées ou avec drapeaux
 d'interprétation clinique actifs. Le panneau **ne modifie jamais les sliders de cible ou de dose**.
@@ -202,7 +204,7 @@ Rscript run_local.R
 Ouvrir `http://127.0.0.1:3838/` : le bloc STP bibliographique apparaît sous
 les cartes du catalogue et le modèle actif, **sans changer aucune cible ni dose**.
 Préinstaller les dépendances R du dépôt. Adapter les chemins si les dépôts ne sont
-pas voisins. Avec la variable `ENABLE_TDM_GUIDE_PREVIEW` absente, Shiny reste inchangé.
+pas voisins. Avec `ENABLE_TDM_GUIDE_PREVIEW=false`, le panneau bibliographique est désactivé.
 
 Tests complémentaires : PMx `npm run check` puis
 `npx playwright test tests/e2e/tdm-targets.spec.js --config playwright.pmx.config.js` ;
