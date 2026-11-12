@@ -3240,8 +3240,8 @@ server <- function(input, output, session) {
           "Product does not match ST: check ST in observations."
         )),
       if (nzchar(confirmed) && !is.null(hint)) tags$p(class = "tdm-compact-meta",
-        tx("Pas et intervalles préremplis pour la simulation uniquement ; doses et historique inchangés.",
-          "Step and intervals prefilled for simulation only; doses and patient history unchanged.")
+        tx("Simulation uniquement : pas et intervalles RCP préremplis ; doses et historique inchangés.",
+          "Simulation only: SmPC step and intervals prefilled; doses and patient history unchanged.")
       )
     )
   })
