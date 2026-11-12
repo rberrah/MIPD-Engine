@@ -8,6 +8,7 @@ on:
     branches: [main]
     paths:
       - tests/tdm_compact_sidebar_test.R
+      - tests/map_be_diagnostics_test.R
   workflow_dispatch:
     inputs:
       include_pmetrics:
