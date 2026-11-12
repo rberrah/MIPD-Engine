@@ -1375,3 +1375,30 @@ h6 {
   color: #8a4a11;
   font-weight: 600;
 }
+
+/* MAP-BE pharmacometric diagnostics: sparse by default, independent from dosing. */
+.map-be-intro { max-width: 850px; color: var(--muted); }
+.map-be-status {
+  margin: 12px 0 20px;
+  padding: 12px 14px;
+  border-left: 3px solid var(--teal);
+  background: var(--bs-secondary-bg, #f5f7f8);
+}
+.map-be-status p { margin: 5px 0 0; }
+.map-be-warnings {
+  margin: 8px 0 0;
+  padding-left: 20px;
+  color: #7c4e16;
+}
+.map-be-method-details {
+  margin-top: 22px;
+  border-top: 1px solid var(--line);
+  padding: 12px 0;
+  max-width: 980px;
+}
+.map-be-method-details summary { cursor: pointer; font-weight: 600; }
+.map-be-method-details p { margin: 9px 0; font-size: .9rem; }
+.map-be-workspace .shiny-plot-output { max-width: 100%; }
+@media (max-width: 650px) {
+  .map-be-workspace { padding-inline: 12px; }
+}
