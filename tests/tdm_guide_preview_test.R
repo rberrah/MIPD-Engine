@@ -104,11 +104,15 @@ cat("Shiny STP panels: 46/46 models from the committed artifact, active by defau
 # The undecidable dimensions declared by the adapter are shown, not dropped.
 stopifnot(grepl("formulation", html_range, fixed=TRUE))
 stopifnot(grepl("éthode de dosage", html_range, fixed=TRUE))
-# Key information stays visible: index and sampling precede the collapsed section.
-stopifnot(regexpr("Indice PK/PD", html_range, fixed=TRUE) <
-  regexpr("<details", html_range, fixed=TRUE))
-stopifnot(regexpr("èvement pratique", html_range, fixed=TRUE) <
-  regexpr("<details", html_range, fixed=TRUE))
+# The entire bibliographic panel is closed by default. The summary is
+# visible, while PK/PD index and sampling appear only after expansion.
+stopifnot(grepl("tdm-guide-preview-collapsible", html_range, fixed=TRUE))
+stopifnot(regexpr("Recommandation STP", html_range, fixed=TRUE) <
+  regexpr("</summary>", html_range, fixed=TRUE))
+stopifnot(regexpr("Indice PK/PD", html_range, fixed=TRUE) >
+  regexpr("</summary>", html_range, fixed=TRUE))
+stopifnot(regexpr("èvement pratique", html_range, fixed=TRUE) >
+  regexpr("</summary>", html_range, fixed=TRUE))
 
 # A structural context mismatch is rendered as a visible warning plus a counted banner.
 mismatched <- fixture
@@ -132,9 +136,13 @@ stopifnot(grepl("greffe hépatique", html_mismatch, fixed=TRUE))
 stopifnot(grepl("greffe rénale", html_mismatch, fixed=TRUE))
 stopifnot(grepl("tdm-guide-warning-banner", html_mismatch, fixed=TRUE))
 stopifnot(grepl("tdm-guide-ref-mismatch", html_mismatch, fixed=TRUE))
-# The banner is visible without opening the collapsed section.
-stopifnot(regexpr("tdm-guide-warning-banner", html_mismatch, fixed=TRUE) <
-  regexpr("<details", html_mismatch, fixed=TRUE))
+# Only a succinct warning is shown on the closed summary; the full
+# mismatch banner is visible after expanding the bibliographic panel.
+stopifnot(grepl("tdm-guide-preview-mismatch-count", html_mismatch, fixed=TRUE))
+stopifnot(regexpr("tdm-guide-preview-mismatch-count", html_mismatch, fixed=TRUE) <
+  regexpr("</summary>", html_mismatch, fixed=TRUE))
+stopifnot(regexpr("tdm-guide-warning-banner", html_mismatch, fixed=TRUE) >
+  regexpr("</summary>", html_mismatch, fixed=TRUE))
 
 # A PK/PD objective from another administration mode is no longer silently equivalent.
 pd_mode <- fixture
