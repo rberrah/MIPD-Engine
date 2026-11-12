@@ -3,6 +3,8 @@ APP_ROOT <- root
 `%||%` <- function(x, y) if (is.null(x) || !length(x)) y else x
 source(file.path(root,"R","model_library.R"), local=FALSE)
 source(file.path(root,"R","clinical_presets.R"), local=FALSE)
+source(file.path(root,"R","tdm_drug_profiles.R"), local=FALSE)
+source(file.path(root,"R","drug_profile_runtime_presets.R"), local=FALSE)
 source(file.path(root,"R","tdm_guide_presets.R"), local=FALSE)
 
 stopifnot(length(TDM_DRUG_PROFILES)==23L)

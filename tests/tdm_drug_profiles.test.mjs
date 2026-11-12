@@ -83,7 +83,7 @@ assert.equal(profiles.linez.simulationPresets.ORAL.target_metric,'Cmin');
 assert.equal(profiles.voriconazole.simulationPresets.ORAL.target_high,5.5);
 
 const app=readFileSync('app.R','utf8');
-const clinicalR=readFileSync('R/clinical_presets.R','utf8');
+const clinicalR=readFileSync('R/drug_profile_runtime_presets.R','utf8');
 const guideR=readFileSync('R/tdm_guide_presets.R','utf8');
 assert.ok(!app.includes('No universal clinical preset'));
 assert.ok(app.includes('output$tdm_drug_profile_ui <- renderUI'));

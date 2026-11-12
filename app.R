@@ -77,6 +77,8 @@ source(file.path(APP_ROOT, "R", "tdm_guide_preview.R"), local = TRUE)
 source(file.path(APP_ROOT, "R", "private_workspace.R"), local = TRUE)
 source(file.path(APP_ROOT, "R", "i18n.R"), local = TRUE)
 source(file.path(APP_ROOT, "R", "clinical_presets.R"), local = TRUE)
+source(file.path(APP_ROOT, "R", "tdm_drug_profiles.R"), local = TRUE)
+source(file.path(APP_ROOT, "R", "drug_profile_runtime_presets.R"), local = TRUE)
 source(file.path(APP_ROOT, "R", "tdm_guide_presets.R"), local = TRUE)
 pmetrics_mode <- tolower(trimws(Sys.getenv("ENABLE_PMETRICS", "auto")))
 if (!pmetrics_mode %in% c("auto", "true", "false")) stop("ENABLE_PMETRICS must be auto, true, or false.")
@@ -1666,7 +1668,11 @@ server <- function(input, output, session) {
           if (length(value) != 1L || !is.finite(value)) value <- definition$value[[definition_index]]
           numericInput(
             input_id,
-            if (nzchar(definition$description[[definition_index]])) {
+            if (identical(current_model_id(), "tacrolimus_woillard_ddi") &&
+                identical(name, "ST")) {
+              tx("ST · Galénique : 1 = Prograf (LI, 12 h) ; 0 = Advagraf (LP, 24 h)",
+                "ST · Formulation: 1 = Prograf (immediate, 12 h); 0 = Advagraf (prolonged, 24 h)")
+            } else if (nzchar(definition$description[[definition_index]])) {
               paste0(name, " · ", definition$description[[definition_index]])
             } else {
               name
