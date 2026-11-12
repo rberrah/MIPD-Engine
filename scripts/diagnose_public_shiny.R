@@ -37,7 +37,7 @@ if (!length(errors)) {
     # values; retain only standardized R error categories and operations.
     x <- gsub("https?://[^[:space:]]+", "<url>", x, perl = TRUE)
     x <- gsub("[[:alnum:]._%+-]+@[[:alnum:].-]+", "<email>", x, perl = TRUE)
-    x <- gsub("\\"[^\\"]*\\"", "\\"<quoted>\\"", x, perl = TRUE)
+    x <- gsub('"[^"]*"', '"<quoted>"', x, perl = TRUE)
     x <- gsub("'[^']*'", "'<quoted>'", x, perl = TRUE)
     x <- gsub("(?i)(token|secret|password)[[:space:]]*[:=][^[:space:]]+",
               "<credential>", x, perl = TRUE)
