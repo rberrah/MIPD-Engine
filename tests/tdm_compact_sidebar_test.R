@@ -53,7 +53,7 @@ stopifnot(
   any(grepl('  count = 10,', app, fixed=TRUE)),
   any(grepl('  insert_dose_row <- function(index, time = 0, amount = 1000, interval = 12, count = 10,', app, fixed=TRUE)),
   any(grepl('interval = 12, count = 10, infusion = 1, steady_state = FALSE)', app, fixed=TRUE)),
-  grepl('.dose-repeat-control .form-check-input', css, fixed=TRUE),
+  grepl('.dose-repeat-control input[type="checkbox"]', css, fixed=TRUE),
   grepl('width: 24px;', css, fixed=TRUE),
   grepl('height: 24px;', css, fixed=TRUE)
 )
