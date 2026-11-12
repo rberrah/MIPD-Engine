@@ -33,3 +33,28 @@ stopifnot(
   grepl('Concentrations en ng/mL', profile, fixed = TRUE)
 )
 cat("Compact TDM sidebar, explicit target choice and safety gates: PASS\n")
+# RCP metadata prepopulates only simulation search options; no observed
+# patient administrations, concentration or therapeutic target is changed.
+hint_event <- between('  observeEvent(input$tdm_profile_formulation, {',
+  '  observeEvent(input$apply_tdm_drug_grid, {')
+css <- paste(readLines("www/app.css", encoding="UTF-8", warn=FALSE), collapse="\n")
+stopifnot(
+  grepl('selectInput(\\n        "tdm_profile_formulation"', profile),
+  grepl('tdm_drug_profile_formulation_choices(record, mode, english)', profile, fixed=TRUE),
+  grepl('tdm_drug_profile_administration_hint(record, mode, confirmed, st)', profile, fixed=TRUE),
+  grepl('tdm_drug_profile_grid_eligible(record, mode, confirmed, st)', profile, fixed=TRUE),
+  grepl('updateNumericInput(session, "dose_step", value = hint$doseStepMg)', hint_event, fixed=TRUE),
+  grepl('update_candidate_intervals(hint$intervals)', hint_event, fixed=TRUE),
+  !grepl('updateNumericInput(session, "dose_amount_', hint_event, fixed=TRUE),
+  !grepl('updateNumericInput(session, "dose_interval_', hint_event, fixed=TRUE),
+  !grepl('updateNumericInput(session, "target_low"', hint_event, fixed=TRUE),
+  !grepl('updateNumericInput(session, "dose_min"', hint_event, fixed=TRUE),
+  any(grepl('  count = 10,', app, fixed=TRUE)),
+  any(grepl('  insert_dose_row <- function(index, time = 0, amount = 1000, interval = 12, count = 10,', app, fixed=TRUE)),
+  any(grepl('interval = 12, count = 10, infusion = 1, steady_state = FALSE)', app, fixed=TRUE)),
+  grepl('.dose-repeat-control .form-check-input', css, fixed=TRUE),
+  grepl('width: 24px;', css, fixed=TRUE),
+  grepl('height: 24px;', css, fixed=TRUE)
+)
+cat("RCP formulation choices, non-clinical auto-fill and 10-dose defaults: PASS\n")
+
