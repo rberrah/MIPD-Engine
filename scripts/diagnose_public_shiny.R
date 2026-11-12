@@ -27,7 +27,14 @@ has_error <- grepl(
   "Error in |Error:|ERROR|Execution halted|failed to|cannot open|not found|not available|invalid|fatal|terminat|exited",
   messages, ignore.case = TRUE
 )
-errors <- tail(messages[has_error], 20L)
+# R/shiny emits its actual exception *after* the generic
+# "Error in ..stacktraceon.." prefix. Retain one following line as context.
+# Never print the raw lines: everything is sanitized below.
+error_indices <- tail(which(has_error), 15L)
+selected <- sort(unique(unlist(lapply(error_indices, function(i) {
+  seq.int(max(1L, i), min(length(messages), i + 1L))
+}), use.names = FALSE)))
+errors <- tail(messages[selected], 30L)
 if (!length(errors)) {
   cat("SHINY_STARTUP_DIAGNOSTIC: no error-pattern lines in recent server logs; ",
       nrow(logs), " entries inspected.\n", sep = "")
