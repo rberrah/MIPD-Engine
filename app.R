@@ -3137,7 +3137,7 @@ server <- function(input, output, session) {
     confirmed <- as.character(input$tdm_profile_formulation %||% "")
     if (!confirmed %in% unname(choices)) confirmed <- ""
     hint <- tdm_drug_profile_administration_hint(record, mode, confirmed, st)
-    grid_for_form <- !is.null(grid) && nzchar(confirmed) &&
+    grid_for_form <- !is.null(hint) && !is.null(grid) && nzchar(confirmed) &&
       confirmed %in% as.character(unlist(grid$requiresFormulationIds %||% list()))
     div(
       class = "target-preset tdm-drug-json-profile",
