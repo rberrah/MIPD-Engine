@@ -3160,6 +3160,43 @@ server <- function(input, output, session) {
         tags$strong(tx("Prélèvement : ", "Sampling: ")),
         if (english) sample_info$en %||% "" else sample_info$fr %||% ""
       ),
+      if (length(profile$sourceReferences) || length(profile$conditionalPdObjectives)) {
+        tags$details(
+          tags$summary(tx("Objectifs publiés, contexte et sources", "Published objectives, context and sources")),
+          if (length(profile$sourceReferences)) tags$div(
+            tags$strong(tx("Références numériques (ne pas transposer sans contexte) :",
+              "Numeric references (do not transfer without matching context):")),
+            tags$ul(lapply(profile$sourceReferences, function(ref) {
+              amount <- paste0(
+                if (identical(ref$relation, "above")) "> " else if (identical(ref$relation, "below")) "< " else "",
+                format(ref$min),
+                if (!is.null(ref$max)) paste0(" – ", format(ref$max)) else "",
+                " ", ref$unit %||% "")
+              tags$li(
+                tags$strong(paste0(if (english) ref$indicationEn else ref$indicationFr,
+                  " · ", ref$metric, " ", amount)),
+                tags$p(if (english) ref$contextEn %||% "" else ref$contextFr %||% ""),
+                if (grepl("^https://", ref$source$url %||% "")) tags$a(
+                  ref$source$citation %||% tx("Source", "Source"),
+                  href = ref$source$url, target = "_blank", rel = "noopener noreferrer")
+              )
+            }))
+          ),
+          if (length(profile$conditionalPdObjectives)) tags$div(
+            tags$strong(tx("Indices PK/PD conditionnels :",
+              "Conditional PK/PD objectives:")),
+            tags$ul(lapply(profile$conditionalPdObjectives, function(pd) {
+              tags$li(
+                tags$strong(if (english) pd$labelEn %||% "" else pd$labelFr %||% ""),
+                tags$p(if (english) pd$criterionEn %||% "" else pd$criterionFr %||% ""),
+                if (grepl("^https://", pd$source$url %||% "")) tags$a(
+                  pd$source$citation %||% tx("Source", "Source"),
+                  href = pd$source$url, target = "_blank", rel = "noopener noreferrer")
+              )
+            }))
+          )
+        )
+      },
       if (!is.null(product)) tags$p(
         tags$strong(tx("Formulation du modèle : ", "Model formulation: ")),
         if (english) product$labelEn %||% product$product
@@ -3361,6 +3398,12 @@ server <- function(input, output, session) {
     grid <- entry$doseGrid
     selected_id <- input$tdm_guide_target_choice %||% ""
     selected <- tdm_guide_preset_candidate(record, mode, selected_id)
+    st_values <- vapply(seq_len(observation_count()), function(i)
+      suppressWarnings(as.numeric(input[[paste0("observation_cov_ST_", i)]] %||% NA_real_)), numeric(1))
+    st <- if (length(st_values) && all(is.finite(st_values)) &&
+              length(unique(st_values)) == 1L) st_values[[1]] else NA_real_
+    model_target_blocked <- !is.null(selected) &&
+      !tdm_drug_profile_target_eligible(record, selected, st)
     div(
       class = "target-preset tdm-guide-target-preset",
       tags$strong(tx("Cibles publiées du TDM Guide", "Published targets from the TDM Guide")),
@@ -3375,6 +3418,13 @@ server <- function(input, output, session) {
       )),
       radioButtons("tdm_guide_target_choice", NULL, choices = choices,
         selected = if (nzchar(selected_id)) selected_id else character(0)),
+      if (model_target_blocked) div(
+        class = "custom-note",
+        tags$strong(tx(
+          "Cette référence ne correspond pas à l'unité, à la formulation ou à la population du modèle. Elle reste visible, mais ne peut pas alimenter les champs de simulation.",
+          "This reference does not match the model unit, formulation or population. It remains visible but cannot populate simulation settings."
+        ))
+      ),
       if (!is.null(selected) && tdm_guide_preset_candidate_blocked(selected)) div(
         class = "custom-note",
         tags$strong(tx(
@@ -3392,7 +3442,8 @@ server <- function(input, output, session) {
           selected$citation %||% selected$url, href = selected$url,
           target = "_blank", rel = "noopener noreferrer")
       ),
-      actionButton("apply_tdm_guide_target",
+      if (!model_target_blocked && !(!is.null(selected) &&
+            tdm_guide_preset_candidate_blocked(selected))) actionButton("apply_tdm_guide_target",
         tx("Appliquer la cible sélectionnée", "Apply the selected target"),
         class = "btn-outline-primary btn-sm"),
       # The curated MIPD preset stays authoritative; a disagreement is stated, not resolved.
@@ -3440,6 +3491,17 @@ server <- function(input, output, session) {
     if (is.null(candidate)) {
       showNotification(tx("Sélectionner d'abord une cible publiée.",
         "Select a published target first."), type = "warning")
+      return()
+    }
+    st_values <- vapply(seq_len(observation_count()), function(i)
+      suppressWarnings(as.numeric(input[[paste0("observation_cov_ST_", i)]] %||% NA_real_)), numeric(1))
+    st <- if (length(st_values) && all(is.finite(st_values)) &&
+              length(unique(st_values)) == 1L) st_values[[1]] else NA_real_
+    if (!tdm_drug_profile_target_eligible(record, candidate, st)) {
+      showNotification(tx(
+        "Cible non appliquée : unité, formulation ou population incompatibles avec ce modèle.",
+        "Target not applied: model units, formulation or population are incompatible."),
+        type = "error", duration = 12)
       return()
     }
     # A range that is only defined together with its assay cannot be applied without
