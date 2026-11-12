@@ -41,8 +41,7 @@ stopifnot(is.null(tdm_drug_profile_administration_hint(tac_old,"ORAL",
   "tacrolimus-prolonged-release-envarsus")))
 stopifnot(is.null(tdm_drug_profile_administration_hint(tac,"ORAL","not-a-formulation")))
 # The Advagraf administration hint must never be a source-backed dose range.
-stopifnot(is.null(TDM_DRUG_PROFILES$tacrolimus$formulationAdministrationHints[
-  ["tacrolimus-prolonged-release-advagraf"]]$dose_min))
+stopifnot(is.null(TDM_DRUG_PROFILES$tacrolimus$formulationAdministrationHints[["tacrolimus-prolonged-release-advagraf"]]$dose_min))
 
 stopifnot(!tdm_drug_profile_grid_eligible(tac,"ORAL","tacrolimus-immediate-release",0))
 stopifnot(!tdm_drug_profile_grid_eligible(tac,"ORAL","",1))
