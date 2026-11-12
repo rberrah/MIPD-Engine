@@ -118,7 +118,18 @@ tdm_drug_profile_formulation_choices <- function(record, mode = NULL, english = 
   if (!length(ids) && !is.null(mode)) {
     grid <- tdm_drug_profile_search_grid(record, mode)
     ids <- as.character(unlist(grid$requiresFormulationIds %||% list()))
-    labels <- gsub("-", " ", ids, fixed = TRUE)
+    pretty <- if (english) c(
+      "ciclosporine-neoral-microemulsion" = "Neoral · microemulsion",
+      "everolimus-certican-transplant" = "Certican · transplantation",
+      "sirolimus-rapamune-tablet" = "Rapamune · tablets"
+    ) else c(
+      "ciclosporine-neoral-microemulsion" = "Neoral · microémulsion",
+      "everolimus-certican-transplant" = "Certican · transplantation",
+      "sirolimus-rapamune-tablet" = "Rapamune · comprimés"
+    )
+    labels <- vapply(ids, function(form) {
+      if (form %in% names(pretty)) unname(pretty[[form]]) else gsub("-", " ", form, fixed = TRUE)
+    }, character(1))
   }
   keep <- nzchar(ids) & nzchar(labels) & !duplicated(ids)
   stats::setNames(ids[keep], labels[keep])
