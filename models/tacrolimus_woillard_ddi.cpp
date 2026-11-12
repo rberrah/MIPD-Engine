@@ -28,7 +28,7 @@ ETA5:0:KTR
 
 $PARAM @annotated @covariates
 HT    : 35    : Hematocrite
-ST    : 1     : Galenique
+ST    : 1     : Formulation tacrolimus (1 = Prograf LI, q12h; 0 = Advagraf LP, q24h)
 CYP   : 0     : CYP Status
 
 // --- PARAMETRES PERPETRATEUR & MECANISMES ---
@@ -112,6 +112,7 @@ dxdt_CENT_TAC  = KTR * TR3_TAC * F_BOOST - (CL_TAC_DDI + Q)*(CENT_TAC/V1) + Q*(P
 dxdt_PERI_TAC  = Q*(CENT_TAC/V1) - Q*(PERI_TAC/V2);
 
 $TABLE
+// CENT_TAC is in mg and V1 in L: mg/L * 1000 = ng/mL; no UI re-scaling.
 double CONC = CENT_TAC / (V1/1000.0);
 double DV = CONC * (1.0 + EPS(1)) + EPS(2);
 double ratio = (CL_TAC_DDI / CL0) / F_BOOST;

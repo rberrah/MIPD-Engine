@@ -94,6 +94,7 @@ dxdt_CENT_TAC  = KTR * TRANS2_TAC * F_BOOST - (CL_TAC_DDI + Q)*(CENT_TAC/V1) + Q
 dxdt_PERI_TAC  = Q*(CENT_TAC/V1) - Q*(PERI_TAC/V2);
 
 $TABLE
+// CENT_TAC is in mg and V1 in L: mg/L * 1000 = ng/mL; no UI re-scaling.
 double CONC = CENT_TAC / (V1/1000.0);
 double DV = CONC * (1.0 + EPS(1)) + EPS(2);
 double ratio =  (CL_TAC_DDI / CL0) / F_BOOST;
