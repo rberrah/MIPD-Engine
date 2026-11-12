@@ -104,16 +104,22 @@ tdm_drug_profile_search_grid <- function(record, mode) {
 
 # Formulation choices come from the model's actual formulation covariate
 # definitions, not from the single RCP grid (which excludes Advagraf).
-tdm_drug_profile_formulation_choices <- function(record, english = FALSE) {
+tdm_drug_profile_formulation_choices <- function(record, mode = NULL, english = FALSE) {
   profile <- tdm_drug_profile(record)
   id <- as.character(record$id[[1]] %||% "")
   item <- profile$formulationCovariates[[id]] %||% NULL
-  if (is.null(item)) return(character())
-  values <- item$values %||% list(item)
+  values <- if (is.null(item)) list() else item$values %||% list(item)
   ids <- vapply(values, function(x) as.character(x$formulationId %||% ""), character(1))
   labels <- vapply(values, function(x) as.character(
     if (english) x$labelEn %||% x$product %||% "" else x$labelFr %||% x$product %||% ""
   ), character(1))
+  # Older dossiers provide only the SmPC grid's formulation IDs. They remain
+  # selectable without manufacturing a target or inventing any formulations.
+  if (!length(ids) && !is.null(mode)) {
+    grid <- tdm_drug_profile_search_grid(record, mode)
+    ids <- as.character(unlist(grid$requiresFormulationIds %||% list()))
+    labels <- gsub("-", " ", ids, fixed = TRUE)
+  }
   keep <- nzchar(ids) & nzchar(labels) & !duplicated(ids)
   stats::setNames(ids[keep], labels[keep])
 }
@@ -121,11 +127,17 @@ tdm_drug_profile_formulation_choices <- function(record, english = FALSE) {
 # A sourced dose STEP and administration INTERVAL may prefill simulation
 # controls after the user chooses the product. A full dose range is separate,
 # never inferred from capsule strengths, and keeps its existing safety gate.
-tdm_drug_profile_administration_hint <- function(record, mode, formulation_id) {
+tdm_drug_profile_administration_hint <- function(record, mode, formulation_id, st = NA_real_) {
   if (!is.character(formulation_id) || length(formulation_id) != 1L ||
       !nzchar(formulation_id)) return(NULL)
-  choices <- tdm_drug_profile_formulation_choices(record)
+  choices <- tdm_drug_profile_formulation_choices(record, mode)
   if (!formulation_id %in% unname(choices)) return(NULL)
+  id <- as.character(record$id[[1]] %||% "")
+  if (identical(id, "everolimus_terheine_ddi")) return(NULL)
+  if (identical(id, "tacrolimus_woillard_ddi") && is.finite(st) && st %in% c(0, 1)) {
+    required <- if (st == 1) "tacrolimus-immediate-release" else "tacrolimus-prolonged-release-advagraf"
+    if (!identical(formulation_id, required)) return(NULL)
+  }
   profile <- tdm_drug_profile(record)
   entry <- tdm_drug_profile_guide_entry(record, mode)
   if (is.null(entry)) return(NULL)
