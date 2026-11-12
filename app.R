@@ -755,6 +755,7 @@ app_ui <- function(request) {
               "Cible et grille de doses",
               value = "target_settings",
               uiOutput("target_preset_ui"),
+              uiOutput("tdm_drug_profile_ui"),
               uiOutput("tdm_guide_drug_link_ui"),
               uiOutput("tdm_guide_preset_ui"),
               selectInput(
@@ -3009,11 +3010,13 @@ server <- function(input, output, session) {
     route <- input$administration_route %||% ""
     shiny::req(model_supports_route(record, route))
     modes <- model_administration_modes(record, route)
+    # When a model has a single mode the route already conveys this information.
+    if (length(modes) <= 1L) return(NULL)
     selected <- isolate(input$administration_mode %||% "")
     if (!selected %in% modes) selected <- modes[[1]]
     selectInput(
       "administration_mode",
-      tx("Mode d'administration", "Administration mode"),
+      tx("Précision du mode IV", "IV regimen type"),
       choices = stats::setNames(modes, vapply(modes, administration_mode_label, character(1), lang = current_language())),
       selected = selected
     )
@@ -3062,7 +3065,17 @@ server <- function(input, output, session) {
     if (identical(last_target_preset_key(), key)) return()
     last_target_preset_key(key)
     preset <- active_target_preset()
-    if (is.null(preset)) return()
+    if (is.null(preset)) {
+      # Do not let a previous drug's targets (or mg-dose grid) silently survive a
+      # switch to a molecule without a context-qualified default in its JSON.
+      updateNumericInput(session, "target_low", value = NA_real_)
+      updateNumericInput(session, "target_high", value = NA_real_)
+      updateNumericInput(session, "dose_min", value = NA_real_)
+      updateNumericInput(session, "dose_max", value = NA_real_)
+      updateNumericInput(session, "dose_step", value = NA_real_)
+      update_candidate_intervals(numeric())
+      return()
+    }
     updateSelectInput(session, "target_metric", selected = preset$target_metric)
     updateNumericInput(session, "target_low", value = preset$target_low)
     updateNumericInput(session, "target_high", value = preset$target_high)
@@ -3076,14 +3089,31 @@ server <- function(input, output, session) {
   output$target_preset_ui <- renderUI({
     preset <- active_target_preset()
     if (is.null(preset)) {
-      return(div(
-        class = "target-preset unavailable",
-        tags$strong(tx("Aucun préréglage clinique universel", "No universal clinical preset")),
-        span(tx(
-          "La cible et la grille affichées doivent être définies selon l'indication, le protocole local et le patient; elles ne constituent pas une recommandation.",
-          "The displayed target and grid must be defined for the indication, local protocol, and patient; they are not a recommendation."
+      profile <- if (identical(input$model_source %||% "library", "library")) {
+        tdm_drug_profile(model_record(current_model_id()))
+      } else NULL
+      if (!is.null(profile)) {
+        entry <- profile$guideTargetPresets[[current_administration_mode()]]
+        n_targets <- length(entry$candidates %||% list())
+        n_refs <- length(profile$sourceReferences %||% list())
+        n_pd <- length(profile$conditionalPdObjectives %||% list())
+        return(div(
+          class = "target-preset reference-only",
+          tags$strong(tx("Références TDM disponibles pour cette molécule",
+            "TDM references available for this drug")),
+          span(if (n_targets > 0L) tx(
+            paste0(n_targets, " cible(s) contextualisée(s) dans le JSON : sélectionner ci-dessous la référence adaptée à l'indication puis cliquer sur Appliquer. Aucun objectif n'est imposé par défaut."),
+            paste0(n_targets, " context-dependent target(s) in the JSON: choose the relevant indication below and click Apply. No target is imposed by default.")
+          ) else tx(
+            paste0("Pas de cible chiffrée directement transposable (", n_refs, " référence(s) et ", n_pd, " objectif(s) PK/PD conditionnel(s)). Renseigner des bornes adaptées au protocole pour la simulation."),
+            paste0("No directly usable numeric target (", n_refs, " bibliographic reference(s) and ", n_pd, " conditional PK/PD objective(s)). Enter protocol-specific simulation bounds.")
+          ))
         ))
-      ))
+      }
+      return(div(class = "target-preset unavailable",
+        tags$strong(tx("Cible définie par l'utilisateur", "User-defined target")),
+        span(tx("La cible et la grille doivent être renseignées pour la simulation.",
+          "Target and grid must be entered for the simulation."))))
     }
     if (is.null(applied_target_preset())) {
       return(div(
