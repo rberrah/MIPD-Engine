@@ -1,0 +1,493 @@
+{
+  "schema": "mipd.tdm.drug-profile.v1",
+  "drugKey": "everolimus",
+  "tdmDrugId": "everolimus",
+  "drugName": "Évérolimus",
+  "modelIds": [
+    "everolimus_moes_ddi",
+    "everolimus_terheine_ddi"
+  ],
+  "concentrationUnit": "ng/mL",
+  "doseUnit": "mg",
+  "intendedUse": "TEACHING_RESEARCH_ONLY",
+  "clinicalInterpretationAllowed": false,
+  "automaticDoseAdjustmentAllowed": false,
+  "patientDataIncluded": false,
+  "guideHref": "https://rberrah.github.io/pharmacometrie/cibles-tdm/?drug=everolimus&lang=fr",
+  "monitoring": {
+    "key": "Cmin",
+    "fr": "C0 (bon reflet de l’AUC)",
+    "en": "Trough (good AUC proxy)",
+    "sourceId": "everolimus2016",
+    "noteFr": "Le consensus IATDMCT indique que la C0 sang total corrèle bien à l’AUC : elle est la surveillance recommandée, sans nécessité systématique d’une AUC.",
+    "noteEn": "IATDMCT states whole-blood trough tracks AUC well and is appropriate for routine TDM."
+  },
+  "sampling": {
+    "key": "Cmin",
+    "fr": "C0 juste avant la prise",
+    "en": "Trough before next dose",
+    "sourceId": "everolimus2016",
+    "noteFr": "Prélèvement standardisé avant dose à l’état stable, avec conditions alimentaires constantes.",
+    "noteEn": "Steady-state predose sample with consistent food conditions."
+  },
+  "sourceSnapshotSha256": "511c8fef0159a6aff406d026bc952dc59e4c5ba5a05b0c17e3af7f26c15d7230",
+  "guideTargetPresets": {
+    "ORAL": {
+      "drugKey": "everolimus",
+      "mode": "ORAL",
+      "tdmDrugId": "everolimus",
+      "doseGrid": {
+        "dose_min": 0.25,
+        "dose_max": 1.5,
+        "dose_step": 0.25,
+        "intervals": [
+          12
+        ],
+        "infusion": 0,
+        "basisFr": "Bornes restreintes aux schémas nommés par le RCP : 0,75 mg deux fois par jour avec la ciclosporine (rein, coeur) et 1,0 mg deux fois par jour avec le tacrolimus (foie). Le RCP indique que le schéma à posologie plus élevée n'est pas recommandé : la grille ne monte donc pas au-delà de 1,5 mg par prise. Pas de 0,25 mg aligné sur le plus petit comprimé, le RCP arrondissant lui-même les réductions au dosage de comprimé le plus proche. Les plages cibles du RCP reposent sur des méthodes chromatographiques.",
+        "basisEn": "Bounds restricted to the regimens the label names: 0.75 mg twice daily with ciclosporin (kidney, heart) and 1.0 mg twice daily with tacrolimus (liver). The label states the higher-dosage regimen is not recommended, so the grid does not go beyond 1.5 mg per dose. The 0.25 mg step matches the smallest tablet, and the label itself rounds reduced doses to the nearest tablet strength. The label target ranges rest on chromatographic methods.",
+        "source": {
+          "label": "Certican tablets, SmPC section 4.2, UK electronic medicines compendium",
+          "url": "https://www.medicines.org.uk/emc/product/1920/smpc",
+          "statement": "An initial dose regimen of 0.75 mg twice daily in co-administration with ciclosporin is recommended; The dose of 1.0 mg twice daily in co-administration with tacrolimus is recommended for the hepatic transplant population; Reduced doses rounded to the nearest tablet strength are tabulated below",
+          "strengths": "0.25 mg, 0.75 mg tablets"
+        },
+        "signoff": "PENDING",
+        "requiresFormulationIds": [
+          "everolimus-certican-transplant"
+        ]
+      },
+      "doseGridSignedOff": false,
+      "doseGridApplicableModelIds": [],
+      "doseGridBlockedModels": {
+        "everolimus_moes_ddi": "grid_awaiting_signoff",
+        "everolimus_terheine_ddi": "grid_awaiting_signoff"
+      },
+      "candidates": [
+        {
+          "id": "everolimus-kidney-cni",
+          "target_metric": "Cmin",
+          "target_low": 3,
+          "target_high": 8,
+          "target_unit": "ng/mL",
+          "indication": "kidney",
+          "labelFr": "Greffe rénale · avec ICN à exposition réduite",
+          "labelEn": "Kidney transplant · reduced-exposure CNI",
+          "scopeFr": "Évérolimus avec inhibiteur de calcineurine à exposition réduite ; la méthode analytique doit être prise en compte.",
+          "scopeEn": "Everolimus with reduced-exposure calcineurin inhibitor; analytical assay matters.",
+          "citation": "IATDMCT · 2025",
+          "url": "https://doi.org/10.1097/FTD.0000000000001250",
+          "evidenceStatus": "guideline",
+          "undecidable": [
+            "analyteId",
+            "analyteBasis",
+            "matrixId",
+            "formulationId",
+            "assayMethod",
+            "samplingTime"
+          ],
+          "applicationBlocked": false,
+          "applicationBlockedCode": null,
+          "modelApplicabilityVerified": false,
+          "automaticDoseAdjustmentAllowed": false
+        },
+        {
+          "id": "everolimus-kidney-csa-fda",
+          "target_metric": "Cmin",
+          "target_low": 3,
+          "target_high": 8,
+          "target_unit": "ng/mL",
+          "indication": "kidney",
+          "labelFr": "Greffe rénale · ciclosporine à dose réduite (label FDA)",
+          "labelEn": "Kidney transplant · reduced cyclosporine (FDA label)",
+          "scopeFr": "Label FDA Zortress en transplantation rénale : faible à moyen risque immunologique, induction basiliximab, ciclosporine réduite et corticoïdes. Ne pas étendre à tous les schémas sans ICN.",
+          "scopeEn": "FDA Zortress label for lower/moderate-risk kidney transplant with basiliximab induction, reduced cyclosporine and steroids. Not a CNI-free target.",
+          "citation": "FDA · Zortress 2026",
+          "url": "https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=e082a024-7850-400b-a5c2-2a140612562a",
+          "evidenceStatus": "regulatory",
+          "undecidable": [
+            "analyteId",
+            "analyteBasis",
+            "matrixId",
+            "formulationId",
+            "assayMethod",
+            "samplingTime"
+          ],
+          "applicationBlocked": false,
+          "applicationBlockedCode": null,
+          "modelApplicabilityVerified": false,
+          "automaticDoseAdjustmentAllowed": false
+        },
+        {
+          "id": "everolimus-kidney-no-cni",
+          "target_metric": "Cmin",
+          "target_low": 6,
+          "target_high": 10,
+          "target_unit": "ng/mL",
+          "indication": "kidney",
+          "labelFr": "Greffe rénale · sans ICN",
+          "labelEn": "Kidney transplant · CNI-free",
+          "scopeFr": "Schéma sans ICN décrit dans le tableau 1 ; ne pas confondre avec la greffe cardiaque sans ICN.",
+          "scopeEn": "CNI-free regimen from Table 1; not the same target as CNI-free heart transplantation.",
+          "citation": "IATDMCT · 2025",
+          "url": "https://doi.org/10.1097/FTD.0000000000001250",
+          "evidenceStatus": "guideline",
+          "undecidable": [
+            "analyteId",
+            "analyteBasis",
+            "matrixId",
+            "formulationId",
+            "assayMethod",
+            "samplingTime"
+          ],
+          "applicationBlocked": false,
+          "applicationBlockedCode": null,
+          "modelApplicabilityVerified": false,
+          "automaticDoseAdjustmentAllowed": false
+        }
+      ],
+      "autoApply": false
+    }
+  },
+  "sourceReferences": [
+    {
+      "id": "everolimus-kidney-csa-fda",
+      "metric": "C₀",
+      "unit": "ng/mL",
+      "indication": "kidney",
+      "indicationFr": "Greffe rénale · ciclosporine à dose réduite (label FDA)",
+      "indicationEn": "Kidney transplant · reduced cyclosporine (FDA label)",
+      "contextFr": "Label FDA Zortress en transplantation rénale : faible à moyen risque immunologique, induction basiliximab, ciclosporine réduite et corticoïdes. Ne pas étendre à tous les schémas sans ICN.",
+      "contextEn": "FDA Zortress label for lower/moderate-risk kidney transplant with basiliximab induction, reduced cyclosporine and steroids. Not a CNI-free target.",
+      "analyteId": null,
+      "analyteBasis": null,
+      "matrixId": null,
+      "matrixFr": "Sang total · méthode LC-MS/MS",
+      "matrixEn": "Whole blood · LC-MS/MS method",
+      "formulationId": null,
+      "samplingTime": null,
+      "relation": "range",
+      "min": 3,
+      "max": 8,
+      "analyticalIdentityMissing": [
+        "analyteId",
+        "analyteBasis",
+        "matrixId",
+        "formulationId",
+        "assayMethod",
+        "samplingTime"
+      ],
+      "source": {
+        "id": "fdaZortress2026",
+        "citation": "FDA · Zortress 2026",
+        "url": "https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=e082a024-7850-400b-a5c2-2a140612562a",
+        "year": 2026,
+        "section": "Sections 2.4–2.6: everolimus C0 3–8 ng/mL with reduced cyclosporine in kidney or reduced tacrolimus in liver; tacrolimus liver C0 3–5 ng/mL by month 2–12"
+      },
+      "status": "bibliographic_candidate_requires_context_review",
+      "applicability": {
+        "verdict": "requires_human_context_review",
+        "mismatches": [],
+        "undecidable": [
+          "analyteId",
+          "analyteBasis",
+          "matrixId",
+          "formulationId",
+          "assayMethod",
+          "samplingTime"
+        ]
+      },
+      "modelApplicabilityVerified": false,
+      "automaticDoseAdjustmentAllowed": false
+    },
+    {
+      "id": "everolimus-liver-tac-fda",
+      "metric": "C₀",
+      "unit": "ng/mL",
+      "indication": "liver",
+      "indicationFr": "Greffe hépatique · avec tacrolimus réduit (FDA)",
+      "indicationEn": "Liver transplant · reduced tacrolimus (FDA)",
+      "contextFr": "Label FDA Zortress : introduction au moins 30 jours après transplantation hépatique, tacrolimus à exposition réduite et corticoïdes. Adaptation selon risques, méthode et biopsies.",
+      "contextEn": "FDA Zortress: start at least 30 days after liver transplant with reduced tacrolimus and steroids. Adjust to assay and clinical status.",
+      "analyteId": null,
+      "analyteBasis": null,
+      "matrixId": null,
+      "matrixFr": "Sang total · méthode LC-MS/MS",
+      "matrixEn": "Whole blood · LC-MS/MS method",
+      "formulationId": null,
+      "samplingTime": null,
+      "relation": "range",
+      "min": 3,
+      "max": 8,
+      "analyticalIdentityMissing": [
+        "analyteId",
+        "analyteBasis",
+        "matrixId",
+        "formulationId",
+        "assayMethod",
+        "samplingTime"
+      ],
+      "source": {
+        "id": "fdaZortress2026",
+        "citation": "FDA · Zortress 2026",
+        "url": "https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=e082a024-7850-400b-a5c2-2a140612562a",
+        "year": 2026,
+        "section": "Sections 2.4–2.6: everolimus C0 3–8 ng/mL with reduced cyclosporine in kidney or reduced tacrolimus in liver; tacrolimus liver C0 3–5 ng/mL by month 2–12"
+      },
+      "status": "bibliographic_candidate_requires_context_review",
+      "applicability": {
+        "verdict": "structural_context_mismatch",
+        "mismatches": [
+          {
+            "dimension": "transplanted_organ",
+            "code": "organ_indication_mismatch",
+            "referenceContext": "liver",
+            "modelContext": "kidney"
+          }
+        ],
+        "undecidable": [
+          "analyteId",
+          "analyteBasis",
+          "matrixId",
+          "formulationId",
+          "assayMethod",
+          "samplingTime"
+        ]
+      },
+      "modelApplicabilityVerified": false,
+      "automaticDoseAdjustmentAllowed": false
+    },
+    {
+      "id": "everolimus-kidney-cni",
+      "metric": "C₀",
+      "unit": "ng/mL",
+      "indication": "kidney",
+      "indicationFr": "Greffe rénale · avec ICN à exposition réduite",
+      "indicationEn": "Kidney transplant · reduced-exposure CNI",
+      "contextFr": "Évérolimus avec inhibiteur de calcineurine à exposition réduite ; la méthode analytique doit être prise en compte.",
+      "contextEn": "Everolimus with reduced-exposure calcineurin inhibitor; analytical assay matters.",
+      "analyteId": null,
+      "analyteBasis": null,
+      "matrixId": null,
+      "matrixFr": "Sang total",
+      "matrixEn": "Whole blood",
+      "formulationId": null,
+      "samplingTime": null,
+      "relation": "range",
+      "min": 3,
+      "max": 8,
+      "analyticalIdentityMissing": [
+        "analyteId",
+        "analyteBasis",
+        "matrixId",
+        "formulationId",
+        "assayMethod",
+        "samplingTime"
+      ],
+      "source": {
+        "id": "everolimus2025",
+        "citation": "IATDMCT · 2025",
+        "url": "https://doi.org/10.1097/FTD.0000000000001250",
+        "year": 2025,
+        "section": "Table 1 and kidney/heart-transplantation recommendations"
+      },
+      "status": "bibliographic_candidate_requires_context_review",
+      "applicability": {
+        "verdict": "requires_human_context_review",
+        "mismatches": [],
+        "undecidable": [
+          "analyteId",
+          "analyteBasis",
+          "matrixId",
+          "formulationId",
+          "assayMethod",
+          "samplingTime"
+        ]
+      },
+      "modelApplicabilityVerified": false,
+      "automaticDoseAdjustmentAllowed": false
+    },
+    {
+      "id": "everolimus-kidney-no-cni",
+      "metric": "C₀",
+      "unit": "ng/mL",
+      "indication": "kidney",
+      "indicationFr": "Greffe rénale · sans ICN",
+      "indicationEn": "Kidney transplant · CNI-free",
+      "contextFr": "Schéma sans ICN décrit dans le tableau 1 ; ne pas confondre avec la greffe cardiaque sans ICN.",
+      "contextEn": "CNI-free regimen from Table 1; not the same target as CNI-free heart transplantation.",
+      "analyteId": null,
+      "analyteBasis": null,
+      "matrixId": null,
+      "matrixFr": "Sang total",
+      "matrixEn": "Whole blood",
+      "formulationId": null,
+      "samplingTime": null,
+      "relation": "range",
+      "min": 6,
+      "max": 10,
+      "analyticalIdentityMissing": [
+        "analyteId",
+        "analyteBasis",
+        "matrixId",
+        "formulationId",
+        "assayMethod",
+        "samplingTime"
+      ],
+      "source": {
+        "id": "everolimus2025",
+        "citation": "IATDMCT · 2025",
+        "url": "https://doi.org/10.1097/FTD.0000000000001250",
+        "year": 2025,
+        "section": "Table 1 and kidney/heart-transplantation recommendations"
+      },
+      "status": "bibliographic_candidate_requires_context_review",
+      "applicability": {
+        "verdict": "requires_human_context_review",
+        "mismatches": [],
+        "undecidable": [
+          "analyteId",
+          "analyteBasis",
+          "matrixId",
+          "formulationId",
+          "assayMethod",
+          "samplingTime"
+        ]
+      },
+      "modelApplicabilityVerified": false,
+      "automaticDoseAdjustmentAllowed": false
+    },
+    {
+      "id": "everolimus-heart-cni",
+      "metric": "C₀",
+      "unit": "ng/mL",
+      "indication": "heart",
+      "indicationFr": "Greffe cardiaque · avec ICN réduit",
+      "indicationEn": "Heart transplant · reduced-exposure CNI",
+      "contextFr": "Cible de l’évérolimus avec ICN réduit ; un schéma quadruple peut avoir une cible différente (3–6 ng/mL).",
+      "contextEn": "Everolimus with reduced CNI; a quadruple regimen may have a different target (3–6 ng/mL).",
+      "analyteId": null,
+      "analyteBasis": null,
+      "matrixId": null,
+      "matrixFr": "Sang total",
+      "matrixEn": "Whole blood",
+      "formulationId": null,
+      "samplingTime": null,
+      "relation": "range",
+      "min": 3,
+      "max": 8,
+      "analyticalIdentityMissing": [
+        "analyteId",
+        "analyteBasis",
+        "matrixId",
+        "formulationId",
+        "assayMethod",
+        "samplingTime"
+      ],
+      "source": {
+        "id": "everolimus2025",
+        "citation": "IATDMCT · 2025",
+        "url": "https://doi.org/10.1097/FTD.0000000000001250",
+        "year": 2025,
+        "section": "Table 1 and kidney/heart-transplantation recommendations"
+      },
+      "status": "bibliographic_candidate_requires_context_review",
+      "applicability": {
+        "verdict": "structural_context_mismatch",
+        "mismatches": [
+          {
+            "dimension": "transplanted_organ",
+            "code": "organ_indication_mismatch",
+            "referenceContext": "heart",
+            "modelContext": "kidney"
+          }
+        ],
+        "undecidable": [
+          "analyteId",
+          "analyteBasis",
+          "matrixId",
+          "formulationId",
+          "assayMethod",
+          "samplingTime"
+        ]
+      },
+      "modelApplicabilityVerified": false,
+      "automaticDoseAdjustmentAllowed": false
+    },
+    {
+      "id": "everolimus-heart-no-cni",
+      "metric": "C₀",
+      "unit": "ng/mL",
+      "indication": "heart",
+      "indicationFr": "Greffe cardiaque · sans ICN, avec MPA et corticoïdes",
+      "indicationEn": "Heart transplant · CNI-free, with MPA and steroids",
+      "contextFr": "Schéma sans ICN associant MPA et glucocorticoïdes ; le consensus recommande d’éviter C₀ <5 ng/mL.",
+      "contextEn": "CNI-free regimen combined with MPA and glucocorticoids; the consensus recommends avoiding C₀ below 5 ng/mL.",
+      "analyteId": null,
+      "analyteBasis": null,
+      "matrixId": null,
+      "matrixFr": "Sang total",
+      "matrixEn": "Whole blood",
+      "formulationId": null,
+      "samplingTime": null,
+      "relation": "range",
+      "min": 5,
+      "max": 10,
+      "analyticalIdentityMissing": [
+        "analyteId",
+        "analyteBasis",
+        "matrixId",
+        "formulationId",
+        "assayMethod",
+        "samplingTime"
+      ],
+      "source": {
+        "id": "everolimus2025",
+        "citation": "IATDMCT · 2025",
+        "url": "https://doi.org/10.1097/FTD.0000000000001250",
+        "year": 2025,
+        "section": "Table 1 and kidney/heart-transplantation recommendations"
+      },
+      "status": "bibliographic_candidate_requires_context_review",
+      "applicability": {
+        "verdict": "structural_context_mismatch",
+        "mismatches": [
+          {
+            "dimension": "transplanted_organ",
+            "code": "organ_indication_mismatch",
+            "referenceContext": "heart",
+            "modelContext": "kidney"
+          }
+        ],
+        "undecidable": [
+          "analyteId",
+          "analyteBasis",
+          "matrixId",
+          "formulationId",
+          "assayMethod",
+          "samplingTime"
+        ]
+      },
+      "modelApplicabilityVerified": false,
+      "automaticDoseAdjustmentAllowed": false
+    }
+  ],
+  "conditionalPdObjectives": [],
+  "simulationPresets": {},
+  "formulationByModel": {
+    "everolimus_moes_ddi": {
+      "formulationId": "not-declared-by-source",
+      "evidence": "Adultes transplantés rénaux sous schéma sans inhibiteur de calcineurine.",
+      "noteFr": "La population ne nomme aucune spécialité ; la grille déclarée repose sur le RCP Certican en transplantation.",
+      "noteEn": "The population names no product; the declared grid rests on the Certican transplant label."
+    },
+    "everolimus_terheine_ddi": {
+      "formulationId": "not-declared-by-source",
+      "evidence": "Adultes: cancers métastatiques thyroïdiens ou mammaires et transplantés rénaux.",
+      "noteFr": "La population mélange oncologie et transplantation. En oncologie l'évérolimus est dosé à un ordre de grandeur supérieur (environ 10 mg/j) à celui de la transplantation (0,75 mg deux fois par jour) : la grille Certican ne couvre pas cette population.",
+      "noteEn": "The population pools oncology and transplantation. In oncology everolimus is dosed an order of magnitude higher (about 10 mg/day) than in transplantation (0.75 mg twice daily): the Certican grid does not cover that population."
+    }
+  },
+  "noteFr": "Les références sont contextuelles. Les grilles de doses sont des espaces exploratoires, pas des prescriptions.",
+  "noteEn": "References are context-dependent. Dose grids are exploratory search spaces, not prescriptions."
+}

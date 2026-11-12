@@ -1,0 +1,560 @@
+{
+  "schema": "mipd.tdm.drug-profile.v1",
+  "drugKey": "tacrolimus",
+  "tdmDrugId": "tac",
+  "drugName": "Tacrolimus",
+  "modelIds": [
+    "tacrolimus_kamp_envarsus_ddi",
+    "tacrolimus_woillard_ddi"
+  ],
+  "concentrationUnit": "ng/mL",
+  "doseUnit": "mg",
+  "intendedUse": "TEACHING_RESEARCH_ONLY",
+  "clinicalInterpretationAllowed": false,
+  "automaticDoseAdjustmentAllowed": false,
+  "patientDataIncluded": false,
+  "guideHref": "https://rberrah.github.io/pharmacometrie/cibles-tdm/?drug=tac&lang=fr",
+  "monitoring": {
+    "key": "AUC_interval",
+    "fr": "AUCτ (exposition complète)",
+    "en": "AUCτ (total exposure)",
+    "sourceId": "tacrolimus2019",
+    "noteFr": "L’AUC caractérise plus complètement l’exposition ; la C0 reste la surveillance standard validée et pratique en routine. L’AUC n’est pas imposée pour toutes les greffes.",
+    "noteEn": "AUC better characterises exposure; trough remains the established, practical routine monitoring approach. AUC is not universally mandated."
+  },
+  "sampling": {
+    "key": "Cmin",
+    "fr": "C0 en routine ; AUC si pertinente",
+    "en": "Routine trough; AUC when indicated",
+    "sourceId": "tacrolimus2019",
+    "noteFr": "C0 sang total à l’horaire adapté (LI versus LP) ; AUC/LSS en cas de discordance, interaction ou question pharmacométrique.",
+    "noteEn": "Whole-blood trough at formulation-appropriate timing (IR vs prolonged release); AUC/LSS for discordance, interactions or selected questions."
+  },
+  "sourceSnapshotSha256": "511c8fef0159a6aff406d026bc952dc59e4c5ba5a05b0c17e3af7f26c15d7230",
+  "guideTargetPresets": {
+    "ORAL": {
+      "drugKey": "tacrolimus",
+      "mode": "ORAL",
+      "tdmDrugId": "tac",
+      "doseGrid": {
+        "dose_min": 0.5,
+        "dose_max": 14,
+        "dose_step": 0.5,
+        "intervals": [
+          12
+        ],
+        "infusion": 0,
+        "basisFr": "Strictement le schéma du RCP Prograf à libération immédiate : 0,20–0,30 mg/kg/j en DEUX prises, soit environ 7–11 mg par prise à 70 kg et jusqu'à environ 13,5 mg à 90 kg, d'où un maximum de 14 mg par prise. Pas de 0,5 mg aligné sur la plus petite gélule. L'intervalle de 24 h est volontairement absent : Advagraf et Envarsus sont des formes à libération prolongée en une prise quotidienne, dosées différemment, et le catalogue de modèles ne déclare pas la formulation. Elles exigent leur propre grille, à déclarer séparément.",
+        "basisEn": "Strictly the immediate-release Prograf label regimen: 0.20-0.30 mg/kg/day in TWO divided doses, about 7-11 mg per dose at 70 kg and up to about 13.5 mg at 90 kg, hence a 14 mg per-dose maximum. The 0.5 mg step matches the smallest capsule. The 24 h interval is deliberately absent: Advagraf and Envarsus are once-daily prolonged-release products, dosed differently, and the model catalogue does not declare formulation. They require their own grid, to be declared separately.",
+        "source": {
+          "label": "Prograf hard capsules, SmPC section 4.2, UK electronic medicines compendium",
+          "url": "https://www.medicines.org.uk/emc/product/7488/smpc",
+          "statement": "oral therapy should commence at 0.20 - 0.30 mg/kg/day administered as two divided doses",
+          "strengths": "0.5 mg, 1 mg, 5 mg capsules"
+        },
+        "excludesFormulations": [
+          "tacrolimus prolonged release once daily (Advagraf, Envarsus)"
+        ],
+        "signoff": "PENDING",
+        "requiresFormulationIds": [
+          "tacrolimus-immediate-release"
+        ]
+      },
+      "doseGridSignedOff": false,
+      "doseGridApplicableModelIds": [],
+      "doseGridBlockedModels": {
+        "tacrolimus_kamp_envarsus_ddi": "grid_awaiting_signoff",
+        "tacrolimus_woillard_ddi": "grid_awaiting_signoff"
+      },
+      "candidates": [
+        {
+          "id": "tac-kidney-early",
+          "target_metric": "Cmin",
+          "target_low": 8,
+          "target_high": 10,
+          "target_unit": "ng/mL",
+          "indication": "kidney",
+          "labelFr": "Greffe rénale · moins de 6 semaines",
+          "labelEn": "Kidney transplant · under 6 weeks",
+          "scopeFr": "Tacrolimus à libération immédiate, MPA ± prednisone, induction basiliximab ; cible publiée pour un centre.",
+          "scopeEn": "Immediate-release tacrolimus, MPA ± prednisone, basiliximab induction; published centre-specific target.",
+          "citation": "van Gelder et al. · 2025",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12122127/",
+          "evidenceStatus": "study",
+          "undecidable": [
+            "analyteId",
+            "analyteBasis",
+            "matrixId",
+            "formulationId",
+            "assayMethod",
+            "samplingTime"
+          ],
+          "applicationBlocked": false,
+          "applicationBlockedCode": null,
+          "modelApplicabilityVerified": false,
+          "automaticDoseAdjustmentAllowed": false
+        },
+        {
+          "id": "tac-kidney-late",
+          "target_metric": "Cmin",
+          "target_low": 3,
+          "target_high": 5,
+          "target_unit": "ng/mL",
+          "indication": "kidney",
+          "labelFr": "Greffe rénale · après 6 mois",
+          "labelEn": "Kidney transplant · after 6 months",
+          "scopeFr": "Tacrolimus immédiat, MPA ± prednisone. La source conditionne C₀ < 5 à une AUC₀–₁₂h > 75 µg·h/L ; ne pas appliquer isolément.",
+          "scopeEn": "Immediate-release tacrolimus with MPA ± prednisone. Source conditions C₀ < 5 on AUC₀–₁₂h > 75 µg·h/L; do not use in isolation.",
+          "citation": "van Gelder et al. · 2025",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12122127/",
+          "evidenceStatus": "study",
+          "undecidable": [
+            "analyteId",
+            "analyteBasis",
+            "matrixId",
+            "formulationId",
+            "assayMethod",
+            "samplingTime"
+          ],
+          "applicationBlocked": false,
+          "applicationBlockedCode": null,
+          "modelApplicabilityVerified": false,
+          "automaticDoseAdjustmentAllowed": false
+        },
+        {
+          "id": "tac-kidney-mid",
+          "target_metric": "Cmin",
+          "target_low": 5,
+          "target_high": 7,
+          "target_unit": "ng/mL",
+          "indication": "kidney",
+          "labelFr": "Greffe rénale · 6 semaines à 6 mois",
+          "labelEn": "Kidney transplant · 6 weeks to 6 months",
+          "scopeFr": "Tacrolimus à libération immédiate, MPA ± prednisone, induction basiliximab ; protocole spécifique.",
+          "scopeEn": "Immediate-release tacrolimus, MPA ± prednisone, basiliximab induction; protocol-specific.",
+          "citation": "van Gelder et al. · 2025",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12122127/",
+          "evidenceStatus": "study",
+          "undecidable": [
+            "analyteId",
+            "analyteBasis",
+            "matrixId",
+            "formulationId",
+            "assayMethod",
+            "samplingTime"
+          ],
+          "applicationBlocked": false,
+          "applicationBlockedCode": null,
+          "modelApplicabilityVerified": false,
+          "automaticDoseAdjustmentAllowed": false
+        }
+      ],
+      "autoApply": false
+    }
+  },
+  "sourceReferences": [
+    {
+      "id": "tac-kidney-early-auc",
+      "metric": "AUC₀–₁₂",
+      "unit": "ng·h/mL",
+      "indication": "kidney",
+      "indicationFr": "Greffe rénale · moins de 6 semaines",
+      "indicationEn": "Kidney transplant · under 6 weeks",
+      "contextFr": "Tacrolimus immédiat (2 prises/j), avec MPA ± prednisone et induction basiliximab. Cible AUC₀–₁₂ du centre publiée avec C₀ 8–10 ng/mL. Valeur ponctuelle issue d’un protocole, non intervalle universel.",
+      "contextEn": "Immediate-release tacrolimus twice daily with MPA ± prednisone and basiliximab. Published centre AUC0–12 target paired with C0 8–10 ng/mL, not a universal interval.",
+      "analyteId": null,
+      "analyteBasis": null,
+      "matrixId": null,
+      "matrixFr": "Sang total · tacrolimus à libération immédiate",
+      "matrixEn": "Whole blood · immediate-release tacrolimus",
+      "formulationId": null,
+      "samplingTime": null,
+      "relation": "target",
+      "min": 160,
+      "max": null,
+      "analyticalIdentityMissing": [
+        "analyteId",
+        "analyteBasis",
+        "matrixId",
+        "formulationId",
+        "assayMethod",
+        "samplingTime"
+      ],
+      "source": {
+        "id": "tac2025",
+        "citation": "van Gelder et al. · 2025",
+        "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12122127/",
+        "year": 2025,
+        "section": "Table 1 (immediate-release tacrolimus), notes and AUC condition"
+      },
+      "status": "bibliographic_candidate_requires_context_review",
+      "applicability": {
+        "verdict": "requires_human_context_review",
+        "mismatches": [],
+        "undecidable": [
+          "analyteId",
+          "analyteBasis",
+          "matrixId",
+          "formulationId",
+          "assayMethod",
+          "samplingTime"
+        ]
+      },
+      "modelApplicabilityVerified": false,
+      "automaticDoseAdjustmentAllowed": false
+    },
+    {
+      "id": "tac-kidney-mid-auc",
+      "metric": "AUC₀–₁₂",
+      "unit": "ng·h/mL",
+      "indication": "kidney",
+      "indicationFr": "Greffe rénale · 6 semaines à 6 mois",
+      "indicationEn": "Kidney transplant · 6 weeks to 6 months",
+      "contextFr": "Tacrolimus immédiat (2 prises/j), avec MPA ± prednisone et induction basiliximab. Cible AUC₀–₁₂ propre au centre ; C₀ de 5–7 ng/mL n’est qu’un indicateur indirect de cette exposition.",
+      "contextEn": "Immediate-release tacrolimus twice daily with MPA ± prednisone, basiliximab. Centre-specific AUC0–12 target; C0 5–7 ng/mL is an indirect exposure surrogate.",
+      "analyteId": null,
+      "analyteBasis": null,
+      "matrixId": null,
+      "matrixFr": "Sang total · tacrolimus à libération immédiate",
+      "matrixEn": "Whole blood · immediate-release tacrolimus",
+      "formulationId": null,
+      "samplingTime": null,
+      "relation": "target",
+      "min": 120,
+      "max": null,
+      "analyticalIdentityMissing": [
+        "analyteId",
+        "analyteBasis",
+        "matrixId",
+        "formulationId",
+        "assayMethod",
+        "samplingTime"
+      ],
+      "source": {
+        "id": "tac2025",
+        "citation": "van Gelder et al. · 2025",
+        "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12122127/",
+        "year": 2025,
+        "section": "Table 1 (immediate-release tacrolimus), notes and AUC condition"
+      },
+      "status": "bibliographic_candidate_requires_context_review",
+      "applicability": {
+        "verdict": "requires_human_context_review",
+        "mismatches": [],
+        "undecidable": [
+          "analyteId",
+          "analyteBasis",
+          "matrixId",
+          "formulationId",
+          "assayMethod",
+          "samplingTime"
+        ]
+      },
+      "modelApplicabilityVerified": false,
+      "automaticDoseAdjustmentAllowed": false
+    },
+    {
+      "id": "tac-kidney-late-auc",
+      "metric": "AUC₀–₁₂",
+      "unit": "ng·h/mL",
+      "indication": "kidney",
+      "indicationFr": "Greffe rénale · après 6 mois",
+      "indicationEn": "Kidney transplant · after 6 months",
+      "contextFr": "Tacrolimus immédiat avec MPA ± prednisone. Cible AUC₀–₁₂ du centre ; si C₀ <5 ng/mL, l’article conditionne l’acceptation à AUC₀–₁₂ >75 ng·h/mL. Ni la valeur ponctuelle ni C₀ ne sont universelles.",
+      "contextEn": "Immediate-release tacrolimus with MPA ± prednisone. Centre AUC0–12 point target; if C0 <5 ng/mL, the article requires AUC0–12 >75 ng·h/mL. Not universal.",
+      "analyteId": null,
+      "analyteBasis": null,
+      "matrixId": null,
+      "matrixFr": "Sang total · tacrolimus à libération immédiate",
+      "matrixEn": "Whole blood · immediate-release tacrolimus",
+      "formulationId": null,
+      "samplingTime": null,
+      "relation": "target",
+      "min": 80,
+      "max": null,
+      "analyticalIdentityMissing": [
+        "analyteId",
+        "analyteBasis",
+        "matrixId",
+        "formulationId",
+        "assayMethod",
+        "samplingTime"
+      ],
+      "source": {
+        "id": "tac2025",
+        "citation": "van Gelder et al. · 2025",
+        "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12122127/",
+        "year": 2025,
+        "section": "Table 1 (immediate-release tacrolimus), notes and AUC condition"
+      },
+      "status": "bibliographic_candidate_requires_context_review",
+      "applicability": {
+        "verdict": "requires_human_context_review",
+        "mismatches": [],
+        "undecidable": [
+          "analyteId",
+          "analyteBasis",
+          "matrixId",
+          "formulationId",
+          "assayMethod",
+          "samplingTime"
+        ]
+      },
+      "modelApplicabilityVerified": false,
+      "automaticDoseAdjustmentAllowed": false
+    },
+    {
+      "id": "tac-liver-everolimus-fda",
+      "metric": "C₀",
+      "unit": "ng/mL",
+      "indication": "liver",
+      "indicationFr": "Greffe hépatique · avec évérolimus (FDA, mois 2–12)",
+      "indicationEn": "Liver transplant · with everolimus (FDA, months 2–12)",
+      "contextFr": "Label FDA Zortress : tacrolimus réduit avec évérolimus dans la greffe hépatique ; cible 3–5 ng/mL dès 3 semaines après début de Zortress (environ mois 2), jusqu’au mois 12. Données limitées au-delà ; ne pas appliquer sans évérolimus.",
+      "contextEn": "FDA Zortress label: reduced tacrolimus with everolimus in liver transplant; 3–5 ng/mL about three weeks after Zortress start (around month 2), through month 12. Limited later evidence; not applicable without everolimus.",
+      "analyteId": null,
+      "analyteBasis": null,
+      "matrixId": null,
+      "matrixFr": "Sang total · tacrolimus à libération immédiate",
+      "matrixEn": "Whole blood · immediate-release tacrolimus",
+      "formulationId": null,
+      "samplingTime": null,
+      "relation": "range",
+      "min": 3,
+      "max": 5,
+      "analyticalIdentityMissing": [
+        "analyteId",
+        "analyteBasis",
+        "matrixId",
+        "formulationId",
+        "assayMethod",
+        "samplingTime"
+      ],
+      "source": {
+        "id": "fdaZortress2026",
+        "citation": "FDA · Zortress 2026",
+        "url": "https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=e082a024-7850-400b-a5c2-2a140612562a",
+        "year": 2026,
+        "section": "Sections 2.4–2.6: everolimus C0 3–8 ng/mL with reduced cyclosporine in kidney or reduced tacrolimus in liver; tacrolimus liver C0 3–5 ng/mL by month 2–12"
+      },
+      "status": "bibliographic_candidate_requires_context_review",
+      "applicability": {
+        "verdict": "structural_context_mismatch",
+        "mismatches": [
+          {
+            "dimension": "transplanted_organ",
+            "code": "organ_indication_mismatch",
+            "referenceContext": "liver",
+            "modelContext": "kidney"
+          }
+        ],
+        "undecidable": [
+          "analyteId",
+          "analyteBasis",
+          "matrixId",
+          "formulationId",
+          "assayMethod",
+          "samplingTime"
+        ]
+      },
+      "modelApplicabilityVerified": false,
+      "automaticDoseAdjustmentAllowed": false
+    },
+    {
+      "id": "tac-kidney-early",
+      "metric": "C₀",
+      "unit": "ng/mL",
+      "indication": "kidney",
+      "indicationFr": "Greffe rénale · moins de 6 semaines",
+      "indicationEn": "Kidney transplant · under 6 weeks",
+      "contextFr": "Tacrolimus à libération immédiate, MPA ± prednisone, induction basiliximab ; cible publiée pour un centre.",
+      "contextEn": "Immediate-release tacrolimus, MPA ± prednisone, basiliximab induction; published centre-specific target.",
+      "analyteId": null,
+      "analyteBasis": null,
+      "matrixId": null,
+      "matrixFr": "Sang total",
+      "matrixEn": "Whole blood",
+      "formulationId": null,
+      "samplingTime": null,
+      "relation": "range",
+      "min": 8,
+      "max": 10,
+      "analyticalIdentityMissing": [
+        "analyteId",
+        "analyteBasis",
+        "matrixId",
+        "formulationId",
+        "assayMethod",
+        "samplingTime"
+      ],
+      "source": {
+        "id": "tac2025",
+        "citation": "van Gelder et al. · 2025",
+        "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12122127/",
+        "year": 2025,
+        "section": "Table 1 (immediate-release tacrolimus), notes and AUC condition"
+      },
+      "status": "bibliographic_candidate_requires_context_review",
+      "applicability": {
+        "verdict": "requires_human_context_review",
+        "mismatches": [],
+        "undecidable": [
+          "analyteId",
+          "analyteBasis",
+          "matrixId",
+          "formulationId",
+          "assayMethod",
+          "samplingTime"
+        ]
+      },
+      "modelApplicabilityVerified": false,
+      "automaticDoseAdjustmentAllowed": false
+    },
+    {
+      "id": "tac-kidney-mid",
+      "metric": "C₀",
+      "unit": "ng/mL",
+      "indication": "kidney",
+      "indicationFr": "Greffe rénale · 6 semaines à 6 mois",
+      "indicationEn": "Kidney transplant · 6 weeks to 6 months",
+      "contextFr": "Tacrolimus à libération immédiate, MPA ± prednisone, induction basiliximab ; protocole spécifique.",
+      "contextEn": "Immediate-release tacrolimus, MPA ± prednisone, basiliximab induction; protocol-specific.",
+      "analyteId": null,
+      "analyteBasis": null,
+      "matrixId": null,
+      "matrixFr": "Sang total",
+      "matrixEn": "Whole blood",
+      "formulationId": null,
+      "samplingTime": null,
+      "relation": "range",
+      "min": 5,
+      "max": 7,
+      "analyticalIdentityMissing": [
+        "analyteId",
+        "analyteBasis",
+        "matrixId",
+        "formulationId",
+        "assayMethod",
+        "samplingTime"
+      ],
+      "source": {
+        "id": "tac2025",
+        "citation": "van Gelder et al. · 2025",
+        "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12122127/",
+        "year": 2025,
+        "section": "Table 1 (immediate-release tacrolimus), notes and AUC condition"
+      },
+      "status": "bibliographic_candidate_requires_context_review",
+      "applicability": {
+        "verdict": "requires_human_context_review",
+        "mismatches": [],
+        "undecidable": [
+          "analyteId",
+          "analyteBasis",
+          "matrixId",
+          "formulationId",
+          "assayMethod",
+          "samplingTime"
+        ]
+      },
+      "modelApplicabilityVerified": false,
+      "automaticDoseAdjustmentAllowed": false
+    },
+    {
+      "id": "tac-kidney-late",
+      "metric": "C₀",
+      "unit": "ng/mL",
+      "indication": "kidney",
+      "indicationFr": "Greffe rénale · après 6 mois",
+      "indicationEn": "Kidney transplant · after 6 months",
+      "contextFr": "Tacrolimus immédiat, MPA ± prednisone. La source conditionne C₀ < 5 à une AUC₀–₁₂h > 75 µg·h/L ; ne pas appliquer isolément.",
+      "contextEn": "Immediate-release tacrolimus with MPA ± prednisone. Source conditions C₀ < 5 on AUC₀–₁₂h > 75 µg·h/L; do not use in isolation.",
+      "analyteId": null,
+      "analyteBasis": null,
+      "matrixId": null,
+      "matrixFr": "Sang total",
+      "matrixEn": "Whole blood",
+      "formulationId": null,
+      "samplingTime": null,
+      "relation": "range",
+      "min": 3,
+      "max": 5,
+      "analyticalIdentityMissing": [
+        "analyteId",
+        "analyteBasis",
+        "matrixId",
+        "formulationId",
+        "assayMethod",
+        "samplingTime"
+      ],
+      "source": {
+        "id": "tac2025",
+        "citation": "van Gelder et al. · 2025",
+        "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12122127/",
+        "year": 2025,
+        "section": "Table 1 (immediate-release tacrolimus), notes and AUC condition"
+      },
+      "status": "bibliographic_candidate_requires_context_review",
+      "applicability": {
+        "verdict": "requires_human_context_review",
+        "mismatches": [],
+        "undecidable": [
+          "analyteId",
+          "analyteBasis",
+          "matrixId",
+          "formulationId",
+          "assayMethod",
+          "samplingTime"
+        ]
+      },
+      "modelApplicabilityVerified": false,
+      "automaticDoseAdjustmentAllowed": false
+    }
+  ],
+  "conditionalPdObjectives": [],
+  "simulationPresets": {},
+  "formulationByModel": {
+    "tacrolimus_kamp_envarsus_ddi": {
+      "formulationId": "tacrolimus-prolonged-release-envarsus",
+      "evidence": "Adultes transplantés rénaux âgés de 65 ans ou plus recevant tacrolimus Envarsus.",
+      "noteFr": "Envarsus est une forme à libération prolongée en une prise quotidienne : une grille établie sur un schéma en deux prises ne lui est pas applicable.",
+      "noteEn": "Envarsus is a once-daily prolonged-release product: a grid derived from a twice-daily regimen does not apply to it."
+    },
+    "tacrolimus_woillard_ddi": {
+      "formulationId": "tacrolimus-immediate-or-prolonged-release",
+      "evidence": "Adultes transplantés rénaux recevant Prograf ou Advagraf.",
+      "noteFr": "La population source mélange Prograf (libération immédiate, deux prises) et Advagraf (libération prolongée, une prise). La formulation n'est donc pas déterminée pour un patient donné et aucune grille liée à un intervalle ne peut être appliquée sans la préciser.",
+      "noteEn": "The source population pools Prograf (immediate release, twice daily) and Advagraf (prolonged release, once daily). Formulation is therefore undetermined for a given patient and no interval-bound grid can be applied without resolving it."
+    }
+  },
+  "noteFr": "Les références sont contextuelles. Les grilles de doses sont des espaces exploratoires, pas des prescriptions.",
+  "noteEn": "References are context-dependent. Dose grids are exploratory search spaces, not prescriptions.",
+  "formulationCovariates": {
+    "tacrolimus_woillard_ddi": {
+      "name": "ST",
+      "values": {
+        "0": {
+          "formulationId": "tacrolimus-prolonged-release-advagraf",
+          "product": "Advagraf",
+          "intervalHours": 24,
+          "labelFr": "Advagraf : libération prolongée, 1 prise/jour",
+          "labelEn": "Advagraf: prolonged release, once daily"
+        },
+        "1": {
+          "formulationId": "tacrolimus-immediate-release",
+          "product": "Prograf",
+          "intervalHours": 12,
+          "labelFr": "Prograf : libération immédiate, 2 prises/jour",
+          "labelEn": "Prograf: immediate release, twice daily"
+        }
+      }
+    },
+    "tacrolimus_kamp_envarsus_ddi": {
+      "formulationId": "tacrolimus-prolonged-release-envarsus",
+      "product": "Envarsus",
+      "intervalHours": 24,
+      "labelFr": "Envarsus : libération prolongée, 1 prise/jour",
+      "labelEn": "Envarsus: once-daily extended release"
+    }
+  }
+}

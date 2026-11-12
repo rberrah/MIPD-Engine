@@ -1,0 +1,153 @@
+{
+  "schema": "mipd.tdm.drug-profile.v1",
+  "drugKey": "voriconazole",
+  "tdmDrugId": "voriconazole",
+  "drugName": "Voriconazole",
+  "modelIds": [
+    "voriconazole_vandenborn_ddi"
+  ],
+  "concentrationUnit": "mg/L",
+  "doseUnit": "mg",
+  "intendedUse": "TEACHING_RESEARCH_ONLY",
+  "clinicalInterpretationAllowed": false,
+  "automaticDoseAdjustmentAllowed": false,
+  "patientDataIncluded": false,
+  "guideHref": "https://rberrah.github.io/pharmacometrie/cibles-tdm/?drug=voriconazole&lang=fr",
+  "monitoring": {
+    "key": "Cmin",
+    "fr": "C0 (exposition et toxicité)",
+    "en": "Trough (exposure and safety)",
+    "sourceId": "antibacterial2020",
+    "noteFr": "Le suivi thérapeutique utilise une résiduelle à l’état stable ; l’AUC peut décrire l’exposition mais n’est pas la mesure de routine universelle.",
+    "noteEn": "Clinical TDM generally uses trough; AUC is informative but not the universal routine metric."
+  },
+  "sampling": {
+    "key": "Cmin",
+    "fr": "C0 avant prise suivante",
+    "en": "Predose trough",
+    "sourceId": "antibacterial2020",
+    "noteFr": "Horodatage et interaction CYP2C19/CYP3A ; réévaluation après changement de dose ou de traitement.",
+    "noteEn": "Time-stamped sample, CYP2C19/CYP3A interactions; reassess after dose or medication changes."
+  },
+  "sourceSnapshotSha256": "511c8fef0159a6aff406d026bc952dc59e4c5ba5a05b0c17e3af7f26c15d7230",
+  "guideTargetPresets": {
+    "ORAL": {
+      "drugKey": "voriconazole",
+      "mode": "ORAL",
+      "tdmDrugId": "voriconazole",
+      "doseGrid": null,
+      "doseGridSignedOff": false,
+      "doseGridApplicableModelIds": [],
+      "doseGridBlockedModels": {},
+      "candidates": [
+        {
+          "id": "voriconazole-icu",
+          "target_metric": "Cmin",
+          "target_low": 2,
+          "target_high": 6,
+          "target_unit": "mg/L",
+          "indication": "infection",
+          "labelFr": "Infection fongique · adulte en réanimation",
+          "labelEn": "Fungal infection · critically ill adult",
+          "scopeFr": "Consensus de STP chez l'adulte en réanimation ; le haut de la plage comporte un risque de neuro/hépatotoxicité ; tenir compte de la CMI et du pathogène.",
+          "scopeEn": "ICU adult TDM position paper; higher concentrations may associate with neuro/hepatotoxicity; pathogen and MIC matter.",
+          "citation": "ICU TDM 2020",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7223855/",
+          "evidenceStatus": "guideline",
+          "undecidable": [
+            "analyteId",
+            "analyteBasis",
+            "matrixId",
+            "formulationId",
+            "assayMethod",
+            "samplingTime"
+          ],
+          "applicationBlocked": false,
+          "applicationBlockedCode": null,
+          "modelApplicabilityVerified": false,
+          "automaticDoseAdjustmentAllowed": false
+        }
+      ],
+      "autoApply": true
+    }
+  },
+  "sourceReferences": [
+    {
+      "id": "voriconazole-icu",
+      "metric": "C₀",
+      "unit": "mg/L",
+      "indication": "infection",
+      "indicationFr": "Infection fongique · adulte en réanimation",
+      "indicationEn": "Fungal infection · critically ill adult",
+      "contextFr": "Consensus de STP chez l'adulte en réanimation ; le haut de la plage comporte un risque de neuro/hépatotoxicité ; tenir compte de la CMI et du pathogène.",
+      "contextEn": "ICU adult TDM position paper; higher concentrations may associate with neuro/hepatotoxicity; pathogen and MIC matter.",
+      "analyteId": null,
+      "analyteBasis": null,
+      "matrixId": null,
+      "matrixFr": "Sérum/plasma",
+      "matrixEn": "Serum/plasma",
+      "formulationId": null,
+      "samplingTime": null,
+      "relation": "range",
+      "min": 2,
+      "max": 6,
+      "analyticalIdentityMissing": [
+        "analyteId",
+        "analyteBasis",
+        "matrixId",
+        "formulationId",
+        "assayMethod",
+        "samplingTime"
+      ],
+      "source": {
+        "id": "icuTdm2020",
+        "citation": "ICU TDM 2020",
+        "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7223855/",
+        "year": 2020,
+        "section": "Table 3 and antifungal sections (posaconazole prophylaxis/treatment and voriconazole)"
+      },
+      "status": "bibliographic_candidate_requires_context_review",
+      "applicability": {
+        "verdict": "requires_human_context_review",
+        "mismatches": [],
+        "undecidable": [
+          "analyteId",
+          "analyteBasis",
+          "matrixId",
+          "formulationId",
+          "assayMethod",
+          "samplingTime"
+        ]
+      },
+      "modelApplicabilityVerified": false,
+      "automaticDoseAdjustmentAllowed": false
+    }
+  ],
+  "conditionalPdObjectives": [],
+  "simulationPresets": {
+    "ORAL": {
+      "target_metric": "Cmin",
+      "target_low": 1,
+      "target_high": 5.5,
+      "target_unit": "mg/L",
+      "dose_min": 50,
+      "dose_max": 600,
+      "dose_step": 50,
+      "intervals": [
+        8,
+        12,
+        24
+      ],
+      "infusion": 0,
+      "scope_fr": "Traitement d'une infection fongique invasive; cible résiduelle d'efficacité et de toxicité.",
+      "scope_en": "Treatment of invasive fungal infection; trough efficacy and toxicity target.",
+      "grid_note_fr": "La cible est issue de la recommandation; la grille de doses est exploratoire et doit tenir compte de l'indication, des interactions et de la fonction hépatique.",
+      "grid_note_en": "The target comes from the guideline; the dose grid is exploratory and must account for indication, interactions, and liver function.",
+      "citation": "Ashbee HR et al. J Antimicrob Chemother. 2014;69:1162-1176.",
+      "doi": "10.1093/jac/dkt508"
+    }
+  },
+  "formulationByModel": {},
+  "noteFr": "Les références sont contextuelles. Les grilles de doses sont des espaces exploratoires, pas des prescriptions.",
+  "noteEn": "References are context-dependent. Dose grids are exploratory search spaces, not prescriptions."
+}

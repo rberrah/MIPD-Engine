@@ -1,0 +1,214 @@
+{
+  "schema": "mipd.tdm.drug-profile.v1",
+  "drugKey": "linez",
+  "tdmDrugId": "linezolid",
+  "drugName": "Linezolide",
+  "modelIds": [
+    "linez_buerger",
+    "linez_sasaki"
+  ],
+  "concentrationUnit": "mg/L",
+  "doseUnit": "mg",
+  "intendedUse": "TEACHING_RESEARCH_ONLY",
+  "clinicalInterpretationAllowed": false,
+  "automaticDoseAdjustmentAllowed": false,
+  "patientDataIncluded": false,
+  "guideHref": "https://rberrah.github.io/pharmacometrie/cibles-tdm/?drug=linezolid&lang=fr",
+  "monitoring": {
+    "key": "AUC_MIC",
+    "fr": "AUC₀–₂₄/CMI",
+    "en": "AUC24/MIC",
+    "sourceId": "antibacterial2020",
+    "noteFr": "Indice PK/PD d’efficacité (avec temps >CMI) ; C0 est un substitut pratique validé dans certains contextes, et renseigne aussi sur la toxicité hématologique.",
+    "noteEn": "Efficacy index (alongside time above MIC); trough is a practical surrogate in specific settings and also informs haematologic toxicity."
+  },
+  "sampling": {
+    "key": "Cmin",
+    "fr": "C0 pratique ; AUC si disponible",
+    "en": "Practical trough; AUC if available",
+    "sourceId": "antibacterial2020",
+    "noteFr": "C0 2–7 mg/L souvent utilisée en réanimation ; ne pas confondre fenêtre résiduelle et cible AUC/CMI.",
+    "noteEn": "Trough 2–7 mg/L often used in ICU; do not conflate trough window with AUC/MIC target."
+  },
+  "sourceSnapshotSha256": "511c8fef0159a6aff406d026bc952dc59e4c5ba5a05b0c17e3af7f26c15d7230",
+  "guideTargetPresets": {
+    "IV_INTERMITTENT": {
+      "drugKey": "linez",
+      "mode": "IV_INTERMITTENT",
+      "tdmDrugId": "linezolid",
+      "doseGrid": null,
+      "doseGridSignedOff": false,
+      "doseGridApplicableModelIds": [],
+      "doseGridBlockedModels": {},
+      "candidates": [
+        {
+          "id": "linezolid-trough-consensus",
+          "target_metric": "Cmin",
+          "target_low": 2,
+          "target_high": 8,
+          "target_unit": "mg/L",
+          "indication": "infection",
+          "labelFr": "Infections traitées par linézolide",
+          "labelEn": "Infections treated with linezolid",
+          "scopeFr": "Fourchette d’un consensus d’experts 2022 ; interpréter selon le type d’infection, la CMI, le dosage et la toxicité hématologique.",
+          "scopeEn": "2022 expert consensus range; interpret with infection type, MIC, schedule and hematological toxicity.",
+          "citation": "Consensus d’experts · 2022",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9399604/",
+          "evidenceStatus": "guideline",
+          "undecidable": [
+            "analyteId",
+            "analyteBasis",
+            "matrixId",
+            "formulationId",
+            "assayMethod",
+            "samplingTime"
+          ],
+          "applicationBlocked": false,
+          "applicationBlockedCode": null,
+          "modelApplicabilityVerified": false,
+          "automaticDoseAdjustmentAllowed": false
+        }
+      ],
+      "autoApply": true
+    },
+    "ORAL": {
+      "drugKey": "linez",
+      "mode": "ORAL",
+      "tdmDrugId": "linezolid",
+      "doseGrid": null,
+      "doseGridSignedOff": false,
+      "doseGridApplicableModelIds": [],
+      "doseGridBlockedModels": {},
+      "candidates": [
+        {
+          "id": "linezolid-trough-consensus",
+          "target_metric": "Cmin",
+          "target_low": 2,
+          "target_high": 8,
+          "target_unit": "mg/L",
+          "indication": "infection",
+          "labelFr": "Infections traitées par linézolide",
+          "labelEn": "Infections treated with linezolid",
+          "scopeFr": "Fourchette d’un consensus d’experts 2022 ; interpréter selon le type d’infection, la CMI, le dosage et la toxicité hématologique.",
+          "scopeEn": "2022 expert consensus range; interpret with infection type, MIC, schedule and hematological toxicity.",
+          "citation": "Consensus d’experts · 2022",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9399604/",
+          "evidenceStatus": "guideline",
+          "undecidable": [
+            "analyteId",
+            "analyteBasis",
+            "matrixId",
+            "formulationId",
+            "assayMethod",
+            "samplingTime"
+          ],
+          "applicationBlocked": false,
+          "applicationBlockedCode": null,
+          "modelApplicabilityVerified": false,
+          "automaticDoseAdjustmentAllowed": false
+        }
+      ],
+      "autoApply": true
+    }
+  },
+  "sourceReferences": [
+    {
+      "id": "linezolid-trough-consensus",
+      "metric": "C₀",
+      "unit": "mg/L",
+      "indication": "infection",
+      "indicationFr": "Infections traitées par linézolide",
+      "indicationEn": "Infections treated with linezolid",
+      "contextFr": "Fourchette d’un consensus d’experts 2022 ; interpréter selon le type d’infection, la CMI, le dosage et la toxicité hématologique.",
+      "contextEn": "2022 expert consensus range; interpret with infection type, MIC, schedule and hematological toxicity.",
+      "analyteId": null,
+      "analyteBasis": null,
+      "matrixId": null,
+      "matrixFr": "Plasma / sérum",
+      "matrixEn": "Plasma / serum",
+      "formulationId": null,
+      "samplingTime": null,
+      "relation": "range",
+      "min": 2,
+      "max": 8,
+      "analyticalIdentityMissing": [
+        "analyteId",
+        "analyteBasis",
+        "matrixId",
+        "formulationId",
+        "assayMethod",
+        "samplingTime"
+      ],
+      "source": {
+        "id": "linezolid2022",
+        "citation": "Consensus d’experts · 2022",
+        "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9399604/",
+        "year": 2022,
+        "section": "Expert panel recommendation, question 1: Ctrough 2–8 mg/L"
+      },
+      "status": "bibliographic_candidate_requires_context_review",
+      "applicability": {
+        "verdict": "requires_human_context_review",
+        "mismatches": [],
+        "undecidable": [
+          "analyteId",
+          "analyteBasis",
+          "matrixId",
+          "formulationId",
+          "assayMethod",
+          "samplingTime"
+        ]
+      },
+      "modelApplicabilityVerified": false,
+      "automaticDoseAdjustmentAllowed": false
+    }
+  ],
+  "conditionalPdObjectives": [],
+  "simulationPresets": {
+    "IV_INTERMITTENT": {
+      "target_metric": "Cmin",
+      "target_low": 2,
+      "target_high": 8,
+      "target_unit": "mg/L",
+      "dose_min": 300,
+      "dose_max": 1200,
+      "dose_step": 100,
+      "intervals": [
+        8,
+        12,
+        24
+      ],
+      "infusion": 1,
+      "scope_fr": "Cible de concentration résiduelle du consensus TDM linezolide.",
+      "scope_en": "Linezolid trough target from the TDM expert consensus.",
+      "grid_note_fr": "La cible est issue du consensus; la grille de doses est exploratoire et ne remplace pas l'adaptation à l'indication et à la tolérance.",
+      "grid_note_en": "The target comes from the consensus; the dose grid is exploratory and does not replace adjustment for indication and tolerability.",
+      "citation": "Lin B et al. Front Public Health. 2022;10:967311.",
+      "doi": "10.3389/fpubh.2022.967311"
+    },
+    "ORAL": {
+      "target_metric": "Cmin",
+      "target_low": 2,
+      "target_high": 8,
+      "target_unit": "mg/L",
+      "dose_min": 300,
+      "dose_max": 1200,
+      "dose_step": 100,
+      "intervals": [
+        8,
+        12,
+        24
+      ],
+      "infusion": 0,
+      "scope_fr": "Cible de concentration résiduelle du consensus TDM linezolide.",
+      "scope_en": "Linezolid trough target from the TDM expert consensus.",
+      "grid_note_fr": "La cible est issue du consensus; la grille de doses est exploratoire et ne remplace pas l'adaptation à l'indication et à la tolérance.",
+      "grid_note_en": "The target comes from the consensus; the dose grid is exploratory and does not replace adjustment for indication and tolerability.",
+      "citation": "Lin B et al. Front Public Health. 2022;10:967311.",
+      "doi": "10.3389/fpubh.2022.967311"
+    }
+  },
+  "formulationByModel": {},
+  "noteFr": "Les références sont contextuelles. Les grilles de doses sont des espaces exploratoires, pas des prescriptions.",
+  "noteEn": "References are context-dependent. Dose grids are exploratory search spaces, not prescriptions."
+}

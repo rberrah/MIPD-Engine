@@ -1,0 +1,62 @@
+{
+  "schema": "mipd.tdm.drug-profile.v1",
+  "drugKey": "genta",
+  "tdmDrugId": "gentamicin",
+  "drugName": "Gentamicine",
+  "modelIds": [
+    "genta_franck",
+    "genta_gomes",
+    "genta_hodiamont",
+    "genta_rosario_clcr",
+    "genta_rosario_clinical"
+  ],
+  "concentrationUnit": "mg/L",
+  "doseUnit": "mg",
+  "intendedUse": "TEACHING_RESEARCH_ONLY",
+  "clinicalInterpretationAllowed": false,
+  "automaticDoseAdjustmentAllowed": false,
+  "patientDataIncluded": false,
+  "guideHref": "https://rberrah.github.io/pharmacometrie/cibles-tdm/?drug=gentamicin&lang=fr",
+  "monitoring": {
+    "key": "AUC_MIC_and_Cmax_MIC",
+    "fr": "AUC₀–₂₄/CMI et Cmax/CMI",
+    "en": "AUC24/MIC and Cmax/MIC",
+    "sourceId": "antibacterial2020",
+    "noteFr": "Effet concentration-dépendant : le rapport Cmax/CMI est un repère pratique ; l’AUC/CMI est souvent préférable avec adaptation bayésienne et tient compte de la toxicité. La Cmin sert surtout à limiter l’accumulation.",
+    "noteEn": "Concentration-dependent activity: Cmax/MIC is practical; AUC/MIC with Bayesian adaptation can better capture exposure and toxicity. Cmin mainly monitors accumulation."
+  },
+  "sampling": {
+    "key": "peak_and_late",
+    "fr": "Pic post-perfusion + prélèvement tardif",
+    "en": "Post-infusion peak + later sample",
+    "sourceId": "antibacterial2020",
+    "noteFr": "Pic prélevé selon la durée d’infusion, deuxième prélèvement informatif pour estimer l’AUC ; la résiduelle sert à la sécurité.",
+    "noteEn": "Post-infusion peak plus an informative late sample for AUC; trough for safety."
+  },
+  "sourceSnapshotSha256": "511c8fef0159a6aff406d026bc952dc59e4c5ba5a05b0c17e3af7f26c15d7230",
+  "guideTargetPresets": {},
+  "sourceReferences": [],
+  "conditionalPdObjectives": [
+    {
+      "id": "gentamicin:icu-peak-mic",
+      "kind": "peak_ratio",
+      "metric": "Cmax/CMI",
+      "labelFr": "Infection bactérienne · réanimation adulte (efficacité)",
+      "labelEn": "Bacterial infection · adult ICU (efficacy)",
+      "criterionFr": "Cmax/CMI ≥ 8–10 (intervalle d’objectifs proposés)",
+      "criterionEn": "Cmax/MIC ≥ 8–10 (proposed target interval)",
+      "source": {
+        "citation": "ESICM / ESCMID / IATDMCT / ISAC · 2020",
+        "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7223855/",
+        "section": "Table 4 and Aminoglycosides pharmacodynamics: Cmax/MIC ≥8–10; Cmin safety separately"
+      },
+      "status": "population_indication_and_assay_not_checked",
+      "modelApplicabilityVerified": false,
+      "automaticDoseAdjustmentAllowed": false
+    }
+  ],
+  "simulationPresets": {},
+  "formulationByModel": {},
+  "noteFr": "Les références sont contextuelles. Les grilles de doses sont des espaces exploratoires, pas des prescriptions.",
+  "noteEn": "References are context-dependent. Dose grids are exploratory search spaces, not prescriptions."
+}

@@ -72,6 +72,10 @@ tdm_guide_preset_key <- function(record, mode) {
 
 #' Published references available for this model and route, or NULL.
 tdm_guide_preset_entry <- function(record, mode) {
+  # Read molecule-specific JSON, not a separately maintained central drug map.
+  if (exists("TDM_DRUG_PROFILES", inherits = TRUE)) {
+    return(tdm_drug_profile_guide_entry(record, mode))
+  }
   if (is.null(TDM_GUIDE_PRESETS)) return(NULL)
   TDM_GUIDE_PRESETS$presets[[tdm_guide_preset_key(record, mode)]]
 }

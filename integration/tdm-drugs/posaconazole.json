@@ -1,0 +1,141 @@
+{
+  "schema": "mipd.tdm.drug-profile.v1",
+  "drugKey": "posaconazole",
+  "tdmDrugId": "posaconazole",
+  "drugName": "Posaconazole",
+  "modelIds": [
+    "posaconazole_dolton_ddi"
+  ],
+  "concentrationUnit": "mg/L",
+  "doseUnit": "mg",
+  "intendedUse": "TEACHING_RESEARCH_ONLY",
+  "clinicalInterpretationAllowed": false,
+  "automaticDoseAdjustmentAllowed": false,
+  "patientDataIncluded": false,
+  "guideHref": "https://rberrah.github.io/pharmacometrie/cibles-tdm/?drug=posaconazole&lang=fr",
+  "monitoring": {
+    "key": "Cmin",
+    "fr": "C0 (prophylaxie/traitement)",
+    "en": "Trough (prevention/treatment)",
+    "sourceId": "antibacterial2020",
+    "noteFr": "C0 à l’état stable : objectifs distincts prophylaxie et traitement ; biodisponibilité dépend fortement de la formulation.",
+    "noteEn": "Steady-state trough; prophylaxis and treatment thresholds differ and formulations affect bioavailability."
+  },
+  "sampling": {
+    "key": "Cmin",
+    "fr": "C0 avant dose",
+    "en": "Predose trough",
+    "sourceId": "antibacterial2020",
+    "noteFr": "Préciser suspension, comprimé gastro-résistant ou perfusion avant comparaison.",
+    "noteEn": "Distinguish suspension, delayed-release tablets and IV form before interpretation."
+  },
+  "sourceSnapshotSha256": "511c8fef0159a6aff406d026bc952dc59e4c5ba5a05b0c17e3af7f26c15d7230",
+  "guideTargetPresets": {},
+  "sourceReferences": [
+    {
+      "id": "posaconazole-prophylaxis",
+      "metric": "C₀",
+      "unit": "mg/L",
+      "indication": "infection",
+      "indicationFr": "Prophylaxie antifongique · adulte en réanimation",
+      "indicationEn": "Antifungal prophylaxis · critically ill adult",
+      "contextFr": "Cible indicative si STP réalisé en réanimation ; les auteurs ne recommandent ni n'excluent le STP systématique du posaconazole. Pour la prophylaxie, la plage proposée est >0,5–0,7 mg/L (seuil de 0,7 retenu ici). Vérifier la formulation.",
+      "contextEn": "Conditional target if TDM is performed in critical care; panel neither recommends nor discourages routine posaconazole TDM. Prophylaxis evidence suggests >0.5–0.7 mg/L (0.7 used here). Formulation matters.",
+      "analyteId": null,
+      "analyteBasis": null,
+      "matrixId": null,
+      "matrixFr": "Sérum/plasma",
+      "matrixEn": "Serum/plasma",
+      "formulationId": null,
+      "samplingTime": null,
+      "relation": "above",
+      "min": 0.7,
+      "max": null,
+      "analyticalIdentityMissing": [
+        "analyteId",
+        "analyteBasis",
+        "matrixId",
+        "formulationId",
+        "assayMethod",
+        "samplingTime"
+      ],
+      "source": {
+        "id": "icuTdm2020",
+        "citation": "ICU TDM 2020",
+        "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7223855/",
+        "year": 2020,
+        "section": "Table 3 and antifungal sections (posaconazole prophylaxis/treatment and voriconazole)"
+      },
+      "status": "bibliographic_candidate_requires_context_review",
+      "applicability": {
+        "verdict": "requires_human_context_review",
+        "mismatches": [],
+        "undecidable": [
+          "analyteId",
+          "analyteBasis",
+          "matrixId",
+          "formulationId",
+          "assayMethod",
+          "samplingTime"
+        ]
+      },
+      "modelApplicabilityVerified": false,
+      "automaticDoseAdjustmentAllowed": false
+    },
+    {
+      "id": "posaconazole-treatment",
+      "metric": "C₀",
+      "unit": "mg/L",
+      "indication": "infection",
+      "indicationFr": "Traitement d'infection fongique invasive · adulte en réanimation",
+      "indicationEn": "Invasive fungal infection treatment · critically ill adult",
+      "contextFr": "Cible indicative si STP réalisé en réanimation ; les auteurs ne recommandent ni n'excluent le STP systématique du posaconazole. Pour la prophylaxie, la plage proposée est >0,5–0,7 mg/L (seuil de 0,7 retenu ici). Vérifier la formulation.",
+      "contextEn": "Conditional target if TDM is performed in critical care; panel neither recommends nor discourages routine posaconazole TDM. Prophylaxis evidence suggests >0.5–0.7 mg/L (0.7 used here). Formulation matters.",
+      "analyteId": null,
+      "analyteBasis": null,
+      "matrixId": null,
+      "matrixFr": "Sérum/plasma",
+      "matrixEn": "Serum/plasma",
+      "formulationId": null,
+      "samplingTime": null,
+      "relation": "above",
+      "min": 1,
+      "max": null,
+      "analyticalIdentityMissing": [
+        "analyteId",
+        "analyteBasis",
+        "matrixId",
+        "formulationId",
+        "assayMethod",
+        "samplingTime"
+      ],
+      "source": {
+        "id": "icuTdm2020",
+        "citation": "ICU TDM 2020",
+        "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7223855/",
+        "year": 2020,
+        "section": "Table 3 and antifungal sections (posaconazole prophylaxis/treatment and voriconazole)"
+      },
+      "status": "bibliographic_candidate_requires_context_review",
+      "applicability": {
+        "verdict": "requires_human_context_review",
+        "mismatches": [],
+        "undecidable": [
+          "analyteId",
+          "analyteBasis",
+          "matrixId",
+          "formulationId",
+          "assayMethod",
+          "samplingTime"
+        ]
+      },
+      "modelApplicabilityVerified": false,
+      "automaticDoseAdjustmentAllowed": false
+    }
+  ],
+  "conditionalPdObjectives": [],
+  "simulationPresets": {},
+  "formulationByModel": {},
+  "noteFr": "Les références sont contextuelles. Les grilles de doses sont des espaces exploratoires, pas des prescriptions.",
+  "noteEn": "References are context-dependent. Dose grids are exploratory search spaces, not prescriptions."
+}

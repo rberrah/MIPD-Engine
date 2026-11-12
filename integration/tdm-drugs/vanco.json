@@ -1,0 +1,230 @@
+{
+  "schema": "mipd.tdm.drug-profile.v1",
+  "drugKey": "vanco",
+  "tdmDrugId": "vancomycin",
+  "drugName": "Vancomycine",
+  "modelIds": [
+    "vanco_goti",
+    "vanco_pkjust",
+    "vanco_roberts"
+  ],
+  "concentrationUnit": "mg/L",
+  "doseUnit": "mg",
+  "intendedUse": "TEACHING_RESEARCH_ONLY",
+  "clinicalInterpretationAllowed": false,
+  "automaticDoseAdjustmentAllowed": false,
+  "patientDataIncluded": false,
+  "guideHref": "https://rberrah.github.io/pharmacometrie/cibles-tdm/?drug=vancomycin&lang=fr",
+  "monitoring": {
+    "key": "AUC24_MIC",
+    "fr": "AUC₀–₂₄ (avec CMI)",
+    "en": "AUC24 (with MIC)",
+    "sourceId": "vancomycin2020",
+    "noteFr": "Pour une infection grave à SARM, cibler l’AUC24 (400–600 mg·h/L si CMI BMD présumée 1 mg/L), plutôt qu’une seule C0.",
+    "noteEn": "For serious MRSA, use AUC24 (400–600 mg·h/L assuming BMD MIC=1 mg/L) rather than trough alone."
+  },
+  "sampling": {
+    "key": "auc_bayesian",
+    "fr": "AUC bayésienne (1–2 prélèvements)",
+    "en": "Bayesian AUC (1–2 samples)",
+    "sourceId": "vancomycin2020",
+    "noteFr": "Prélèvements horodatés avec modèle, idéalement post-distribution et résiduel ; cible 15–20 mg/L en résiduel seul déconseillée pour SARM invasif.",
+    "noteEn": "Timed samples, preferably postdistribution and trough; trough-only 15–20 mg/L not recommended in invasive MRSA."
+  },
+  "sourceSnapshotSha256": "511c8fef0159a6aff406d026bc952dc59e4c5ba5a05b0c17e3af7f26c15d7230",
+  "guideTargetPresets": {
+    "IV_INTERMITTENT": {
+      "drugKey": "vanco",
+      "mode": "IV_INTERMITTENT",
+      "tdmDrugId": "vancomycin",
+      "doseGrid": null,
+      "doseGridSignedOff": false,
+      "doseGridApplicableModelIds": [],
+      "doseGridBlockedModels": {},
+      "candidates": [
+        {
+          "id": "vancomycin-mrsa",
+          "target_metric": "AUC24",
+          "target_low": 400,
+          "target_high": 600,
+          "target_unit": "mg·h/L",
+          "indication": "infection",
+          "labelFr": "Infection invasive grave à SARM",
+          "labelEn": "Serious invasive MRSA infection",
+          "scopeFr": "AUC₂₄ sous hypothèse de CMI = 1 mg/L (microdilution) ; cible AUC/CMI 400–600. Pas une cible C₀ 15–20 mg/L.",
+          "scopeEn": "AUC₂₄ with assumed MIC = 1 mg/L (broth microdilution); AUC/MIC target 400–600. Not a C₀ target of 15–20 mg/L.",
+          "citation": "ASHP / IDSA · 2020",
+          "url": "https://www.idsociety.org/practice-guideline/vancomycin/",
+          "evidenceStatus": "guideline",
+          "undecidable": [
+            "analyteId",
+            "analyteBasis",
+            "matrixId",
+            "formulationId",
+            "assayMethod",
+            "samplingTime"
+          ],
+          "applicationBlocked": false,
+          "applicationBlockedCode": null,
+          "modelApplicabilityVerified": false,
+          "automaticDoseAdjustmentAllowed": false
+        }
+      ],
+      "autoApply": true
+    },
+    "IV_CONTINUOUS": {
+      "drugKey": "vanco",
+      "mode": "IV_CONTINUOUS",
+      "tdmDrugId": "vancomycin",
+      "doseGrid": null,
+      "doseGridSignedOff": false,
+      "doseGridApplicableModelIds": [],
+      "doseGridBlockedModels": {},
+      "candidates": [
+        {
+          "id": "vancomycin-mrsa",
+          "target_metric": "AUC24",
+          "target_low": 400,
+          "target_high": 600,
+          "target_unit": "mg·h/L",
+          "indication": "infection",
+          "labelFr": "Infection invasive grave à SARM",
+          "labelEn": "Serious invasive MRSA infection",
+          "scopeFr": "AUC₂₄ sous hypothèse de CMI = 1 mg/L (microdilution) ; cible AUC/CMI 400–600. Pas une cible C₀ 15–20 mg/L.",
+          "scopeEn": "AUC₂₄ with assumed MIC = 1 mg/L (broth microdilution); AUC/MIC target 400–600. Not a C₀ target of 15–20 mg/L.",
+          "citation": "ASHP / IDSA · 2020",
+          "url": "https://www.idsociety.org/practice-guideline/vancomycin/",
+          "evidenceStatus": "guideline",
+          "undecidable": [
+            "analyteId",
+            "analyteBasis",
+            "matrixId",
+            "formulationId",
+            "assayMethod",
+            "samplingTime"
+          ],
+          "applicationBlocked": false,
+          "applicationBlockedCode": null,
+          "modelApplicabilityVerified": false,
+          "automaticDoseAdjustmentAllowed": false
+        }
+      ],
+      "autoApply": true
+    }
+  },
+  "sourceReferences": [
+    {
+      "id": "vancomycin-mrsa",
+      "metric": "AUC₂₄",
+      "unit": "mg·h/L",
+      "indication": "infection",
+      "indicationFr": "Infection invasive grave à SARM",
+      "indicationEn": "Serious invasive MRSA infection",
+      "contextFr": "AUC₂₄ sous hypothèse de CMI = 1 mg/L (microdilution) ; cible AUC/CMI 400–600. Pas une cible C₀ 15–20 mg/L.",
+      "contextEn": "AUC₂₄ with assumed MIC = 1 mg/L (broth microdilution); AUC/MIC target 400–600. Not a C₀ target of 15–20 mg/L.",
+      "analyteId": null,
+      "analyteBasis": null,
+      "matrixId": null,
+      "matrixFr": "Plasma ou sérum",
+      "matrixEn": "Plasma or serum",
+      "formulationId": null,
+      "samplingTime": null,
+      "relation": "range",
+      "min": 400,
+      "max": 600,
+      "analyticalIdentityMissing": [
+        "analyteId",
+        "analyteBasis",
+        "matrixId",
+        "formulationId",
+        "assayMethod",
+        "samplingTime"
+      ],
+      "source": {
+        "id": "vancomycin2020",
+        "citation": "ASHP / IDSA · 2020",
+        "url": "https://www.idsociety.org/practice-guideline/vancomycin/",
+        "year": 2020,
+        "section": "Executive summary, AUC24 400–600 for serious MRSA at MIC 1 mg/L"
+      },
+      "status": "bibliographic_candidate_requires_context_review",
+      "applicability": {
+        "verdict": "requires_human_context_review",
+        "mismatches": [],
+        "undecidable": [
+          "analyteId",
+          "analyteBasis",
+          "matrixId",
+          "formulationId",
+          "assayMethod",
+          "samplingTime"
+        ]
+      },
+      "modelApplicabilityVerified": false,
+      "automaticDoseAdjustmentAllowed": false
+    }
+  ],
+  "conditionalPdObjectives": [
+    {
+      "id": "vancomycin:serious-mrsa-mic",
+      "kind": "vancomycin_mic1",
+      "metric": "AUC₀–₂₄/CMI",
+      "labelFr": "Infection grave à SARM · CMI en microdilution",
+      "labelEn": "Serious MRSA infection · broth microdilution MIC",
+      "criterionFr": "AUC₀–₂₄/CMI 400–600 (hypothèse CMI = 1 mg/L)",
+      "criterionEn": "AUC₀–₂₄/MIC 400–600 (assumed MIC = 1 mg/L)",
+      "source": {
+        "citation": "ASHP / IDSA / PIDS / SIDP · 2020",
+        "url": "https://www.idsociety.org/practice-guideline/vancomycin/",
+        "section": "ASHP/IDSA/PIDS/SIDP 2020 Executive Summary; not a linear MIC-based dose escalation rule"
+      },
+      "status": "population_indication_and_assay_not_checked",
+      "modelApplicabilityVerified": false,
+      "automaticDoseAdjustmentAllowed": false
+    }
+  ],
+  "simulationPresets": {
+    "IV_INTERMITTENT": {
+      "target_metric": "AUC24",
+      "target_low": 400,
+      "target_high": 600,
+      "target_unit": "mg.h/L",
+      "dose_min": 250,
+      "dose_max": 3000,
+      "dose_step": 250,
+      "intervals": [
+        6,
+        8,
+        12,
+        24
+      ],
+      "infusion": 1,
+      "scope_fr": "Infection invasive grave à SARM, CMI supposée à 1 mg/L.",
+      "scope_en": "Serious invasive MRSA infection, assuming an MIC of 1 mg/L.",
+      "grid_note_fr": "La cible est issue de la recommandation; la grille de doses reste une plage exploratoire à adapter au poids et à la fonction rénale.",
+      "grid_note_en": "The target comes from the guideline; the dose grid remains an exploratory range to adapt to weight and renal function.",
+      "citation": "Rybak MJ et al. Am J Health Syst Pharm. 2020;77:835-864.",
+      "doi": "10.1093/ajhp/zxaa036"
+    },
+    "IV_CONTINUOUS": {
+      "target_metric": "Cmin",
+      "target_low": 20,
+      "target_high": 25,
+      "target_unit": "mg/L",
+      "dose_min": 500,
+      "dose_max": 5000,
+      "dose_step": 250,
+      "intervals": 24,
+      "infusion": 24,
+      "scope_fr": "Perfusion continue chez le patient de réanimation; la concentration à l'état stationnaire est représentée par Cmin.",
+      "scope_en": "Continuous infusion in critically ill patients; the steady-state concentration is represented by Cmin.",
+      "grid_note_fr": "La cible est issue de la recommandation; la grille quotidienne reste exploratoire et doit être adaptée au poids et à la fonction rénale.",
+      "grid_note_en": "The target comes from the guideline; the daily dose grid remains exploratory and must be adapted to weight and renal function.",
+      "citation": "Rybak MJ et al. Am J Health Syst Pharm. 2020;77:835-864.",
+      "doi": "10.1093/ajhp/zxaa036"
+    }
+  },
+  "formulationByModel": {},
+  "noteFr": "Les références sont contextuelles. Les grilles de doses sont des espaces exploratoires, pas des prescriptions.",
+  "noteEn": "References are context-dependent. Dose grids are exploratory search spaces, not prescriptions."
+}

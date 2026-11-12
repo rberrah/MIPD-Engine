@@ -77,6 +77,8 @@ source(file.path(APP_ROOT, "R", "tdm_guide_preview.R"), local = TRUE)
 source(file.path(APP_ROOT, "R", "private_workspace.R"), local = TRUE)
 source(file.path(APP_ROOT, "R", "i18n.R"), local = TRUE)
 source(file.path(APP_ROOT, "R", "clinical_presets.R"), local = TRUE)
+source(file.path(APP_ROOT, "R", "tdm_drug_profiles.R"), local = TRUE)
+source(file.path(APP_ROOT, "R", "drug_profile_runtime_presets.R"), local = TRUE)
 source(file.path(APP_ROOT, "R", "tdm_guide_presets.R"), local = TRUE)
 pmetrics_mode <- tolower(trimws(Sys.getenv("ENABLE_PMETRICS", "auto")))
 if (!pmetrics_mode %in% c("auto", "true", "false")) stop("ENABLE_PMETRICS must be auto, true, or false.")
@@ -422,7 +424,7 @@ dose_row_ui <- function(
       condition = sprintf("input.dose_ss_%d == true", index),
       div(class = "route-readonly", tags$strong("Steady state"), span("Temps imposé à t = 0 h (ss = 1)."))
     ),
-    numericInput(paste0("dose_amount_", index), "Dose (mg)", amount, min = 0, step = 50),
+    numericInput(paste0("dose_amount_", index), "Dose (mg)", amount, min = 0, step = NA),
     selectInput(
       paste0("dose_status_", index),
       "Statut",
@@ -755,6 +757,7 @@ app_ui <- function(request) {
               "Cible et grille de doses",
               value = "target_settings",
               uiOutput("target_preset_ui"),
+              uiOutput("tdm_drug_profile_ui"),
               uiOutput("tdm_guide_drug_link_ui"),
               uiOutput("tdm_guide_preset_ui"),
               selectInput(
@@ -1199,6 +1202,7 @@ server <- function(input, output, session) {
   pending_ddi_target <- reactiveVal(NULL)
   pending_ddi_routes <- reactiveVal(list())
   last_target_preset_key <- reactiveVal(NULL)
+  last_drug_key <- reactiveVal(as.character(model_record(DEFAULT_MODEL)$drugKey[[1]]))
   pending_import_covariates <- reactiveVal(NULL)
   pending_import_dose_covariates <- reactiveVal(NULL)
   pending_lego_covariates <- reactiveVal(NULL)
@@ -1396,7 +1400,9 @@ server <- function(input, output, session) {
   observeEvent(input$add_dose, {
     index <- dose_count() + 1L
     dose_count(index)
-    insert_dose_row(index, time = 48, amount = 1000, interval = 12, count = 4, infusion = 1, steady_state = FALSE)
+    # Copy an already-entered dose only; never suggest 1000 mg for a newly selected drug.
+    insert_dose_row(index, time = 48, amount = numeric_input_value("dose_amount_1"),
+      interval = 12, count = 4, infusion = 1, steady_state = FALSE)
   })
 
   observeEvent(input$remove_dose, {
@@ -1409,7 +1415,7 @@ server <- function(input, output, session) {
   observeEvent(input$add_observation, {
     index <- observation_count() + 1L
     observation_count(index)
-    insert_observation_row(index, time = 60, concentration = 15)
+    insert_observation_row(index, time = 60, concentration = NA_real_)
   })
 
   observeEvent(input$remove_observation, {
@@ -1665,7 +1671,11 @@ server <- function(input, output, session) {
           if (length(value) != 1L || !is.finite(value)) value <- definition$value[[definition_index]]
           numericInput(
             input_id,
-            if (nzchar(definition$description[[definition_index]])) {
+            if (identical(current_model_id(), "tacrolimus_woillard_ddi") &&
+                identical(name, "ST")) {
+              tx("ST · Galénique : 1 = Prograf (LI, 12 h) ; 0 = Advagraf (LP, 24 h)",
+                "ST · Formulation: 1 = Prograf (immediate, 12 h); 0 = Advagraf (prolonged, 24 h)")
+            } else if (nzchar(definition$description[[definition_index]])) {
               paste0(name, " · ", definition$description[[definition_index]])
             } else {
               name
@@ -3009,15 +3019,39 @@ server <- function(input, output, session) {
     route <- input$administration_route %||% ""
     shiny::req(model_supports_route(record, route))
     modes <- model_administration_modes(record, route)
+    # When a model has a single mode the route already conveys this information.
+    if (length(modes) <= 1L) return(NULL)
     selected <- isolate(input$administration_mode %||% "")
     if (!selected %in% modes) selected <- modes[[1]]
     selectInput(
       "administration_mode",
-      tx("Mode d'administration", "Administration mode"),
+      tx("Précision du mode IV", "IV regimen type"),
       choices = stats::setNames(modes, vapply(modes, administration_mode_label, character(1), lang = current_language())),
       selected = selected
     )
   })
+
+  # Values from a different drug must never remain in the dose/observation rows.
+  # The data are not converted across drugs because model units and dose scales differ.
+  observeEvent(current_model_id(), {
+    if (!identical(input$model_source %||% "library", "library")) return()
+    key <- as.character(model_record(current_model_id())$drugKey[[1]])
+    old <- last_drug_key()
+    if (!identical(old, key)) {
+      for (i in seq_len(dose_count())) {
+        updateNumericInput(session, paste0("dose_amount_", i), value = NA_real_)
+      }
+      for (i in seq_len(observation_count())) {
+        updateNumericInput(session, paste0("observation_concentration_", i), value = NA_real_)
+        updateNumericInput(session, paste0("observation_lloq_", i), value = NA_real_)
+      }
+      showNotification(tx(
+        "Nouvelle molécule : anciennes doses et concentrations effacées pour éviter une confusion d'unités.",
+        "New drug: previous doses and concentrations cleared to avoid mixing units."),
+        type = "message", duration = 8)
+    }
+    last_drug_key(key)
+  }, ignoreInit = TRUE)
 
   active_target_preset <- reactive({
     if (!identical(input$model_source %||% "library", "library")) return(NULL)
@@ -3062,7 +3096,17 @@ server <- function(input, output, session) {
     if (identical(last_target_preset_key(), key)) return()
     last_target_preset_key(key)
     preset <- active_target_preset()
-    if (is.null(preset)) return()
+    if (is.null(preset)) {
+      # Do not let a previous drug's targets (or mg-dose grid) silently survive a
+      # switch to a molecule without a context-qualified default in its JSON.
+      updateNumericInput(session, "target_low", value = NA_real_)
+      updateNumericInput(session, "target_high", value = NA_real_)
+      updateNumericInput(session, "dose_min", value = NA_real_)
+      updateNumericInput(session, "dose_max", value = NA_real_)
+      updateNumericInput(session, "dose_step", value = NA_real_)
+      update_candidate_intervals(numeric())
+      return()
+    }
     updateSelectInput(session, "target_metric", selected = preset$target_metric)
     updateNumericInput(session, "target_low", value = preset$target_low)
     updateNumericInput(session, "target_high", value = preset$target_high)
@@ -3073,17 +3117,233 @@ server <- function(input, output, session) {
     updateNumericInput(session, "future_infusion", value = preset$infusion)
   }, ignoreInit = FALSE)
 
+  # Each drug's metadata, references and exploratory dose-grid now come from
+  # its own validated integration/tdm-drugs/<drugKey>.json file.
+  output$tdm_drug_profile_ui <- renderUI({
+    if (!identical(input$model_source %||% "library", "library")) return(NULL)
+    record <- model_record(current_model_id())
+    profile <- tdm_drug_profile(record)
+    if (is.null(profile)) return(NULL)
+    mode <- current_administration_mode()
+    grid <- tdm_drug_profile_search_grid(record, mode)
+    english <- identical(current_language(), "en")
+    index <- profile$monitoring
+    sample_info <- profile$sampling
+    st_values <- vapply(seq_len(observation_count()), function(i)
+      suppressWarnings(as.numeric(input[[paste0("observation_cov_ST_", i)]] %||% NA_real_)), numeric(1))
+    st <- if (length(st_values) && all(is.finite(st_values)) &&
+              length(unique(st_values)) == 1L) st_values[[1]] else NA_real_
+    product <- tdm_drug_profile_formulation(record, st)
+    confirmed <- as.character(input$tdm_profile_formulation %||% "")
+    label_for <- function(id) {
+      if (identical(id, "tacrolimus-immediate-release")) return("Prograf · libération immédiate / immediate release")
+      if (identical(id, "ciclosporine-neoral-microemulsion")) return("Neoral · microémulsion")
+      if (identical(id, "everolimus-certican-transplant")) return("Certican · transplantation")
+      if (identical(id, "sirolimus-rapamune-tablet")) return("Rapamune · comprimés / tablets")
+      id
+    }
+    div(
+      class = "target-preset tdm-drug-json-profile",
+      `data-testid` = "mipd-drug-json-profile",
+      tags$strong(paste0(profile$drugName, " · ", tx(
+        "référentiel par molécule", "drug-specific reference"))),
+      tags$p(
+        tags$strong(tx("Indice PK/PD : ", "PK/PD index: ")),
+        if (english) index$en %||% tx("Non établi", "Not established")
+        else index$fr %||% tx("Non établi", "Not established")
+      ),
+      tags$p(
+        tags$strong(tx("Unités du modèle : ", "Model units: ")),
+        paste0(profile$concentrationUnit, tx(" ; dose en ", "; dose in "), profile$doseUnit)
+      ),
+      if (!is.null(sample_info)) tags$p(
+        tags$strong(tx("Prélèvement : ", "Sampling: ")),
+        if (english) sample_info$en %||% "" else sample_info$fr %||% ""
+      ),
+      if (length(profile$sourceReferences) || length(profile$conditionalPdObjectives)) {
+        tags$details(
+          tags$summary(tx("Objectifs publiés, contexte et sources", "Published objectives, context and sources")),
+          if (length(profile$sourceReferences)) tags$div(
+            tags$strong(tx("Références numériques (ne pas transposer sans contexte) :",
+              "Numeric references (do not transfer without matching context):")),
+            tags$ul(lapply(profile$sourceReferences, function(ref) {
+              amount <- paste0(
+                if (identical(ref$relation, "above")) "> " else if (identical(ref$relation, "below")) "< " else "",
+                format(ref$min),
+                if (!is.null(ref$max)) paste0(" – ", format(ref$max)) else "",
+                " ", ref$unit %||% "")
+              tags$li(
+                tags$strong(paste0(if (english) ref$indicationEn else ref$indicationFr,
+                  " · ", ref$metric, " ", amount)),
+                tags$p(if (english) ref$contextEn %||% "" else ref$contextFr %||% ""),
+                if (grepl("^https://", ref$source$url %||% "")) tags$a(
+                  ref$source$citation %||% tx("Source", "Source"),
+                  href = ref$source$url, target = "_blank", rel = "noopener noreferrer")
+              )
+            }))
+          ),
+          if (length(profile$conditionalPdObjectives)) tags$div(
+            tags$strong(tx("Indices PK/PD conditionnels :",
+              "Conditional PK/PD objectives:")),
+            tags$ul(lapply(profile$conditionalPdObjectives, function(pd) {
+              tags$li(
+                tags$strong(if (english) pd$labelEn %||% "" else pd$labelFr %||% ""),
+                tags$p(if (english) pd$criterionEn %||% "" else pd$criterionFr %||% ""),
+                if (grepl("^https://", pd$source$url %||% "")) tags$a(
+                  pd$source$citation %||% tx("Source", "Source"),
+                  href = pd$source$url, target = "_blank", rel = "noopener noreferrer")
+              )
+            }))
+          )
+        )
+      },
+      if (!is.null(product)) tags$p(
+        tags$strong(tx("Formulation du modèle : ", "Model formulation: ")),
+        if (english) product$labelEn %||% product$product
+        else product$labelFr %||% product$product
+      ),
+      if (identical(as.character(record$id[[1]]), "tacrolimus_woillard_ddi")) tags$p(
+        class = "custom-note",
+        tx("Codage ST du modèle Woillard : 1 = Prograf, libération immédiate (12 h) ; 0 = Advagraf, libération prolongée (24 h). Envarsus est une autre formulation et relève du modèle Kamp. La concentration simulée est déjà en ng/mL : ne pas la diviser par 1 000.",
+          "Woillard model ST coding: 1 = Prograf immediate release (12 h); 0 = Advagraf prolonged release (24 h). Envarsus is a different product modelled by Kamp. Simulated concentrations are already in ng/mL: do not divide by 1,000.")
+      ),
+      if (!is.null(grid)) tags$div(
+        class = "tdm-drug-exploratory-grid",
+        tags$strong(tx("Grille exploratoire provenant du RCP", "Label-derived exploratory grid")),
+        tags$p(paste0(format(grid$dose_min), "–", format(grid$dose_max),
+          " mg, ", tx("pas", "step"), " ", format(grid$dose_step), " mg ; ",
+          paste(unlist(grid$intervals), collapse = "/"), " h.")),
+        tags$p(if (english) grid$basisEn %||% "" else grid$basisFr %||% ""),
+        if (grepl("^https://", grid$source$url %||% "")) tags$a(
+          grid$source$label %||% tx("RCP source", "Source SmPC"),
+          href = grid$source$url, target = "_blank", rel = "noopener noreferrer"
+        ),
+        selectInput("tdm_profile_formulation",
+          tx("Confirmer la spécialité avant de charger la grille",
+            "Confirm the product before loading the grid"),
+          choices = stats::setNames(
+            c("", as.character(unlist(grid$requiresFormulationIds))),
+            c(tx("Choisir la formulation", "Choose formulation"),
+              vapply(as.character(unlist(grid$requiresFormulationIds)), label_for, character(1)))
+          ),
+          selected = if (confirmed %in% as.character(unlist(grid$requiresFormulationIds))) confirmed else ""
+        ),
+        if (tdm_drug_profile_grid_eligible(record, mode, confirmed, st)) {
+          actionButton("apply_tdm_drug_grid",
+            tx("Charger cette grille pour la simulation", "Load this grid for simulation"),
+            class = "btn-outline-secondary btn-sm")
+        } else tags$p(class = "custom-note", tx(
+          "La grille n'est pas appliquée : confirmer la spécialité et sa concordance avec le modèle. Certaines formulations n'ont pas de grille qualifiée.",
+          "Grid not applied: confirm product and model compatibility. Some formulations have no qualified grid."
+        )),
+        tags$p(class = "custom-note", tx(
+          "Usage pédagogique uniquement : cette grille est en attente de validation pharmacologique et ne définit pas une posologie recommandée.",
+          "Educational use only: this search grid is pending pharmacologist sign-off and is not a recommended regimen."
+        ))
+      ),
+      if (is.null(grid) && is.null(active_target_preset())) tags$p(class = "custom-note", tx(
+        "Aucune grille de doses sourcée pour ce modèle et cette voie : renseigner une plage exploratoire manuellement.",
+        "No source-backed dose grid for this model and route: enter an exploratory range manually."
+      ))
+    )
+  })
+  shiny::outputOptions(output, "tdm_drug_profile_ui", suspendWhenHidden = FALSE)
+
+  observeEvent(input$apply_tdm_drug_grid, {
+    if (!identical(input$model_source %||% "library", "library")) return()
+    record <- model_record(current_model_id())
+    mode <- current_administration_mode()
+    grid <- tdm_drug_profile_search_grid(record, mode)
+    confirmed <- as.character(input$tdm_profile_formulation %||% "")
+    st_values <- vapply(seq_len(observation_count()), function(i)
+      suppressWarnings(as.numeric(input[[paste0("observation_cov_ST_", i)]] %||% NA_real_)), numeric(1))
+    st <- if (length(st_values) && all(is.finite(st_values)) &&
+              length(unique(st_values)) == 1L) st_values[[1]] else NA_real_
+    if (is.null(grid) ||
+        !tdm_drug_profile_grid_eligible(record, mode, confirmed, st)) {
+      showNotification(tx(
+        "Grille non appliquée : formulation ou modèle incompatible.",
+        "Grid not applied: product or model is incompatible."),
+        type = "error")
+      return()
+    }
+    nums <- as.numeric(c(grid$dose_min, grid$dose_max, grid$dose_step, grid$infusion))
+    intervals <- as.numeric(unlist(grid$intervals))
+    if (length(nums) != 4L || any(!is.finite(nums)) || nums[[1]] < 0 ||
+        nums[[2]] <= nums[[1]] || nums[[3]] <= 0 || nums[[4]] < 0 ||
+        !length(intervals) || any(!is.finite(intervals) | intervals <= 0)) return()
+    updateNumericInput(session, "dose_min", value = grid$dose_min)
+    updateNumericInput(session, "dose_max", value = grid$dose_max)
+    updateNumericInput(session, "dose_step", value = grid$dose_step)
+    update_candidate_intervals(intervals)
+    updateNumericInput(session, "future_infusion", value = grid$infusion)
+    showNotification(tx(
+      "Espace de recherche chargé depuis le JSON/RCP, pour simulation uniquement. Aucune posologie clinique n'est validée.",
+      "Source-backed grid loaded for simulation only. No clinical dosing regimen has been validated."),
+      type = "warning", duration = 12)
+  }, ignoreInit = TRUE)
+
+  # The app's concentration unit is already determined by each model's table
+  # output (e.g. tacrolimus ng/mL). Labels change, values are never re-scaled.
+  observe({
+    if (!identical(input$model_source %||% "library", "library")) return()
+    record <- model_record(current_model_id())
+    metric <- input$target_metric %||% "Cmin"
+    unit <- tdm_drug_profile_metric_unit(record, metric)
+    concentration <- tdm_drug_profile(record)$concentrationUnit
+    dose_unit <- tdm_drug_profile(record)$doseUnit
+    updateNumericInput(session, "target_low",
+      label = paste0(tx("Borne basse", "Lower bound"), " (", unit, ")"))
+    updateNumericInput(session, "target_high",
+      label = paste0(tx("Borne haute", "Upper bound"), " (", unit, ")"))
+    updateNumericInput(session, "target_concentration_threshold",
+      label = paste0(tx("Seuil de concentration", "Concentration threshold"), " (", concentration, ")"))
+    for (id in c("target_cmin_low", "target_cmin_high", "target_cmin_threshold",
+                 "target_cmax_low", "target_cmax_high", "target_cmax_threshold")) {
+      updateNumericInput(session, id, label = paste0(sub("^target_", "", id), " (", concentration, ")"))
+    }
+    updateNumericInput(session, "dose_min",
+      label = paste0(tx("Dose min", "Min dose"), " (", dose_unit, ")"))
+    updateNumericInput(session, "dose_max",
+      label = paste0(tx("Dose max", "Max dose"), " (", dose_unit, ")"))
+    updateNumericInput(session, "dose_step",
+      label = paste0(tx("Pas", "Step"), " (", dose_unit, ")"))
+    for (i in seq_len(observation_count())) {
+      updateNumericInput(session, paste0("observation_concentration_", i),
+        label = paste0(tx("Concentration", "Concentration"), " (", concentration, ")"))
+      updateNumericInput(session, paste0("observation_lloq_", i),
+        label = paste0("LLOQ (", concentration, ")"))
+    }
+  })
+
   output$target_preset_ui <- renderUI({
     preset <- active_target_preset()
     if (is.null(preset)) {
-      return(div(
-        class = "target-preset unavailable",
-        tags$strong(tx("Aucun préréglage clinique universel", "No universal clinical preset")),
-        span(tx(
-          "La cible et la grille affichées doivent être définies selon l'indication, le protocole local et le patient; elles ne constituent pas une recommandation.",
-          "The displayed target and grid must be defined for the indication, local protocol, and patient; they are not a recommendation."
+      profile <- if (identical(input$model_source %||% "library", "library")) {
+        tdm_drug_profile(model_record(current_model_id()))
+      } else NULL
+      if (!is.null(profile)) {
+        entry <- profile$guideTargetPresets[[current_administration_mode()]]
+        n_targets <- length(entry$candidates %||% list())
+        n_refs <- length(profile$sourceReferences %||% list())
+        n_pd <- length(profile$conditionalPdObjectives %||% list())
+        return(div(
+          class = "target-preset reference-only",
+          tags$strong(tx("Références TDM disponibles pour cette molécule",
+            "TDM references available for this drug")),
+          span(if (n_targets > 0L) tx(
+            paste0(n_targets, " cible(s) contextualisée(s) dans le JSON : sélectionner ci-dessous la référence adaptée à l'indication puis cliquer sur Appliquer. Aucun objectif n'est imposé par défaut."),
+            paste0(n_targets, " context-dependent target(s) in the JSON: choose the relevant indication below and click Apply. No target is imposed by default.")
+          ) else tx(
+            paste0("Pas de cible chiffrée directement transposable (", n_refs, " référence(s) et ", n_pd, " objectif(s) PK/PD conditionnel(s)). Renseigner des bornes adaptées au protocole pour la simulation."),
+            paste0("No directly usable numeric target (", n_refs, " bibliographic reference(s) and ", n_pd, " conditional PK/PD objective(s)). Enter protocol-specific simulation bounds.")
+          ))
         ))
-      ))
+      }
+      return(div(class = "target-preset unavailable",
+        tags$strong(tx("Cible définie par l'utilisateur", "User-defined target")),
+        span(tx("La cible et la grille doivent être renseignées pour la simulation.",
+          "Target and grid must be entered for the simulation."))))
     }
     if (is.null(applied_target_preset())) {
       return(div(
@@ -3138,6 +3398,12 @@ server <- function(input, output, session) {
     grid <- entry$doseGrid
     selected_id <- input$tdm_guide_target_choice %||% ""
     selected <- tdm_guide_preset_candidate(record, mode, selected_id)
+    st_values <- vapply(seq_len(observation_count()), function(i)
+      suppressWarnings(as.numeric(input[[paste0("observation_cov_ST_", i)]] %||% NA_real_)), numeric(1))
+    st <- if (length(st_values) && all(is.finite(st_values)) &&
+              length(unique(st_values)) == 1L) st_values[[1]] else NA_real_
+    model_target_blocked <- !is.null(selected) &&
+      !tdm_drug_profile_target_eligible(record, selected, st)
     div(
       class = "target-preset tdm-guide-target-preset",
       tags$strong(tx("Cibles publiées du TDM Guide", "Published targets from the TDM Guide")),
@@ -3152,6 +3418,13 @@ server <- function(input, output, session) {
       )),
       radioButtons("tdm_guide_target_choice", NULL, choices = choices,
         selected = if (nzchar(selected_id)) selected_id else character(0)),
+      if (model_target_blocked) div(
+        class = "custom-note",
+        tags$strong(tx(
+          "Cette référence ne correspond pas à l'unité, à la formulation ou à la population du modèle. Elle reste visible, mais ne peut pas alimenter les champs de simulation.",
+          "This reference does not match the model unit, formulation or population. It remains visible but cannot populate simulation settings."
+        ))
+      ),
       if (!is.null(selected) && tdm_guide_preset_candidate_blocked(selected)) div(
         class = "custom-note",
         tags$strong(tx(
@@ -3169,7 +3442,8 @@ server <- function(input, output, session) {
           selected$citation %||% selected$url, href = selected$url,
           target = "_blank", rel = "noopener noreferrer")
       ),
-      actionButton("apply_tdm_guide_target",
+      if (!model_target_blocked && !(!is.null(selected) &&
+            tdm_guide_preset_candidate_blocked(selected))) actionButton("apply_tdm_guide_target",
         tx("Appliquer la cible sélectionnée", "Apply the selected target"),
         class = "btn-outline-primary btn-sm"),
       # The curated MIPD preset stays authoritative; a disagreement is stated, not resolved.
@@ -3217,6 +3491,17 @@ server <- function(input, output, session) {
     if (is.null(candidate)) {
       showNotification(tx("Sélectionner d'abord une cible publiée.",
         "Select a published target first."), type = "warning")
+      return()
+    }
+    st_values <- vapply(seq_len(observation_count()), function(i)
+      suppressWarnings(as.numeric(input[[paste0("observation_cov_ST_", i)]] %||% NA_real_)), numeric(1))
+    st <- if (length(st_values) && all(is.finite(st_values)) &&
+              length(unique(st_values)) == 1L) st_values[[1]] else NA_real_
+    if (!tdm_drug_profile_target_eligible(record, candidate, st)) {
+      showNotification(tx(
+        "Cible non appliquée : unité, formulation ou population incompatibles avec ce modèle.",
+        "Target not applied: model units, formulation or population are incompatible."),
+        type = "error", duration = 12)
       return()
     }
     # A range that is only defined together with its assay cannot be applied without

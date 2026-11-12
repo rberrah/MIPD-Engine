@@ -1,0 +1,34 @@
+{
+  "schema": "mipd.tdm.drug-profile.v1",
+  "drugKey": "erythromycine",
+  "tdmDrugId": "erythromycin",
+  "drugName": "Érythromycine",
+  "modelIds": [
+    "erythromycine_mather_ddi"
+  ],
+  "concentrationUnit": "mg/L",
+  "doseUnit": "mg",
+  "intendedUse": "TEACHING_RESEARCH_ONLY",
+  "clinicalInterpretationAllowed": false,
+  "automaticDoseAdjustmentAllowed": false,
+  "patientDataIncluded": false,
+  "guideHref": "https://rberrah.github.io/pharmacometrie/cibles-tdm/?drug=erythromycin&lang=fr",
+  "monitoring": {
+    "key": "unknown",
+    "fr": "Non référencé",
+    "en": "Not indexed"
+  },
+  "sampling": {
+    "key": "unknown",
+    "fr": "Non référencé",
+    "en": "Not indexed"
+  },
+  "sourceSnapshotSha256": "511c8fef0159a6aff406d026bc952dc59e4c5ba5a05b0c17e3af7f26c15d7230",
+  "guideTargetPresets": {},
+  "sourceReferences": [],
+  "conditionalPdObjectives": [],
+  "simulationPresets": {},
+  "formulationByModel": {},
+  "noteFr": "Les références sont contextuelles. Les grilles de doses sont des espaces exploratoires, pas des prescriptions.",
+  "noteEn": "References are context-dependent. Dose grids are exploratory search spaces, not prescriptions."
+}

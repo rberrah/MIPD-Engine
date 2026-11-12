@@ -1,0 +1,464 @@
+{
+  "schema": "mipd.tdm.drug-profile.v1",
+  "drugKey": "ciclosporine",
+  "tdmDrugId": "cyclosporine",
+  "drugName": "Ciclosporine",
+  "modelIds": [
+    "ciclosporine_press_ddi"
+  ],
+  "concentrationUnit": "ng/mL",
+  "doseUnit": "mg",
+  "intendedUse": "TEACHING_RESEARCH_ONLY",
+  "clinicalInterpretationAllowed": false,
+  "automaticDoseAdjustmentAllowed": false,
+  "patientDataIncluded": false,
+  "guideHref": "https://rberrah.github.io/pharmacometrie/cibles-tdm/?drug=cyclosporine&lang=fr",
+  "monitoring": {
+    "key": "AUC_interval",
+    "fr": "AUC (ou C2 validée selon greffe)",
+    "en": "AUC (or validated C2 by transplant)",
+    "sourceId": "cyclosporineGuideline2026",
+    "noteFr": "L’AUC décrit l’exposition ; C2 peut mieux refléter l’absorption que C0 dans certains protocoles, sans être interchangeable universellement.",
+    "noteEn": "AUC captures exposure; C2 may reflect absorption in some protocols but is not universally interchangeable with trough."
+  },
+  "sampling": {
+    "key": "Cmin_or_C2",
+    "fr": "C0 ou C2 selon protocole",
+    "en": "Trough or C2 per protocol",
+    "sourceId": "cyclosporineGuideline2026",
+    "noteFr": "Préciser horaire C2 exactement 2 h après prise si utilisé ; modèle et spécialité conditionnent l’interprétation.",
+    "noteEn": "C2 requires accurately documented 2 h postdose time; formulation and model affect interpretation."
+  },
+  "sourceSnapshotSha256": "511c8fef0159a6aff406d026bc952dc59e4c5ba5a05b0c17e3af7f26c15d7230",
+  "guideTargetPresets": {
+    "ORAL": {
+      "drugKey": "ciclosporine",
+      "mode": "ORAL",
+      "tdmDrugId": "cyclosporine",
+      "doseGrid": {
+        "dose_min": 25,
+        "dose_max": 700,
+        "dose_step": 25,
+        "intervals": [
+          12
+        ],
+        "infusion": 0,
+        "basisFr": "Bornes couvrant la dose initiale du RCP (10–15 mg/kg/j en deux prises, soit environ 350–525 mg par prise pour 70 kg, jusqu'à environ 675 mg pour 90 kg) et l'entretien d'environ 2–6 mg/kg/j en deux prises. Pas de 25 mg aligné sur les gélules disponibles.",
+        "basisEn": "Bounds covering the label initial dose (10-15 mg/kg/day in two divided doses, about 350-525 mg per dose at 70 kg and up to about 675 mg at 90 kg) and maintenance of about 2-6 mg/kg/day in two divided doses. The 25 mg step matches the available capsules.",
+        "source": {
+          "label": "Neoral soft gelatin capsules, SmPC section 4.2, UK electronic medicines compendium",
+          "url": "https://www.medicines.org.uk/emc/product/1034/smpc",
+          "statement": "at a dose of 10 to 15 mg/kg given in 2 divided doses; reduced according to blood levels until a recommended maintenance dose of about 2 to 6 mg/kg given in 2 divided doses is reached",
+          "strengths": "10 mg, 25 mg, 50 mg, 100 mg capsules"
+        },
+        "signoff": "PENDING",
+        "requiresFormulationIds": [
+          "ciclosporine-neoral-microemulsion"
+        ]
+      },
+      "doseGridSignedOff": false,
+      "doseGridApplicableModelIds": [],
+      "doseGridBlockedModels": {
+        "ciclosporine_press_ddi": "grid_awaiting_signoff"
+      },
+      "candidates": [
+        {
+          "id": "csa-kidney-c0-0",
+          "target_metric": "Cmin",
+          "target_low": 150,
+          "target_high": 300,
+          "target_unit": "ng/mL",
+          "indication": "kidney",
+          "labelFr": "Greffe rénale · 0–3 mois · avec MPA",
+          "labelEn": "Kidney transplant · 0–3 months · with MPA",
+          "scopeFr": "Recommandations de transplantation thaïlandaises 2026, CsA + MPA, valeur C0 selon le délai post-greffe. C₂ à 2 h de la prise. Adapter au protocole local, au risque immunologique et à la méthode.",
+          "scopeEn": "2026 Thai kidney transplant guidance, CsA + MPA; C0 target by time after transplant. C2 is 2 h after dosing. Centre, immunologic risk and assay may differ.",
+          "citation": "Thai Transplant 2026",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC13624913/",
+          "evidenceStatus": "guideline",
+          "undecidable": [
+            "analyteId",
+            "analyteBasis",
+            "matrixId",
+            "formulationId",
+            "assayMethod",
+            "samplingTime"
+          ],
+          "applicationBlocked": false,
+          "applicationBlockedCode": null,
+          "modelApplicabilityVerified": false,
+          "automaticDoseAdjustmentAllowed": false
+        },
+        {
+          "id": "csa-kidney-c0-3",
+          "target_metric": "Cmin",
+          "target_low": 100,
+          "target_high": 200,
+          "target_unit": "ng/mL",
+          "indication": "kidney",
+          "labelFr": "Greffe rénale · 3–6 mois · avec MPA",
+          "labelEn": "Kidney transplant · 3–6 months · with MPA",
+          "scopeFr": "Recommandations de transplantation thaïlandaises 2026, CsA + MPA, valeur C0 selon le délai post-greffe. C₂ à 2 h de la prise. Adapter au protocole local, au risque immunologique et à la méthode.",
+          "scopeEn": "2026 Thai kidney transplant guidance, CsA + MPA; C0 target by time after transplant. C2 is 2 h after dosing. Centre, immunologic risk and assay may differ.",
+          "citation": "Thai Transplant 2026",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC13624913/",
+          "evidenceStatus": "guideline",
+          "undecidable": [
+            "analyteId",
+            "analyteBasis",
+            "matrixId",
+            "formulationId",
+            "assayMethod",
+            "samplingTime"
+          ],
+          "applicationBlocked": false,
+          "applicationBlockedCode": null,
+          "modelApplicabilityVerified": false,
+          "automaticDoseAdjustmentAllowed": false
+        },
+        {
+          "id": "csa-kidney-c0-6",
+          "target_metric": "Cmin",
+          "target_low": 80,
+          "target_high": 150,
+          "target_unit": "ng/mL",
+          "indication": "kidney",
+          "labelFr": "Greffe rénale · après 6 mois · avec MPA",
+          "labelEn": "Kidney transplant · after 6 months · with MPA",
+          "scopeFr": "Recommandations de transplantation thaïlandaises 2026, CsA + MPA, valeur C0 selon le délai post-greffe. C₂ à 2 h de la prise. Adapter au protocole local, au risque immunologique et à la méthode.",
+          "scopeEn": "2026 Thai kidney transplant guidance, CsA + MPA; C0 target by time after transplant. C2 is 2 h after dosing. Centre, immunologic risk and assay may differ.",
+          "citation": "Thai Transplant 2026",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC13624913/",
+          "evidenceStatus": "guideline",
+          "undecidable": [
+            "analyteId",
+            "analyteBasis",
+            "matrixId",
+            "formulationId",
+            "assayMethod",
+            "samplingTime"
+          ],
+          "applicationBlocked": false,
+          "applicationBlockedCode": null,
+          "modelApplicabilityVerified": false,
+          "automaticDoseAdjustmentAllowed": false
+        }
+      ],
+      "autoApply": false
+    }
+  },
+  "sourceReferences": [
+    {
+      "id": "csa-kidney-c0-0",
+      "metric": "C₀",
+      "unit": "ng/mL",
+      "indication": "kidney",
+      "indicationFr": "Greffe rénale · 0–3 mois · avec MPA",
+      "indicationEn": "Kidney transplant · 0–3 months · with MPA",
+      "contextFr": "Recommandations de transplantation thaïlandaises 2026, CsA + MPA, valeur C0 selon le délai post-greffe. C₂ à 2 h de la prise. Adapter au protocole local, au risque immunologique et à la méthode.",
+      "contextEn": "2026 Thai kidney transplant guidance, CsA + MPA; C0 target by time after transplant. C2 is 2 h after dosing. Centre, immunologic risk and assay may differ.",
+      "analyteId": null,
+      "analyteBasis": null,
+      "matrixId": null,
+      "matrixFr": "Sang total",
+      "matrixEn": "Whole blood",
+      "formulationId": null,
+      "samplingTime": null,
+      "relation": "range",
+      "min": 150,
+      "max": 300,
+      "analyticalIdentityMissing": [
+        "analyteId",
+        "analyteBasis",
+        "matrixId",
+        "formulationId",
+        "assayMethod",
+        "samplingTime"
+      ],
+      "source": {
+        "id": "thaiKT2026",
+        "citation": "Thai Transplant 2026",
+        "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC13624913/",
+        "year": 2026,
+        "section": "Table 5, CsA + MPA column; C0 and C2 by 0–3, 3–6 and >6 months"
+      },
+      "status": "bibliographic_candidate_requires_context_review",
+      "applicability": {
+        "verdict": "requires_human_context_review",
+        "mismatches": [],
+        "undecidable": [
+          "analyteId",
+          "analyteBasis",
+          "matrixId",
+          "formulationId",
+          "assayMethod",
+          "samplingTime"
+        ]
+      },
+      "modelApplicabilityVerified": false,
+      "automaticDoseAdjustmentAllowed": false
+    },
+    {
+      "id": "csa-kidney-c0-3",
+      "metric": "C₀",
+      "unit": "ng/mL",
+      "indication": "kidney",
+      "indicationFr": "Greffe rénale · 3–6 mois · avec MPA",
+      "indicationEn": "Kidney transplant · 3–6 months · with MPA",
+      "contextFr": "Recommandations de transplantation thaïlandaises 2026, CsA + MPA, valeur C0 selon le délai post-greffe. C₂ à 2 h de la prise. Adapter au protocole local, au risque immunologique et à la méthode.",
+      "contextEn": "2026 Thai kidney transplant guidance, CsA + MPA; C0 target by time after transplant. C2 is 2 h after dosing. Centre, immunologic risk and assay may differ.",
+      "analyteId": null,
+      "analyteBasis": null,
+      "matrixId": null,
+      "matrixFr": "Sang total",
+      "matrixEn": "Whole blood",
+      "formulationId": null,
+      "samplingTime": null,
+      "relation": "range",
+      "min": 100,
+      "max": 200,
+      "analyticalIdentityMissing": [
+        "analyteId",
+        "analyteBasis",
+        "matrixId",
+        "formulationId",
+        "assayMethod",
+        "samplingTime"
+      ],
+      "source": {
+        "id": "thaiKT2026",
+        "citation": "Thai Transplant 2026",
+        "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC13624913/",
+        "year": 2026,
+        "section": "Table 5, CsA + MPA column; C0 and C2 by 0–3, 3–6 and >6 months"
+      },
+      "status": "bibliographic_candidate_requires_context_review",
+      "applicability": {
+        "verdict": "requires_human_context_review",
+        "mismatches": [],
+        "undecidable": [
+          "analyteId",
+          "analyteBasis",
+          "matrixId",
+          "formulationId",
+          "assayMethod",
+          "samplingTime"
+        ]
+      },
+      "modelApplicabilityVerified": false,
+      "automaticDoseAdjustmentAllowed": false
+    },
+    {
+      "id": "csa-kidney-c0-6",
+      "metric": "C₀",
+      "unit": "ng/mL",
+      "indication": "kidney",
+      "indicationFr": "Greffe rénale · après 6 mois · avec MPA",
+      "indicationEn": "Kidney transplant · after 6 months · with MPA",
+      "contextFr": "Recommandations de transplantation thaïlandaises 2026, CsA + MPA, valeur C0 selon le délai post-greffe. C₂ à 2 h de la prise. Adapter au protocole local, au risque immunologique et à la méthode.",
+      "contextEn": "2026 Thai kidney transplant guidance, CsA + MPA; C0 target by time after transplant. C2 is 2 h after dosing. Centre, immunologic risk and assay may differ.",
+      "analyteId": null,
+      "analyteBasis": null,
+      "matrixId": null,
+      "matrixFr": "Sang total",
+      "matrixEn": "Whole blood",
+      "formulationId": null,
+      "samplingTime": null,
+      "relation": "range",
+      "min": 80,
+      "max": 150,
+      "analyticalIdentityMissing": [
+        "analyteId",
+        "analyteBasis",
+        "matrixId",
+        "formulationId",
+        "assayMethod",
+        "samplingTime"
+      ],
+      "source": {
+        "id": "thaiKT2026",
+        "citation": "Thai Transplant 2026",
+        "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC13624913/",
+        "year": 2026,
+        "section": "Table 5, CsA + MPA column; C0 and C2 by 0–3, 3–6 and >6 months"
+      },
+      "status": "bibliographic_candidate_requires_context_review",
+      "applicability": {
+        "verdict": "requires_human_context_review",
+        "mismatches": [],
+        "undecidable": [
+          "analyteId",
+          "analyteBasis",
+          "matrixId",
+          "formulationId",
+          "assayMethod",
+          "samplingTime"
+        ]
+      },
+      "modelApplicabilityVerified": false,
+      "automaticDoseAdjustmentAllowed": false
+    },
+    {
+      "id": "csa-kidney-c2-0",
+      "metric": "C₂h",
+      "unit": "ng/mL",
+      "indication": "kidney",
+      "indicationFr": "Greffe rénale · 0–3 mois · avec MPA",
+      "indicationEn": "Kidney transplant · 0–3 months · with MPA",
+      "contextFr": "Recommandations de transplantation thaïlandaises 2026, CsA + MPA, valeur C2 selon le délai post-greffe. C₂ à 2 h de la prise. Adapter au protocole local, au risque immunologique et à la méthode.",
+      "contextEn": "2026 Thai kidney transplant guidance, CsA + MPA; C2 target by time after transplant. C2 is 2 h after dosing. Centre, immunologic risk and assay may differ.",
+      "analyteId": null,
+      "analyteBasis": null,
+      "matrixId": null,
+      "matrixFr": "Sang total",
+      "matrixEn": "Whole blood",
+      "formulationId": null,
+      "samplingTime": null,
+      "relation": "range",
+      "min": 800,
+      "max": 1200,
+      "analyticalIdentityMissing": [
+        "analyteId",
+        "analyteBasis",
+        "matrixId",
+        "formulationId",
+        "assayMethod",
+        "samplingTime"
+      ],
+      "source": {
+        "id": "thaiKT2026",
+        "citation": "Thai Transplant 2026",
+        "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC13624913/",
+        "year": 2026,
+        "section": "Table 5, CsA + MPA column; C0 and C2 by 0–3, 3–6 and >6 months"
+      },
+      "status": "bibliographic_candidate_requires_context_review",
+      "applicability": {
+        "verdict": "requires_human_context_review",
+        "mismatches": [],
+        "undecidable": [
+          "analyteId",
+          "analyteBasis",
+          "matrixId",
+          "formulationId",
+          "assayMethod",
+          "samplingTime"
+        ]
+      },
+      "modelApplicabilityVerified": false,
+      "automaticDoseAdjustmentAllowed": false
+    },
+    {
+      "id": "csa-kidney-c2-3",
+      "metric": "C₂h",
+      "unit": "ng/mL",
+      "indication": "kidney",
+      "indicationFr": "Greffe rénale · 3–6 mois · avec MPA",
+      "indicationEn": "Kidney transplant · 3–6 months · with MPA",
+      "contextFr": "Recommandations de transplantation thaïlandaises 2026, CsA + MPA, valeur C2 selon le délai post-greffe. C₂ à 2 h de la prise. Adapter au protocole local, au risque immunologique et à la méthode.",
+      "contextEn": "2026 Thai kidney transplant guidance, CsA + MPA; C2 target by time after transplant. C2 is 2 h after dosing. Centre, immunologic risk and assay may differ.",
+      "analyteId": null,
+      "analyteBasis": null,
+      "matrixId": null,
+      "matrixFr": "Sang total",
+      "matrixEn": "Whole blood",
+      "formulationId": null,
+      "samplingTime": null,
+      "relation": "range",
+      "min": 600,
+      "max": 1000,
+      "analyticalIdentityMissing": [
+        "analyteId",
+        "analyteBasis",
+        "matrixId",
+        "formulationId",
+        "assayMethod",
+        "samplingTime"
+      ],
+      "source": {
+        "id": "thaiKT2026",
+        "citation": "Thai Transplant 2026",
+        "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC13624913/",
+        "year": 2026,
+        "section": "Table 5, CsA + MPA column; C0 and C2 by 0–3, 3–6 and >6 months"
+      },
+      "status": "bibliographic_candidate_requires_context_review",
+      "applicability": {
+        "verdict": "requires_human_context_review",
+        "mismatches": [],
+        "undecidable": [
+          "analyteId",
+          "analyteBasis",
+          "matrixId",
+          "formulationId",
+          "assayMethod",
+          "samplingTime"
+        ]
+      },
+      "modelApplicabilityVerified": false,
+      "automaticDoseAdjustmentAllowed": false
+    },
+    {
+      "id": "csa-kidney-c2-6",
+      "metric": "C₂h",
+      "unit": "ng/mL",
+      "indication": "kidney",
+      "indicationFr": "Greffe rénale · après 6 mois · avec MPA",
+      "indicationEn": "Kidney transplant · after 6 months · with MPA",
+      "contextFr": "Recommandations de transplantation thaïlandaises 2026, CsA + MPA, valeur C2 selon le délai post-greffe. C₂ à 2 h de la prise. Adapter au protocole local, au risque immunologique et à la méthode.",
+      "contextEn": "2026 Thai kidney transplant guidance, CsA + MPA; C2 target by time after transplant. C2 is 2 h after dosing. Centre, immunologic risk and assay may differ.",
+      "analyteId": null,
+      "analyteBasis": null,
+      "matrixId": null,
+      "matrixFr": "Sang total",
+      "matrixEn": "Whole blood",
+      "formulationId": null,
+      "samplingTime": null,
+      "relation": "range",
+      "min": 500,
+      "max": 800,
+      "analyticalIdentityMissing": [
+        "analyteId",
+        "analyteBasis",
+        "matrixId",
+        "formulationId",
+        "assayMethod",
+        "samplingTime"
+      ],
+      "source": {
+        "id": "thaiKT2026",
+        "citation": "Thai Transplant 2026",
+        "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC13624913/",
+        "year": 2026,
+        "section": "Table 5, CsA + MPA column; C0 and C2 by 0–3, 3–6 and >6 months"
+      },
+      "status": "bibliographic_candidate_requires_context_review",
+      "applicability": {
+        "verdict": "requires_human_context_review",
+        "mismatches": [],
+        "undecidable": [
+          "analyteId",
+          "analyteBasis",
+          "matrixId",
+          "formulationId",
+          "assayMethod",
+          "samplingTime"
+        ]
+      },
+      "modelApplicabilityVerified": false,
+      "automaticDoseAdjustmentAllowed": false
+    }
+  ],
+  "conditionalPdObjectives": [],
+  "simulationPresets": {},
+  "formulationByModel": {
+    "ciclosporine_press_ddi": {
+      "formulationId": "not-declared-by-source",
+      "evidence": "Adultes au début de la période suivant une transplantation rénale.",
+      "noteFr": "La population ne nomme aucune spécialité. Les formes de ciclosporine ne sont pas interchangeables en biodisponibilité, et la grille déclarée repose sur le RCP Neoral.",
+      "noteEn": "The population names no product. Ciclosporin formulations are not interchangeable in bioavailability, and the declared grid rests on the Neoral label."
+    }
+  },
+  "noteFr": "Les références sont contextuelles. Les grilles de doses sont des espaces exploratoires, pas des prescriptions.",
+  "noteEn": "References are context-dependent. Dose grids are exploratory search spaces, not prescriptions."
+}

@@ -1,0 +1,40 @@
+{
+  "schema": "mipd.tdm.drug-profile.v1",
+  "drugKey": "fluconazole",
+  "tdmDrugId": "fluconazole",
+  "drugName": "Fluconazole",
+  "modelIds": [
+    "fluconazole_debruyne_ddi"
+  ],
+  "concentrationUnit": "mg/L",
+  "doseUnit": "mg",
+  "intendedUse": "TEACHING_RESEARCH_ONLY",
+  "clinicalInterpretationAllowed": false,
+  "automaticDoseAdjustmentAllowed": false,
+  "patientDataIncluded": false,
+  "guideHref": "https://rberrah.github.io/pharmacometrie/cibles-tdm/?drug=fluconazole&lang=fr",
+  "monitoring": {
+    "key": "unknown",
+    "fr": "Non établi",
+    "en": "Not established",
+    "sourceId": null,
+    "noteFr": "Aucun indice dominant n’a été évalué pour cette entrée : la présence dans le répertoire ne vaut pas validation PK/PD.",
+    "noteEn": "No dominant index has been assessed for this entry; listing is not PK/PD validation."
+  },
+  "sampling": {
+    "key": "unknown",
+    "fr": "À vérifier",
+    "en": "Not reviewed",
+    "sourceId": null,
+    "noteFr": "Le temps de prélèvement, l’analyte et la méthode doivent être vérifiés dans la source spécifique.",
+    "noteEn": "Assay timing, analyte and method need drug-specific review."
+  },
+  "sourceSnapshotSha256": "511c8fef0159a6aff406d026bc952dc59e4c5ba5a05b0c17e3af7f26c15d7230",
+  "guideTargetPresets": {},
+  "sourceReferences": [],
+  "conditionalPdObjectives": [],
+  "simulationPresets": {},
+  "formulationByModel": {},
+  "noteFr": "Les références sont contextuelles. Les grilles de doses sont des espaces exploratoires, pas des prescriptions.",
+  "noteEn": "References are context-dependent. Dose grids are exploratory search spaces, not prescriptions."
+}

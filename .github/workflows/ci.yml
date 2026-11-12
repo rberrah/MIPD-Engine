@@ -19,6 +19,8 @@ jobs:
         run: node tests/tdm_guide_adapter_preview.test.mjs
       - name: Validate MIPD dose grids and preset eligibility offline
         run: node tests/tdm_guide_presets.test.mjs
+      - name: Validate all 23 drug JSON dossiers and unit/formulation links
+        run: node tests/tdm_drug_profiles.test.mjs
 
   tdm-preview-integrated:
     name: Draft STP integration against pinned PMx catalogue (no runtime)
