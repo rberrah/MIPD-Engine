@@ -24,6 +24,16 @@ stopifnot(tdm_drug_profile_grid_eligible(tac,"ORAL","tacrolimus-immediate-releas
 stopifnot(!tdm_drug_profile_grid_eligible(tac_old,"ORAL","tacrolimus-immediate-release",1))
 stopifnot(identical(tdm_drug_profile_search_grid(tac,"ORAL")$signoff,"PENDING"))
 stopifnot(length(tdm_drug_profile_guide_entry(tac,"ORAL")$candidates)==3L)
+ref <- tdm_drug_profile_guide_entry(tac, "ORAL")$candidates[[1]]
+stopifnot(tdm_drug_profile_target_eligible(tac, ref, 1))
+stopifnot(!tdm_drug_profile_target_eligible(tac, ref, 0))
+stopifnot(!tdm_drug_profile_target_eligible(tac, ref, NA_real_))
+stopifnot(!tdm_drug_profile_target_eligible(tac_old, ref, 1))
+wrong_unit <- ref
+wrong_unit$target_unit <- "mg/L"
+stopifnot(!tdm_drug_profile_target_eligible(tac, wrong_unit, 1))
+stopifnot(!tdm_drug_profile_target_eligible(model_record("everolimus_terheine_ddi"),
+  tdm_drug_profile_guide_entry(model_record("everolimus_terheine_ddi"), "ORAL")$candidates[[1]]))
 v <- model_record("vanco_roberts")
 stopifnot(identical(tdm_drug_profile_metric_unit(v,"Cmin"),"mg/L"))
 stopifnot(identical(tdm_drug_profile_metric_unit(v,"AUC24"),"mg·h/L"))
