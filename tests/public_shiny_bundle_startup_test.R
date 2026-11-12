@@ -37,9 +37,12 @@ old <- setwd(sandbox)
 on.exit(setwd(old), add = TRUE)
 cat("Starting isolated Shiny production bundle with ", length(manifest),
     " tracked files.\n", sep = "")
-app <- tryCatch(source("app.R", local = TRUE)$value, error = function(e) {
+app_env <- new.env(parent = globalenv())
+tryCatch(sys.source("app.R", envir = app_env), error = function(e) {
   stop("Public appFiles startup failed: ", conditionMessage(e), call. = FALSE)
 })
+stopifnot(is.function(app_env$app_ui), is.function(app_env$server))
+app <- shiny::shinyApp(ui = app_env$app_ui, server = app_env$server)
 stopifnot(inherits(app, "shiny.appobj"))
 cat("Public appFiles startup PASS: ", sha[[1]], "\n", sep = "")
 
@@ -47,7 +50,7 @@ cat("Public appFiles startup PASS: ", sha[[1]], "\n", sep = "")
 for (language in c("fr", "en")) {
   request <- list(QUERY_STRING = paste0("?lang=", language))
   html <- tryCatch({
-    ui <- if (is.function(app$ui)) app$ui(request) else app$ui
+    ui <- app_env$app_ui(request)
     htmltools::renderTags(ui)$html
   }, error = function(e) {
     stop("Public ", language, " UI failed: ", conditionMessage(e), call. = FALSE)
