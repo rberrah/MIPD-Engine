@@ -35,12 +35,12 @@ stopifnot(
 cat("Compact TDM sidebar, explicit target choice and safety gates: PASS\n")
 # RCP metadata prepopulates only simulation search options; no observed
 # patient administrations, concentration or therapeutic target is changed.
-  grepl('selectInput(', profile, fixed=TRUE) &&
-    grepl('"tdm_profile_formulation"', profile, fixed=TRUE),
+hint_event <- between('  observeEvent(input$tdm_profile_formulation, {',
   '  observeEvent(input$apply_tdm_drug_grid, {')
 css <- paste(readLines("www/app.css", encoding="UTF-8", warn=FALSE), collapse="\n")
 stopifnot(
-  grepl('selectInput(\\n        "tdm_profile_formulation"', profile),
+  grepl('selectInput(', profile, fixed=TRUE) &&
+    grepl('"tdm_profile_formulation"', profile, fixed=TRUE),
   grepl('tdm_drug_profile_formulation_choices(record, mode, english)', profile, fixed=TRUE),
   grepl('tdm_drug_profile_administration_hint(record, mode, confirmed, st)', profile, fixed=TRUE),
   grepl('tdm_drug_profile_grid_eligible(record, mode, confirmed, st)', profile, fixed=TRUE),
