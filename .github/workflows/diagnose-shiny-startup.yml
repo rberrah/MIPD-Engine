@@ -6,6 +6,7 @@ on:
     branches: [main]
     paths:
       - .github/workflows/diagnose-shiny-startup.yml
+      - scripts/diagnose_public_shiny.R
 
 permissions:
   contents: read
