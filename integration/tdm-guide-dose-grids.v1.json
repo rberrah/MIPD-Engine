@@ -1,0 +1,109 @@
+{
+  "schema": "mipd.tdm.dose-grids.v1",
+  "scope": "exploratory_simulation_grids_declared_by_mipd",
+  "signoff": "PENDING_PHARMACOLOGIST_REVIEW",
+  "intent": "The TDM Guide publishes no posology at all (its export asserts containsDosingAdvice: false), so a dose grid can never come from it. These grids are declared by MIPD from the product labels, bound the simulation search space only, and are NOT a dosing recommendation.",
+  "applicationPolicy": {
+    "comment": "A grid is written into the simulation fields only when its own signoff is APPROVED. While it is PENDING the panel displays it with its source and states that it has not been applied, so an unvalidated search space cannot reach the dose grid inputs. Applying a published TARGET does not depend on this: a target is a bibliographic value the reader selects, a grid is a posology statement.",
+    "appliedWhenSignoffIs": "APPROVED",
+    "allowedSignoffValues": [
+      "PENDING",
+      "APPROVED"
+    ],
+    "formulationGate": "A grid is applied to a model only if that model's formulation, declared in integration/tdm-guide-model-formulations.v1.json, is listed in the grid's requiresFormulationIds. An undeclared or ambiguous model formulation blocks the grid. Sign-off alone is therefore not sufficient."
+  },
+  "doseUnit": "mg per administration",
+  "knownLimitations": [
+    "Grids are keyed by molecule and administration mode, not by formulation or by transplant protocol. A molecule whose products differ in dosing interval (tacrolimus immediate release versus prolonged release) therefore cannot be covered by one grid, and only the interval the quoted label supports is declared.",
+    "Population weight is not a parameter here: bounds are derived for an adult weight range and must be re-read for paediatrics, obesity or renal replacement therapy."
+  ],
+  "grids": {
+    "tacrolimus::ORAL": {
+      "dose_min": 0.5,
+      "dose_max": 14,
+      "dose_step": 0.5,
+      "intervals": [
+        12
+      ],
+      "infusion": 0,
+      "basisFr": "Strictement le schéma du RCP Prograf à libération immédiate : 0,20–0,30 mg/kg/j en DEUX prises, soit environ 7–11 mg par prise à 70 kg et jusqu'à environ 13,5 mg à 90 kg, d'où un maximum de 14 mg par prise. Pas de 0,5 mg aligné sur la plus petite gélule. L'intervalle de 24 h est volontairement absent : Advagraf et Envarsus sont des formes à libération prolongée en une prise quotidienne, dosées différemment, et le catalogue de modèles ne déclare pas la formulation. Elles exigent leur propre grille, à déclarer séparément.",
+      "basisEn": "Strictly the immediate-release Prograf label regimen: 0.20-0.30 mg/kg/day in TWO divided doses, about 7-11 mg per dose at 70 kg and up to about 13.5 mg at 90 kg, hence a 14 mg per-dose maximum. The 0.5 mg step matches the smallest capsule. The 24 h interval is deliberately absent: Advagraf and Envarsus are once-daily prolonged-release products, dosed differently, and the model catalogue does not declare formulation. They require their own grid, to be declared separately.",
+      "source": {
+        "label": "Prograf hard capsules, SmPC section 4.2, UK electronic medicines compendium",
+        "url": "https://www.medicines.org.uk/emc/product/7488/smpc",
+        "statement": "oral therapy should commence at 0.20 - 0.30 mg/kg/day administered as two divided doses",
+        "strengths": "0.5 mg, 1 mg, 5 mg capsules"
+      },
+      "excludesFormulations": [
+        "tacrolimus prolonged release once daily (Advagraf, Envarsus)"
+      ],
+      "signoff": "PENDING",
+      "requiresFormulationIds": [
+        "tacrolimus-immediate-release"
+      ]
+    },
+    "ciclosporine::ORAL": {
+      "dose_min": 25,
+      "dose_max": 700,
+      "dose_step": 25,
+      "intervals": [
+        12
+      ],
+      "infusion": 0,
+      "basisFr": "Bornes couvrant la dose initiale du RCP (10–15 mg/kg/j en deux prises, soit environ 350–525 mg par prise pour 70 kg, jusqu'à environ 675 mg pour 90 kg) et l'entretien d'environ 2–6 mg/kg/j en deux prises. Pas de 25 mg aligné sur les gélules disponibles.",
+      "basisEn": "Bounds covering the label initial dose (10-15 mg/kg/day in two divided doses, about 350-525 mg per dose at 70 kg and up to about 675 mg at 90 kg) and maintenance of about 2-6 mg/kg/day in two divided doses. The 25 mg step matches the available capsules.",
+      "source": {
+        "label": "Neoral soft gelatin capsules, SmPC section 4.2, UK electronic medicines compendium",
+        "url": "https://www.medicines.org.uk/emc/product/1034/smpc",
+        "statement": "at a dose of 10 to 15 mg/kg given in 2 divided doses; reduced according to blood levels until a recommended maintenance dose of about 2 to 6 mg/kg given in 2 divided doses is reached",
+        "strengths": "10 mg, 25 mg, 50 mg, 100 mg capsules"
+      },
+      "signoff": "PENDING",
+      "requiresFormulationIds": [
+        "ciclosporine-neoral-microemulsion"
+      ]
+    },
+    "everolimus::ORAL": {
+      "dose_min": 0.25,
+      "dose_max": 1.5,
+      "dose_step": 0.25,
+      "intervals": [
+        12
+      ],
+      "infusion": 0,
+      "basisFr": "Bornes restreintes aux schémas nommés par le RCP : 0,75 mg deux fois par jour avec la ciclosporine (rein, coeur) et 1,0 mg deux fois par jour avec le tacrolimus (foie). Le RCP indique que le schéma à posologie plus élevée n'est pas recommandé : la grille ne monte donc pas au-delà de 1,5 mg par prise. Pas de 0,25 mg aligné sur le plus petit comprimé, le RCP arrondissant lui-même les réductions au dosage de comprimé le plus proche. Les plages cibles du RCP reposent sur des méthodes chromatographiques.",
+      "basisEn": "Bounds restricted to the regimens the label names: 0.75 mg twice daily with ciclosporin (kidney, heart) and 1.0 mg twice daily with tacrolimus (liver). The label states the higher-dosage regimen is not recommended, so the grid does not go beyond 1.5 mg per dose. The 0.25 mg step matches the smallest tablet, and the label itself rounds reduced doses to the nearest tablet strength. The label target ranges rest on chromatographic methods.",
+      "source": {
+        "label": "Certican tablets, SmPC section 4.2, UK electronic medicines compendium",
+        "url": "https://www.medicines.org.uk/emc/product/1920/smpc",
+        "statement": "An initial dose regimen of 0.75 mg twice daily in co-administration with ciclosporin is recommended; The dose of 1.0 mg twice daily in co-administration with tacrolimus is recommended for the hepatic transplant population; Reduced doses rounded to the nearest tablet strength are tabulated below",
+        "strengths": "0.25 mg, 0.75 mg tablets"
+      },
+      "signoff": "PENDING",
+      "requiresFormulationIds": [
+        "everolimus-certican-transplant"
+      ]
+    },
+    "sirolimus::ORAL": {
+      "dose_min": 1,
+      "dose_max": 10,
+      "dose_step": 1,
+      "intervals": [
+        24
+      ],
+      "infusion": 0,
+      "basisFr": "Bornes couvrant la dose de charge unique de 6 mg du RCP, l'entretien de 2 mg une fois par jour et la titration ultérieure sur la concentration résiduelle. Administration en une prise quotidienne. Le pas est de 1 mg et NON de 0,5 mg : le RCP interdit d'utiliser des multiples du comprimé de 0,5 mg en remplacement des autres dosages, le comprimé de 0,5 mg n'étant pas pleinement bioéquivalent aux comprimés de 1, 2 et 5 mg sur la Cmax. Un pas de 1 mg reste donc réalisable avec les comprimés de 1, 2 et 5 mg. Le RCP précise en outre que les concentrations obtenues par chromatographie et par immunoessai ne sont pas interchangeables.",
+      "basisEn": "Bounds covering the label 6 mg single loading dose, the 2 mg once-daily maintenance dose and the subsequent titration on trough concentration. Given once daily. The step is 1 mg and NOT 0.5 mg: the label forbids using multiples of the 0.5 mg tablet as a substitute for other strengths, the 0.5 mg tablet not being fully bioequivalent to the 1, 2 and 5 mg tablets on Cmax. A 1 mg step stays achievable with the 1, 2 and 5 mg tablets. The label also states that concentrations obtained by chromatographic and immunoassay methods are not interchangeable.",
+      "source": {
+        "label": "Rapamune coated tablets, SmPC sections 4.2 and 5.2, UK electronic medicines compendium",
+        "url": "https://www.medicines.org.uk/emc/product/10399/smpc",
+        "statement": "The usual dose regimen is a 6 mg single oral loading dose, administered as soon as possible after transplantation, followed by 2 mg once daily until results of therapeutic monitoring of the medicinal product are available; Multiples of 0.5 mg tablets should not be used as a substitute for the 1 mg tablet or for other strengths; The concentration values obtained by these different methodologies are not interchangeable",
+        "strengths": "0.5 mg, 1 mg, 2 mg, 5 mg tablets"
+      },
+      "signoff": "PENDING",
+      "requiresFormulationIds": [
+        "sirolimus-rapamune-tablet"
+      ]
+    }
+  }
+}

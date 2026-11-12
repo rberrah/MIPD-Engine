@@ -1,0 +1,46 @@
+{
+  "schema": "mipd.tdm.applicability-rules.preview.v1",
+  "scope": "structural_context_gates_only",
+  "documentedStatus": "review_pending_gates_are_conservative_and_never_clinical",
+  "intent": "Flag bibliographic candidates whose declared context structurally contradicts the model's declared context. A gate can only ADD a warning; it never marks a reference as applicable, never selects a value and never influences a dose.",
+  "organTransplantIndications": {
+    "comment": "Applies ONLY to the transplant immunosuppressants below, where the TDM Guide indication code denotes the grafted organ. Other drugs reuse the same codes with a different meaning (digoxin 'heart' = heart failure), so they stay out of scope on purpose.",
+    "appliesToTdmDrugIds": ["tac", "cyclosporine", "everolimus", "sirolimus", "mpa"],
+    "organPopulationTags": {
+      "kidney": ["Transplantation rénale", "Kidney transplantation"],
+      "liver": ["Transplantation hépatique", "Liver transplantation"],
+      "heart": ["Transplantation cardiaque", "Heart transplantation"],
+      "lung": ["Transplantation pulmonaire", "Lung transplantation"]
+    }
+  },
+  "troughMetricMarkers": ["C₀", "C0", "Cmin", "Cmin,ss", "Ctrough", "Résiduelle"],
+  "continuousInfusionModes": ["IV_CONTINUOUS"],
+  "appMetricEquivalence": {
+    "comment": "A guide metric may feed a target preset only when it denotes the SAME quantity as one of the app's optimisation metrics (AUC24, Cmin, Cmax, TimeAbove, CminCmax). Anything absent from this map is deliberately excluded rather than converted.",
+    "equivalent": {
+      "C₀": "Cmin",
+      "C0": "Cmin",
+      "Cmin": "Cmin",
+      "Cmax": "Cmax",
+      "AUC₂₄": "AUC24",
+      "AUC24": "AUC24"
+    },
+    "deliberatelyExcluded": {
+      "AUC₀–₁₂": "An AUC over a 12 h interval is not the AUC over 24 h the app optimises; converting it would assume two identical intervals and strict dose proportionality.",
+      "C₂h": "A 2 h post-dose concentration is neither a trough nor a true Cmax; the app has no C2 metric.",
+      "C₂h (pic approximatif)": "An approximate peak surrogate; not the app's Cmax."
+    }
+  },
+  "assayMethodRequiredForApplication": {
+    "comment": "Drugs whose published target range is only defined together with the assay that produced it. For these, a reference may be DISPLAYED without a declared assay method but must not be applied to the target fields, because the same number means different exposures on different methods. The guide currently publishes assayMethod for none of them, so these references stay documentation until it does.",
+    "tdmDrugIds": ["sirolimus"],
+    "rationale": {
+      "sirolimus": "The Rapamune label states that whole-blood concentrations are measured by both chromatographic and immunoassay methods and that the values obtained by these different methodologies are not interchangeable, with the target range to be adjusted to the assay used. The published 4-12 and 12-20 ng/mL ranges are chromatographic."
+    },
+    "plannedExtension": "tacrolimus, ciclosporine and everolimus target ranges are also method-dependent and are expected to join this list once the guide publishes assayMethod, so that the gate is driven by data rather than by an expanding hand-written list."
+  },
+  "undecidableIdentityDimensions": {
+    "comment": "Dimensions the guide currently leaves unstructured for most references. They are reported as undecidable, never as a match. Populating analyteId / analyteBasis / matrixId / formulationId / assayMethod / samplingTime in the TDM Guide is what would turn these into real gates.",
+    "fields": ["analyteId", "analyteBasis", "matrixId", "formulationId", "assayMethod", "samplingTime"]
+  }
+}

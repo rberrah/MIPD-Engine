@@ -73,9 +73,11 @@ source(file.path(APP_ROOT, "R", "deployment_profile.R"), local = TRUE)
 enforce_mipd_deployment_profile(APP_ROOT)
 source(file.path(APP_ROOT, "R", "model_library.R"), local = TRUE)
 source(file.path(APP_ROOT, "R", "model_cards.R"), local = TRUE)
+source(file.path(APP_ROOT, "R", "tdm_guide_preview.R"), local = TRUE)
 source(file.path(APP_ROOT, "R", "private_workspace.R"), local = TRUE)
 source(file.path(APP_ROOT, "R", "i18n.R"), local = TRUE)
 source(file.path(APP_ROOT, "R", "clinical_presets.R"), local = TRUE)
+source(file.path(APP_ROOT, "R", "tdm_guide_presets.R"), local = TRUE)
 pmetrics_mode <- tolower(trimws(Sys.getenv("ENABLE_PMETRICS", "auto")))
 if (!pmetrics_mode %in% c("auto", "true", "false")) stop("ENABLE_PMETRICS must be auto, true, or false.")
 pmetrics_installed <- requireNamespace(paste0("P", "metrics"), quietly = TRUE)
@@ -753,6 +755,8 @@ app_ui <- function(request) {
               "Cible et grille de doses",
               value = "target_settings",
               uiOutput("target_preset_ui"),
+              uiOutput("tdm_guide_drug_link_ui"),
+              uiOutput("tdm_guide_preset_ui"),
               selectInput(
                 "target_metric",
                 "Métrique",
@@ -816,9 +820,11 @@ app_ui <- function(request) {
                 )
               ),
               fluidRow(
-                column(4, numericInput("dose_min", "Dose min", DEFAULT_TARGET_PRESET$dose_min %||% 250, min = 0, step = 50)),
-                column(4, numericInput("dose_max", "Dose max", DEFAULT_TARGET_PRESET$dose_max %||% 2000, min = 0, step = 50)),
-                column(4, numericInput("dose_step", "Pas", DEFAULT_TARGET_PRESET$dose_step %||% 250, min = 1, step = 50))
+                # No step constraint and no 1 mg floor: immunosuppressant grids use
+                # 0.25 and 0.5 mg increments, which a step of 50 and min of 1 reject.
+                column(4, numericInput("dose_min", "Dose min", DEFAULT_TARGET_PRESET$dose_min %||% 250, min = 0, step = NA)),
+                column(4, numericInput("dose_max", "Dose max", DEFAULT_TARGET_PRESET$dose_max %||% 2000, min = 0, step = NA)),
+                column(4, numericInput("dose_step", "Pas", DEFAULT_TARGET_PRESET$dose_step %||% 250, min = 0, step = NA))
               ),
               checkboxGroupInput(
                 "candidate_intervals",
@@ -3104,6 +3110,146 @@ server <- function(input, output, session) {
     )
   })
   shiny::outputOptions(output, "target_preset_ui", suspendWhenHidden = FALSE)
+
+  # A visible, molecule-specific TDM Guide link even when no numeric target
+  # is available for the current model or administration mode.
+  output$tdm_guide_drug_link_ui <- renderUI({
+    if (!identical(input$model_source %||% "library", "library")) return(NULL)
+    tdm_guide_drug_link(current_model_id(), english = identical(current_language(), "en"))
+  })
+  shiny::outputOptions(output, "tdm_guide_drug_link_ui", suspendWhenHidden = FALSE)
+
+  # Published TDM Guide references for this molecule and route. Offered, never written
+  # on their own: the reader selects one and clicks, which is the only way a published
+  # value reaches the target fields. No dose is ever computed from this block.
+  active_guide_preset <- reactive({
+    if (!identical(input$model_source %||% "library", "library")) return(NULL)
+    tdm_guide_preset_entry(model_record(current_model_id()), current_administration_mode())
+  })
+
+  output$tdm_guide_preset_ui <- renderUI({
+    entry <- active_guide_preset()
+    if (is.null(entry)) return(NULL)
+    record <- model_record(current_model_id())
+    mode <- current_administration_mode()
+    english <- identical(current_language(), "en")
+    choices <- tdm_guide_preset_choices(record, mode, english)
+    divergence <- tdm_guide_preset_divergence(record, mode)
+    grid <- entry$doseGrid
+    selected_id <- input$tdm_guide_target_choice %||% ""
+    selected <- tdm_guide_preset_candidate(record, mode, selected_id)
+    div(
+      class = "target-preset tdm-guide-target-preset",
+      tags$strong(tx("Cibles publiées du TDM Guide", "Published targets from the TDM Guide")),
+      span(if (length(choices) > 1L) tx(
+        paste0("Cette molécule a ", length(choices),
+          " cibles publiées distinctes selon le contexte : aucune n'est appliquée à votre place."),
+        paste0("This drug has ", length(choices),
+          " distinct published targets depending on context: none is applied for you.")
+      ) else tx(
+        "Une seule cible publiée qualifiée pour cette molécule et cette voie.",
+        "A single qualified published target for this drug and route."
+      )),
+      radioButtons("tdm_guide_target_choice", NULL, choices = choices,
+        selected = if (nzchar(selected_id)) selected_id else character(0)),
+      if (!is.null(selected) && tdm_guide_preset_candidate_blocked(selected)) div(
+        class = "custom-note",
+        tags$strong(tx(
+          "⚠ Cette référence ne peut pas être appliquée : son intervalle dépend de la méthode de dosage, que le guide ne publie pas. Elle reste consultable comme documentation.",
+          "⚠ This reference cannot be applied: its range depends on the assay method, which the guide does not publish. It stays available as documentation."))
+      ),
+      if (!is.null(selected)) div(
+        class = "custom-note",
+        if (english) selected$scopeEn %||% "" else selected$scopeFr %||% "",
+        if (length(selected$undecidable)) tags$div(tx(
+          "Le guide ne publie pas, pour cette référence : ",
+          "For this reference the guide does not publish: "
+        ), paste(unlist(selected$undecidable), collapse = ", "), "."),
+        if (grepl("^https://", selected$url %||% "")) tags$a(
+          selected$citation %||% selected$url, href = selected$url,
+          target = "_blank", rel = "noopener noreferrer")
+      ),
+      actionButton("apply_tdm_guide_target",
+        tx("Appliquer la cible sélectionnée", "Apply the selected target"),
+        class = "btn-outline-primary btn-sm"),
+      # The curated MIPD preset stays authoritative; a disagreement is stated, not resolved.
+      if (length(divergence)) div(
+        class = "custom-note",
+        tags$strong(tx("⚠ Désaccord avec le préréglage MIPD de cette molécule : ",
+          "⚠ Disagreement with this drug's MIPD preset: ")),
+        paste(vapply(divergence, function(candidate) paste0(
+          "guide ", format(candidate$target_low), "–", format(candidate$target_high),
+          " vs MIPD ", format(clinical_target_preset(record, mode)$target_low), "–",
+          format(clinical_target_preset(record, mode)$target_high)), character(1)), collapse = " ; "),
+        tx(". Le préréglage MIPD reste celui appliqué par défaut.",
+          ". The MIPD preset remains the one applied by default.")
+      ),
+      if (!is.null(grid)) div(
+        class = "custom-note",
+        tags$strong(tx("Grille de doses déclarée par MIPD : ", "Dose grid declared by MIPD: ")),
+        paste0(format(grid$dose_min), "–", format(grid$dose_max), " mg, pas ",
+          format(grid$dose_step), " mg, ", paste(unlist(grid$intervals), collapse = "/"), " h. "),
+        tx("Le TDM Guide ne publie aucune posologie : cette grille est déclarée par MIPD d'après le RCP et ne borne que l'espace de recherche.",
+          "The TDM Guide publishes no posology: this grid is declared by MIPD from the product label and only bounds the search space."),
+        # An unvalidated or formulation-incompatible search space is never written.
+        if (!tdm_guide_preset_grid_applicable(record, mode)) tags$div(tags$strong(
+          if (identical(tdm_guide_preset_grid_block(record, mode), "grid_awaiting_signoff")) tx(
+            "⚠ Non appliquée : en attente de relecture pharmacologique. Le bouton n'applique que la cible ; la grille de doses reste inchangée.",
+            "⚠ Not applied: awaiting pharmacologist review. The button applies the target only; the dose grid is left unchanged.")
+          else tx(
+            "⚠ Non appliquée : la formulation de ce modèle n'est pas couverte par le RCP dont cette grille est issue. Le bouton n'applique que la cible.",
+            "⚠ Not applied: this model's formulation is not covered by the label this grid comes from. The button applies the target only."))),
+        if (length(grid$excludesFormulations)) tags$div(tx(
+          "Formulations hors périmètre de cette grille : ", "Formulations outside this grid: "),
+          paste(unlist(grid$excludesFormulations), collapse = ", "), "."),
+        if (grepl("^https://", grid$source$url %||% "")) tags$a(
+          grid$source$label %||% grid$source$url, href = grid$source$url,
+          target = "_blank", rel = "noopener noreferrer")
+      )
+    )
+  })
+  shiny::outputOptions(output, "tdm_guide_preset_ui", suspendWhenHidden = FALSE)
+
+  observeEvent(input$apply_tdm_guide_target, {
+    record <- model_record(current_model_id())
+    mode <- current_administration_mode()
+    candidate <- tdm_guide_preset_candidate(record, mode, input$tdm_guide_target_choice %||% "")
+    if (is.null(candidate)) {
+      showNotification(tx("Sélectionner d'abord une cible publiée.",
+        "Select a published target first."), type = "warning")
+      return()
+    }
+    # A range that is only defined together with its assay cannot be applied without
+    # one: the same number means different exposures on chromatography and immunoassay.
+    if (tdm_guide_preset_candidate_blocked(candidate)) {
+      showNotification(tx(
+        "Cible non applicable : cette molécule a des intervalles dépendants de la méthode de dosage, et le guide ne publie pas la méthode de cette référence. La valeur reste consultable dans la documentation.",
+        "Target not applicable: this drug has assay-dependent ranges and the guide does not publish the assay for this reference. The value stays available in the documentation."
+      ), type = "error", duration = 14)
+      return()
+    }
+    updateSelectInput(session, "target_metric", selected = candidate$target_metric)
+    updateNumericInput(session, "target_low", value = candidate$target_low)
+    updateNumericInput(session, "target_high", value = candidate$target_high)
+    # Only a signed-off grid may change the dose search space. A PENDING grid is
+    # displayed with its label source but never written, so an unvalidated posology
+    # cannot reach dose_min, dose_max, dose_step or the tested intervals.
+    grid <- tdm_guide_preset_entry(record, mode)$doseGrid
+    if (tdm_guide_preset_grid_applicable(record, mode)) {
+      updateNumericInput(session, "dose_min", value = grid$dose_min)
+      updateNumericInput(session, "dose_max", value = grid$dose_max)
+      updateNumericInput(session, "dose_step", value = grid$dose_step)
+      update_candidate_intervals(unlist(grid$intervals))
+      updateNumericInput(session, "future_infusion", value = grid$infusion)
+    }
+    missing <- unlist(candidate$undecidable %||% list())
+    showNotification(tx(
+      paste0("Cible bibliographique appliquée, à titre exploratoire. La grille de doses n'a pas été modifiée. Dimensions non publiées par le guide et donc à vérifier avant toute interprétation : ",
+        if (length(missing)) paste(missing, collapse = ", ") else "aucune", "."),
+      paste0("Bibliographic target applied, for exploration. The dose grid was left unchanged. Dimensions the guide does not publish, to be checked before any interpretation: ",
+        if (length(missing)) paste(missing, collapse = ", ") else "none", ".")
+    ), type = "warning", duration = 12)
+  }, ignoreInit = TRUE)
 
   output$ml_comparison_plot <- renderPlot({
     result <- analysis_store()

@@ -10,6 +10,106 @@ permissions:
   contents: read
 
 jobs:
+  tdm-preview:
+    name: Draft STP preview (non-runtime)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - name: Validate drug crosswalk and 46 model recommendations offline
+        run: node tests/tdm_guide_adapter_preview.test.mjs
+      - name: Validate MIPD dose grids and preset eligibility offline
+        run: node tests/tdm_guide_presets.test.mjs
+
+  tdm-preview-integrated:
+    name: Draft STP integration against pinned PMx catalogue (no runtime)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      # Immutable PMx commit, deliberately pinned so this draft is reproducible and
+      # a PMx edit can never silently change MIPD's view of the guide.
+      # Pinned to the PMx Guide release merged as PMx #237 on main.
+      # Update only after a reviewed PMx merge, and re-check all drift gates.
+      # Do not track a moving branch or a draft-only commit here.
+      - uses: actions/checkout@v7
+        with:
+          repository: rberrah/rberrah.github.io
+          ref: fc3fe8729f852033eeb5858b05e7a089de5071db
+          path: .pmx-tdm-source-preview
+      - uses: actions/setup-node@v7
+        with:
+          node-version: "22"
+      - name: Validate exact drug-ID crosswalk parity across independent repos
+        run: |
+          node --input-type=module <<'EOF'
+          import assert from 'node:assert/strict';
+          import {readFile} from 'node:fs/promises';
+          import {mipdDrugToTdmId} from './.pmx-tdm-source-preview/src/lib/tdm/mipdDrugCrosswalk.preview.v1.js';
+          const canonical=JSON.parse(await readFile('integration/tdm-guide-drug-crosswalk.preview.v1.json','utf8'));
+          assert.deepEqual(mipdDrugToTdmId,canonical.keys,'PMx guide and MIPD canonical drug keys drifted');
+          assert.equal(Object.keys(mipdDrugToTdmId).length,23);
+          console.log('Cross-repo parity: 23 / 23 drug IDs match pinned MIPD source');
+          EOF
+      - name: Export the real PMx bibliographic guide as a local immutable snapshot
+        run: node .pmx-tdm-source-preview/scripts/export_tdm_model_references.mjs --output /tmp/pmx-tdm-guide-preview.json
+      - name: Build all MIPD model recommendations from the versioned real snapshot
+        run: node scripts/preview_tdm_guide_recommendations.mjs --snapshot /tmp/pmx-tdm-guide-preview.json --output /tmp/mipd-tdm-recommendations-preview.json
+      # The app now reads committed artifacts, so they must match the pinned guide exactly.
+      - name: Reject drift in the committed STP recommendation artifact
+        run: |
+          node scripts/preview_tdm_guide_recommendations.mjs --snapshot /tmp/pmx-tdm-guide-preview.json --output /tmp/rebuilt-recommendations.json
+          node --input-type=module -e "
+            import fs from 'node:fs'; import assert from 'node:assert/strict';
+            import {createHash} from 'node:crypto';
+            const a=JSON.parse(fs.readFileSync('integration/tdm-guide-recommendations.v1.json','utf8'));
+            const b=JSON.parse(fs.readFileSync('/tmp/rebuilt-recommendations.json','utf8'));
+            // Comparing the declared digests alone would accept a body edited together
+            // with its own sha256 field, so the committed body is re-hashed and the two
+            // objects are compared in full.
+            const {sha256:declared,...body}=a;
+            assert.equal(createHash('sha256').update(JSON.stringify(body)).digest('hex'),declared,
+              'Committed STP artifact does not match its own sha256: it was edited by hand');
+            assert.deepEqual(a,b,'Committed STP artifact is stale: regenerate it from the pinned PMx commit');
+            console.log('Committed STP artifact is self-consistent and matches the pinned guide.');
+          "
+      - name: Reject drift in the committed clinical preset artifact
+        run: node scripts/build_tdm_guide_presets.mjs --snapshot /tmp/pmx-tdm-guide-preview.json --output integration/tdm-guide-clinical-presets.v1.json --check
+      - name: Verify preset artifact against the real guide and the curated presets
+        run: node tests/tdm_guide_presets.test.mjs /tmp/pmx-tdm-guide-preview.json
+      - name: Require 46 explicit, non-clinical recommendations without patient data
+        run: |
+          node --input-type=module -e "
+            import fs from 'node:fs'; import assert from 'node:assert/strict';
+            const s=JSON.parse(fs.readFileSync('/tmp/pmx-tdm-guide-preview.json','utf8'));
+            const p=JSON.parse(fs.readFileSync('/tmp/mipd-tdm-recommendations-preview.json','utf8'));
+            assert.equal(s.drugs.length,154);
+            assert.equal(s.drugs.flatMap(d=>d.targets).length,141);
+            assert.equal(p.models.length,46);
+            assert.equal(p.models.filter(m=>m.recommendation.status==='not_indexed_in_guide').length,5);
+            assert.ok(p.models.every(m=>m.recommendation.interpretationAllowed===false));
+            assert.ok(p.models.every(m=>m.recommendation.automaticDoseAdjustmentAllowed===false));
+            assert.equal(p.sourceSnapshotSha256,s.sha256);
+            const refs=p.models.flatMap(m=>m.recommendation.numericalReferenceCandidates);
+            // No gate may ever conclude that a published value applies to a model.
+            assert.ok(refs.every(c=>c.modelApplicabilityVerified===false&&
+              ['requires_human_context_review','structural_context_mismatch'].includes(c.applicability.verdict)));
+            // Real-data tripwire: a reference whose declared context contradicts the
+            // model must stay flagged. The FDA liver-transplant tacrolimus target is
+            // listed on kidney-transplant models and must never be shown unflagged.
+            const flagged=p.models.flatMap(m=>m.recommendation.numericalReferenceCandidates
+              .filter(c=>c.applicability.mismatches.length).map(c=>m.modelId+'/'+c.id));
+            assert.ok(flagged.includes('tacrolimus_woillard_ddi/tac-liver-everolimus-fda'),
+              'Liver-transplant tacrolimus reference must be flagged on a kidney model');
+            assert.ok(flagged.includes('tacrolimus_kamp_envarsus_ddi/tac-liver-everolimus-fda'));
+            assert.equal(flagged.length,8,'Structural context mismatches changed: re-review the gates');
+            assert.equal(p.models.filter(m=>m.recommendation.administrationModeWarningCount>0).length,10);
+            // Formulation stays undecidable until the guide publishes it, and must be said so.
+            assert.ok(p.models.find(m=>m.modelId==='tacrolimus_kamp_envarsus_ddi')
+              .recommendation.numericalReferenceCandidates
+              .every(c=>c.applicability.undecidable.includes('formulationId')));
+            console.log('Real snapshot linked to 46 model preview cards. '+flagged.length+
+              ' context mismatches flagged. No runtime activation.');
+          "
+
   origin-parity:
     runs-on: ubuntu-latest
     steps:
@@ -19,7 +119,14 @@ jobs:
       - uses: actions/setup-python@v7
         with:
           python-version: "3.13"
-      - name: Verify frozen PMx origin hashes
+      - name: Checkout immutable PMx extraction origin (fallback for pruned source blobs)
+        uses: actions/checkout@v7
+        with:
+          repository: rberrah/rberrah.github.io
+          ref: 2f97f109c3f4af257776a595f6546c9cd5f2321d
+          path: .origin-source
+          persist-credentials: false
+      - name: Verify frozen PMx origin hashes and pinned origin fallback
         run: python scripts/verify_origin_manifest.py
       - name: Check public-release probe rejects stale and unsafe versions
         run: python3 tests/check_live_deployment_test.py

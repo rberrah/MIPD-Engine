@@ -1,0 +1,646 @@
+{
+  "schema": "mipd.tdm.clinical-presets.v1",
+  "producer": "MIPD-Engine standalone preset builder",
+  "sourceSnapshotSha256": "511c8fef0159a6aff406d026bc952dc59e4c5ba5a05b0c17e3af7f26c15d7230",
+  "doseGridSignoff": "PENDING_PHARMACOLOGIST_REVIEW",
+  "intendedUse": "research_education_target_exploration",
+  "clinicalInterpretationAllowed": false,
+  "automaticDoseAdjustmentAllowed": false,
+  "patientDataIncluded": false,
+  "presets": {
+    "ciclosporine::ORAL": {
+      "drugKey": "ciclosporine",
+      "mode": "ORAL",
+      "tdmDrugId": "cyclosporine",
+      "doseGrid": {
+        "dose_min": 25,
+        "dose_max": 700,
+        "dose_step": 25,
+        "intervals": [
+          12
+        ],
+        "infusion": 0,
+        "basisFr": "Bornes couvrant la dose initiale du RCP (10–15 mg/kg/j en deux prises, soit environ 350–525 mg par prise pour 70 kg, jusqu'à environ 675 mg pour 90 kg) et l'entretien d'environ 2–6 mg/kg/j en deux prises. Pas de 25 mg aligné sur les gélules disponibles.",
+        "basisEn": "Bounds covering the label initial dose (10-15 mg/kg/day in two divided doses, about 350-525 mg per dose at 70 kg and up to about 675 mg at 90 kg) and maintenance of about 2-6 mg/kg/day in two divided doses. The 25 mg step matches the available capsules.",
+        "source": {
+          "label": "Neoral soft gelatin capsules, SmPC section 4.2, UK electronic medicines compendium",
+          "url": "https://www.medicines.org.uk/emc/product/1034/smpc",
+          "statement": "at a dose of 10 to 15 mg/kg given in 2 divided doses; reduced according to blood levels until a recommended maintenance dose of about 2 to 6 mg/kg given in 2 divided doses is reached",
+          "strengths": "10 mg, 25 mg, 50 mg, 100 mg capsules"
+        },
+        "signoff": "PENDING",
+        "requiresFormulationIds": [
+          "ciclosporine-neoral-microemulsion"
+        ]
+      },
+      "doseGridSignedOff": false,
+      "doseGridApplicableModelIds": [],
+      "doseGridBlockedModels": {
+        "ciclosporine_press_ddi": "grid_awaiting_signoff"
+      },
+      "candidates": [
+        {
+          "id": "csa-kidney-c0-0",
+          "target_metric": "Cmin",
+          "target_low": 150,
+          "target_high": 300,
+          "target_unit": "ng/mL",
+          "indication": "kidney",
+          "labelFr": "Greffe rénale · 0–3 mois · avec MPA",
+          "labelEn": "Kidney transplant · 0–3 months · with MPA",
+          "scopeFr": "Recommandations de transplantation thaïlandaises 2026, CsA + MPA, valeur C0 selon le délai post-greffe. C₂ à 2 h de la prise. Adapter au protocole local, au risque immunologique et à la méthode.",
+          "scopeEn": "2026 Thai kidney transplant guidance, CsA + MPA; C0 target by time after transplant. C2 is 2 h after dosing. Centre, immunologic risk and assay may differ.",
+          "citation": "Thai Transplant 2026",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC13624913/",
+          "evidenceStatus": "guideline",
+          "undecidable": [
+            "analyteId",
+            "analyteBasis",
+            "matrixId",
+            "formulationId",
+            "assayMethod",
+            "samplingTime"
+          ],
+          "applicationBlocked": false,
+          "applicationBlockedCode": null,
+          "modelApplicabilityVerified": false,
+          "automaticDoseAdjustmentAllowed": false
+        },
+        {
+          "id": "csa-kidney-c0-3",
+          "target_metric": "Cmin",
+          "target_low": 100,
+          "target_high": 200,
+          "target_unit": "ng/mL",
+          "indication": "kidney",
+          "labelFr": "Greffe rénale · 3–6 mois · avec MPA",
+          "labelEn": "Kidney transplant · 3–6 months · with MPA",
+          "scopeFr": "Recommandations de transplantation thaïlandaises 2026, CsA + MPA, valeur C0 selon le délai post-greffe. C₂ à 2 h de la prise. Adapter au protocole local, au risque immunologique et à la méthode.",
+          "scopeEn": "2026 Thai kidney transplant guidance, CsA + MPA; C0 target by time after transplant. C2 is 2 h after dosing. Centre, immunologic risk and assay may differ.",
+          "citation": "Thai Transplant 2026",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC13624913/",
+          "evidenceStatus": "guideline",
+          "undecidable": [
+            "analyteId",
+            "analyteBasis",
+            "matrixId",
+            "formulationId",
+            "assayMethod",
+            "samplingTime"
+          ],
+          "applicationBlocked": false,
+          "applicationBlockedCode": null,
+          "modelApplicabilityVerified": false,
+          "automaticDoseAdjustmentAllowed": false
+        },
+        {
+          "id": "csa-kidney-c0-6",
+          "target_metric": "Cmin",
+          "target_low": 80,
+          "target_high": 150,
+          "target_unit": "ng/mL",
+          "indication": "kidney",
+          "labelFr": "Greffe rénale · après 6 mois · avec MPA",
+          "labelEn": "Kidney transplant · after 6 months · with MPA",
+          "scopeFr": "Recommandations de transplantation thaïlandaises 2026, CsA + MPA, valeur C0 selon le délai post-greffe. C₂ à 2 h de la prise. Adapter au protocole local, au risque immunologique et à la méthode.",
+          "scopeEn": "2026 Thai kidney transplant guidance, CsA + MPA; C0 target by time after transplant. C2 is 2 h after dosing. Centre, immunologic risk and assay may differ.",
+          "citation": "Thai Transplant 2026",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC13624913/",
+          "evidenceStatus": "guideline",
+          "undecidable": [
+            "analyteId",
+            "analyteBasis",
+            "matrixId",
+            "formulationId",
+            "assayMethod",
+            "samplingTime"
+          ],
+          "applicationBlocked": false,
+          "applicationBlockedCode": null,
+          "modelApplicabilityVerified": false,
+          "automaticDoseAdjustmentAllowed": false
+        }
+      ],
+      "autoApply": false
+    },
+    "everolimus::ORAL": {
+      "drugKey": "everolimus",
+      "mode": "ORAL",
+      "tdmDrugId": "everolimus",
+      "doseGrid": {
+        "dose_min": 0.25,
+        "dose_max": 1.5,
+        "dose_step": 0.25,
+        "intervals": [
+          12
+        ],
+        "infusion": 0,
+        "basisFr": "Bornes restreintes aux schémas nommés par le RCP : 0,75 mg deux fois par jour avec la ciclosporine (rein, coeur) et 1,0 mg deux fois par jour avec le tacrolimus (foie). Le RCP indique que le schéma à posologie plus élevée n'est pas recommandé : la grille ne monte donc pas au-delà de 1,5 mg par prise. Pas de 0,25 mg aligné sur le plus petit comprimé, le RCP arrondissant lui-même les réductions au dosage de comprimé le plus proche. Les plages cibles du RCP reposent sur des méthodes chromatographiques.",
+        "basisEn": "Bounds restricted to the regimens the label names: 0.75 mg twice daily with ciclosporin (kidney, heart) and 1.0 mg twice daily with tacrolimus (liver). The label states the higher-dosage regimen is not recommended, so the grid does not go beyond 1.5 mg per dose. The 0.25 mg step matches the smallest tablet, and the label itself rounds reduced doses to the nearest tablet strength. The label target ranges rest on chromatographic methods.",
+        "source": {
+          "label": "Certican tablets, SmPC section 4.2, UK electronic medicines compendium",
+          "url": "https://www.medicines.org.uk/emc/product/1920/smpc",
+          "statement": "An initial dose regimen of 0.75 mg twice daily in co-administration with ciclosporin is recommended; The dose of 1.0 mg twice daily in co-administration with tacrolimus is recommended for the hepatic transplant population; Reduced doses rounded to the nearest tablet strength are tabulated below",
+          "strengths": "0.25 mg, 0.75 mg tablets"
+        },
+        "signoff": "PENDING",
+        "requiresFormulationIds": [
+          "everolimus-certican-transplant"
+        ]
+      },
+      "doseGridSignedOff": false,
+      "doseGridApplicableModelIds": [],
+      "doseGridBlockedModels": {
+        "everolimus_moes_ddi": "grid_awaiting_signoff",
+        "everolimus_terheine_ddi": "grid_awaiting_signoff"
+      },
+      "candidates": [
+        {
+          "id": "everolimus-kidney-cni",
+          "target_metric": "Cmin",
+          "target_low": 3,
+          "target_high": 8,
+          "target_unit": "ng/mL",
+          "indication": "kidney",
+          "labelFr": "Greffe rénale · avec ICN à exposition réduite",
+          "labelEn": "Kidney transplant · reduced-exposure CNI",
+          "scopeFr": "Évérolimus avec inhibiteur de calcineurine à exposition réduite ; la méthode analytique doit être prise en compte.",
+          "scopeEn": "Everolimus with reduced-exposure calcineurin inhibitor; analytical assay matters.",
+          "citation": "IATDMCT · 2025",
+          "url": "https://doi.org/10.1097/FTD.0000000000001250",
+          "evidenceStatus": "guideline",
+          "undecidable": [
+            "analyteId",
+            "analyteBasis",
+            "matrixId",
+            "formulationId",
+            "assayMethod",
+            "samplingTime"
+          ],
+          "applicationBlocked": false,
+          "applicationBlockedCode": null,
+          "modelApplicabilityVerified": false,
+          "automaticDoseAdjustmentAllowed": false
+        },
+        {
+          "id": "everolimus-kidney-csa-fda",
+          "target_metric": "Cmin",
+          "target_low": 3,
+          "target_high": 8,
+          "target_unit": "ng/mL",
+          "indication": "kidney",
+          "labelFr": "Greffe rénale · ciclosporine à dose réduite (label FDA)",
+          "labelEn": "Kidney transplant · reduced cyclosporine (FDA label)",
+          "scopeFr": "Label FDA Zortress en transplantation rénale : faible à moyen risque immunologique, induction basiliximab, ciclosporine réduite et corticoïdes. Ne pas étendre à tous les schémas sans ICN.",
+          "scopeEn": "FDA Zortress label for lower/moderate-risk kidney transplant with basiliximab induction, reduced cyclosporine and steroids. Not a CNI-free target.",
+          "citation": "FDA · Zortress 2026",
+          "url": "https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=e082a024-7850-400b-a5c2-2a140612562a",
+          "evidenceStatus": "regulatory",
+          "undecidable": [
+            "analyteId",
+            "analyteBasis",
+            "matrixId",
+            "formulationId",
+            "assayMethod",
+            "samplingTime"
+          ],
+          "applicationBlocked": false,
+          "applicationBlockedCode": null,
+          "modelApplicabilityVerified": false,
+          "automaticDoseAdjustmentAllowed": false
+        },
+        {
+          "id": "everolimus-kidney-no-cni",
+          "target_metric": "Cmin",
+          "target_low": 6,
+          "target_high": 10,
+          "target_unit": "ng/mL",
+          "indication": "kidney",
+          "labelFr": "Greffe rénale · sans ICN",
+          "labelEn": "Kidney transplant · CNI-free",
+          "scopeFr": "Schéma sans ICN décrit dans le tableau 1 ; ne pas confondre avec la greffe cardiaque sans ICN.",
+          "scopeEn": "CNI-free regimen from Table 1; not the same target as CNI-free heart transplantation.",
+          "citation": "IATDMCT · 2025",
+          "url": "https://doi.org/10.1097/FTD.0000000000001250",
+          "evidenceStatus": "guideline",
+          "undecidable": [
+            "analyteId",
+            "analyteBasis",
+            "matrixId",
+            "formulationId",
+            "assayMethod",
+            "samplingTime"
+          ],
+          "applicationBlocked": false,
+          "applicationBlockedCode": null,
+          "modelApplicabilityVerified": false,
+          "automaticDoseAdjustmentAllowed": false
+        }
+      ],
+      "autoApply": false
+    },
+    "linez::IV_INTERMITTENT": {
+      "drugKey": "linez",
+      "mode": "IV_INTERMITTENT",
+      "tdmDrugId": "linezolid",
+      "doseGrid": null,
+      "doseGridSignedOff": false,
+      "doseGridApplicableModelIds": [],
+      "doseGridBlockedModels": {},
+      "candidates": [
+        {
+          "id": "linezolid-trough-consensus",
+          "target_metric": "Cmin",
+          "target_low": 2,
+          "target_high": 8,
+          "target_unit": "mg/L",
+          "indication": "infection",
+          "labelFr": "Infections traitées par linézolide",
+          "labelEn": "Infections treated with linezolid",
+          "scopeFr": "Fourchette d’un consensus d’experts 2022 ; interpréter selon le type d’infection, la CMI, le dosage et la toxicité hématologique.",
+          "scopeEn": "2022 expert consensus range; interpret with infection type, MIC, schedule and hematological toxicity.",
+          "citation": "Consensus d’experts · 2022",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9399604/",
+          "evidenceStatus": "guideline",
+          "undecidable": [
+            "analyteId",
+            "analyteBasis",
+            "matrixId",
+            "formulationId",
+            "assayMethod",
+            "samplingTime"
+          ],
+          "applicationBlocked": false,
+          "applicationBlockedCode": null,
+          "modelApplicabilityVerified": false,
+          "automaticDoseAdjustmentAllowed": false
+        }
+      ],
+      "autoApply": true
+    },
+    "linez::ORAL": {
+      "drugKey": "linez",
+      "mode": "ORAL",
+      "tdmDrugId": "linezolid",
+      "doseGrid": null,
+      "doseGridSignedOff": false,
+      "doseGridApplicableModelIds": [],
+      "doseGridBlockedModels": {},
+      "candidates": [
+        {
+          "id": "linezolid-trough-consensus",
+          "target_metric": "Cmin",
+          "target_low": 2,
+          "target_high": 8,
+          "target_unit": "mg/L",
+          "indication": "infection",
+          "labelFr": "Infections traitées par linézolide",
+          "labelEn": "Infections treated with linezolid",
+          "scopeFr": "Fourchette d’un consensus d’experts 2022 ; interpréter selon le type d’infection, la CMI, le dosage et la toxicité hématologique.",
+          "scopeEn": "2022 expert consensus range; interpret with infection type, MIC, schedule and hematological toxicity.",
+          "citation": "Consensus d’experts · 2022",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9399604/",
+          "evidenceStatus": "guideline",
+          "undecidable": [
+            "analyteId",
+            "analyteBasis",
+            "matrixId",
+            "formulationId",
+            "assayMethod",
+            "samplingTime"
+          ],
+          "applicationBlocked": false,
+          "applicationBlockedCode": null,
+          "modelApplicabilityVerified": false,
+          "automaticDoseAdjustmentAllowed": false
+        }
+      ],
+      "autoApply": true
+    },
+    "sirolimus::ORAL": {
+      "drugKey": "sirolimus",
+      "mode": "ORAL",
+      "tdmDrugId": "sirolimus",
+      "doseGrid": {
+        "dose_min": 1,
+        "dose_max": 10,
+        "dose_step": 1,
+        "intervals": [
+          24
+        ],
+        "infusion": 0,
+        "basisFr": "Bornes couvrant la dose de charge unique de 6 mg du RCP, l'entretien de 2 mg une fois par jour et la titration ultérieure sur la concentration résiduelle. Administration en une prise quotidienne. Le pas est de 1 mg et NON de 0,5 mg : le RCP interdit d'utiliser des multiples du comprimé de 0,5 mg en remplacement des autres dosages, le comprimé de 0,5 mg n'étant pas pleinement bioéquivalent aux comprimés de 1, 2 et 5 mg sur la Cmax. Un pas de 1 mg reste donc réalisable avec les comprimés de 1, 2 et 5 mg. Le RCP précise en outre que les concentrations obtenues par chromatographie et par immunoessai ne sont pas interchangeables.",
+        "basisEn": "Bounds covering the label 6 mg single loading dose, the 2 mg once-daily maintenance dose and the subsequent titration on trough concentration. Given once daily. The step is 1 mg and NOT 0.5 mg: the label forbids using multiples of the 0.5 mg tablet as a substitute for other strengths, the 0.5 mg tablet not being fully bioequivalent to the 1, 2 and 5 mg tablets on Cmax. A 1 mg step stays achievable with the 1, 2 and 5 mg tablets. The label also states that concentrations obtained by chromatographic and immunoassay methods are not interchangeable.",
+        "source": {
+          "label": "Rapamune coated tablets, SmPC sections 4.2 and 5.2, UK electronic medicines compendium",
+          "url": "https://www.medicines.org.uk/emc/product/10399/smpc",
+          "statement": "The usual dose regimen is a 6 mg single oral loading dose, administered as soon as possible after transplantation, followed by 2 mg once daily until results of therapeutic monitoring of the medicinal product are available; Multiples of 0.5 mg tablets should not be used as a substitute for the 1 mg tablet or for other strengths; The concentration values obtained by these different methodologies are not interchangeable",
+          "strengths": "0.5 mg, 1 mg, 2 mg, 5 mg tablets"
+        },
+        "signoff": "PENDING",
+        "requiresFormulationIds": [
+          "sirolimus-rapamune-tablet"
+        ]
+      },
+      "doseGridSignedOff": false,
+      "doseGridApplicableModelIds": [],
+      "doseGridBlockedModels": {
+        "sirolimus_djebli_ddi": "grid_awaiting_signoff"
+      },
+      "candidates": [
+        {
+          "id": "sirolimus-kidney-after-csa",
+          "target_metric": "Cmin",
+          "target_low": 12,
+          "target_high": 20,
+          "target_unit": "ng/mL",
+          "indication": "kidney",
+          "labelFr": "Greffe rénale · après arrêt de la ciclosporine",
+          "labelEn": "Kidney transplant · after cyclosporine withdrawal",
+          "scopeFr": "Fourchette historique de référence après arrêt de la ciclosporine ; ajustements individuels et surveillance des effets indésirables nécessaires.",
+          "scopeEn": "Historical reference range after cyclosporine withdrawal; individual assessment and adverse effect monitoring required.",
+          "citation": "Hartinger 2022",
+          "url": "https://onlinelibrary.wiley.com/doi/full/10.1111/jcpt.13753",
+          "evidenceStatus": "review",
+          "undecidable": [
+            "analyteId",
+            "analyteBasis",
+            "matrixId",
+            "formulationId",
+            "assayMethod",
+            "samplingTime"
+          ],
+          "applicationBlocked": true,
+          "applicationBlockedCode": "assay_method_not_published_for_a_method_dependent_drug",
+          "modelApplicabilityVerified": false,
+          "automaticDoseAdjustmentAllowed": false
+        },
+        {
+          "id": "sirolimus-kidney-with-csa",
+          "target_metric": "Cmin",
+          "target_low": 4,
+          "target_high": 12,
+          "target_unit": "ng/mL",
+          "indication": "kidney",
+          "labelFr": "Greffe rénale · association à la ciclosporine",
+          "labelEn": "Kidney transplant · with cyclosporine",
+          "scopeFr": "Fourchette de STP publiée pour sirolimus associé à la ciclosporine ; cible dépendante de l'association et de la méthode. Ne pas transposer à un schéma sans ciclosporine.",
+          "scopeEn": "Published trough reference with cyclosporine; highly regimen- and assay-dependent. Do not apply to cyclosporine-free regimens.",
+          "citation": "Hartinger 2022",
+          "url": "https://onlinelibrary.wiley.com/doi/full/10.1111/jcpt.13753",
+          "evidenceStatus": "review",
+          "undecidable": [
+            "analyteId",
+            "analyteBasis",
+            "matrixId",
+            "formulationId",
+            "assayMethod",
+            "samplingTime"
+          ],
+          "applicationBlocked": true,
+          "applicationBlockedCode": "assay_method_not_published_for_a_method_dependent_drug",
+          "modelApplicabilityVerified": false,
+          "automaticDoseAdjustmentAllowed": false
+        }
+      ],
+      "autoApply": false
+    },
+    "tacrolimus::ORAL": {
+      "drugKey": "tacrolimus",
+      "mode": "ORAL",
+      "tdmDrugId": "tac",
+      "doseGrid": {
+        "dose_min": 0.5,
+        "dose_max": 14,
+        "dose_step": 0.5,
+        "intervals": [
+          12
+        ],
+        "infusion": 0,
+        "basisFr": "Strictement le schéma du RCP Prograf à libération immédiate : 0,20–0,30 mg/kg/j en DEUX prises, soit environ 7–11 mg par prise à 70 kg et jusqu'à environ 13,5 mg à 90 kg, d'où un maximum de 14 mg par prise. Pas de 0,5 mg aligné sur la plus petite gélule. L'intervalle de 24 h est volontairement absent : Advagraf et Envarsus sont des formes à libération prolongée en une prise quotidienne, dosées différemment, et le catalogue de modèles ne déclare pas la formulation. Elles exigent leur propre grille, à déclarer séparément.",
+        "basisEn": "Strictly the immediate-release Prograf label regimen: 0.20-0.30 mg/kg/day in TWO divided doses, about 7-11 mg per dose at 70 kg and up to about 13.5 mg at 90 kg, hence a 14 mg per-dose maximum. The 0.5 mg step matches the smallest capsule. The 24 h interval is deliberately absent: Advagraf and Envarsus are once-daily prolonged-release products, dosed differently, and the model catalogue does not declare formulation. They require their own grid, to be declared separately.",
+        "source": {
+          "label": "Prograf hard capsules, SmPC section 4.2, UK electronic medicines compendium",
+          "url": "https://www.medicines.org.uk/emc/product/7488/smpc",
+          "statement": "oral therapy should commence at 0.20 - 0.30 mg/kg/day administered as two divided doses",
+          "strengths": "0.5 mg, 1 mg, 5 mg capsules"
+        },
+        "excludesFormulations": [
+          "tacrolimus prolonged release once daily (Advagraf, Envarsus)"
+        ],
+        "signoff": "PENDING",
+        "requiresFormulationIds": [
+          "tacrolimus-immediate-release"
+        ]
+      },
+      "doseGridSignedOff": false,
+      "doseGridApplicableModelIds": [],
+      "doseGridBlockedModels": {
+        "tacrolimus_kamp_envarsus_ddi": "grid_awaiting_signoff",
+        "tacrolimus_woillard_ddi": "grid_awaiting_signoff"
+      },
+      "candidates": [
+        {
+          "id": "tac-kidney-early",
+          "target_metric": "Cmin",
+          "target_low": 8,
+          "target_high": 10,
+          "target_unit": "ng/mL",
+          "indication": "kidney",
+          "labelFr": "Greffe rénale · moins de 6 semaines",
+          "labelEn": "Kidney transplant · under 6 weeks",
+          "scopeFr": "Tacrolimus à libération immédiate, MPA ± prednisone, induction basiliximab ; cible publiée pour un centre.",
+          "scopeEn": "Immediate-release tacrolimus, MPA ± prednisone, basiliximab induction; published centre-specific target.",
+          "citation": "van Gelder et al. · 2025",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12122127/",
+          "evidenceStatus": "study",
+          "undecidable": [
+            "analyteId",
+            "analyteBasis",
+            "matrixId",
+            "formulationId",
+            "assayMethod",
+            "samplingTime"
+          ],
+          "applicationBlocked": false,
+          "applicationBlockedCode": null,
+          "modelApplicabilityVerified": false,
+          "automaticDoseAdjustmentAllowed": false
+        },
+        {
+          "id": "tac-kidney-late",
+          "target_metric": "Cmin",
+          "target_low": 3,
+          "target_high": 5,
+          "target_unit": "ng/mL",
+          "indication": "kidney",
+          "labelFr": "Greffe rénale · après 6 mois",
+          "labelEn": "Kidney transplant · after 6 months",
+          "scopeFr": "Tacrolimus immédiat, MPA ± prednisone. La source conditionne C₀ < 5 à une AUC₀–₁₂h > 75 µg·h/L ; ne pas appliquer isolément.",
+          "scopeEn": "Immediate-release tacrolimus with MPA ± prednisone. Source conditions C₀ < 5 on AUC₀–₁₂h > 75 µg·h/L; do not use in isolation.",
+          "citation": "van Gelder et al. · 2025",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12122127/",
+          "evidenceStatus": "study",
+          "undecidable": [
+            "analyteId",
+            "analyteBasis",
+            "matrixId",
+            "formulationId",
+            "assayMethod",
+            "samplingTime"
+          ],
+          "applicationBlocked": false,
+          "applicationBlockedCode": null,
+          "modelApplicabilityVerified": false,
+          "automaticDoseAdjustmentAllowed": false
+        },
+        {
+          "id": "tac-kidney-mid",
+          "target_metric": "Cmin",
+          "target_low": 5,
+          "target_high": 7,
+          "target_unit": "ng/mL",
+          "indication": "kidney",
+          "labelFr": "Greffe rénale · 6 semaines à 6 mois",
+          "labelEn": "Kidney transplant · 6 weeks to 6 months",
+          "scopeFr": "Tacrolimus à libération immédiate, MPA ± prednisone, induction basiliximab ; protocole spécifique.",
+          "scopeEn": "Immediate-release tacrolimus, MPA ± prednisone, basiliximab induction; protocol-specific.",
+          "citation": "van Gelder et al. · 2025",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12122127/",
+          "evidenceStatus": "study",
+          "undecidable": [
+            "analyteId",
+            "analyteBasis",
+            "matrixId",
+            "formulationId",
+            "assayMethod",
+            "samplingTime"
+          ],
+          "applicationBlocked": false,
+          "applicationBlockedCode": null,
+          "modelApplicabilityVerified": false,
+          "automaticDoseAdjustmentAllowed": false
+        }
+      ],
+      "autoApply": false
+    },
+    "vanco::IV_INTERMITTENT": {
+      "drugKey": "vanco",
+      "mode": "IV_INTERMITTENT",
+      "tdmDrugId": "vancomycin",
+      "doseGrid": null,
+      "doseGridSignedOff": false,
+      "doseGridApplicableModelIds": [],
+      "doseGridBlockedModels": {},
+      "candidates": [
+        {
+          "id": "vancomycin-mrsa",
+          "target_metric": "AUC24",
+          "target_low": 400,
+          "target_high": 600,
+          "target_unit": "mg·h/L",
+          "indication": "infection",
+          "labelFr": "Infection invasive grave à SARM",
+          "labelEn": "Serious invasive MRSA infection",
+          "scopeFr": "AUC₂₄ sous hypothèse de CMI = 1 mg/L (microdilution) ; cible AUC/CMI 400–600. Pas une cible C₀ 15–20 mg/L.",
+          "scopeEn": "AUC₂₄ with assumed MIC = 1 mg/L (broth microdilution); AUC/MIC target 400–600. Not a C₀ target of 15–20 mg/L.",
+          "citation": "ASHP / IDSA · 2020",
+          "url": "https://www.idsociety.org/practice-guideline/vancomycin/",
+          "evidenceStatus": "guideline",
+          "undecidable": [
+            "analyteId",
+            "analyteBasis",
+            "matrixId",
+            "formulationId",
+            "assayMethod",
+            "samplingTime"
+          ],
+          "applicationBlocked": false,
+          "applicationBlockedCode": null,
+          "modelApplicabilityVerified": false,
+          "automaticDoseAdjustmentAllowed": false
+        }
+      ],
+      "autoApply": true
+    },
+    "vanco::IV_CONTINUOUS": {
+      "drugKey": "vanco",
+      "mode": "IV_CONTINUOUS",
+      "tdmDrugId": "vancomycin",
+      "doseGrid": null,
+      "doseGridSignedOff": false,
+      "doseGridApplicableModelIds": [],
+      "doseGridBlockedModels": {},
+      "candidates": [
+        {
+          "id": "vancomycin-mrsa",
+          "target_metric": "AUC24",
+          "target_low": 400,
+          "target_high": 600,
+          "target_unit": "mg·h/L",
+          "indication": "infection",
+          "labelFr": "Infection invasive grave à SARM",
+          "labelEn": "Serious invasive MRSA infection",
+          "scopeFr": "AUC₂₄ sous hypothèse de CMI = 1 mg/L (microdilution) ; cible AUC/CMI 400–600. Pas une cible C₀ 15–20 mg/L.",
+          "scopeEn": "AUC₂₄ with assumed MIC = 1 mg/L (broth microdilution); AUC/MIC target 400–600. Not a C₀ target of 15–20 mg/L.",
+          "citation": "ASHP / IDSA · 2020",
+          "url": "https://www.idsociety.org/practice-guideline/vancomycin/",
+          "evidenceStatus": "guideline",
+          "undecidable": [
+            "analyteId",
+            "analyteBasis",
+            "matrixId",
+            "formulationId",
+            "assayMethod",
+            "samplingTime"
+          ],
+          "applicationBlocked": false,
+          "applicationBlockedCode": null,
+          "modelApplicabilityVerified": false,
+          "automaticDoseAdjustmentAllowed": false
+        }
+      ],
+      "autoApply": true
+    },
+    "voriconazole::ORAL": {
+      "drugKey": "voriconazole",
+      "mode": "ORAL",
+      "tdmDrugId": "voriconazole",
+      "doseGrid": null,
+      "doseGridSignedOff": false,
+      "doseGridApplicableModelIds": [],
+      "doseGridBlockedModels": {},
+      "candidates": [
+        {
+          "id": "voriconazole-icu",
+          "target_metric": "Cmin",
+          "target_low": 2,
+          "target_high": 6,
+          "target_unit": "mg/L",
+          "indication": "infection",
+          "labelFr": "Infection fongique · adulte en réanimation",
+          "labelEn": "Fungal infection · critically ill adult",
+          "scopeFr": "Consensus de STP chez l'adulte en réanimation ; le haut de la plage comporte un risque de neuro/hépatotoxicité ; tenir compte de la CMI et du pathogène.",
+          "scopeEn": "ICU adult TDM position paper; higher concentrations may associate with neuro/hepatotoxicity; pathogen and MIC matter.",
+          "citation": "ICU TDM 2020",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7223855/",
+          "evidenceStatus": "guideline",
+          "undecidable": [
+            "analyteId",
+            "analyteBasis",
+            "matrixId",
+            "formulationId",
+            "assayMethod",
+            "samplingTime"
+          ],
+          "applicationBlocked": false,
+          "applicationBlockedCode": null,
+          "modelApplicabilityVerified": false,
+          "automaticDoseAdjustmentAllowed": false
+        }
+      ],
+      "autoApply": true
+    }
+  },
+  "sha256": "9aa418f0d8c4286faa3d660722c79b80f455f59ff6705b262fe1caad39857f18"
+}
