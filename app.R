@@ -3086,6 +3086,152 @@ server <- function(input, output, session) {
     updateNumericInput(session, "future_infusion", value = preset$infusion)
   }, ignoreInit = FALSE)
 
+  # Each drug's metadata, references and exploratory dose-grid now come from
+  # its own validated integration/tdm-drugs/<drugKey>.json file.
+  output$tdm_drug_profile_ui <- renderUI({
+    if (!identical(input$model_source %||% "library", "library")) return(NULL)
+    record <- model_record(current_model_id())
+    profile <- tdm_drug_profile(record)
+    if (is.null(profile)) return(NULL)
+    mode <- current_administration_mode()
+    grid <- tdm_drug_profile_search_grid(record, mode)
+    english <- identical(current_language(), "en")
+    index <- profile$monitoring
+    sample_info <- profile$sampling
+    st <- suppressWarnings(as.numeric(input$observation_cov_ST_1 %||% NA_real_))
+    product <- tdm_drug_profile_formulation(record, st)
+    confirmed <- as.character(input$tdm_profile_formulation %||% "")
+    label_for <- function(id) {
+      if (identical(id, "tacrolimus-immediate-release")) return("Prograf · libération immédiate / immediate release")
+      if (identical(id, "ciclosporine-neoral-microemulsion")) return("Neoral · microémulsion")
+      if (identical(id, "everolimus-certican-transplant")) return("Certican · transplantation")
+      if (identical(id, "sirolimus-rapamune-tablet")) return("Rapamune · comprimés / tablets")
+      id
+    }
+    div(
+      class = "target-preset tdm-drug-json-profile",
+      `data-testid` = "mipd-drug-json-profile",
+      tags$strong(paste0(profile$drugName, " · ", tx(
+        "référentiel par molécule", "drug-specific reference"))),
+      tags$p(
+        tags$strong(tx("Indice PK/PD : ", "PK/PD index: ")),
+        if (english) index$en %||% tx("Non établi", "Not established")
+        else index$fr %||% tx("Non établi", "Not established")
+      ),
+      tags$p(
+        tags$strong(tx("Unités du modèle : ", "Model units: ")),
+        paste0(profile$concentrationUnit, tx(" ; dose en ", "; dose in "), profile$doseUnit)
+      ),
+      if (!is.null(product)) tags$p(
+        tags$strong(tx("Formulation du modèle : ", "Model formulation: ")),
+        if (english) product$labelEn %||% product$product
+        else product$labelFr %||% product$product
+      ),
+      if (identical(as.character(record$id[[1]]), "tacrolimus_woillard_ddi")) tags$p(
+        class = "custom-note",
+        tx("Codage ST du modèle Woillard : 1 = Prograf, libération immédiate (12 h) ; 0 = Advagraf, libération prolongée (24 h). Envarsus est une autre formulation et relève du modèle Kamp. La concentration simulée est déjà en ng/mL : ne pas la diviser par 1 000.",
+          "Woillard model ST coding: 1 = Prograf immediate release (12 h); 0 = Advagraf prolonged release (24 h). Envarsus is a different product modelled by Kamp. Simulated concentrations are already in ng/mL: do not divide by 1,000.")
+      ),
+      if (!is.null(grid)) tags$div(
+        class = "tdm-drug-exploratory-grid",
+        tags$strong(tx("Grille exploratoire provenant du RCP", "Label-derived exploratory grid")),
+        tags$p(paste0(format(grid$dose_min), "–", format(grid$dose_max),
+          " mg, ", tx("pas", "step"), " ", format(grid$dose_step), " mg ; ",
+          paste(unlist(grid$intervals), collapse = "/"), " h.")),
+        tags$p(if (english) grid$basisEn %||% "" else grid$basisFr %||% ""),
+        if (grepl("^https://", grid$source$url %||% "")) tags$a(
+          grid$source$label %||% tx("RCP source", "Source SmPC"),
+          href = grid$source$url, target = "_blank", rel = "noopener noreferrer"
+        ),
+        selectInput("tdm_profile_formulation",
+          tx("Confirmer la spécialité avant de charger la grille",
+            "Confirm the product before loading the grid"),
+          choices = stats::setNames(
+            c("", as.character(unlist(grid$requiresFormulationIds))),
+            c(tx("Choisir la formulation", "Choose formulation"),
+              vapply(as.character(unlist(grid$requiresFormulationIds)), label_for, character(1)))
+          ),
+          selected = if (confirmed %in% as.character(unlist(grid$requiresFormulationIds))) confirmed else ""
+        ),
+        if (tdm_drug_profile_grid_eligible(record, mode, confirmed, st)) {
+          actionButton("apply_tdm_drug_grid",
+            tx("Charger cette grille pour la simulation", "Load this grid for simulation"),
+            class = "btn-outline-secondary btn-sm")
+        } else tags$p(class = "custom-note", tx(
+          "La grille n'est pas appliquée : confirmer la spécialité et sa concordance avec le modèle. Certaines formulations n'ont pas de grille qualifiée.",
+          "Grid not applied: confirm product and model compatibility. Some formulations have no qualified grid."
+        )),
+        tags$p(class = "custom-note", tx(
+          "Usage pédagogique uniquement : cette grille est en attente de validation pharmacologique et ne définit pas une posologie recommandée.",
+          "Educational use only: this search grid is pending pharmacologist sign-off and is not a recommended regimen."
+        ))
+      ),
+      if (is.null(grid)) tags$p(class = "custom-note", tx(
+        "Aucune grille de doses sourcée pour ce modèle et cette voie : renseigner une plage exploratoire manuellement.",
+        "No source-backed dose grid for this model and route: enter an exploratory range manually."
+      ))
+    )
+  })
+  shiny::outputOptions(output, "tdm_drug_profile_ui", suspendWhenHidden = FALSE)
+
+  observeEvent(input$apply_tdm_drug_grid, {
+    if (!identical(input$model_source %||% "library", "library")) return()
+    record <- model_record(current_model_id())
+    mode <- current_administration_mode()
+    grid <- tdm_drug_profile_search_grid(record, mode)
+    confirmed <- as.character(input$tdm_profile_formulation %||% "")
+    st <- suppressWarnings(as.numeric(input$observation_cov_ST_1 %||% NA_real_))
+    if (is.null(grid) ||
+        !tdm_drug_profile_grid_eligible(record, mode, confirmed, st)) {
+      showNotification(tx(
+        "Grille non appliquée : formulation ou modèle incompatible.",
+        "Grid not applied: product or model is incompatible."),
+        type = "error")
+      return()
+    }
+    nums <- as.numeric(c(grid$dose_min, grid$dose_max, grid$dose_step, grid$infusion))
+    intervals <- as.numeric(unlist(grid$intervals))
+    if (length(nums) != 4L || any(!is.finite(nums)) || nums[[1]] < 0 ||
+        nums[[2]] <= nums[[1]] || nums[[3]] <= 0 || nums[[4]] < 0 ||
+        !length(intervals) || any(!is.finite(intervals) | intervals <= 0)) return()
+    updateNumericInput(session, "dose_min", value = grid$dose_min)
+    updateNumericInput(session, "dose_max", value = grid$dose_max)
+    updateNumericInput(session, "dose_step", value = grid$dose_step)
+    update_candidate_intervals(intervals)
+    updateNumericInput(session, "future_infusion", value = grid$infusion)
+    showNotification(tx(
+      "Espace de recherche chargé depuis le JSON/RCP, pour simulation uniquement. Aucune posologie clinique n'est validée.",
+      "Source-backed grid loaded for simulation only. No clinical dosing regimen has been validated."),
+      type = "warning", duration = 12)
+  }, ignoreInit = TRUE)
+
+  # The app's concentration unit is already determined by each model's table
+  # output (e.g. tacrolimus ng/mL). Labels change, values are never re-scaled.
+  observe({
+    if (!identical(input$model_source %||% "library", "library")) return()
+    record <- model_record(current_model_id())
+    metric <- input$target_metric %||% "Cmin"
+    unit <- tdm_drug_profile_metric_unit(record, metric)
+    concentration <- tdm_drug_profile(record)$concentrationUnit
+    dose_unit <- tdm_drug_profile(record)$doseUnit
+    updateNumericInput(session, "target_low",
+      label = paste0(tx("Borne basse", "Lower bound"), " (", unit, ")"))
+    updateNumericInput(session, "target_high",
+      label = paste0(tx("Borne haute", "Upper bound"), " (", unit, ")"))
+    updateNumericInput(session, "target_concentration_threshold",
+      label = paste0(tx("Seuil de concentration", "Concentration threshold"), " (", concentration, ")"))
+    for (id in c("target_cmin_low", "target_cmin_high", "target_cmin_threshold",
+                 "target_cmax_low", "target_cmax_high", "target_cmax_threshold")) {
+      updateNumericInput(session, id, label = paste0(sub("^target_", "", id), " (", concentration, ")"))
+    }
+    updateNumericInput(session, "dose_min",
+      label = paste0(tx("Dose min", "Min dose"), " (", dose_unit, ")"))
+    updateNumericInput(session, "dose_max",
+      label = paste0(tx("Dose max", "Max dose"), " (", dose_unit, ")"))
+    updateNumericInput(session, "dose_step",
+      label = paste0(tx("Pas", "Step"), " (", dose_unit, ")"))
+  })
+
   output$target_preset_ui <- renderUI({
     preset <- active_target_preset()
     if (is.null(preset)) {
