@@ -1,6 +1,12 @@
 name: Reverify public MIPD Shiny release
 
 on:
+  # One-time, credential-free post-release browser acceptance for live SHA
+  # 9979e949. Remove this push-only diagnostic trigger after acceptance.
+  push:
+    branches: [main]
+    paths:
+      - .github/workflows/verify-public-shiny.yml
   workflow_dispatch:
     inputs:
       expected_sha:
@@ -18,7 +24,8 @@ permissions:
 jobs:
   live-verification:
     if: github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success'
-    runs-on: ubuntu-latest
+    # Playwright 1.56 Chromium does not install on Ubuntu 26.04.
+    runs-on: ubuntu-24.04
     timeout-minutes: 20
     steps:
       - uses: actions/checkout@v7
@@ -29,9 +36,12 @@ jobs:
         env:
           MANUAL_SHA: ${{ inputs.expected_sha }}
           DEPLOYED_SHA: ${{ github.event.workflow_run.head_sha }}
+          # On this one-time push verification, main contains CI-only edits
+          # after the actual public release, so pin its true deployed SHA.
+          PUSH_PUBLIC_SHA: ${{ github.event_name == 'push' && '9979e9498c0ea691dd7b95afd9fc08d65f1bee31' || '' }}
         run: |
           set -euo pipefail
-          SHA="${DEPLOYED_SHA:-${MANUAL_SHA:-$GITHUB_SHA}}"
+          SHA="${DEPLOYED_SHA:-${MANUAL_SHA:-${PUSH_PUBLIC_SHA:-$GITHUB_SHA}}}"
           if ! [[ "$SHA" =~ ^[0-9a-f]{40}$ ]]; then
             echo "::error::A full immutable 40-character SHA is required"
             exit 1
