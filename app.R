@@ -87,6 +87,7 @@ if (identical(pmetrics_mode, "true") && !pmetrics_installed) stop("ENABLE_PMETRI
 PMETRICS_ENABLED <- !identical(pmetrics_mode, "false") && pmetrics_installed
 source(file.path(APP_ROOT, "R", if (PMETRICS_ENABLED) "pmetrics_engine.R" else "pmetrics_disabled.R"), local = TRUE)
 source(file.path(APP_ROOT, "R", "engine.R"), local = TRUE)
+source(file.path(APP_ROOT, "R", "map_be_diagnostics.R"), local = TRUE)
 source(file.path(APP_ROOT, "R", "ml_engine.R"), local = TRUE)
 source(file.path(APP_ROOT, "R", "ddi_engine.R"), local = TRUE)
 source(file.path(APP_ROOT, "R", "ddi_builder.R"), local = TRUE)
@@ -977,6 +978,39 @@ app_ui <- function(request) {
                 plotOutput("distribution_plot", height = "330px"),
                 div(class = "table-toolbar", h3("Scénarios classés"), downloadButton("download_scenarios", "Exporter CSV", class = "btn-outline-secondary btn-sm")),
                 DTOutput("recommendation_table")
+              )
+            ),
+            nav_panel(
+              "MAP-BE",
+              value = "map_be",
+              div(
+                class = "workspace-section map-be-workspace",
+                h3(app_t(lang, "Position individuelle dans la population", "Individual position within the population")),
+                p(class = "map-be-intro", app_t(lang,
+                  "Chaque distribution provient du modèle pharmacocinétique sélectionné. Le trait indique la position estimée pour le patient ; il ne représente pas une population réelle observée.",
+                  "Each distribution comes from the selected PK model. The marker indicates the individual's estimate; it is not an empirical patient cohort.")),
+                uiOutput("map_be_model_selector"),
+                uiOutput("map_be_summary"),
+                uiOutput("map_be_plot_ui"),
+                div(class = "table-toolbar",
+                  h3(app_t(lang, "Paramètres et percentiles", "Parameters and percentiles")),
+                  downloadButton("download_map_be_parameters",
+                    app_t(lang, "Exporter CSV", "Export CSV"),
+                    class = "btn-outline-secondary btn-sm")),
+                DTOutput("map_be_parameter_table"),
+                tags$details(
+                  class = "map-be-method-details",
+                  tags$summary(app_t(lang, "Méthode et limites", "Methods and limitations")),
+                  p(app_t(lang,
+                    "MAP-BE : position des effets aléatoires individuels ETA dans les lois normales marginales définies par la matrice Ω du modèle, avec percentiles calculés sur le prior. Les covariables sont déjà prises en compte par le modèle, sans reconstituer ici une distribution de CL, V ou F en unités physiques.",
+                    "MAP-BE: individual ETA positioning within the model's marginal normal priors defined by OMEGA, with prior percentiles. Covariate effects are defined in the model; this view does not claim to reconstruct distributions for CL, V or F in physical units.")),
+                  p(app_t(lang,
+                    "Le percentile d'un ETA n'est ni un résultat clinique, ni un diagnostic de sous-exposition, ni une preuve de bonne identification. Les corrélations entre ETA ne sont pas reflétées par les courbes marginales. Les intervalles postérieurs, lorsqu'ils sont disponibles, sont des approximations locales par la Hessienne.",
+                    "An ETA percentile is not a clinical outcome, an underexposure diagnosis or proof of identifiability. Marginal curves do not represent ETA correlations. Posterior intervals, when available, are local Hessian approximations.")),
+                  p(app_t(lang,
+                    "Pmetrics : comparaison des distributions discrètes a priori et a posteriori sur les points de support ; la moyenne postérieure est un résumé et non un estimateur MAP-BE gaussien. Les modèles en averaging sont présentés séparément.",
+                    "Pmetrics: discrete prior and posterior support-point distributions; the posterior mean is a summary, not a Gaussian MAP-BE estimate. Model-averaging components are shown separately."))
+                )
               )
             ),
             nav_panel(
@@ -2797,6 +2831,145 @@ server <- function(input, output, session) {
       showNotification(paste0(analysis_stage, " : ", detail), type = "error", duration = 10)
     })
   })
+
+  # Diagnostic only: no change to MAP fit, model averaging or dose ranking.
+  # Each model component retains its own OMEGA and individual ETA.
+  map_be_selected_fit <- reactive({
+    result <- analysis_store()
+    if (is.null(result)) return(NULL)
+    valid <- successful_fits(result$fits)
+    if (!length(valid)) return(NULL)
+    selected <- input$map_be_model_id %||% ""
+    if (!selected %in% names(valid)) selected <- names(valid)[[1]]
+    valid[[selected]]
+  })
+
+  map_be_data <- reactive({
+    fit <- map_be_selected_fit()
+    if (is.null(fit)) return(list(type = "unavailable", reason = "no_analysis"))
+    map_be_diagnostic(fit)
+  })
+
+  output$map_be_model_selector <- renderUI({
+    result <- analysis_store()
+    if (is.null(result)) return(NULL)
+    valid <- successful_fits(result$fits)
+    if (length(valid) <= 1L) return(NULL)
+    ids <- names(valid)
+    labels <- vapply(valid, function(fit) as.character(fit$label %||% fit$id), character(1))
+    current <- isolate(input$map_be_model_id %||% "")
+    if (!current %in% ids) current <- ids[[1]]
+    selectInput("map_be_model_id", tx("Modèle à examiner", "Model to examine"),
+      choices = stats::setNames(ids, labels), selected = current)
+  })
+
+  output$map_be_summary <- renderUI({
+    data <- map_be_data()
+    if (identical(data$type, "unavailable")) {
+      reason <- data$reason %||% ""
+      detail <- switch(reason,
+        no_analysis = tx("Lancez une analyse dans l'onglet Données.", "Run an analysis from the Data tab."),
+        population = tx("Aucune observation pour cet ajustement : pas de position individuelle estimée.",
+          "No observations for this fit: an individual estimate is unavailable."),
+        no_omega = tx("Ce modèle ne présente pas de variabilité interindividuelle Ω exploitable.",
+          "This model has no usable inter-individual variability OMEGA."),
+        pmetrics_backend = tx("Support Pmetrics indisponible.", "Pmetrics support unavailable."),
+        tx("Les effets aléatoires et les distributions ne peuvent pas être rapprochés de manière fiable pour ce modèle.",
+           "Individual effects cannot be reliably matched to model distributions."))
+      return(div(class = "empty-results", detail))
+    }
+    fit <- map_be_selected_fit()
+    diagnostic <- if (identical(data$type, "mapbayr")) fit_numeric_diagnostics(fit) else NULL
+    warnings <- c(
+      if (identical(data$type, "mapbayr") && data$observations < data$eta_count)
+        tx("Moins de concentrations que d'ETA : l'estimation individuelle peut être dominée par le prior.",
+          "Fewer observed concentrations than ETAs: the individual estimate may be dominated by the prior."),
+      if (isTRUE(diagnostic$at_boundary))
+        tx("Au moins un ETA est proche d'une borne d'optimisation.", "At least one ETA is near an optimizer boundary."),
+      if (identical(data$type, "mapbayr") && !isTRUE(data$covariance_available))
+        tx("Covariance postérieure indisponible ou mal conditionnée : pas d'intervalle local affiché.",
+          "Posterior covariance missing or ill-conditioned: no local interval is shown."),
+      if (identical(data$type, "mapbayr") && data$nonestimated > 0L)
+        tx(paste0(data$nonestimated, " ETA fixe(s) ou non estimé(s) exclus."),
+          paste0(data$nonestimated, " fixed or unestimated ETA(s) excluded."))
+    )
+    div(
+      class = "map-be-status",
+      tags$strong(paste0(data$label, " · ", if (identical(data$type, "pmetrics"))
+        tx("points de support Pmetrics", "Pmetrics support points") else
+        tx("distributions marginales Ω", "OMEGA marginal distributions"))),
+      tags$p(tx(paste0(data$observations, " concentration(s) observée(s)."),
+        paste0(data$observations, " observed concentration(s)."))),
+      if (length(successful_fits(analysis_store()$fits)) > 1L)
+        tags$p(tx("Model averaging : choisir chaque modèle individuellement ; les ETA ne sont pas moyennés.",
+          "Model averaging: inspect models separately; ETAs are not averaged.")),
+      if (length(warnings)) tags$ul(class = "map-be-warnings", lapply(warnings, tags$li))
+    )
+  })
+
+  output$map_be_plot_ui <- renderUI({
+    data <- map_be_data()
+    if (!data$type %in% c("mapbayr", "pmetrics")) return(NULL)
+    # The same figure shows *every* random effect or Pmetrics parameter.
+    n <- nrow(data$table)
+    plotOutput("map_be_parameter_plot", height = paste0(max(330L, 250L *
+      ceiling(n / 3)), "px"))
+  })
+
+  output$map_be_parameter_plot <- renderPlot({
+    data <- map_be_data()
+    shiny::validate(shiny::need(data$type %in% c("mapbayr", "pmetrics"),
+      tx("Aucun diagnostic MAP-BE disponible.", "No MAP-BE diagnostic available.")))
+    map_be_diagnostic_plot(data, english = identical(current_language(), "en"))
+  })
+
+  map_be_export_table <- reactive({
+    data <- map_be_data()
+    if (identical(data$type, "mapbayr")) {
+      df <- data$table
+      return(data.frame(
+        Parameter = df$parameter, ETA_MAP = df$eta,
+        Prior_SD = df$prior_sd, Prior_Z = df$z,
+        Prior_percentile_pct = df$percentile,
+        Prior_5pct_ETA = df$prior_5, Prior_95pct_ETA = df$prior_95,
+        Posterior_SD_local = df$posterior_sd,
+        Posterior_5pct_local = df$posterior_5,
+        Posterior_95pct_local = df$posterior_95,
+        check.names = FALSE
+      ))
+    }
+    if (identical(data$type, "pmetrics")) {
+      df <- data$table
+      return(data.frame(
+        Parameter = df$parameter, Prior_mean = df$prior_mean,
+        Posterior_mean = df$patient,
+        Prior_discrete_percentile_pct = df$percentile,
+        Prior_5pct = df$prior_5, Prior_95pct = df$prior_95,
+        check.names = FALSE
+      ))
+    }
+    NULL
+  })
+
+  output$map_be_parameter_table <- DT::renderDT({
+    df <- map_be_export_table()
+    shiny::req(!is.null(df))
+    numeric <- vapply(df, is.numeric, logical(1))
+    df[numeric] <- lapply(df[numeric], function(x) round(x, 3))
+    DT::datatable(df, rownames = FALSE, options = list(
+      pageLength = 10, lengthChange = FALSE, scrollX = TRUE,
+      dom = "tip", ordering = TRUE
+    ))
+  })
+
+  output$download_map_be_parameters <- downloadHandler(
+    filename = function() "mipd-map-be-parameters.csv",
+    content = function(file) {
+      df <- map_be_export_table()
+      shiny::req(!is.null(df))
+      utils::write.csv(df, file, row.names = FALSE, na = "")
+    }
+  )
 
   output$fit_empty <- renderUI({
     if (is.null(analysis_store())) div(class = "empty-results", tx("Renseignez les données puis lancez l'analyse.", "Enter the data, then run the analysis."))
