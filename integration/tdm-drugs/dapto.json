@@ -1,0 +1,59 @@
+{
+  "schema": "mipd.tdm.drug-profile.v1",
+  "drugKey": "dapto",
+  "tdmDrugId": "daptomycin",
+  "drugName": "Daptomycine",
+  "modelIds": [
+    "dapto_dvorchik_IV_adults",
+    "dapto_garreau"
+  ],
+  "concentrationUnit": "mg/L",
+  "doseUnit": "mg",
+  "intendedUse": "TEACHING_RESEARCH_ONLY",
+  "clinicalInterpretationAllowed": false,
+  "automaticDoseAdjustmentAllowed": false,
+  "patientDataIncluded": false,
+  "guideHref": "https://rberrah.github.io/pharmacometrie/cibles-tdm/?drug=daptomycin&lang=fr",
+  "monitoring": {
+    "key": "AUC_MIC",
+    "fr": "AUC₀–₂₄/CMI",
+    "en": "AUC24/MIC",
+    "sourceId": "antibacterial2020",
+    "noteFr": "Indice d’efficacité majeur ; Cmin élevée est davantage un signal de toxicité qu’un objectif de bénéfice.",
+    "noteEn": "Key efficacy index; high trough is more relevant to toxicity than efficacy."
+  },
+  "sampling": {
+    "key": "auc_model",
+    "fr": "AUC à partir de prélèvements horodatés",
+    "en": "AUC from timed concentrations",
+    "sourceId": "antibacterial2020",
+    "noteFr": "Une estimation d’AUC peut combiner un prélèvement post-dose et une résiduelle ; conserver la CMI et le contexte infectieux.",
+    "noteEn": "Timed postdose and trough observations can estimate AUC; retain MIC and infection context."
+  },
+  "sourceSnapshotSha256": "511c8fef0159a6aff406d026bc952dc59e4c5ba5a05b0c17e3af7f26c15d7230",
+  "guideTargetPresets": {},
+  "sourceReferences": [],
+  "conditionalPdObjectives": [
+    {
+      "id": "daptomycin:icu-auc-mic",
+      "kind": "total_auc_ratio",
+      "metric": "AUC₀–₂₄/CMI",
+      "labelFr": "Infection bactérienne · réanimation adulte (proposition PK/PD)",
+      "labelEn": "Bacterial infection · adult ICU (PK/PD proposal)",
+      "criterionFr": "AUC₀–₂₄/CMI > 666",
+      "criterionEn": "AUC₀–₂₄/MIC > 666",
+      "source": {
+        "citation": "ESICM / ESCMID / IATDMCT / ISAC · 2020",
+        "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7223855/",
+        "section": "Table 4 Daptomycin and section Daptomycin: AUC/MIC >666, safety Cmin <24 mg/L"
+      },
+      "status": "population_indication_and_assay_not_checked",
+      "modelApplicabilityVerified": false,
+      "automaticDoseAdjustmentAllowed": false
+    }
+  ],
+  "simulationPresets": {},
+  "formulationByModel": {},
+  "noteFr": "Les références sont contextuelles. Les grilles de doses sont des espaces exploratoires, pas des prescriptions.",
+  "noteEn": "References are context-dependent. Dose grids are exploratory search spaces, not prescriptions."
+}

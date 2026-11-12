@@ -1,0 +1,95 @@
+{
+  "schema": "mipd.tdm.drug-profile.v1",
+  "drugKey": "rifampicine",
+  "tdmDrugId": "rifampicin",
+  "drugName": "Rifampicine",
+  "modelIds": [
+    "rifampicine_chang",
+    "rifampicine_jeremiah",
+    "rifampicine_jing",
+    "rifampicine_loos_ddi",
+    "rifampicine_marsot"
+  ],
+  "concentrationUnit": "mg/L",
+  "doseUnit": "mg",
+  "intendedUse": "TEACHING_RESEARCH_ONLY",
+  "clinicalInterpretationAllowed": false,
+  "automaticDoseAdjustmentAllowed": false,
+  "patientDataIncluded": false,
+  "guideHref": "https://rberrah.github.io/pharmacometrie/cibles-tdm/?drug=rifampicin&lang=fr",
+  "monitoring": {
+    "key": "AUC_MIC",
+    "fr": "AUC₀–₂₄/CMI (antituberculeux)",
+    "en": "AUC24/MIC (tuberculosis)",
+    "sourceId": "rifampicinTDM2021",
+    "noteFr": "L’exposition AUC contribue à l’activité antituberculeuse et peut nécessiter des prélèvements individuels ; Cmax est complémentaire.",
+    "noteEn": "AUC exposure contributes to TB activity; Cmax is complementary and sampling may need individualisation."
+  },
+  "sampling": {
+    "key": "auc_timed",
+    "fr": "AUC par prélèvements horodatés",
+    "en": "AUC from time-stamped samples",
+    "sourceId": "rifampicinTDM2021",
+    "noteFr": "L’auto-induction rend essentielle la date de traitement et les temps réels des prélèvements.",
+    "noteEn": "Autoinduction means treatment day and actual sample times are essential."
+  },
+  "sourceSnapshotSha256": "511c8fef0159a6aff406d026bc952dc59e4c5ba5a05b0c17e3af7f26c15d7230",
+  "guideTargetPresets": {},
+  "sourceReferences": [
+    {
+      "id": "rifampicin-tb-peak",
+      "metric": "C₂h (pic approximatif)",
+      "unit": "mg/L",
+      "indication": "tuberculosis",
+      "indicationFr": "Tuberculose active · traitement quotidien adulte",
+      "indicationEn": "Active tuberculosis · adult daily regimen",
+      "contextFr": "Concentration de pic de référence aux doses classiques, souvent prélevée à 2 h ; variabilité et absorption retardée possibles. Le document CHU prévoit aussi, si nécessaire, un prélèvement à 8 h. La forte dépendance de l’exposition à la dose limite les extrapolations.",
+      "contextEn": "Peak reference at conventional dosing, often sampled at 2 hours; delayed absorption can occur. CHU document also allows an optional 8-hour measurement. Exposure is dose-dependent; avoid extrapolating to high-dose regimens.",
+      "analyteId": null,
+      "analyteBasis": null,
+      "matrixId": null,
+      "matrixFr": "Plasma/sérum, rifampicine",
+      "matrixEn": "Plasma/serum, rifampicin",
+      "formulationId": null,
+      "samplingTime": null,
+      "relation": "range",
+      "min": 8,
+      "max": 24,
+      "analyticalIdentityMissing": [
+        "analyteId",
+        "analyteBasis",
+        "matrixId",
+        "formulationId",
+        "assayMethod",
+        "samplingTime"
+      ],
+      "source": {
+        "id": "tbTdmMeta2023",
+        "citation": "Revue systématique tuberculose · 2023",
+        "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10622255/",
+        "year": 2023,
+        "section": "Tableau 1 : concentrations de pic de référence, rifampicine 8–24 et isoniazide 3–6 mg/L ; valeurs historiques et non fenêtres individualisées démontrées"
+      },
+      "status": "bibliographic_candidate_requires_context_review",
+      "applicability": {
+        "verdict": "requires_human_context_review",
+        "mismatches": [],
+        "undecidable": [
+          "analyteId",
+          "analyteBasis",
+          "matrixId",
+          "formulationId",
+          "assayMethod",
+          "samplingTime"
+        ]
+      },
+      "modelApplicabilityVerified": false,
+      "automaticDoseAdjustmentAllowed": false
+    }
+  ],
+  "conditionalPdObjectives": [],
+  "simulationPresets": {},
+  "formulationByModel": {},
+  "noteFr": "Les références sont contextuelles. Les grilles de doses sont des espaces exploratoires, pas des prescriptions.",
+  "noteEn": "References are context-dependent. Dose grids are exploratory search spaces, not prescriptions."
+}

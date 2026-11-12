@@ -1,0 +1,59 @@
+{
+  "schema": "mipd.tdm.drug-profile.v1",
+  "drugKey": "levo",
+  "tdmDrugId": "levofloxacin",
+  "drugName": "Levofloxacine",
+  "modelIds": [
+    "levo_canoui",
+    "levo_gergs"
+  ],
+  "concentrationUnit": "mg/L",
+  "doseUnit": "mg",
+  "intendedUse": "TEACHING_RESEARCH_ONLY",
+  "clinicalInterpretationAllowed": false,
+  "automaticDoseAdjustmentAllowed": false,
+  "patientDataIncluded": false,
+  "guideHref": "https://rberrah.github.io/pharmacometrie/cibles-tdm/?drug=levofloxacin&lang=fr",
+  "monitoring": {
+    "key": "fAUC_MIC",
+    "fr": "AUC₀–₂₄/CMI (souvent libre)",
+    "en": "AUC24/MIC (often unbound)",
+    "sourceId": "antibacterial2020",
+    "noteFr": "Le rapport exposition/CMI est le déterminant majeur ; le Cmax/CMI est complémentaire. La C0 seule n’est pas la cible d’efficacité privilégiée.",
+    "noteEn": "Exposure/MIC is the dominant driver; Cmax/MIC is additional. Trough alone is not the preferred efficacy metric."
+  },
+  "sampling": {
+    "key": "auc_model",
+    "fr": "AUC estimée avec prélèvements adaptés",
+    "en": "Model-estimated AUC with timed sampling",
+    "sourceId": "antibacterial2020",
+    "noteFr": "Prélèvements adaptés à la voie orale ou IV et au modèle utilisé ; interpréter avec CMI et fraction libre.",
+    "noteEn": "Route- and model-specific timing; interpret with MIC and unbound fraction."
+  },
+  "sourceSnapshotSha256": "511c8fef0159a6aff406d026bc952dc59e4c5ba5a05b0c17e3af7f26c15d7230",
+  "guideTargetPresets": {},
+  "sourceReferences": [],
+  "conditionalPdObjectives": [
+    {
+      "id": "levofloxacin:icu-free-auc-mic",
+      "kind": "free_auc_ratio",
+      "metric": "fAUC₀–₂₄/CMI",
+      "labelFr": "Infection bactérienne · réanimation adulte (proposition PK/PD)",
+      "labelEn": "Bacterial infection · adult ICU (PK/PD proposal)",
+      "criterionFr": "fAUC₀–₂₄/CMI ≥ 80",
+      "criterionEn": "fAUC₀–₂₄/MIC ≥ 80",
+      "source": {
+        "citation": "ESICM / ESCMID / IATDMCT / ISAC · 2020",
+        "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7223855/",
+        "section": "Table 4 Fluoroquinolones: fAUC24/MIC ≥80; efficacy section discusses pathogen-dependent ranges"
+      },
+      "status": "population_indication_and_assay_not_checked",
+      "modelApplicabilityVerified": false,
+      "automaticDoseAdjustmentAllowed": false
+    }
+  ],
+  "simulationPresets": {},
+  "formulationByModel": {},
+  "noteFr": "Les références sont contextuelles. Les grilles de doses sont des espaces exploratoires, pas des prescriptions.",
+  "noteEn": "References are context-dependent. Dose grids are exploratory search spaces, not prescriptions."
+}

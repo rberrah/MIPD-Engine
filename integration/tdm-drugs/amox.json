@@ -1,0 +1,78 @@
+{
+  "schema": "mipd.tdm.drug-profile.v1",
+  "drugKey": "amox",
+  "tdmDrugId": "amoxicillin",
+  "drugName": "Amoxicilline",
+  "modelIds": [
+    "amox_carlier",
+    "amox_fournier",
+    "amox_mellon",
+    "amox_rambaud"
+  ],
+  "concentrationUnit": "mg/L",
+  "doseUnit": "mg",
+  "intendedUse": "TEACHING_RESEARCH_ONLY",
+  "clinicalInterpretationAllowed": false,
+  "automaticDoseAdjustmentAllowed": false,
+  "patientDataIncluded": false,
+  "guideHref": "https://rberrah.github.io/pharmacometrie/cibles-tdm/?drug=amoxicillin&lang=fr",
+  "monitoring": {
+    "key": "fT_MIC",
+    "fr": "fT>CMI (temps dépendant)",
+    "en": "fT>MIC (time dependent)",
+    "sourceId": "beta2026",
+    "noteFr": "Temps pendant lequel la concentration libre dépasse la CMI ; 100 % fT>CMI est un objectif conditionnel en situation aiguë. Une C0 seule reste un marqueur indirect et contextuel.",
+    "noteEn": "Unbound time above MIC; conditional minimum of 100% fT>MIC in acutely ill patients. Trough is a contextual surrogate, not the PD definition."
+  },
+  "sampling": {
+    "key": "Cmin_or_Css",
+    "fr": "Cmin (intermittent) ou Css (continu)",
+    "en": "Trough (intermittent) or Css (continuous)",
+    "sourceId": "beta2026",
+    "noteFr": "La résiduelle libre peut étayer 100 % fT>CMI lorsque le schéma est intermittent ; en perfusion continue, une Css libre au plateau est plus directement interprétable. Dose de charge, stabilité chimique et site doivent être vérifiés.",
+    "noteEn": "Free trough supports 100% fT>MIC with intermittent dosing; unbound steady-state Css is more direct for continuous infusion. Check loading, stability and site."
+  },
+  "sourceSnapshotSha256": "511c8fef0159a6aff406d026bc952dc59e4c5ba5a05b0c17e3af7f26c15d7230",
+  "guideTargetPresets": {},
+  "sourceReferences": [],
+  "conditionalPdObjectives": [
+    {
+      "id": "amoxicillin:icu-beta-intermittent",
+      "kind": "beta_trough",
+      "metric": "100 % fT>CMI",
+      "labelFr": "Réanimation adulte · perfusion intermittente ou prolongée",
+      "labelEn": "Adult ICU · intermittent or extended infusion",
+      "criterionFr": "Minimum proposé : concentration libre > CMI sur 100 % de l’intervalle",
+      "criterionEn": "Suggested minimum: unbound concentration > MIC for 100% of the interval",
+      "source": {
+        "citation": "ACCP / ESCMID / IDSA / IATDMCT · 2026",
+        "url": "https://www.idsociety.org/practice-guideline/beta-lactam-antibiotic-dose-individualization-in-acutely-ill-patients/",
+        "section": "Table 1 and §3.2, 100% fT>MIC conditional minimum; §5.3 MIC selection; potential 100% fT>4×MIC for poorly penetrated sites"
+      },
+      "status": "different_administration_mode",
+      "modelApplicabilityVerified": false,
+      "automaticDoseAdjustmentAllowed": false
+    },
+    {
+      "id": "amoxicillin:icu-beta-continuous",
+      "kind": "beta_continuous",
+      "metric": "fCss>CMI",
+      "labelFr": "Réanimation adulte · perfusion continue",
+      "labelEn": "Adult ICU · continuous infusion",
+      "criterionFr": "Concentration libre au plateau ≥ 4 × CMI (perfusion continue)",
+      "criterionEn": "Steady-state unbound concentration ≥ 4 × MIC (continuous infusion)",
+      "source": {
+        "citation": "ACCP / BSAC / ESCMID / IDSA · 2023",
+        "url": "https://accpjournals.onlinelibrary.wiley.com/doi/10.1002/phar.2842",
+        "section": "Statement V.5 / §3.5.1: for continuous infusion, 100% fT>MIC with steady-state concentrations at least four times the MIC"
+      },
+      "status": "population_indication_and_assay_not_checked",
+      "modelApplicabilityVerified": false,
+      "automaticDoseAdjustmentAllowed": false
+    }
+  ],
+  "simulationPresets": {},
+  "formulationByModel": {},
+  "noteFr": "Les références sont contextuelles. Les grilles de doses sont des espaces exploratoires, pas des prescriptions.",
+  "noteEn": "References are context-dependent. Dose grids are exploratory search spaces, not prescriptions."
+}

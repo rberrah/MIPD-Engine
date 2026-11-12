@@ -1,0 +1,237 @@
+{
+  "schema": "mipd.tdm.drug-profile.v1",
+  "drugKey": "sirolimus",
+  "tdmDrugId": "sirolimus",
+  "drugName": "Sirolimus",
+  "modelIds": [
+    "sirolimus_djebli_ddi"
+  ],
+  "concentrationUnit": "ng/mL",
+  "doseUnit": "mg",
+  "intendedUse": "TEACHING_RESEARCH_ONLY",
+  "clinicalInterpretationAllowed": false,
+  "automaticDoseAdjustmentAllowed": false,
+  "patientDataIncluded": false,
+  "guideHref": "https://rberrah.github.io/pharmacometrie/cibles-tdm/?drug=sirolimus&lang=fr",
+  "monitoring": {
+    "key": "Cmin",
+    "fr": "C0 (exposition de routine)",
+    "en": "Trough (routine exposure)",
+    "sourceId": "sirolimusEMA",
+    "noteFr": "C0 sang total suivie en transplantation ; AUC plus exhaustive mais pas systématiquement nécessaire à la routine.",
+    "noteEn": "Whole-blood trough used in transplant TDM; AUC more comprehensive but not routinely required."
+  },
+  "sampling": {
+    "key": "Cmin",
+    "fr": "C0 à l’équilibre",
+    "en": "Steady-state trough",
+    "sourceId": "sirolimusEMA",
+    "noteFr": "Demi-vie longue ; attendre l’équilibre et distinguer changement de formulation/comprimé/solution.",
+    "noteEn": "Long half-life; allow steady state and distinguish formulation changes."
+  },
+  "sourceSnapshotSha256": "511c8fef0159a6aff406d026bc952dc59e4c5ba5a05b0c17e3af7f26c15d7230",
+  "guideTargetPresets": {
+    "ORAL": {
+      "drugKey": "sirolimus",
+      "mode": "ORAL",
+      "tdmDrugId": "sirolimus",
+      "doseGrid": {
+        "dose_min": 1,
+        "dose_max": 10,
+        "dose_step": 1,
+        "intervals": [
+          24
+        ],
+        "infusion": 0,
+        "basisFr": "Bornes couvrant la dose de charge unique de 6 mg du RCP, l'entretien de 2 mg une fois par jour et la titration ultérieure sur la concentration résiduelle. Administration en une prise quotidienne. Le pas est de 1 mg et NON de 0,5 mg : le RCP interdit d'utiliser des multiples du comprimé de 0,5 mg en remplacement des autres dosages, le comprimé de 0,5 mg n'étant pas pleinement bioéquivalent aux comprimés de 1, 2 et 5 mg sur la Cmax. Un pas de 1 mg reste donc réalisable avec les comprimés de 1, 2 et 5 mg. Le RCP précise en outre que les concentrations obtenues par chromatographie et par immunoessai ne sont pas interchangeables.",
+        "basisEn": "Bounds covering the label 6 mg single loading dose, the 2 mg once-daily maintenance dose and the subsequent titration on trough concentration. Given once daily. The step is 1 mg and NOT 0.5 mg: the label forbids using multiples of the 0.5 mg tablet as a substitute for other strengths, the 0.5 mg tablet not being fully bioequivalent to the 1, 2 and 5 mg tablets on Cmax. A 1 mg step stays achievable with the 1, 2 and 5 mg tablets. The label also states that concentrations obtained by chromatographic and immunoassay methods are not interchangeable.",
+        "source": {
+          "label": "Rapamune coated tablets, SmPC sections 4.2 and 5.2, UK electronic medicines compendium",
+          "url": "https://www.medicines.org.uk/emc/product/10399/smpc",
+          "statement": "The usual dose regimen is a 6 mg single oral loading dose, administered as soon as possible after transplantation, followed by 2 mg once daily until results of therapeutic monitoring of the medicinal product are available; Multiples of 0.5 mg tablets should not be used as a substitute for the 1 mg tablet or for other strengths; The concentration values obtained by these different methodologies are not interchangeable",
+          "strengths": "0.5 mg, 1 mg, 2 mg, 5 mg tablets"
+        },
+        "signoff": "PENDING",
+        "requiresFormulationIds": [
+          "sirolimus-rapamune-tablet"
+        ]
+      },
+      "doseGridSignedOff": false,
+      "doseGridApplicableModelIds": [],
+      "doseGridBlockedModels": {
+        "sirolimus_djebli_ddi": "grid_awaiting_signoff"
+      },
+      "candidates": [
+        {
+          "id": "sirolimus-kidney-after-csa",
+          "target_metric": "Cmin",
+          "target_low": 12,
+          "target_high": 20,
+          "target_unit": "ng/mL",
+          "indication": "kidney",
+          "labelFr": "Greffe rénale · après arrêt de la ciclosporine",
+          "labelEn": "Kidney transplant · after cyclosporine withdrawal",
+          "scopeFr": "Fourchette historique de référence après arrêt de la ciclosporine ; ajustements individuels et surveillance des effets indésirables nécessaires.",
+          "scopeEn": "Historical reference range after cyclosporine withdrawal; individual assessment and adverse effect monitoring required.",
+          "citation": "Hartinger 2022",
+          "url": "https://onlinelibrary.wiley.com/doi/full/10.1111/jcpt.13753",
+          "evidenceStatus": "review",
+          "undecidable": [
+            "analyteId",
+            "analyteBasis",
+            "matrixId",
+            "formulationId",
+            "assayMethod",
+            "samplingTime"
+          ],
+          "applicationBlocked": true,
+          "applicationBlockedCode": "assay_method_not_published_for_a_method_dependent_drug",
+          "modelApplicabilityVerified": false,
+          "automaticDoseAdjustmentAllowed": false
+        },
+        {
+          "id": "sirolimus-kidney-with-csa",
+          "target_metric": "Cmin",
+          "target_low": 4,
+          "target_high": 12,
+          "target_unit": "ng/mL",
+          "indication": "kidney",
+          "labelFr": "Greffe rénale · association à la ciclosporine",
+          "labelEn": "Kidney transplant · with cyclosporine",
+          "scopeFr": "Fourchette de STP publiée pour sirolimus associé à la ciclosporine ; cible dépendante de l'association et de la méthode. Ne pas transposer à un schéma sans ciclosporine.",
+          "scopeEn": "Published trough reference with cyclosporine; highly regimen- and assay-dependent. Do not apply to cyclosporine-free regimens.",
+          "citation": "Hartinger 2022",
+          "url": "https://onlinelibrary.wiley.com/doi/full/10.1111/jcpt.13753",
+          "evidenceStatus": "review",
+          "undecidable": [
+            "analyteId",
+            "analyteBasis",
+            "matrixId",
+            "formulationId",
+            "assayMethod",
+            "samplingTime"
+          ],
+          "applicationBlocked": true,
+          "applicationBlockedCode": "assay_method_not_published_for_a_method_dependent_drug",
+          "modelApplicabilityVerified": false,
+          "automaticDoseAdjustmentAllowed": false
+        }
+      ],
+      "autoApply": false
+    }
+  },
+  "sourceReferences": [
+    {
+      "id": "sirolimus-kidney-with-csa",
+      "metric": "C₀",
+      "unit": "ng/mL",
+      "indication": "kidney",
+      "indicationFr": "Greffe rénale · association à la ciclosporine",
+      "indicationEn": "Kidney transplant · with cyclosporine",
+      "contextFr": "Fourchette de STP publiée pour sirolimus associé à la ciclosporine ; cible dépendante de l'association et de la méthode. Ne pas transposer à un schéma sans ciclosporine.",
+      "contextEn": "Published trough reference with cyclosporine; highly regimen- and assay-dependent. Do not apply to cyclosporine-free regimens.",
+      "analyteId": null,
+      "analyteBasis": null,
+      "matrixId": null,
+      "matrixFr": "Sang total",
+      "matrixEn": "Whole blood",
+      "formulationId": null,
+      "samplingTime": null,
+      "relation": "range",
+      "min": 4,
+      "max": 12,
+      "analyticalIdentityMissing": [
+        "analyteId",
+        "analyteBasis",
+        "matrixId",
+        "formulationId",
+        "assayMethod",
+        "samplingTime"
+      ],
+      "source": {
+        "id": "sirolimus2022",
+        "citation": "Hartinger 2022",
+        "url": "https://onlinelibrary.wiley.com/doi/full/10.1111/jcpt.13753",
+        "year": 2022,
+        "section": "Section 3.5, sirolimus with cyclosporine 4–12 µg/L, following cyclosporine discontinuation 12–20 µg/L"
+      },
+      "status": "bibliographic_candidate_requires_context_review",
+      "applicability": {
+        "verdict": "requires_human_context_review",
+        "mismatches": [],
+        "undecidable": [
+          "analyteId",
+          "analyteBasis",
+          "matrixId",
+          "formulationId",
+          "assayMethod",
+          "samplingTime"
+        ]
+      },
+      "modelApplicabilityVerified": false,
+      "automaticDoseAdjustmentAllowed": false
+    },
+    {
+      "id": "sirolimus-kidney-after-csa",
+      "metric": "C₀",
+      "unit": "ng/mL",
+      "indication": "kidney",
+      "indicationFr": "Greffe rénale · après arrêt de la ciclosporine",
+      "indicationEn": "Kidney transplant · after cyclosporine withdrawal",
+      "contextFr": "Fourchette historique de référence après arrêt de la ciclosporine ; ajustements individuels et surveillance des effets indésirables nécessaires.",
+      "contextEn": "Historical reference range after cyclosporine withdrawal; individual assessment and adverse effect monitoring required.",
+      "analyteId": null,
+      "analyteBasis": null,
+      "matrixId": null,
+      "matrixFr": "Sang total",
+      "matrixEn": "Whole blood",
+      "formulationId": null,
+      "samplingTime": null,
+      "relation": "range",
+      "min": 12,
+      "max": 20,
+      "analyticalIdentityMissing": [
+        "analyteId",
+        "analyteBasis",
+        "matrixId",
+        "formulationId",
+        "assayMethod",
+        "samplingTime"
+      ],
+      "source": {
+        "id": "sirolimus2022",
+        "citation": "Hartinger 2022",
+        "url": "https://onlinelibrary.wiley.com/doi/full/10.1111/jcpt.13753",
+        "year": 2022,
+        "section": "Section 3.5, sirolimus with cyclosporine 4–12 µg/L, following cyclosporine discontinuation 12–20 µg/L"
+      },
+      "status": "bibliographic_candidate_requires_context_review",
+      "applicability": {
+        "verdict": "requires_human_context_review",
+        "mismatches": [],
+        "undecidable": [
+          "analyteId",
+          "analyteBasis",
+          "matrixId",
+          "formulationId",
+          "assayMethod",
+          "samplingTime"
+        ]
+      },
+      "modelApplicabilityVerified": false,
+      "automaticDoseAdjustmentAllowed": false
+    }
+  ],
+  "conditionalPdObjectives": [],
+  "simulationPresets": {},
+  "formulationByModel": {
+    "sirolimus_djebli_ddi": {
+      "formulationId": "not-declared-by-source",
+      "evidence": "Adultes transplantés rénaux sous sirolimus et mycophénolate, sans inhibiteur de calcineurine.",
+      "noteFr": "La population ne nomme ni la spécialité ni la forme (comprimé ou solution buvable), que le RCP Rapamune distingue.",
+      "noteEn": "The population names neither the product nor the dosage form (tablet or oral solution), which the Rapamune label distinguishes."
+    }
+  },
+  "noteFr": "Les références sont contextuelles. Les grilles de doses sont des espaces exploratoires, pas des prescriptions.",
+  "noteEn": "References are context-dependent. Dose grids are exploratory search spaces, not prescriptions."
+}
