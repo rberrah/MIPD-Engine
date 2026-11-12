@@ -529,6 +529,23 @@
   },
   "noteFr": "Les références sont contextuelles. Les grilles de doses sont des espaces exploratoires, pas des prescriptions.",
   "noteEn": "References are context-dependent. Dose grids are exploratory search spaces, not prescriptions.",
+  "formulationAdministrationHints": {
+    "tacrolimus-prolonged-release-advagraf": {
+      "product": "Advagraf",
+      "formulationId": "tacrolimus-prolonged-release-advagraf",
+      "doseStepMg": 0.5,
+      "intervalHours": [
+        24
+      ],
+      "scopeFr": "Gélules à libération prolongée de 0,5 mg ; une prise quotidienne. Pas de dose minimale/maximale universelle issue de ce repère.",
+      "scopeEn": "0.5 mg prolonged-release capsules; once-daily dosing. This hint does not define a universal minimum or maximum dose.",
+      "source": {
+        "label": "Advagraf 0.5 mg prolonged-release hard capsules, SmPC sections 2 and 4.2 (emc)",
+        "url": "https://www.medicines.org.uk/emc/product/345/smpc"
+      },
+      "automaticDoseAdjustmentAllowed": false
+    }
+  },
   "formulationCovariates": {
     "tacrolimus_woillard_ddi": {
       "name": "ST",
