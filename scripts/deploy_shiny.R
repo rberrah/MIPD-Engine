@@ -32,8 +32,14 @@ run_mipd_deployment <- function() {
     Sys.setenv(ENABLE_PMETRICS = "true")
   }
   stopifnot("app.R" %in% files, "R/deployment_profile.R" %in% files,
+            "R/_disable_autoload.R" %in% files,
             "models/catalog.json" %in% files,
             all(file.exists(file.path(root, files))))
+  # All runtime modules are loaded explicitly by app.R in dependency order.
+  # Shiny's automatic alphabetical sourcing of R/ must never run in production.
+  # In particular drug_profile_runtime_presets.R depends on the later-loaded
+  # tdm_drug_profiles.R. Losing this marker caused a production HTTP 500.
+
   # The public Shiny runtime reads these data files from APP_ROOT on startup.
   # Verify the *actual bundle manifest*, not only the working checkout:
   # without these JSON artifacts a green CI could still deploy a broken app.

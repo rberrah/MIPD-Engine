@@ -37,6 +37,22 @@ old <- setwd(sandbox)
 on.exit(setwd(old), add = TRUE)
 cat("Starting isolated Shiny production bundle with ", length(manifest),
     " tracked files.\n", sep = "")
+stopifnot("R/_disable_autoload.R" %in% manifest)
+stopifnot(file.exists(file.path(sandbox, "R", "_disable_autoload.R")))
+
+# This is the real deployment loading path. Unlike sys.source("app.R"),
+# shinyAppDir() first calls shiny::loadSupport(), which tries to autoload
+# every R/ file in alphabetical order unless _disable_autoload.R is shipped.
+# The previous 500 escaped CI because this behavior was not exercised.
+old_autoload <- getOption("shiny.autoload.r")
+on.exit(options(shiny.autoload.r = old_autoload), add = TRUE)
+options(shiny.autoload.r = TRUE)
+shiny_bundle <- tryCatch(shiny::shinyAppDir(sandbox), error = function(e) {
+  stop("Shinyapps autoload startup failed: ", conditionMessage(e), call. = FALSE)
+})
+stopifnot(inherits(shiny_bundle, "shiny.appobj"))
+cat("Actual Shiny appDir autoload startup PASS\n")
+
 app_env <- new.env(parent = globalenv())
 tryCatch(sys.source("app.R", envir = app_env), error = function(e) {
   stop("Public appFiles startup failed: ", conditionMessage(e), call. = FALSE)
