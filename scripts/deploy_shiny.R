@@ -21,7 +21,7 @@ run_mipd_deployment <- function() {
 
   tracked <- system2("git", c("ls-files"), stdout = TRUE)
   files <- tracked[grepl(
-    "^(app\\.R|R/[^/]+\\.R|www/[^/]+\\.(css|js)|models/[^/]+\\.(cpp|json)|pmetrics/(artifacts|schema)/[^/]+\\.json|ml/registry\\.json|ml/artifacts/[^/]+\\.rds)$",
+    "^(app\\.R|R/[^/]+\\.R|www/[^/]+\\.(css|js)|models/[^/]+\\.(cpp|json)|integration/(tdm-guide-(recommendations|clinical-presets)\\.v1\\.json|tdm-drugs/[a-z][a-z0-9_-]*\\.json)|pmetrics/(artifacts|schema)/[^/]+\\.json|ml/registry\\.json|ml/artifacts/[^/]+\\.rds)$",
     tracked
   )]
   if (!with_pmetrics) {
@@ -34,6 +34,27 @@ run_mipd_deployment <- function() {
   stopifnot("app.R" %in% files, "R/deployment_profile.R" %in% files,
             "models/catalog.json" %in% files,
             all(file.exists(file.path(root, files))))
+  # The public Shiny runtime reads these data files from APP_ROOT on startup.
+  # Verify the *actual bundle manifest*, not only the working checkout:
+  # without these JSON artifacts a green CI could still deploy a broken app.
+  catalogue <- jsonlite::fromJSON(file.path(root, "models", "catalog.json"))$models
+  drug_keys <- sort(unique(as.character(catalogue$drugKey)))
+  expected_drug_files <- file.path("integration", "tdm-drugs",
+                                   paste0(drug_keys, ".json"))
+  included_drug_files <- grep(
+    "^integration/tdm-drugs/[a-z][a-z0-9_-]*\\.json$", files, value = TRUE
+  )
+  required_guide_files <- c(
+    "integration/tdm-guide-recommendations.v1.json",
+    "integration/tdm-guide-clinical-presets.v1.json"
+  )
+  stopifnot(
+    length(drug_keys) == 23L,
+    identical(sort(included_drug_files), sort(expected_drug_files)),
+    all(required_guide_files %in% files),
+    all(file.exists(file.path(root, c(required_guide_files, expected_drug_files))))
+  )
+
   release_path <- file.path(root, "www", "deployment-release.json")
   if (bundle_release) {
     # Fail closed if the local checkout contains modifications that would
