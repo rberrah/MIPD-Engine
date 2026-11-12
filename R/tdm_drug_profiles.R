@@ -126,3 +126,21 @@ tdm_drug_profile_grid_eligible <- function(record, mode, confirmed_formulation, 
       !declared %in% allowed) return(FALSE)
   TRUE
 }
+
+# Never offer a formulation-incompatible bibliographic range as an applied
+# numeric optimization target. The source records three IR Prograf trough
+# intervals; they are NOT equivalent to Envarsus or Advagraf exposure.
+tdm_drug_profile_target_eligible <- function(record, candidate, st = NA_real_) {
+  if (is.null(candidate) || !is.list(candidate)) return(FALSE)
+  id <- as.character(record$id[[1]] %||% "")
+  unit <- as.character(record$concentrationUnit[[1]] %||% "")
+  metric <- as.character(candidate$target_metric %||% "")
+  expected_unit <- tdm_drug_profile_metric_unit(record, metric)
+  if (!nzchar(metric) || !identical(candidate$target_unit, expected_unit)) return(FALSE)
+  if (id == "tacrolimus_kamp_envarsus_ddi") return(FALSE)
+  if (id == "tacrolimus_woillard_ddi") {
+    return(is.finite(st) && as.numeric(st) == 1)
+  }
+  if (id == "everolimus_terheine_ddi") return(FALSE)
+  TRUE
+}
