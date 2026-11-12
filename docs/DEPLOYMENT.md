@@ -26,6 +26,24 @@ Configure these repository or environment secrets before using the manual deploy
 
 The workflow uses GitHub environment `production`, so environment protection/review can be added without changing code.
 
+## Required TDM JSON content in the public bundle
+
+The Shiny UI loads the versioned TDM evidence and drug-specific settings directly
+from local JSON at startup. The production `appFiles` manifest must include:
+
+- `integration/tdm-drugs/<drugKey>.json` for **every distinct drugKey** in
+  `models/catalog.json` (currently 23 dossiers for 46 models);
+- `integration/tdm-guide-recommendations.v1.json` for the bibliographic
+  guidance preview and link to PMx Explain;
+- `integration/tdm-guide-clinical-presets.v1.json` for the reviewed guide
+  snapshot.
+
+The deployment script checks this manifest against the catalogue before
+building, verifying or uploading a release. A passing source/CI test without
+this bundling check is insufficient to claim that the new Shiny UI can start.
+Run `Rscript scripts/deploy_shiny.R --verify-bundle` before production
+publication. The post-deploy SHA check and two browser sessions remain mandatory.
+
 ## Manual local deployment
 
 Configure the account locally with `rsconnect::setAccountInfo()`, then inspect the manifest:
