@@ -405,7 +405,7 @@ dose_row_ui <- function(
   time = 0,
   amount = 1000,
   interval = 12,
-  count = 4,
+  count = 10,
   infusion = 1,
   steady_state = FALSE,
   status = "administered",
@@ -1376,7 +1376,7 @@ server <- function(input, output, session) {
     cleanup_private_workspace(session_model_dir, session_model_cache)
   })
 
-  insert_dose_row <- function(index, time = 0, amount = 1000, interval = 12, count = 4, infusion = 1, steady_state = FALSE, status = "administered", time_uncertainty = 0) {
+  insert_dose_row <- function(index, time = 0, amount = 1000, interval = 12, count = 10, infusion = 1, steady_state = FALSE, status = "administered", time_uncertainty = 0) {
     register_dose_covariates(index)
     register_dose_validation(index)
     insertUI(
@@ -1401,7 +1401,7 @@ server <- function(input, output, session) {
     dose_count(index)
     # Copy an already-entered dose only; never suggest 1000 mg for a newly selected drug.
     insert_dose_row(index, time = 48, amount = numeric_input_value("dose_amount_1"),
-      interval = 12, count = 4, infusion = 1, steady_state = FALSE)
+      interval = 12, count = 10, infusion = 1, steady_state = FALSE)
   })
 
   observeEvent(input$remove_dose, {
@@ -3126,6 +3126,7 @@ server <- function(input, output, session) {
     mode <- current_administration_mode()
     grid <- tdm_drug_profile_search_grid(record, mode)
     english <- identical(current_language(), "en")
+    choices <- tdm_drug_profile_formulation_choices(record, mode, english)
     index <- profile$monitoring
     sample_info <- profile$sampling
     st_values <- vapply(seq_len(observation_count()), function(i)
@@ -3134,13 +3135,10 @@ server <- function(input, output, session) {
               length(unique(st_values)) == 1L) st_values[[1]] else NA_real_
     product <- tdm_drug_profile_formulation(record, st)
     confirmed <- as.character(input$tdm_profile_formulation %||% "")
-    label_for <- function(id) {
-      if (identical(id, "tacrolimus-immediate-release")) return("Prograf · libération immédiate / immediate release")
-      if (identical(id, "ciclosporine-neoral-microemulsion")) return("Neoral · microémulsion")
-      if (identical(id, "everolimus-certican-transplant")) return("Certican · transplantation")
-      if (identical(id, "sirolimus-rapamune-tablet")) return("Rapamune · comprimés / tablets")
-      id
-    }
+    if (!confirmed %in% unname(choices)) confirmed <- ""
+    hint <- tdm_drug_profile_administration_hint(record, mode, confirmed, st)
+    grid_for_form <- !is.null(hint) && !is.null(grid) && nzchar(confirmed) &&
+      confirmed %in% as.character(unlist(grid$requiresFormulationIds %||% list()))
     div(
       class = "target-preset tdm-drug-json-profile",
       `data-testid` = "mipd-drug-json-profile",
@@ -3190,12 +3188,12 @@ server <- function(input, output, session) {
               )
             }))
           ),
-          if (!is.null(grid)) tags$p(
+          if (grid_for_form) tags$p(
             if (english) grid$basisEn %||% "" else grid$basisFr %||% ""
           ),
-          if (!is.null(grid) && grepl("^https://", grid$source$url %||% "")) tags$a(
-            grid$source$label %||% tx("RCP source", "Source SmPC"),
-            href = grid$source$url, target = "_blank", rel = "noopener noreferrer"
+          if (!is.null(hint) && grepl("^https://", hint$source$url %||% "")) tags$a(
+            hint$source$label %||% tx("RCP source", "Source SmPC"),
+            href = hint$source$url, target = "_blank", rel = "noopener noreferrer"
           )
       ),
       if (!is.null(product)) tags$p(class = "tdm-compact-meta",
@@ -3208,37 +3206,65 @@ server <- function(input, output, session) {
         tx("ST : 1 = Prograf (12 h) ; 0 = Advagraf (24 h). Envarsus → Kamp. Concentrations en ng/mL.",
           "ST: 1 = Prograf (12 h); 0 = Advagraf (24 h). Envarsus → Kamp. Concentrations in ng/mL.")
       ),
-      if (!is.null(grid)) tags$div(
+      if (length(choices)) selectInput(
+        "tdm_profile_formulation",
+        tx("Spécialité / formulation", "Product / formulation"),
+        choices = c(stats::setNames("", tx("Choisir une formulation", "Choose a formulation")), choices),
+        selected = confirmed
+      ),
+      if (!is.null(hint)) tags$p(class = "tdm-compact-meta",
+        tags$strong(tx("Repères RCP : ", "SmPC settings: ")),
+        paste0(tx("pas", "step"), " ", format(hint$doseStepMg),
+          " mg · ", tx("prise toutes les ", "dosing every "),
+          paste(hint$intervals, collapse = "/"), " h")
+      ),
+      if (grid_for_form) tags$div(
         class = "tdm-drug-exploratory-grid",
-        tags$strong(tx("Grille RCP exploratoire · non validée", "Exploratory label grid · unvalidated")),
-        tags$p(class = "tdm-compact-meta", paste0(format(grid$dose_min), "–", format(grid$dose_max),
-          " mg · ", tx("pas", "step"), " ", format(grid$dose_step), " mg · ",
-          paste(unlist(grid$intervals), collapse = "/"), " h")),
-        selectInput("tdm_profile_formulation",
-          tx("Formulation pour charger la grille", "Formulation to load grid"),
-          choices = stats::setNames(
-            c("", as.character(unlist(grid$requiresFormulationIds))),
-            c(tx("Choisir la formulation", "Choose formulation"),
-              vapply(as.character(unlist(grid$requiresFormulationIds)), label_for, character(1)))
-          ),
-          selected = if (confirmed %in% as.character(unlist(grid$requiresFormulationIds))) confirmed else ""
-        ),
+        tags$strong(tx("Grille exploratoire RCP · non validée",
+          "Exploratory SmPC grid · unvalidated")),
+        tags$p(class = "tdm-compact-meta", paste0(format(grid$dose_min),
+          "–", format(grid$dose_max), " mg")),
         if (tdm_drug_profile_grid_eligible(record, mode, confirmed, st)) {
           actionButton("apply_tdm_drug_grid",
-            tx("Charger cette grille pour la simulation", "Load this grid for simulation"),
+            tx("Charger cette grille", "Load this grid"),
             class = "btn-outline-secondary btn-sm")
-        } else if (nzchar(confirmed)) tags$p(class = "tdm-compact-warning", tx(
-          "Grille indisponible pour cette formulation ou ce codage ST.",
-          "Grid unavailable for this formulation or ST coding."
-        )),
-        tags$p(class = "tdm-compact-meta", tx(
-          "Simulation uniquement : cette grille ne constitue pas une posologie recommandée.",
-          "Simulation only: this grid is not a recommended regimen."
+        } else tags$p(class = "tdm-compact-warning", tx(
+          "Vérifier la concordance avec le modèle et le codage ST avant de charger la grille.",
+          "Check model and ST compatibility before loading the grid."
         ))
+      ),
+      if (nzchar(confirmed) && is.null(hint) &&
+          identical(as.character(record$id[[1]]), "tacrolimus_woillard_ddi"))
+        tags$p(class = "tdm-compact-warning", tx(
+          "Formulation non concordante avec ST : vérifier ST dans les observations.",
+          "Product does not match ST: check ST in observations."
+        )),
+      if (nzchar(confirmed) && !is.null(hint)) tags$p(class = "tdm-compact-meta",
+        tx("Simulation uniquement : pas et intervalles RCP préremplis ; doses et historique inchangés.",
+          "Simulation only: SmPC step and intervals prefilled; doses and patient history unchanged.")
       )
     )
   })
   shiny::outputOptions(output, "tdm_drug_profile_ui", suspendWhenHidden = FALSE)
+
+  # Product selection only prepopulates the exploratory search settings.
+  # It must not alter patient doses, observed administration intervals, targets,
+  # or the min/max dose grid without the separate existing confirmation gate.
+  observeEvent(input$tdm_profile_formulation, {
+    if (!identical(input$model_source %||% "library", "library")) return()
+    record <- model_record(current_model_id())
+    mode <- current_administration_mode()
+    selected <- as.character(input$tdm_profile_formulation %||% "")
+    if (!nzchar(selected)) return()
+    st_values <- vapply(seq_len(observation_count()), function(i)
+      suppressWarnings(as.numeric(input[[paste0("observation_cov_ST_", i)]] %||% NA_real_)), numeric(1))
+    st <- if (length(st_values) && all(is.finite(st_values)) &&
+              length(unique(st_values)) == 1L) st_values[[1]] else NA_real_
+    hint <- tdm_drug_profile_administration_hint(record, mode, selected, st)
+    if (is.null(hint)) return()
+    updateNumericInput(session, "dose_step", value = hint$doseStepMg)
+    update_candidate_intervals(hint$intervals)
+  }, ignoreInit = TRUE)
 
   observeEvent(input$apply_tdm_drug_grid, {
     if (!identical(input$model_source %||% "library", "library")) return()

@@ -18,6 +18,31 @@ stopifnot(identical(tdm_drug_profile_metric_unit(tac,"AUC24"),"ng·h/mL"))
 stopifnot(identical(tdm_drug_profile_formulation(tac,1)$product,"Prograf"))
 stopifnot(identical(tdm_drug_profile_formulation(tac,0)$product,"Advagraf"))
 stopifnot(identical(tdm_drug_profile_formulation(tac_old,NA_real_)$product,"Envarsus"))
+# All model-declared formulations are choices, independent of which product
+# happens to have a fully qualified numerical RCP dose grid.
+choices <- tdm_drug_profile_formulation_choices(tac, "ORAL")
+stopifnot(setequal(unname(choices), c("tacrolimus-immediate-release",
+  "tacrolimus-prolonged-release-advagraf")))
+stopifnot(any(grepl("Prograf", names(choices), fixed=TRUE)))
+stopifnot(any(grepl("Advagraf", names(choices), fixed=TRUE)))
+prog_hint <- tdm_drug_profile_administration_hint(tac, "ORAL",
+  "tacrolimus-immediate-release", st=1)
+adv_hint <- tdm_drug_profile_administration_hint(tac, "ORAL",
+  "tacrolimus-prolonged-release-advagraf", st=0)
+stopifnot(prog_hint$doseStepMg==0.5, identical(prog_hint$intervals,12))
+stopifnot(adv_hint$doseStepMg==0.5, identical(adv_hint$intervals,24))
+stopifnot(!isTRUE(adv_hint$fullGrid), isTRUE(prog_hint$fullGrid))
+stopifnot(grepl("/345/smpc",adv_hint$source$url,fixed=TRUE))
+stopifnot(is.null(tdm_drug_profile_administration_hint(tac,"ORAL",
+  "tacrolimus-prolonged-release-advagraf",st=1)))
+stopifnot(is.null(tdm_drug_profile_administration_hint(tac,"ORAL",
+  "tacrolimus-immediate-release",st=0)))
+stopifnot(is.null(tdm_drug_profile_administration_hint(tac_old,"ORAL",
+  "tacrolimus-prolonged-release-envarsus")))
+stopifnot(is.null(tdm_drug_profile_administration_hint(tac,"ORAL","not-a-formulation")))
+# The Advagraf administration hint must never be a source-backed dose range.
+stopifnot(is.null(TDM_DRUG_PROFILES$tacrolimus$formulationAdministrationHints[["tacrolimus-prolonged-release-advagraf"]]$dose_min))
+
 stopifnot(!tdm_drug_profile_grid_eligible(tac,"ORAL","tacrolimus-immediate-release",0))
 stopifnot(!tdm_drug_profile_grid_eligible(tac,"ORAL","",1))
 stopifnot(tdm_drug_profile_grid_eligible(tac,"ORAL","tacrolimus-immediate-release",1))

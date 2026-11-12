@@ -245,12 +245,17 @@ tdm_guide_preview_model_card <- function(model_id, english = FALSE) {
 
   # Pedagogical order: the index and the sampling answer the question immediately;
   # numbers, sources and limits stay one click away.
-  shiny::tags$div(
-    class = "tdm-guide-preview-readonly",
+  shiny::tags$details(
+    class = "tdm-guide-preview-readonly tdm-guide-preview-collapsible",
     `data-model-id` = model_id,
-    shiny::tags$p(class = "tdm-guide-preview-title",
+    shiny::tags$summary(class = "tdm-guide-preview-title",
       shiny::strong(translate("Recommandation STP · prototype bibliographique",
-        "TDM guidance · bibliographic preview"))),
+        "TDM guidance · bibliographic preview")),
+      if (mismatch_n > 0L || mode_n > 0L) shiny::tags$span(
+        class = "tdm-guide-preview-mismatch-count",
+        paste0(" · ", translate("À vérifier", "Check applicability"))
+      )
+    ),
     shiny::tags$p(shiny::tags$strong(translate("Indice PK/PD : ", "PK/PD index: ")),
       index %||% translate("Non établi", "Not established")),
     shiny::tags$p(shiny::tags$strong(translate("Prélèvement pratique : ", "Practical sampling: ")),

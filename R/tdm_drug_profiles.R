@@ -55,6 +55,28 @@ tdm_drug_profiles_load <- function(directory = TDM_DRUG_PROFILE_DIR, catalog = M
         stop("Unreviewed TDM dose search grid in: ", key)
       }
     }
+    # Formulation hints contain only presentation strengths / administration
+    # intervals from a linked SmPC. They cannot authorize a dose range.
+    hints <- d$formulationAdministrationHints %||% list()
+    if (!is.list(hints)) stop("Invalid formulation hint list: ", key)
+    known_forms <- unique(unlist(lapply(d$formulationCovariates %||% list(), function(item) {
+      values <- item$values %||% list(item)
+      vapply(values, function(value) as.character(value$formulationId %||% ""), character(1))
+    }), use.names = FALSE))
+    for (id in names(hints)) {
+      hint <- hints[[id]]
+      intervals <- suppressWarnings(as.numeric(unlist(hint$intervalHours %||% list())))
+      step <- hint$doseStepMg %||% NA_real_
+      if (!is.list(hint) || !id %in% known_forms ||
+          !identical(hint$formulationId, id) ||
+          !identical(hint$automaticDoseAdjustmentAllowed, FALSE) ||
+          !is.numeric(step) || length(step) != 1L || !is.finite(step) || step <= 0 ||
+          !length(intervals) || any(!is.finite(intervals) | intervals <= 0) ||
+          !grepl("^https://", hint$source$url %||% "") ||
+          !is.null(hint$dose_min) || !is.null(hint$dose_max)) {
+        stop("Unsafe formulation administration hint in: ", key)
+      }
+    }
     result[[key]] <- d
   }
   if (!setequal(names(result), required_keys)) stop("TDM drug profile catalogue is incomplete")
@@ -78,6 +100,70 @@ tdm_drug_profile_search_grid <- function(record, mode) {
   entry <- tdm_drug_profile_guide_entry(record, mode)
   if (is.null(entry)) return(NULL)
   entry$doseGrid
+}
+
+# Formulation choices come from the model's actual formulation covariate
+# definitions, not from the single RCP grid (which excludes Advagraf).
+tdm_drug_profile_formulation_choices <- function(record, mode = NULL, english = FALSE) {
+  profile <- tdm_drug_profile(record)
+  id <- as.character(record$id[[1]] %||% "")
+  item <- profile$formulationCovariates[[id]] %||% NULL
+  values <- if (is.null(item)) list() else item$values %||% list(item)
+  ids <- vapply(values, function(x) as.character(x$formulationId %||% ""), character(1))
+  labels <- vapply(values, function(x) as.character(
+    if (english) x$labelEn %||% x$product %||% "" else x$labelFr %||% x$product %||% ""
+  ), character(1))
+  # Older dossiers provide only the SmPC grid's formulation IDs. They remain
+  # selectable without manufacturing a target or inventing any formulations.
+  if (!length(ids) && !is.null(mode)) {
+    grid <- tdm_drug_profile_search_grid(record, mode)
+    ids <- as.character(unlist(grid$requiresFormulationIds %||% list()))
+    pretty <- if (english) c(
+      "ciclosporine-neoral-microemulsion" = "Neoral · microemulsion",
+      "everolimus-certican-transplant" = "Certican · transplantation",
+      "sirolimus-rapamune-tablet" = "Rapamune · tablets"
+    ) else c(
+      "ciclosporine-neoral-microemulsion" = "Neoral · microémulsion",
+      "everolimus-certican-transplant" = "Certican · transplantation",
+      "sirolimus-rapamune-tablet" = "Rapamune · comprimés"
+    )
+    labels <- vapply(ids, function(form) {
+      if (form %in% names(pretty)) unname(pretty[[form]]) else gsub("-", " ", form, fixed = TRUE)
+    }, character(1))
+  }
+  keep <- nzchar(ids) & nzchar(labels) & !duplicated(ids)
+  stats::setNames(ids[keep], labels[keep])
+}
+
+# A sourced dose STEP and administration INTERVAL may prefill simulation
+# controls after the user chooses the product. A full dose range is separate,
+# never inferred from capsule strengths, and keeps its existing safety gate.
+tdm_drug_profile_administration_hint <- function(record, mode, formulation_id, st = NA_real_) {
+  if (!is.character(formulation_id) || length(formulation_id) != 1L ||
+      !nzchar(formulation_id)) return(NULL)
+  choices <- tdm_drug_profile_formulation_choices(record, mode)
+  if (!formulation_id %in% unname(choices)) return(NULL)
+  id <- as.character(record$id[[1]] %||% "")
+  if (identical(id, "everolimus_terheine_ddi")) return(NULL)
+  if (identical(id, "tacrolimus_woillard_ddi") && is.finite(st) && st %in% c(0, 1)) {
+    required <- if (st == 1) "tacrolimus-immediate-release" else "tacrolimus-prolonged-release-advagraf"
+    if (!identical(formulation_id, required)) return(NULL)
+  }
+  profile <- tdm_drug_profile(record)
+  entry <- tdm_drug_profile_guide_entry(record, mode)
+  if (is.null(entry)) return(NULL)
+  grid <- entry$doseGrid
+  if (!is.null(grid) && formulation_id %in%
+      as.character(unlist(grid$requiresFormulationIds %||% list()))) {
+    return(list(doseStepMg = grid$dose_step,
+                intervals = as.numeric(unlist(grid$intervals)),
+                source = grid$source, fullGrid = TRUE))
+  }
+  hint <- profile$formulationAdministrationHints[[formulation_id]] %||% NULL
+  if (is.null(hint)) return(NULL)
+  list(doseStepMg = hint$doseStepMg,
+       intervals = as.numeric(unlist(hint$intervalHours)),
+       source = hint$source, fullGrid = FALSE)
 }
 
 tdm_drug_profile_metric_unit <- function(record, metric) {
