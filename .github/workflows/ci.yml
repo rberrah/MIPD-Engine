@@ -178,6 +178,13 @@ jobs:
           ALLOW_CUSTOM_MODELS: "false"
           ENABLE_PMETRICS: "false"
         run: Rscript scripts/deploy_shiny.R
+      - name: Boot the isolated Shinyapps appFiles bundle and FR/EN UI
+        env:
+          ALLOW_CUSTOM_MODELS: "false"
+          ENABLE_PMETRICS: "false"
+        run: Rscript tests/public_shiny_bundle_startup_test.R
+      - name: Syntax-check redacted Shinyapps diagnostic script
+        run: Rscript -e 'parse(file="scripts/diagnose_public_shiny.R")'
       - name: Compile and validate all 46 models
         run: Rscript tests/validate_library.R
       - name: Run deterministic model references
