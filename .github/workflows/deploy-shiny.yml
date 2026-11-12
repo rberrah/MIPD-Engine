@@ -1,14 +1,6 @@
 name: Deploy standalone MIPD Engine to Shinyapps
 
 on:
-  # One-time repair-release trigger: creation of the Shiny autoload sentinel
-  # in this PR will publish the corrected, fully qualified main after merge.
-  # Remove this narrow push trigger after confirmed live acceptance to
-  # restore manual-only production publication.
-  push:
-    branches: [main]
-    paths:
-      - R/_disable_autoload.R
   workflow_dispatch:
     inputs:
       include_pmetrics:
@@ -26,7 +18,8 @@ concurrency:
 
 jobs:
   qualify-and-deploy:
-    runs-on: ubuntu-latest
+    # Playwright 1.56 Chromium is not supported by ubuntu-26.04 runners.
+    runs-on: ubuntu-24.04
     environment: production
     timeout-minutes: 45
     env:
