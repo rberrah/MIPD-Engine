@@ -49,11 +49,15 @@ run_mipd_deployment <- function() {
     "integration/tdm-guide-clinical-presets.v1.json"
   )
   stopifnot(
-    length(drug_keys) == 23L,
+    length(drug_keys) > 0L,
     identical(sort(included_drug_files), sort(expected_drug_files)),
     all(required_guide_files %in% files),
     all(file.exists(file.path(root, c(required_guide_files, expected_drug_files))))
   )
+
+  cat("Shiny release data: ", length(drug_keys),
+      " drug JSON dossiers, ", length(required_guide_files),
+      " guide artifacts in manifest.\n", sep = "")
 
   release_path <- file.path(root, "www", "deployment-release.json")
   if (bundle_release) {
