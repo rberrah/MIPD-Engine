@@ -758,7 +758,6 @@ app_ui <- function(request) {
               value = "target_settings",
               uiOutput("target_preset_ui"),
               uiOutput("tdm_drug_profile_ui"),
-              uiOutput("tdm_guide_drug_link_ui"),
               uiOutput("tdm_guide_preset_ui"),
               selectInput(
                 "target_metric",
@@ -3145,24 +3144,20 @@ server <- function(input, output, session) {
     div(
       class = "target-preset tdm-drug-json-profile",
       `data-testid` = "mipd-drug-json-profile",
-      tags$strong(paste0(profile$drugName, " · ", tx(
-        "référentiel par molécule", "drug-specific reference"))),
-      tags$p(
-        tags$strong(tx("Indice PK/PD : ", "PK/PD index: ")),
+      tags$strong(profile$drugName),
+      tags$p(class = "tdm-compact-meta",
+        tags$strong(tx("Suivi PK/PD : ", "PK/PD monitoring: ")),
         if (english) index$en %||% tx("Non établi", "Not established")
         else index$fr %||% tx("Non établi", "Not established")
       ),
-      tags$p(
-        tags$strong(tx("Unités du modèle : ", "Model units: ")),
-        paste0(profile$concentrationUnit, tx(" ; dose en ", "; dose in "), profile$doseUnit)
-      ),
-      if (!is.null(sample_info)) tags$p(
+      if (!is.null(sample_info)) tags$p(class = "tdm-compact-meta",
         tags$strong(tx("Prélèvement : ", "Sampling: ")),
         if (english) sample_info$en %||% "" else sample_info$fr %||% ""
       ),
-      if (length(profile$sourceReferences) || length(profile$conditionalPdObjectives)) {
-        tags$details(
-          tags$summary(tx("Objectifs publiés, contexte et sources", "Published objectives, context and sources")),
+      tags$details(
+        class = "tdm-compact-sources",
+        tags$summary(tx("Références et détails", "References and details")),
+        uiOutput("tdm_guide_drug_link_ui"),
           if (length(profile$sourceReferences)) tags$div(
             tags$strong(tx("Références numériques (ne pas transposer sans contexte) :",
               "Numeric references (do not transfer without matching context):")),
@@ -3194,33 +3189,33 @@ server <- function(input, output, session) {
                   href = pd$source$url, target = "_blank", rel = "noopener noreferrer")
               )
             }))
+          ),
+          if (!is.null(grid)) tags$p(
+            if (english) grid$basisEn %||% "" else grid$basisFr %||% ""
+          ),
+          if (!is.null(grid) && grepl("^https://", grid$source$url %||% "")) tags$a(
+            grid$source$label %||% tx("RCP source", "Source SmPC"),
+            href = grid$source$url, target = "_blank", rel = "noopener noreferrer"
           )
-        )
-      },
-      if (!is.null(product)) tags$p(
-        tags$strong(tx("Formulation du modèle : ", "Model formulation: ")),
+      ),
+      if (!is.null(product)) tags$p(class = "tdm-compact-meta",
+        tags$strong(tx("Formulation : ", "Formulation: ")),
         if (english) product$labelEn %||% product$product
         else product$labelFr %||% product$product
       ),
       if (identical(as.character(record$id[[1]]), "tacrolimus_woillard_ddi")) tags$p(
-        class = "custom-note",
-        tx("Codage ST du modèle Woillard : 1 = Prograf, libération immédiate (12 h) ; 0 = Advagraf, libération prolongée (24 h). Envarsus est une autre formulation et relève du modèle Kamp. La concentration simulée est déjà en ng/mL : ne pas la diviser par 1 000.",
-          "Woillard model ST coding: 1 = Prograf immediate release (12 h); 0 = Advagraf prolonged release (24 h). Envarsus is a different product modelled by Kamp. Simulated concentrations are already in ng/mL: do not divide by 1,000.")
+        class = "tdm-compact-meta",
+        tx("ST : 1 = Prograf (12 h) ; 0 = Advagraf (24 h). Envarsus → Kamp. Concentrations en ng/mL.",
+          "ST: 1 = Prograf (12 h); 0 = Advagraf (24 h). Envarsus → Kamp. Concentrations in ng/mL.")
       ),
       if (!is.null(grid)) tags$div(
         class = "tdm-drug-exploratory-grid",
-        tags$strong(tx("Grille exploratoire provenant du RCP", "Label-derived exploratory grid")),
-        tags$p(paste0(format(grid$dose_min), "–", format(grid$dose_max),
-          " mg, ", tx("pas", "step"), " ", format(grid$dose_step), " mg ; ",
-          paste(unlist(grid$intervals), collapse = "/"), " h.")),
-        tags$p(if (english) grid$basisEn %||% "" else grid$basisFr %||% ""),
-        if (grepl("^https://", grid$source$url %||% "")) tags$a(
-          grid$source$label %||% tx("RCP source", "Source SmPC"),
-          href = grid$source$url, target = "_blank", rel = "noopener noreferrer"
-        ),
+        tags$strong(tx("Grille RCP exploratoire · non validée", "Exploratory label grid · unvalidated")),
+        tags$p(class = "tdm-compact-meta", paste0(format(grid$dose_min), "–", format(grid$dose_max),
+          " mg · ", tx("pas", "step"), " ", format(grid$dose_step), " mg · ",
+          paste(unlist(grid$intervals), collapse = "/"), " h")),
         selectInput("tdm_profile_formulation",
-          tx("Confirmer la spécialité avant de charger la grille",
-            "Confirm the product before loading the grid"),
+          tx("Formulation pour charger la grille", "Formulation to load grid"),
           choices = stats::setNames(
             c("", as.character(unlist(grid$requiresFormulationIds))),
             c(tx("Choisir la formulation", "Choose formulation"),
@@ -3232,19 +3227,15 @@ server <- function(input, output, session) {
           actionButton("apply_tdm_drug_grid",
             tx("Charger cette grille pour la simulation", "Load this grid for simulation"),
             class = "btn-outline-secondary btn-sm")
-        } else tags$p(class = "custom-note", tx(
-          "La grille n'est pas appliquée : confirmer la spécialité et sa concordance avec le modèle. Certaines formulations n'ont pas de grille qualifiée.",
-          "Grid not applied: confirm product and model compatibility. Some formulations have no qualified grid."
+        } else if (nzchar(confirmed)) tags$p(class = "tdm-compact-warning", tx(
+          "Grille indisponible pour cette formulation ou ce codage ST.",
+          "Grid unavailable for this formulation or ST coding."
         )),
-        tags$p(class = "custom-note", tx(
-          "Usage pédagogique uniquement : cette grille est en attente de validation pharmacologique et ne définit pas une posologie recommandée.",
-          "Educational use only: this search grid is pending pharmacologist sign-off and is not a recommended regimen."
+        tags$p(class = "tdm-compact-meta", tx(
+          "Simulation uniquement : cette grille ne constitue pas une posologie recommandée.",
+          "Simulation only: this grid is not a recommended regimen."
         ))
-      ),
-      if (is.null(grid) && is.null(active_target_preset())) tags$p(class = "custom-note", tx(
-        "Aucune grille de doses sourcée pour ce modèle et cette voie : renseigner une plage exploratoire manuellement.",
-        "No source-backed dose grid for this model and route: enter an exploratory range manually."
-      ))
+      )
     )
   })
   shiny::outputOptions(output, "tdm_drug_profile_ui", suspendWhenHidden = FALSE)
@@ -3319,53 +3310,30 @@ server <- function(input, output, session) {
   output$target_preset_ui <- renderUI({
     preset <- active_target_preset()
     if (is.null(preset)) {
-      profile <- if (identical(input$model_source %||% "library", "library")) {
-        tdm_drug_profile(model_record(current_model_id()))
-      } else NULL
-      if (!is.null(profile)) {
-        entry <- profile$guideTargetPresets[[current_administration_mode()]]
-        n_targets <- length(entry$candidates %||% list())
-        n_refs <- length(profile$sourceReferences %||% list())
-        n_pd <- length(profile$conditionalPdObjectives %||% list())
-        return(div(
-          class = "target-preset reference-only",
-          tags$strong(tx("Références TDM disponibles pour cette molécule",
-            "TDM references available for this drug")),
-          span(if (n_targets > 0L) tx(
-            paste0(n_targets, " cible(s) contextualisée(s) dans le JSON : sélectionner ci-dessous la référence adaptée à l'indication puis cliquer sur Appliquer. Aucun objectif n'est imposé par défaut."),
-            paste0(n_targets, " context-dependent target(s) in the JSON: choose the relevant indication below and click Apply. No target is imposed by default.")
-          ) else tx(
-            paste0("Pas de cible chiffrée directement transposable (", n_refs, " référence(s) et ", n_pd, " objectif(s) PK/PD conditionnel(s)). Renseigner des bornes adaptées au protocole pour la simulation."),
-            paste0("No directly usable numeric target (", n_refs, " bibliographic reference(s) and ", n_pd, " conditional PK/PD objective(s)). Enter protocol-specific simulation bounds.")
-          ))
-        ))
-      }
-      return(div(class = "target-preset unavailable",
-        tags$strong(tx("Cible définie par l'utilisateur", "User-defined target")),
-        span(tx("La cible et la grille doivent être renseignées pour la simulation.",
-          "Target and grid must be entered for the simulation."))))
+      return(div(class = "target-preset unavailable tdm-compact-status",
+        tags$strong(tx("Cible à définir", "Target to define")),
+        tags$span(tx("Choisir une référence ci-dessous ou saisir les bornes.",
+          "Select a reference below or enter bounds."))
+      ))
     }
     if (is.null(applied_target_preset())) {
-      return(div(
-        class = "target-preset unavailable",
-        tags$strong(tx("Cible personnalisée", "Custom target")),
-        span(tx(
-          "Les valeurs affichées diffèrent du préréglage documenté de cette molécule; elles seront utilisées telles quelles.",
-          "The displayed values differ from this drug's documented preset and will be used as entered."
-        ))
+      return(div(class = "target-preset unavailable tdm-compact-status",
+        tags$strong(tx("Cible personnalisée", "Custom target"))
       ))
     }
     scope <- if (identical(current_language(), "en")) preset$scope_en else preset$scope_fr
     grid_note <- if (identical(current_language(), "en")) preset$grid_note_en else preset$grid_note_fr
-    div(
-      class = "target-preset",
-      tags$strong(tx("Préréglage documenté appliqué", "Documented preset applied")),
-      span(paste0(scope, " ", grid_note)),
-      tags$a(
-        paste0(preset$citation, " DOI ", preset$doi),
-        href = paste0("https://doi.org/", preset$doi),
-        target = "_blank",
-        rel = "noopener noreferrer"
+    div(class = "target-preset tdm-compact-status",
+      tags$strong(tx("Cible MIPD appliquée", "MIPD target applied")),
+      tags$details(
+        tags$summary(tx("Contexte et référence du préréglage", "Preset context and source")),
+        tags$p(scope),
+        tags$p(grid_note),
+        tags$a(
+          paste0(preset$citation, " DOI ", preset$doi),
+          href = paste0("https://doi.org/", preset$doi),
+          target = "_blank", rel = "noopener noreferrer"
+        )
       )
     )
   })
@@ -3394,9 +3362,10 @@ server <- function(input, output, session) {
     mode <- current_administration_mode()
     english <- identical(current_language(), "en")
     choices <- tdm_guide_preset_choices(record, mode, english)
-    divergence <- tdm_guide_preset_divergence(record, mode)
-    grid <- entry$doseGrid
-    selected_id <- input$tdm_guide_target_choice %||% ""
+    if (!length(choices)) return(NULL)
+    selected_id <- as.character(input$tdm_guide_target_choice %||% "")
+    # Explicit empty option: no bibliographic target is selected automatically.
+    if (!selected_id %in% unname(choices)) selected_id <- ""
     selected <- tdm_guide_preset_candidate(record, mode, selected_id)
     st_values <- vapply(seq_len(observation_count()), function(i)
       suppressWarnings(as.numeric(input[[paste0("observation_cov_ST_", i)]] %||% NA_real_)), numeric(1))
@@ -3404,81 +3373,45 @@ server <- function(input, output, session) {
               length(unique(st_values)) == 1L) st_values[[1]] else NA_real_
     model_target_blocked <- !is.null(selected) &&
       !tdm_drug_profile_target_eligible(record, selected, st)
+    assay_blocked <- !is.null(selected) && tdm_guide_preset_candidate_blocked(selected)
+    divergence <- tdm_guide_preset_divergence(record, mode)
+    selected_diverges <- !is.null(selected) && any(vapply(divergence,
+      function(item) identical(as.character(item$id), selected_id), logical(1)))
     div(
-      class = "target-preset tdm-guide-target-preset",
-      tags$strong(tx("Cibles publiées du TDM Guide", "Published targets from the TDM Guide")),
-      span(if (length(choices) > 1L) tx(
-        paste0("Cette molécule a ", length(choices),
-          " cibles publiées distinctes selon le contexte : aucune n'est appliquée à votre place."),
-        paste0("This drug has ", length(choices),
-          " distinct published targets depending on context: none is applied for you.")
-      ) else tx(
-        "Une seule cible publiée qualifiée pour cette molécule et cette voie.",
-        "A single qualified published target for this drug and route."
+      class = "tdm-compact-guide",
+      selectInput("tdm_guide_target_choice",
+        tx("Cible documentée", "Documented target"),
+        choices = c(stats::setNames("", tx("Choisir une référence", "Choose a reference")), choices),
+        selected = selected_id
+      ),
+      if (model_target_blocked) div(class = "tdm-compact-warning", tx(
+        "Cible incompatible avec l'unité, la formulation ou la population du modèle.",
+        "Target incompatible with this model's units, formulation or population."
       )),
-      radioButtons("tdm_guide_target_choice", NULL, choices = choices,
-        selected = if (nzchar(selected_id)) selected_id else character(0)),
-      if (model_target_blocked) div(
-        class = "custom-note",
-        tags$strong(tx(
-          "Cette référence ne correspond pas à l'unité, à la formulation ou à la population du modèle. Elle reste visible, mais ne peut pas alimenter les champs de simulation.",
-          "This reference does not match the model unit, formulation or population. It remains visible but cannot populate simulation settings."
-        ))
-      ),
-      if (!is.null(selected) && tdm_guide_preset_candidate_blocked(selected)) div(
-        class = "custom-note",
-        tags$strong(tx(
-          "⚠ Cette référence ne peut pas être appliquée : son intervalle dépend de la méthode de dosage, que le guide ne publie pas. Elle reste consultable comme documentation.",
-          "⚠ This reference cannot be applied: its range depends on the assay method, which the guide does not publish. It stays available as documentation."))
-      ),
-      if (!is.null(selected)) div(
-        class = "custom-note",
-        if (english) selected$scopeEn %||% "" else selected$scopeFr %||% "",
-        if (length(selected$undecidable)) tags$div(tx(
-          "Le guide ne publie pas, pour cette référence : ",
-          "For this reference the guide does not publish: "
-        ), paste(unlist(selected$undecidable), collapse = ", "), "."),
+      if (assay_blocked) div(class = "tdm-compact-warning", tx(
+        "Cible non applicable : méthode de dosage non documentée.",
+        "Target cannot be applied: assay method not documented."
+      )),
+      if (!is.null(selected)) tags$details(
+        class = "tdm-compact-sources",
+        tags$summary(tx("Contexte et source de cette cible", "Target context and source")),
+        tags$p(if (english) selected$scopeEn %||% "" else selected$scopeFr %||% ""),
+        if (length(selected$undecidable)) tags$p(
+          tx("Informations manquantes : ", "Missing information: "),
+          paste(unlist(selected$undecidable), collapse = ", ")
+        ),
         if (grepl("^https://", selected$url %||% "")) tags$a(
           selected$citation %||% selected$url, href = selected$url,
-          target = "_blank", rel = "noopener noreferrer")
+          target = "_blank", rel = "noopener noreferrer"
+        )
       ),
-      if (!model_target_blocked && !(!is.null(selected) &&
-            tdm_guide_preset_candidate_blocked(selected))) actionButton("apply_tdm_guide_target",
-        tx("Appliquer la cible sélectionnée", "Apply the selected target"),
-        class = "btn-outline-primary btn-sm"),
-      # The curated MIPD preset stays authoritative; a disagreement is stated, not resolved.
-      if (length(divergence)) div(
-        class = "custom-note",
-        tags$strong(tx("⚠ Désaccord avec le préréglage MIPD de cette molécule : ",
-          "⚠ Disagreement with this drug's MIPD preset: ")),
-        paste(vapply(divergence, function(candidate) paste0(
-          "guide ", format(candidate$target_low), "–", format(candidate$target_high),
-          " vs MIPD ", format(clinical_target_preset(record, mode)$target_low), "–",
-          format(clinical_target_preset(record, mode)$target_high)), character(1)), collapse = " ; "),
-        tx(". Le préréglage MIPD reste celui appliqué par défaut.",
-          ". The MIPD preset remains the one applied by default.")
-      ),
-      if (!is.null(grid)) div(
-        class = "custom-note",
-        tags$strong(tx("Grille de doses déclarée par MIPD : ", "Dose grid declared by MIPD: ")),
-        paste0(format(grid$dose_min), "–", format(grid$dose_max), " mg, pas ",
-          format(grid$dose_step), " mg, ", paste(unlist(grid$intervals), collapse = "/"), " h. "),
-        tx("Le TDM Guide ne publie aucune posologie : cette grille est déclarée par MIPD d'après le RCP et ne borne que l'espace de recherche.",
-          "The TDM Guide publishes no posology: this grid is declared by MIPD from the product label and only bounds the search space."),
-        # An unvalidated or formulation-incompatible search space is never written.
-        if (!tdm_guide_preset_grid_applicable(record, mode)) tags$div(tags$strong(
-          if (identical(tdm_guide_preset_grid_block(record, mode), "grid_awaiting_signoff")) tx(
-            "⚠ Non appliquée : en attente de relecture pharmacologique. Le bouton n'applique que la cible ; la grille de doses reste inchangée.",
-            "⚠ Not applied: awaiting pharmacologist review. The button applies the target only; the dose grid is left unchanged.")
-          else tx(
-            "⚠ Non appliquée : la formulation de ce modèle n'est pas couverte par le RCP dont cette grille est issue. Le bouton n'applique que la cible.",
-            "⚠ Not applied: this model's formulation is not covered by the label this grid comes from. The button applies the target only."))),
-        if (length(grid$excludesFormulations)) tags$div(tx(
-          "Formulations hors périmètre de cette grille : ", "Formulations outside this grid: "),
-          paste(unlist(grid$excludesFormulations), collapse = ", "), "."),
-        if (grepl("^https://", grid$source$url %||% "")) tags$a(
-          grid$source$label %||% grid$source$url, href = grid$source$url,
-          target = "_blank", rel = "noopener noreferrer")
+      if (!is.null(selected) && !model_target_blocked && !assay_blocked)
+        actionButton("apply_tdm_guide_target",
+          tx("Appliquer cette cible", "Apply this target"),
+          class = "btn-outline-primary btn-sm"),
+      if (selected_diverges) div(class = "tdm-compact-warning",
+        tx("Cette référence diffère du préréglage MIPD ; aucune modification automatique.",
+          "This reference differs from the MIPD preset; no automatic change.")
       )
     )
   })

@@ -1,6 +1,13 @@
 name: Deploy standalone MIPD Engine to Shinyapps
 
 on:
+  # Single reviewed UX release: publish when the compact-sidebar regression
+  # contract is added to main. Remove after public acceptance; keep manual
+  # production deployment as the normal workflow.
+  push:
+    branches: [main]
+    paths:
+      - tests/tdm_compact_sidebar_test.R
   workflow_dispatch:
     inputs:
       include_pmetrics:
