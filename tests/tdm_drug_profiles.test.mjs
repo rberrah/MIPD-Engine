@@ -74,6 +74,15 @@ assert.equal(tac.guideTargetPresets.ORAL.doseGrid.signoff,'PENDING');
 assert.deepEqual(tac.guideTargetPresets.ORAL.doseGrid.intervals,[12]);
 assert.equal(tac.formulationCovariates.tacrolimus_woillard_ddi.values['1'].product,'Prograf');
 assert.equal(tac.formulationCovariates.tacrolimus_woillard_ddi.values['0'].product,'Advagraf');
+const advagrafHint=tac.formulationAdministrationHints['tacrolimus-prolonged-release-advagraf'];
+assert.equal(advagrafHint.product,'Advagraf');
+assert.equal(advagrafHint.doseStepMg,0.5);
+assert.deepEqual(advagrafHint.intervalHours,[24]);
+assert.equal(advagrafHint.automaticDoseAdjustmentAllowed,false);
+assert.equal(advagrafHint.dose_min,undefined,'SmPC strength is not an absolute recommended dose');
+assert.equal(advagrafHint.dose_max,undefined,'No invented universal dose bounds');
+assert.match(advagrafHint.source.url,/^https:\/\/www\.medicines\.org\.uk\/emc\/product\/345\/smpc$/);
+
 assert.equal(tac.formulationCovariates.tacrolimus_kamp_envarsus_ddi.product,'Envarsus');
 const vanco=profiles.vanco;
 assert.equal(vanco.simulationPresets.IV_INTERMITTENT.target_low,400);
