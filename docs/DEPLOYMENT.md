@@ -108,9 +108,52 @@ workflow. An upload that succeeded but fails either test is **not a validated
 public release**. A previously available public bundle with no
 `deployment-release.json` cannot be identified as the new standalone release.
 
-### Current public release evidence — 2026-10-17
+### Current public release evidence — 2026-11-12
 
-**Current public release:** MIPD Engine commit
+**Public running release**: commit
+`9979e9498c0ea691dd7b95afd9fc08d65f1bee31`, account `tdmhub`,
+existing Shinyapps app ID `17776160`, bundle `12813594`, task
+`1771381651`, image `15965861`. The 201-file uploaded bundle includes
+`R/_disable_autoload.R`, the 23 per-drug TDM JSON dossiers, both TDM guide
+snapshots, the 46-model library and the SHA fingerprint.
+
+A live production URL/HTTP and exact-SHA check **passed** during the
+[2026-11-12 repair deployment](https://github.com/rberrah/MIPD-Engine/actions/runs/43246399268).
+That deployment run itself was marked failed **only** because Playwright
+1.56 cannot install Chromium on the GitHub `ubuntu-26.04` runner; the
+application deployment and HTTP+fingerprint check were successful.
+
+The independent, read-only
+[public release verification run](https://github.com/rberrah/MIPD-Engine/actions/runs/43249213569)
+later **passed all checks** using `ubuntu-24.04`:
+- live HTTP 200 and exact published SHA equality;
+- 46-model library fingerprint, custom C++ disabled, Pmetrics disabled;
+- two distinct FR/EN browser sessions with real websocket connections;
+- the remaining session continued running when the other was closed.
+
+The run archives the credential-free evidence artifact
+`public-mipd-live-verification` (artifact ID `13958477496`). The browser
+checks are software/availability acceptance only, **not** clinical validation.
+The release does not send any patient-shaped inputs to the test endpoint.
+
+**Incident resolved**: the first attempted new TDM release, bundle
+`12813355` at commit `cd55f758`, failed to start because Shiny
+automatically loaded `R/drug_profile_runtime_presets.R` before
+`R/tdm_drug_profiles.R`. The supported `R/_disable_autoload.R` sentinel
+and the explicit ordered sources in `app.R` remove this startup conflict.
+The CI now exercises `shiny::shinyAppDir()` on the exact isolated production
+bundle so an equivalent regression fails before deployment.
+
+Production publication is manual-only again, and the normal independent
+verification runs automatically only after a **successful** deployment
+workflow (or explicitly through `workflow_dispatch`). The release SHA
+remains `9979e949` even if later commits change documentation or CI only.
+The earlier working `12702795` bundle remains a historical rollback
+reference; do not use the failed `12813355` bundle as a rollback target.
+
+### Historical public release evidence — 2026-10-17
+
+**Historical public release:** MIPD Engine commit
 `fec16cbdf8e33ed6c791226ccf236761333f8de8`, immutable tag
 `public-2026-10-17-fec16cb`, Shinyapps bundle **12702795**, task
 `1758931558`, image `15803034`, existing app ID `17776160`.
