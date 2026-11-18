@@ -88,6 +88,7 @@ PMETRICS_ENABLED <- !identical(pmetrics_mode, "false") && pmetrics_installed
 source(file.path(APP_ROOT, "R", if (PMETRICS_ENABLED) "pmetrics_engine.R" else "pmetrics_disabled.R"), local = TRUE)
 source(file.path(APP_ROOT, "R", "engine.R"), local = TRUE)
 source(file.path(APP_ROOT, "R", "map_be_diagnostics.R"), local = TRUE)
+source(file.path(APP_ROOT, "R", "regimen_ab.R"), local = TRUE)
 source(file.path(APP_ROOT, "R", "ml_engine.R"), local = TRUE)
 source(file.path(APP_ROOT, "R", "ddi_engine.R"), local = TRUE)
 source(file.path(APP_ROOT, "R", "ddi_builder.R"), local = TRUE)
@@ -976,6 +977,26 @@ app_ui <- function(request) {
                 h3("Distribution prédictive du meilleur scénario"),
                 uiOutput("distribution_summary"),
                 plotOutput("distribution_plot", height = "330px"),
+                tags$details(
+                  class = "regimen-ab-workspace",
+                  tags$summary(app_t(lang, "Comparer deux scénarios A/B", "Compare two scenarios A/B")),
+                  p(app_t(lang,
+                    "Comparer deux posologies déjà évaluées, avec les mêmes modèles et pondérations que l'analyse. Exploration seulement : aucune modification du classement ou de l'estimation MAP.",
+                    "Compare two previously evaluated regimens with the same models and weights as the analysis. Exploration only: MAP fitting and rankings are unchanged.")),
+                  uiOutput("regimen_ab_selectors"),
+                  plotOutput("regimen_ab_plot", height = "330px"),
+                  DTOutput("regimen_ab_metrics"),
+                  div(class = "row-actions",
+                    downloadButton("download_regimen_ab_profiles",
+                      app_t(lang, "Courbes CSV", "Profiles CSV"),
+                      class = "btn-outline-secondary btn-sm"),
+                    downloadButton("download_regimen_ab_metrics",
+                      app_t(lang, "Métriques CSV", "Metrics CSV"),
+                      class = "btn-outline-secondary btn-sm")),
+                  p(app_t(lang,
+                    "AUC0–24 : 24 premières heures. Cmin et Cmax : intervalle de chaque posologie. Courbes : horizon commun jusqu'à 336 h. Unités de concentration : celles du modèle. Pas de variabilité predictive ni de réoptimisation.",
+                    "AUC0–24: first 24 h. Cmin and Cmax: each regimen's own interval. Curves: common horizon up to 336 h. Concentration units: model outputs. No predictive variability or re-optimization."))
+                ),
                 div(class = "table-toolbar", h3("Scénarios classés"), downloadButton("download_scenarios", "Exporter CSV", class = "btn-outline-secondary btn-sm")),
                 DTOutput("recommendation_table")
               )
