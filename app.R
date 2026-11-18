@@ -88,6 +88,7 @@ PMETRICS_ENABLED <- !identical(pmetrics_mode, "false") && pmetrics_installed
 source(file.path(APP_ROOT, "R", if (PMETRICS_ENABLED) "pmetrics_engine.R" else "pmetrics_disabled.R"), local = TRUE)
 source(file.path(APP_ROOT, "R", "engine.R"), local = TRUE)
 source(file.path(APP_ROOT, "R", "map_be_diagnostics.R"), local = TRUE)
+source(file.path(APP_ROOT, "R", "regimen_ab.R"), local = TRUE)
 source(file.path(APP_ROOT, "R", "ml_engine.R"), local = TRUE)
 source(file.path(APP_ROOT, "R", "ddi_engine.R"), local = TRUE)
 source(file.path(APP_ROOT, "R", "ddi_builder.R"), local = TRUE)
@@ -976,6 +977,26 @@ app_ui <- function(request) {
                 h3("Distribution prédictive du meilleur scénario"),
                 uiOutput("distribution_summary"),
                 plotOutput("distribution_plot", height = "330px"),
+                tags$details(
+                  class = "regimen-ab-workspace",
+                  tags$summary(app_t(lang, "Comparer deux scénarios A/B", "Compare two scenarios A/B")),
+                  p(app_t(lang,
+                    "Comparer deux posologies déjà évaluées, avec les mêmes modèles et pondérations que l'analyse. Exploration seulement : aucune modification du classement ou de l'estimation MAP.",
+                    "Compare two previously evaluated regimens with the same models and weights as the analysis. Exploration only: MAP fitting and rankings are unchanged.")),
+                  uiOutput("regimen_ab_selectors"),
+                  plotOutput("regimen_ab_plot", height = "330px"),
+                  DTOutput("regimen_ab_metrics"),
+                  div(class = "row-actions",
+                    downloadButton("download_regimen_ab_profiles",
+                      app_t(lang, "Courbes CSV", "Profiles CSV"),
+                      class = "btn-outline-secondary btn-sm"),
+                    downloadButton("download_regimen_ab_metrics",
+                      app_t(lang, "Métriques CSV", "Metrics CSV"),
+                      class = "btn-outline-secondary btn-sm")),
+                  p(app_t(lang,
+                    "AUC0–24 : 24 premières heures. Cmin et Cmax : intervalle de chaque posologie. Courbes : horizon commun jusqu'à 336 h. Unités de concentration : celles du modèle. Pas de variabilité predictive ni de réoptimisation.",
+                    "AUC0–24: first 24 h. Cmin and Cmax: each regimen's own interval. Curves: common horizon up to 336 h. Concentration units: model outputs. No predictive variability or re-optimization."))
+                ),
                 div(class = "table-toolbar", h3("Scénarios classés"), downloadButton("download_scenarios", "Exporter CSV", class = "btn-outline-secondary btn-sm")),
                 DTOutput("recommendation_table")
               )
@@ -3870,6 +3891,93 @@ server <- function(input, output, session) {
       theme_minimal(base_size = 13) +
       theme(panel.grid.minor = element_blank(), plot.title = element_text(face = "bold"))
   })
+
+  # A/B is an optional read-only view of the existing recommendation set.
+  # No additional fitting, ranking or data persistence occurs.
+  output$regimen_ab_selectors <- renderUI({
+    candidates <- regimen_ab_candidates(analysis_store())
+    if (nrow(candidates) < 2L) {
+      return(div(class = "empty-results", tx(
+        "Deux posologies distinctes dans la fenêtre de simulation (336 h maximum) sont nécessaires.",
+        "Two distinct regimens within the simulation window (maximum 336 h) are required."
+      )))
+    }
+    choices <- stats::setNames(as.character(seq_len(nrow(candidates))), sprintf(
+      "#%d · %g mg / %g h%s", candidates$rank, candidates$dose,
+      candidates$interval, ifelse(candidates$infusion > 0,
+        paste0(" · IV ", candidates$infusion, " h"), "")
+    ))
+    div(class = "row",
+      div(class = "col-md-6", selectInput("regimen_ab_a", tx("Scénario A", "Scenario A"),
+        choices = choices, selected = "1")),
+      div(class = "col-md-6", selectInput("regimen_ab_b", tx("Scénario B", "Scenario B"),
+        choices = choices, selected = "2"))
+    )
+  })
+
+  regimen_ab_comparison <- reactive({
+    result <- analysis_store()
+    if (is.null(result)) return(NULL)
+    a <- input$regimen_ab_a %||% "1"
+    b <- input$regimen_ab_b %||% "2"
+    tryCatch(regimen_ab_compare(result, a, b), error = function(error) NULL)
+  })
+
+  output$regimen_ab_plot <- renderPlot({
+    comparison <- regimen_ab_comparison()
+    shiny::validate(shiny::need(!is.null(comparison),
+      tx("Choisissez deux scénarios distincts pour comparer leurs profils.",
+         "Choose two distinct scenarios to compare their profiles.")))
+    ggplot(comparison$profiles, aes(time, concentration, color = scenario, linetype = scenario)) +
+      geom_line(linewidth = 1) +
+      scale_color_manual(values = c(A = "#3f4a54", B = "#176b70")) +
+      scale_linetype_manual(values = c(A = "dashed", B = "solid")) +
+      labs(
+        x = tx("Temps depuis la dose (h)", "Time from dose (h)"),
+        y = tx("Concentration (unité du modèle)", "Concentration (model units)"),
+        color = NULL, linetype = NULL,
+        subtitle = tx("Deux posologies simulées sur un horizon commun, sans réestimation.",
+                      "Two regimens simulated over the same horizon, without refitting.")
+      ) +
+      theme_minimal(base_size = 12) +
+      theme(panel.grid.minor = element_blank(), legend.position = "top")
+  })
+
+  output$regimen_ab_metrics <- DT::renderDT({
+    comparison <- regimen_ab_comparison()
+    shiny::req(!is.null(comparison))
+    table <- comparison$metrics
+    if (all(is.na(table$time_above_pct))) table$time_above_pct <- NULL
+    numeric <- vapply(table, is.numeric, logical(1))
+    table[numeric] <- lapply(table[numeric], function(value) round(value, 2))
+    labels <- c(
+      scenario = tx("Scénario", "Scenario"), dose_mg = "Dose (mg)",
+      interval_h = tx("Intervalle (h)", "Interval (h)"),
+      infusion_h = tx("Perfusion (h)", "Infusion (h)"),
+      auc0_24 = "AUC0-24 (C·h)", cmin_interval = "Cmin",
+      cmax_interval = "Cmax", time_above_pct = "%T > seuil"
+    )
+    DT::datatable(table, rownames = FALSE, options = list(
+      dom = "t", scrollX = TRUE, ordering = FALSE
+    ), colnames = unname(labels[names(table)]))
+  })
+
+  output$download_regimen_ab_profiles <- downloadHandler(
+    filename = function() paste0("mipd-ab-profiles-", Sys.Date(), ".csv"),
+    content = function(file) {
+      comparison <- regimen_ab_comparison()
+      shiny::req(!is.null(comparison))
+      utils::write.csv(comparison$profiles, file, row.names = FALSE, na = "")
+    }
+  )
+  output$download_regimen_ab_metrics <- downloadHandler(
+    filename = function() paste0("mipd-ab-metrics-", Sys.Date(), ".csv"),
+    content = function(file) {
+      comparison <- regimen_ab_comparison()
+      shiny::req(!is.null(comparison))
+      utils::write.csv(comparison$metrics, file, row.names = FALSE, na = "")
+    }
+  )
 
   output$recommendation_table <- renderDT({
     result <- analysis_store()
