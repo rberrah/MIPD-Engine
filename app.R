@@ -3892,6 +3892,93 @@ server <- function(input, output, session) {
       theme(panel.grid.minor = element_blank(), plot.title = element_text(face = "bold"))
   })
 
+  # A/B is an optional read-only view of the existing recommendation set.
+  # No additional fitting, ranking or data persistence occurs.
+  output$regimen_ab_selectors <- renderUI({
+    candidates <- regimen_ab_candidates(analysis_store())
+    if (nrow(candidates) < 2L) {
+      return(div(class = "empty-results", tx(
+        "Deux posologies distinctes dans la fenêtre de simulation (336 h maximum) sont nécessaires.",
+        "Two distinct regimens within the simulation window (maximum 336 h) are required."
+      )))
+    }
+    choices <- stats::setNames(as.character(seq_len(nrow(candidates))), sprintf(
+      "#%d · %g mg / %g h%s", candidates$rank, candidates$dose,
+      candidates$interval, ifelse(candidates$infusion > 0,
+        paste0(" · IV ", candidates$infusion, " h"), "")
+    ))
+    div(class = "row",
+      div(class = "col-md-6", selectInput("regimen_ab_a", tx("Scénario A", "Scenario A"),
+        choices = choices, selected = "1")),
+      div(class = "col-md-6", selectInput("regimen_ab_b", tx("Scénario B", "Scenario B"),
+        choices = choices, selected = "2"))
+    )
+  })
+
+  regimen_ab_comparison <- reactive({
+    result <- analysis_store()
+    if (is.null(result)) return(NULL)
+    a <- input$regimen_ab_a %||% "1"
+    b <- input$regimen_ab_b %||% "2"
+    tryCatch(regimen_ab_compare(result, a, b), error = function(error) NULL)
+  })
+
+  output$regimen_ab_plot <- renderPlot({
+    comparison <- regimen_ab_comparison()
+    shiny::validate(shiny::need(!is.null(comparison),
+      tx("Choisissez deux scénarios distincts pour comparer leurs profils.",
+         "Choose two distinct scenarios to compare their profiles.")))
+    ggplot(comparison$profiles, aes(time, concentration, color = scenario, linetype = scenario)) +
+      geom_line(linewidth = 1) +
+      scale_color_manual(values = c(A = "#3f4a54", B = "#176b70")) +
+      scale_linetype_manual(values = c(A = "dashed", B = "solid")) +
+      labs(
+        x = tx("Temps depuis la dose (h)", "Time from dose (h)"),
+        y = tx("Concentration (unité du modèle)", "Concentration (model units)"),
+        color = NULL, linetype = NULL,
+        subtitle = tx("Deux posologies simulées sur un horizon commun, sans réestimation.",
+                      "Two regimens simulated over the same horizon, without refitting.")
+      ) +
+      theme_minimal(base_size = 12) +
+      theme(panel.grid.minor = element_blank(), legend.position = "top")
+  })
+
+  output$regimen_ab_metrics <- DT::renderDT({
+    comparison <- regimen_ab_comparison()
+    shiny::req(!is.null(comparison))
+    table <- comparison$metrics
+    if (all(is.na(table$time_above_pct))) table$time_above_pct <- NULL
+    numeric <- vapply(table, is.numeric, logical(1))
+    table[numeric] <- lapply(table[numeric], function(value) round(value, 2))
+    labels <- c(
+      scenario = tx("Scénario", "Scenario"), dose_mg = "Dose (mg)",
+      interval_h = tx("Intervalle (h)", "Interval (h)"),
+      infusion_h = tx("Perfusion (h)", "Infusion (h)"),
+      auc0_24 = "AUC0-24 (C·h)", cmin_interval = "Cmin",
+      cmax_interval = "Cmax", time_above_pct = "%T > seuil"
+    )
+    DT::datatable(table, rownames = FALSE, options = list(
+      dom = "t", scrollX = TRUE, ordering = FALSE
+    ), colnames = unname(labels[names(table)]))
+  })
+
+  output$download_regimen_ab_profiles <- downloadHandler(
+    filename = function() paste0("mipd-ab-profiles-", Sys.Date(), ".csv"),
+    content = function(file) {
+      comparison <- regimen_ab_comparison()
+      shiny::req(!is.null(comparison))
+      utils::write.csv(comparison$profiles, file, row.names = FALSE, na = "")
+    }
+  )
+  output$download_regimen_ab_metrics <- downloadHandler(
+    filename = function() paste0("mipd-ab-metrics-", Sys.Date(), ".csv"),
+    content = function(file) {
+      comparison <- regimen_ab_comparison()
+      shiny::req(!is.null(comparison))
+      utils::write.csv(comparison$metrics, file, row.names = FALSE, na = "")
+    }
+  )
+
   output$recommendation_table <- renderDT({
     result <- analysis_store()
     shiny::req(result)
